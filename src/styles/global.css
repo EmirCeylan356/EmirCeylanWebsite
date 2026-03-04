@@ -1,0 +1,126 @@
+@import "tailwindcss";
+
+@theme {
+  --color-bg: #f40c3f;
+  --color-bg-dark: #0a0a0a;
+  --color-accent: #000000;
+  --color-accent-bright: #FF6B2C;
+  --color-text: #000000;
+  --color-text-light: #ffffff;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  overflow-x: hidden;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+}
+
+/* Grid Background */
+.grid-bg {
+  background-image: 
+    linear-gradient(rgba(0,0,0,0.1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,0,0,0.1) 1px, transparent 1px);
+  background-size: 50px 50px;
+}
+
+/* Binary decoration */
+.binary-border {
+  background: repeating-linear-gradient(
+    90deg,
+    #000 0px,
+    #000 2px,
+    transparent 2px,
+    transparent 10px
+  );
+}
+
+/* Kinetic typography */
+.kinetic-text {
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+  line-height: 0.9;
+}
+
+/* Card hover effect */
+.project-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.project-card:hover {
+  transform: translateY(-10px) rotateX(5deg);
+  box-shadow: 20px 20px 0px #000;
+}
+
+/* Contrast toggle styles */
+.contrast-mode {
+  --color-bg: #000000;
+  --color-text: #00ff00;
+}
+
+.contrast-mode .grid-bg {
+  background-image: 
+    linear-gradient(rgba(0,255,0,0.2) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,255,0,0.2) 1px, transparent 1px);
+}
+
+.contrast-mode .project-card:hover {
+  box-shadow: 20px 20px 0px #00ff00;
+}
+
+/* Smooth reveal */
+.reveal {
+  opacity: 0;
+  transform: translateY(50px);
+  transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Floating animation */
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-20px); }
+}
+
+.float {
+  animation: float 6s ease-in-out infinite;
+}
+
+/* Stagger animations */
+.stagger > * {
+  opacity: 0;
+  transform: translateY(30px);
+}
+
+.stagger.visible > *:nth-child(1) { animation: fadeInUp 0.6s ease forwards 0.1s; }
+.stagger.visible > *:nth-child(2) { animation: fadeInUp 0.6s ease forwards 0.2s; }
+.stagger.visible > *:nth-child(3) { animation: fadeInUp 0.6s ease forwards 0.3s; }
+.stagger.visible > *:nth-child(4) { animation: fadeInUp 0.6s ease forwards 0.4s; }
+.stagger.visible > *:nth-child(5) { animation: fadeInUp 0.6s ease forwards 0.5s; }
+.stagger.visible > *:nth-child(6) { animation: fadeInUp 0.6s ease forwards 0.6s; }
+
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

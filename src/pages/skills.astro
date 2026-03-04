@@ -1,0 +1,151 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+
+const skills = [
+  { name: 'PYTHON', level: 90 },
+  { name: 'MACHINE LEARNING', level: 80 },
+  { name: 'DEEP LEARNING', level: 70 },
+  { name: 'DATA SCIENCE', level: 75 },
+  { name: 'DATA STRUCTURES', level: 70 },
+  { name: 'ALGORITHMS', level: 65 },
+  { name: 'RESEARCH', level: 80 },
+  { name: 'BIOINFORMATICS', level: 50 },
+];
+
+const activities = [
+  { 
+    title: 'ERASMUS+ EXCHANGE', 
+    description: 'Studied at University of Groningen, Netherlands — Cultural exchange and academic immersion.',
+    src: '/images/activity-1.jpg', 
+    alt: 'Erasmus exchange' 
+  },
+  { 
+    title: 'TEKNOFEST COMPETITION', 
+    description: 'Team lead for Medical AI competition — developing multimodal diagnostic tools.',
+    src: '/images/activity-2.jpg', 
+    alt: 'Teknofest competition' 
+  },
+  { 
+    title: 'STUDENT COUNCIL', 
+    description: 'Active member representing students in university activities.',
+    src: '/images/activity-3.jpg', 
+    alt: 'Student activities' 
+  },
+  { 
+    title: 'MENTORING', 
+    description: 'Peer mentoring for incoming CS students.',
+    src: '/images/activity-4.jpg', 
+    alt: 'Mentoring' 
+  },
+];
+
+const paintings = [
+  { title: 'PAINTING 01', src: '/images/painting-1.jpg', alt: 'Abstract painting' },
+  { title: 'PAINTING 02', src: '/images/painting-2.jpg', alt: 'Landscape painting' },
+  { title: 'PAINTING 03', src: '/images/painting-3.jpg', alt: 'Portrait painting' },
+  { title: 'PAINTING 04', src: '/images/painting-4.jpg', alt: 'Digital art' },
+];
+---
+
+<Layout title="SKILLS — EMİR CEYLAN">
+  <Header />
+  
+  <main class="pt-20">
+    <!-- Skills Section -->
+    <section class="py-20 px-4">
+      <div class="max-w-7xl mx-auto">
+        <div class="flex items-end gap-4 mb-12">
+          <h1 class="text-5xl md:text-7xl font-black kinetic-text">
+            SKILLS
+          </h1>
+          <div class="flex-1 h-4 bg-black"></div>
+          <span class="text-3xl font-black">/03</span>
+        </div>
+        
+        <div class="grid md:grid-cols-2 gap-5 max-w-4xl">
+          {skills.map((skill) => (
+            <div class="bg-white border-4 border-black p-5 hover:translate-x-2 transition-transform">
+              <div class="flex justify-between items-center mb-2">
+                <span class="font-black text-base">{skill.name}</span>
+                <span class="font-mono font-bold text-sm">{skill.level}%</span>
+              </div>
+              <div class="h-3 bg-black overflow-hidden">
+                <div 
+                  class="h-full bg-[#f40c3f] transition-all duration-1000"
+                  style={`width: ${skill.level}%`}
+                ></div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- Activities Section -->
+    <section class="py-20 px-4 bg-white border-y-4 border-black">
+      <div class="max-w-7xl mx-auto">
+        <div class="flex items-end gap-4 mb-12">
+          <h2 class="text-5xl md:text-7xl font-black kinetic-text">
+            ACTIVITIES
+          </h2>
+          <div class="flex-1 h-4 bg-black"></div>
+          <span class="text-3xl font-black">/04</span>
+        </div>
+        
+        <div class="grid md:grid-cols-2 gap-6 stagger">
+          {activities.map((activity, index) => (
+            <div class="group relative overflow-hidden border-4 border-black bg-black">
+              <img 
+                src={activity.src} 
+                alt={activity.alt}
+                class="w-full h-48 object-cover transition-transform duration-500 group-hover:scale-110 grayscale group-hover:grayscale-0"
+              />
+              <div class="absolute inset-0 bg-black/70 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-center items-center p-4 text-center">
+                <p class="text-white font-black text-xl kinetic-text mb-2">{activity.title}</p>
+                <p class="text-gray-300 text-sm">{activity.description}</p>
+              </div>
+              <div class="absolute bottom-0 left-0 bg-[#f40c3f] text-white px-3 py-1 font-mono text-sm">
+                #{index + 1}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- Paintings Section -->
+    <section class="py-20 px-4">
+      <div class="max-w-7xl mx-auto">
+        <div class="flex items-end gap-4 mb-12">
+          <h2 class="text-5xl md:text-7xl font-black kinetic-text">
+            PAINTINGS
+          </h2>
+          <div class="flex-1 h-4 bg-black"></div>
+          <span class="text-3xl font-black">/04</span>
+        </div>
+        
+        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-4 stagger">
+          {paintings.map((painting, index) => (
+            <div class="group relative overflow-hidden border-4 border-black aspect-square bg-black">
+              <img 
+                src={painting.src} 
+                alt={painting.alt}
+                class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110 grayscale group-hover:grayscale-0"
+              />
+              <div class="absolute inset-0 bg-[#f40c3f] opacity-0 group-hover:opacity-80 transition-opacity duration-300 flex items-center justify-center">
+                <p class="text-white font-black text-xl kinetic-text text-center">{painting.title}</p>
+              </div>
+              <div class="absolute bottom-0 left-0 bg-black text-white px-3 py-1 font-mono text-sm">
+                #{index + 1}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</Layout>

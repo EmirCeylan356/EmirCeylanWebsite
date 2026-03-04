@@ -1,0 +1,241 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+
+const projects = [
+  {
+    id: '#3vva-0001',
+    title: 'MULTIMODAL DIAGNOSTIC TOOL',
+    description: 'Leading a multidisciplinary team at Teknofest Medical AI Competition to develop a multimodal diagnostic tool for Multiple Sclerosis.',
+    tags: ['DEEP LEARNING', 'MEDICAL AI', 'TEAM LEAD'],
+    link: '#',
+  },
+  {
+    id: '#3vva-0002',
+    title: 'SEPSIS PREDICTION MODEL',
+    description: 'Developing AI models to reduce unnecessary sepsis testing in Emergency Room settings, focusing on clinical efficiency.',
+    tags: ['ML', 'HEALTHCARE', 'CLINICAL'],
+    link: '#',
+  },
+  {
+    id: '#3vva-0003',
+    title: 'XAI IN HEALTHCARE',
+    description: 'Researching explainable AI frameworks aligned with FDA and EU AI Act regulations for medical transparency.',
+    tags: ['RESEARCH', 'XAI', 'REGULATORY'],
+    link: '#',
+  },
+  {
+    id: '#3vva-0004',
+    title: 'HUMAN-AI INTERACTION',
+    description: 'Undergraduate research on trustable AI in medicine, collaborating with Prof. Polat Göktaş.',
+    tags: ['RESEARCH', 'HCI', 'HEALTHCARE'],
+    link: '#',
+  },
+];
+
+const experience = [
+  {
+    role: 'MACHINE LEARNING INTERN',
+    company: 'Amsterdam UMC',
+    period: 'SUMMER 2026',
+    description: 'Developing AI models to reduce unnecessary sepsis testing in ER settings.',
+  },
+  {
+    role: 'TEACHING ASSISTANT',
+    company: 'DSA 210: Data Science',
+    period: '2025 — PRESENT',
+    description: 'Assisting Prof. Oznur Tastan and Ozgun Yargi. Mentoring students in ML.',
+  },
+  {
+    role: 'PROJECT LEAD',
+    company: 'Teknofest Medical AI',
+    period: '2026',
+    description: 'Leading multidisciplinary team to develop multimodal diagnostic tools.',
+  },
+  {
+    role: 'UNDERGRADUATE RESEARCHER',
+    company: 'PURE - Sabancı University',
+    period: '2025 — PRESENT',
+    description: 'Collaborating with Prof. Polat Göktaş on Explainable AI in Healthcare.',
+  },
+];
+---
+
+<Layout title="EMIR CEYLAN — Creative Developer">
+  <Header />
+  
+  <main>
+    <!-- Hero Section -->
+    <section class="min-h-screen flex items-center justify-center px-4 pt-20 pb-10 relative overflow-hidden">
+      <!-- Floating binary decoration -->
+      <div class="absolute top-1/4 left-10 text-xs font-mono opacity-30 float hidden md:block">
+        101010101010<br>010101010101<br>101010101010
+      </div>
+      <div class="absolute bottom-1/4 right-10 text-xs font-mono opacity-30 float hidden md:block">
+        010101010101<br>101010101010<br>010101010101
+      </div>
+      
+      <div class="max-w-5xl mx-auto text-center relative z-10">
+        <p class="text-sm font-bold mb-3 tracking-widest opacity-70">CREATIVE DEVELOPER — TURKEY</p>
+        
+        <h1 class="kinetic-text text-6xl md:text-8xl lg:text-[10rem] font-black mb-4 leading-none">
+          EMİR<br/>
+          <span class="text-white" style="text-shadow: 4px 4px 0 #000;">CEYLAN</span>
+        </h1>
+        
+        <p class="text-lg md:text-xl font-bold max-w-2xl mx-auto mb-8 bg-black text-white inline-block px-4 py-2">
+          CS STUDENT — AI FOR HEALTHCARE
+        </p>
+        
+        <div class="flex flex-wrap gap-4 justify-center">
+          <a 
+            href="#experience" 
+            class="px-8 py-4 bg-black text-white font-bold text-lg border-4 border-black hover:bg-white hover:text-black transition-all hover:shadow-[8px_8px_0px_#000]"
+          >
+            EXPERIENCE →
+          </a>
+          <a 
+            href="#contact" 
+            class="px-8 py-4 bg-white text-black font-bold text-lg border-4 border-black hover:bg-black hover:text-white transition-all"
+          >
+            CONTACT
+          </a>
+        </div>
+        
+        <!-- Scroll indicator -->
+        <div class="mt-16 animate-bounce">
+          <span class="text-4xl">↓</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Awards Bar -->
+    <section class="bg-black text-white py-3 border-y-4 border-black overflow-hidden">
+      <div class="max-w-7xl mx-auto px-4">
+        <div class="marquee-container">
+          <div class="marquee-content">
+            <span class="font-bold text-lg mx-12">★ PROJECT LEAD — TEKNOFEST</span>
+            <span class="font-bold text-lg mx-12">★ ML INTERN — AMSTERDAM UMC</span>
+            <span class="font-bold text-lg mx-12">★ TA — DATA SCIENCE</span>
+            <span class="font-bold text-lg mx-12">★ RESEARCHER — PURE LAB</span>
+            <span class="font-bold text-lg mx-12">★ 50% MERIT SCHOLARSHIP</span>
+            <span class="font-bold text-lg mx-12">★ PROJECT LEAD — TEKNOFEST</span>
+            <span class="font-bold text-lg mx-12">★ ML INTERN — AMSTERDAM UMC</span>
+            <span class="font-bold text-lg mx-12">★ TA — DATA SCIENCE</span>
+            <span class="font-bold text-lg mx-12">★ RESEARCHER — PURE LAB</span>
+            <span class="font-bold text-lg mx-12">★ 50% MERIT SCHOLARSHIP</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-16 px-4">
+      <div class="max-w-7xl mx-auto">
+        <div class="flex items-end gap-4 mb-8">
+          <h2 class="text-5xl md:text-7xl font-black kinetic-text">
+            ABOUT
+          </h2>
+          <div class="flex-1 h-4 bg-black"></div>
+          <span class="text-3xl font-black">/01</span>
+        </div>
+        
+        <p class="text-xl md:text-2xl font-bold leading-tight max-w-3xl">
+          Computer Science student at 
+          <span class="bg-[#f40c3f] text-white px-2">Sabancı University</span>
+          passionate about AI applications in healthcare.
+          Building the future of medical AI.
+        </p>
+        <p class="text-lg font-bold mt-6 opacity-70">
+          Expected Graduation: 2027 | GPA: 2.87/4.00
+        </p>
+      </div>
+    </section>
+
+    <!-- Experience Section -->
+    <section id="experience" class="py-16 px-4 bg-white border-y-4 border-black">
+      <div class="max-w-7xl mx-auto">
+        <div class="flex items-end gap-4 mb-12">
+          <h2 class="text-5xl md:text-7xl font-black kinetic-text">
+            EXPERIENCE
+          </h2>
+          <div class="flex-1 h-4 bg-black"></div>
+          <span class="text-3xl font-black">/04</span>
+        </div>
+        
+        <div class="grid md:grid-cols-2 gap-6">
+          {experience.map((exp) => (
+            <div class="border-4 border-black p-6 hover:bg-[#f40c3f] hover:text-white transition-colors">
+              <p class="text-xs font-mono font-bold mb-2">{exp.period}</p>
+              <h3 class="text-xl font-black mb-1">{exp.role}</h3>
+              <p class="font-bold mb-2 text-sm">{exp.company}</p>
+              <p class="text-sm opacity-70">{exp.description}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- Work Section -->
+    <section id="projects" class="py-16 px-4">
+      <div class="max-w-7xl mx-auto">
+        <div class="flex items-end gap-4 mb-12">
+          <h2 class="text-5xl md:text-7xl font-black kinetic-text">
+            WORK
+          </h2>
+          <div class="flex-1 h-4 bg-black"></div>
+          <span class="text-3xl font-black">/04</span>
+        </div>
+        
+        <div class="grid md:grid-cols-2 gap-6">
+          {projects.map((project) => (
+            <a 
+              href={project.link}
+              class="project-card block bg-white border-4 border-black p-6 hover:bg-black hover:text-white transition-all group"
+            >
+              <div class="flex justify-between items-start mb-3">
+                <span class="text-xs font-mono bg-black text-white px-2 py-1">{project.id}</span>
+                <span class="text-xl group-hover:translate-x-2 transition-transform">→</span>
+              </div>
+              
+              <h3 class="text-2xl md:text-3xl font-black mb-3 kinetic-text group-hover:text-[#f40c3f] transition-colors">
+                {project.title}
+              </h3>
+              <p class="font-medium mb-4 opacity-80 text-sm">
+                {project.description}
+              </p>
+              
+              <div class="flex flex-wrap gap-2">
+                {project.tags.map((tag) => (
+                  <span class="text-xs font-bold px-2 py-1 border-2 border-current">
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</Layout>
+
+<style>
+  .marquee-container {
+    overflow: hidden;
+    white-space: nowrap;
+  }
+  
+  .marquee-content {
+    display: inline-block;
+    animation: marquee 25s linear infinite;
+  }
+  
+  @keyframes marquee {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+</style>
