@@ -4,10 +4,16 @@ import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 
 const paintings = [
-  { title: 'PAINTING 01', src: '/images/painting-1.jpg' },
-  { title: 'PAINTING 02', src: '/images/painting-2.jpg' },
-  { title: 'PAINTING 03', src: '/images/painting-3.jpg' },
-  { title: 'PAINTING 04', src: '/images/painting-4.jpg' },
+  { title: 'PAINTING 01', src: '/images/file_8---39151805-7313-4bb7-b8c8-1365aef884a3.jpg' },
+  { title: 'PAINTING 02', src: '/images/file_9---c5cd81b7-8140-4595-8297-af32f0e2edba.jpg' },
+  { title: 'PAINTING 03', src: '/images/file_10---714a56fd-d4fb-4316-8629-c6f06a4db7a8.jpg' },
+  { title: 'PAINTING 04', src: '/images/file_11---e6cf7245-cda7-4ca8-884c-55c891575493.jpg' },
+  { title: 'PAINTING 05', src: '/images/file_12---09cd522a-d5e5-433a-ac0f-d9c0c710c79a.jpg' },
+  { title: 'PAINTING 06', src: '/images/file_13---f94eea51-a229-4b42-bcf4-f489c8824e9b.jpg' },
+  { title: 'PAINTING 07', src: '/images/file_14---d6d37114-4da7-4cdf-896d-5b361bf9ac99.jpg' },
+  { title: 'PAINTING 08', src: '/images/file_15---cfdd2a00-8c9e-4367-8b88-c149ce15db2a.jpg' },
+  { title: 'PAINTING 09', src: '/images/file_16---a29e17b8-1972-4c3d-af3c-e4f65981a95f.jpg' },
+  { title: 'PAINTING 10', src: '/images/file_17---f463b1dd-1139-4fad-81a9-b4b5bddd0ef0.jpg' },
 ];
 ---
 
@@ -40,11 +46,11 @@ const paintings = [
             PAINTINGS
           </h2>
           <div class="flex-1 h-4 bg-black"></div>
-          <span class="text-3xl font-black">/04</span>
+          <span class="text-3xl font-black">/10</span>
         </div>
         
-        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {paintings.map((painting, index) => (
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
+          {paintings.map((painting) => (
             <div class="group relative overflow-hidden border-4 border-black aspect-square bg-black">
               <img 
                 src={painting.src} 
