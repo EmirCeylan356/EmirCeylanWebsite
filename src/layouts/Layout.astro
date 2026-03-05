@@ -22,6 +22,7 @@ const { title } = Astro.props;
   </head>
   <body class="bg-[#f40c3f] text-black min-h-screen">
     <div class="fixed inset-0 grid-bg pointer-events-none z-0"></div>
+    <canvas id="fisheye-canvas" class="fixed pointer-events-none z-[2]" style="display:none;"></canvas>
     
     <!-- Contrast Toggle -->
     <button 
@@ -31,7 +32,7 @@ const { title } = Astro.props;
       CONTRAST
     </button>
     
-    <div id="main-content" class="relative z-10">
+    <div id="main-content" class="relative z-10 min-h-screen flex flex-col">
       <slot />
     </div>
 
@@ -66,6 +67,93 @@ const { title } = Astro.props;
         });
       }
       
+      // Fisheye grid distortion canvas
+      const fisheyeCanvas = document.getElementById('fisheye-canvas');
+      if (fisheyeCanvas) {
+        const ctx = fisheyeCanvas.getContext('2d');
+        const R = 180;       // lens radius px
+        const SIZE = R * 2 + 4;
+        const GRID = 50;     // must match .grid-bg background-size
+        fisheyeCanvas.width = SIZE;
+        fisheyeCanvas.height = SIZE;
+        let mx = -1000, my = -1000, raf = null;
+
+        function drawFisheye() {
+          const cx = SIZE / 2, cy = SIZE / 2;
+          const isContrast = document.body.classList.contains('contrast-mode');
+          const bgFill  = isContrast ? '#000000' : '#f40c3f';
+          const lineCol = isContrast ? 'rgba(0,255,0,0.2)' : 'rgba(0,0,0,0.15)';
+
+          ctx.clearRect(0, 0, SIZE, SIZE);
+
+          // Clip to circle
+          ctx.save();
+          ctx.beginPath();
+          ctx.arc(cx, cy, R, 0, Math.PI * 2);
+          ctx.clip();
+
+          // Cover static grid underneath
+          ctx.fillStyle = bgFill;
+          ctx.fillRect(0, 0, SIZE, SIZE);
+
+          ctx.strokeStyle = lineCol;
+          ctx.lineWidth = 1;
+
+          // Align grid to cursor position so lines match the static background
+          const ox = ((mx % GRID) + GRID) % GRID;
+          const oy = ((my % GRID) + GRID) % GRID;
+
+          // Barrel warp: points pushed outward from center, strongest at centre
+          function warp(px, py) {
+            const dx = px - cx, dy = py - cy;
+            const r = Math.sqrt(dx * dx + dy * dy);
+            if (r >= R || r < 0.01) return [px, py];
+            const n = r / R;
+            const rOut = r * (1 + Math.pow(1 - n, 2.2) * 0.9);
+            return [cx + (dx / r) * rOut, cy + (dy / r) * rOut];
+          }
+
+          // Cover enough lines across the full lens diameter (R can span ~4 grid cells)
+          const spread = (Math.ceil(R / GRID) + 1) * GRID;
+
+          // Trace vertical grid lines through the lens
+          for (let gx = -ox - spread; gx <= R + GRID; gx += GRID) {
+            ctx.beginPath();
+            let first = true;
+            for (let gy = -R; gy <= R; gy += 3) {
+              const [px, py] = warp(cx + gx, cy + gy);
+              first ? (ctx.moveTo(px, py), first = false) : ctx.lineTo(px, py);
+            }
+            ctx.stroke();
+          }
+
+          // Trace horizontal grid lines through the lens
+          for (let gy = -oy - spread; gy <= R + GRID; gy += GRID) {
+            ctx.beginPath();
+            let first = true;
+            for (let gx = -R; gx <= R; gx += 3) {
+              const [px, py] = warp(cx + gx, cy + gy);
+              first ? (ctx.moveTo(px, py), first = false) : ctx.lineTo(px, py);
+            }
+            ctx.stroke();
+          }
+
+          ctx.restore();
+          // No rim border
+
+          raf = null;
+        }
+
+        document.addEventListener('mousemove', (e) => {
+          mx = e.clientX; my = e.clientY;
+          fisheyeCanvas.style.left = (mx - SIZE / 2) + 'px';
+          fisheyeCanvas.style.top  = (my - SIZE / 2) + 'px';
+          fisheyeCanvas.style.display = 'block';
+          if (!raf) raf = requestAnimationFrame(drawFisheye);
+        });
+        document.addEventListener('mouseleave', () => { fisheyeCanvas.style.display = 'none'; });
+      }
+
       // Reveal animations
       document.addEventListener('DOMContentLoaded', () => {
         if (typeof gsap !== 'undefined') {

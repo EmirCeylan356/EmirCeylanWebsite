@@ -21,8 +21,7 @@ const works = [
     title: 'UNDERGRADUATE RESEARCHER',
     subtitle: 'PURE - Sabancı University',
     description: 'Collaborating with Prof. Polat Göktaş on Explainable AI in Healthcare.',
-    details: `<p><strong>Project: Human–AI Interaction in Medical Risk Prediction</strong><br><em>Supervisor: Asst. Prof. Polat Goktas</em></p>
-<p>During the Fall 2025-26 term, I conducted a comprehensive scientometric study analyzing over 250 global publications to map the evolving landscape of AI in healthcare.</p>
+    details: `<p>During the Fall 2025-26 term, I conducted a comprehensive scientometric study analyzing over 250 global publications to map the evolving landscape of AI in healthcare.</p>
 <p>My research focused on the critical intersection of <strong>explainable AI (XAI)</strong>, clinician trust, and regulatory governance.</p>
 <p>By utilizing literature mining and network analysis, I identified key knowledge gaps and emerging trends necessary for developing trustworthy and clinically deployable AI systems.</p>
 <p><a href="https://www.linkedin.com/posts/emir-ceylan-student-482775332_pure-undergraduateresearch-ai-ugcPost-7433604110798544896-2cDY" target="_blank" class="linkedin-link">The LinkedIn Post</a></p>`,
@@ -46,24 +45,55 @@ const works = [
     title: 'MACHINE LEARNING INTERN',
     subtitle: 'Amsterdam UMC',
     description: 'Developing AI models to reduce unnecessary sepsis testing in ER settings.',
-    details: `<p><strong>Amsterdam UMC</strong></p>
-<p>Developing AI models to reduce unnecessary sepsis testing in Emergency Room settings.</p>
+    details: `<p>Developing AI models to reduce unnecessary sepsis testing in Emergency Room settings.</p>
 <p>Focusing on clinical efficiency by optimizing diagnostic triggers to reduce physician workload and healthcare costs.</p>
 <p><em>Work In Progress...</em></p>`,
     link: '',
     isWip: true,
   },
+  {
+    id: 5,
+    period: '2024 — 2025',
+    title: 'ML DEVELOPER',
+    subtitle: 'Osteogenesis Imperfecta (OI) Pathogenicity Prediction',
+    description: 'ENS 210: Bioinformatics Project. Surpassing SIFT and general-purpose diagnostic tools.',
+    details: `<p>In this project, I developed a high-precision machine learning model to predict the pathogenicity of variants in the <strong>COL1A1</strong> and <strong>COL1A2</strong> genes, which are primary causes of Osteogenesis Imperfecta (OI) — a rare genetic disorder affecting bone fragility.</p>
+<p>Using a curated dataset from ClinVar, I engineered biologically meaningful features and trained multiple classifiers, ultimately achieving performance that surpassed established tools such as <strong>SIFT</strong> and general-purpose diagnostic predictors.</p>
+<p>The pipeline included variant filtering, feature selection, cross-validation, and interpretability analysis — resulting in a reproducible and clinically relevant bioinformatics workflow.</p>
+<p><a href="https://github.com/Riwex/ENS210_Project" target="_blank" class="linkedin-link">View on GitHub →</a></p>`,
+    link: 'https://github.com/Riwex/ENS210_Project',
+  },
+  {
+    id: 6,
+    period: '2024 — 2025',
+    title: 'RESEARCH CONTRIBUTOR',
+    subtitle: 'AI-Engineered Enzymes for Polymer Digestion',
+    description: 'Molecular Biology Research. Optimizing PETase enzymes for sustainable plastic degradation.',
+    details: `<p>Under the supervision of <strong>İleyna Sevde Üvak</strong>, I contributed to a molecular biology research project focused on computationally optimizing <strong>PETase enzymes</strong> for efficient degradation of PET plastics.</p>
+<p>I applied computational biology techniques — including protein structure analysis and mutation screening — to identify candidate enzyme variants with improved thermostability and catalytic efficiency.</p>
+<p>This work sits at the intersection of synthetic biology and environmental sustainability, exploring how AI-driven enzyme engineering can accelerate the development of biological solutions to plastic pollution.</p>`,
+    link: '',
+  },
+  {
+    id: 7,
+    period: '2025 — PRESENT',
+    title: 'BOARD MEMBER & HEAD OF BIOTECH',
+    subtitle: 'Sabancı University Deep Technologies Club',
+    description: 'Leading the BioTech division and fostering a high-tech community through hands-on events.',
+    details: `<p>As a Board Member and the Head of the <strong>BioTech Division</strong> at Sabancı University's Deep Technologies Club, I lead initiatives that bridge cutting-edge biology with emerging technology.</p>
+<p>My role involves organizing workshops, seminars, and hands-on projects that expose students to topics like CRISPR, synthetic biology, computational genomics, and AI-driven drug discovery.</p>
+<p>I also coordinate interdisciplinary collaborations between CS, biology, and engineering students — cultivating a community of innovators passionate about the future of life sciences and deep tech.</p>`,
+    link: '',
+  },
 ];
 
-const skills = [
-  { name: 'PYTHON' },
-  { name: 'MACHINE LEARNING' },
-  { name: 'DEEP LEARNING' },
-  { name: 'DATA SCIENCE' },
-  { name: 'DATA STRUCTURES' },
-  { name: 'ALGORITHMS' },
-  { name: 'RESEARCH' },
-  { name: 'BIOINFORMATICS' },
+const skillCategories = [
+  { title: 'PROGRAMMING', items: ['Python', 'C++'] },
+  { title: 'LIBRARIES', items: ['NumPy', 'pandas', 'matplotlib', 'scikit-learn', 'Biopython'] },
+  { title: 'TOOLS', items: ['Git/GitHub', 'Jupyter Notebook', 'Ubuntu', 'Claude Code', 'Clawbot'] },
+  { title: 'LANGUAGES', items: ['English (Fluent, C1)', 'Turkish (Native)'] },
+  { title: 'CREATIVE SKILLS', items: ['Adobe Photoshop', 'Adobe Premiere Pro', 'Digital Illustration', 'Painting', 'Drawing'] },
+  { title: 'INTERESTS', items: ['Bioinformatics', 'AI in Medicine', 'Chess', 'Archery', 'Jiu-Jitsu', 'Fitness', 'Tattoo Design'] },
 ];
 ---
 
@@ -83,9 +113,21 @@ const skills = [
       <div class="binary-float binary-3 text-xs font-mono hidden md:block">
         111000111000<br>000111000111<br>111000111000
       </div>
+      <div class="binary-float binary-4 text-xs font-mono hidden md:block">
+        110011001100<br>001100110011<br>110011001100
+      </div>
+      <div class="binary-float binary-5 text-xs font-mono hidden md:block">
+        100110100110<br>011001011001<br>100110100110
+      </div>
+      <div class="binary-float binary-6 text-xs font-mono hidden md:block">
+        010101010101<br>101010101010<br>010101010101
+      </div>
+      <div class="binary-float binary-7 text-xs font-mono hidden md:block">
+        111100001111<br>000011110000<br>111100001111
+      </div>
       
       <div class="max-w-5xl mx-auto text-center relative z-10">
-        <h1 class="kinetic-text text-6xl md:text-8xl lg:text-[10rem] font-black -mt-4 leading-none">
+        <h1 class="kinetic-text text-7xl md:text-9xl lg:text-[13rem] font-black -mt-4 leading-none">
           EMİR<br/>
           <span class="text-white" style="text-shadow: 4px 4px 0 #000;">CEYLAN</span>
         </h1>
@@ -118,24 +160,22 @@ const skills = [
 
     <!-- Awards Bar -->
     <section class="bg-black text-white py-3 border-y-4 border-black overflow-hidden">
-      <div class="max-w-7xl mx-auto px-4">
-        <div class="marquee-container">
-          <div class="marquee-content">
-            <span class="font-bold text-lg mx-12">★ Medical AI Specialist</span>
-            <span class="font-bold text-lg mx-12">★ Data Scientist</span>
-            <span class="font-bold text-lg mx-12">★ Machine Learning Researcher</span>
-            <span class="font-bold text-lg mx-12">★ Sabancı University TA</span>
-            <span class="font-bold text-lg mx-12">★ Team Leader</span>
-            <span class="font-bold text-lg mx-12">★ XAI Enthusiast</span>
-            <span class="font-bold text-lg mx-12">★ Artist</span>
-            <span class="font-bold text-lg mx-12">★ Medical AI Specialist</span>
-            <span class="font-bold text-lg mx-12">★ Data Scientist</span>
-            <span class="font-bold text-lg mx-12">★ Machine Learning Researcher</span>
-            <span class="font-bold text-lg mx-12">★ Sabancı University TA</span>
-            <span class="font-bold text-lg mx-12">★ Team Leader</span>
-            <span class="font-bold text-lg mx-12">★ XAI Enthusiast</span>
-            <span class="font-bold text-lg mx-12">★ Artist</span>
-          </div>
+      <div class="marquee-container">
+        <div class="marquee-content">
+          <span class="font-bold text-lg mx-12">  ★ Medical AI Specialist</span>
+          <span class="font-bold text-lg mx-12">  ★ Data Scientist</span>
+          <span class="font-bold text-lg mx-12">  ★ Machine Learning Researcher</span>
+          <span class="font-bold text-lg mx-12">  ★ Sabancı University TA</span>
+          <span class="font-bold text-lg mx-12">  ★ Team Leader</span>
+          <span class="font-bold text-lg mx-12">  ★ XAI Enthusiast</span>
+          <span class="font-bold text-lg mx-12 text-[#f40c3f]"> ★ Artist</span>
+          <span class="font-bold text-lg mx-12">  ★ Medical AI Specialist</span>
+          <span class="font-bold text-lg mx-12">  ★ Data Scientist</span>
+          <span class="font-bold text-lg mx-12">  ★ Machine Learning Researcher</span>
+          <span class="font-bold text-lg mx-12">  ★ Sabancı University TA</span>
+          <span class="font-bold text-lg mx-12">  ★ Team Leader</span>
+          <span class="font-bold text-lg mx-12">  ★ XAI Enthusiast</span>
+          <span class="font-bold text-lg mx-12 text-[#f40c3f]"> ★ Artist</span>
         </div>
       </div>
     </section>
@@ -172,12 +212,12 @@ const skills = [
             WORK
           </h2>
           <div class="flex-1 h-4 bg-black"></div>
-          <span class="text-3xl font-black">/04</span>
+          <span class="text-3xl font-black">/07</span>
         </div>
-        
+
         <div class="grid md:grid-cols-2 gap-6">
           {works.map((work) => (
-            <div 
+            <div
               class="work-card relative border-4 border-black p-6 cursor-pointer transition-all duration-300 hover:bg-black hover:text-white group"
               data-work-id={work.id}
               data-is-wip={work.isWip ? 'true' : 'false'}
@@ -186,16 +226,22 @@ const skills = [
               <span class="work-title text-xl font-black mb-1 block">{work.title}</span>
               <p class="font-bold mb-2 text-sm">{work.subtitle}</p>
               <p class="text-sm opacity-70">{work.description}</p>
-              
+
               <!-- Hidden details for popup -->
               <div class="work-details hidden">
-                <div class="red-headline bg-[#f40c3f] text-white px-4 py-2 -mx-6 -mt-6 mb-4">
-                  <span class="font-black text-lg">{work.title}</span>
-                </div>
                 <div class="work-content text-sm" set:html={work.details} />
               </div>
             </div>
           ))}
+
+          <!-- Permanent WIP placeholder for grid symmetry -->
+          <div class="relative border-4 border-black border-dashed p-6 flex items-center justify-center select-none opacity-60">
+            <div class="text-center">
+              <p class="text-xs font-mono font-bold mb-2">COMING SOON</p>
+              <span class="text-xl font-black mb-1 block">WORK IN PROGRESS</span>
+              <p class="text-sm opacity-70">Something new is being built...</p>
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -208,13 +254,23 @@ const skills = [
             SKILLS
           </h2>
           <div class="flex-1 h-4 bg-black"></div>
-          <span class="text-3xl font-black">/03</span>
+          <span class="text-3xl font-black">/06</span>
         </div>
-        
-        <div class="grid md:grid-cols-2 gap-4 max-w-4xl">
-          {skills.map((skill) => (
-            <div class="bg-white border-4 border-black p-4 hover:translate-x-2 transition-transform">
-              <span class="font-black text-lg">{skill.name}</span>
+
+        <div class="flex flex-col gap-0 max-w-2xl">
+          {skillCategories.map((category) => (
+            <div class="skill-box skill-accordion border-4 border-black -mb-[4px] cursor-pointer">
+              <div class="skill-header px-5 py-4 flex justify-between items-center hover:bg-black hover:text-white transition-colors duration-200">
+                <span class="font-black text-lg">{category.title}</span>
+                <span class="skill-arrow font-black text-2xl leading-none">+</span>
+              </div>
+              <div class="skill-body">
+                <div class="flex flex-col">
+                  {category.items.map((item) => (
+                    <span class="px-5 py-2 border-t-2 border-black text-sm font-bold bg-white text-black">{item}</span>
+                  ))}
+                </div>
+              </div>
             </div>
           ))}
         </div>
@@ -230,7 +286,7 @@ const skills = [
     <div class="popup-content relative z-[101] w-full max-w-2xl bg-white border-4 border-black max-h-[70vh] overflow-y-auto">
       <div class="red-headline bg-[#f40c3f] text-white px-6 py-4 flex justify-between items-center">
         <span id="popup-title" class="font-black text-xl"></span>
-        <button id="popup-close" class="text-white text-2xl font-bold hover:scale-110 transition-transform">×</button>
+        <button id="popup-close" class="text-white text-2xl font-bold hover:opacity-70 transition-opacity">×</button>
       </div>
       <div id="popup-body" class="p-6 text-sm leading-relaxed">
       </div>
@@ -250,8 +306,8 @@ const skills = [
   }
   
   @keyframes marquee {
-    0% { transform: translateX(100vw); }
-    100% { transform: translateX(-100%); }
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
   }
 
   /* Binary float animation */
@@ -261,15 +317,22 @@ const skills = [
     opacity: 0;
   }
   
-  .binary-1 { top: 15%; left: 3%; animation-delay: 0s; }
+  .binary-1 { top: 15%; left: 3%;  animation-delay: 0s; }
   .binary-2 { top: 50%; right: 3%; animation-delay: 3s; }
   .binary-3 { bottom: 25%; left: 10%; animation-delay: 6s; }
-  .binary-4 { top: 70%; left: 8%; animation-delay: 1s; }
+  .binary-4 { top: 70%; left: 8%;  animation-delay: 1s; }
   .binary-5 { top: 30%; right: 8%; animation-delay: 4s; }
+  .binary-6 { top: 20%; right: 18%; animation-delay: 2s; }
+  .binary-7 { bottom: 15%; right: 12%; animation-delay: 5s; }
   
   @keyframes binaryFade {
     0%, 100% { opacity: 0; transform: translateY(20px); }
     15%, 85% { opacity: 0.25; transform: translateY(0); }
+  }
+
+  /* Work card base */
+  .work-card {
+    overflow: hidden;
   }
 
   /* Work card hover */
@@ -330,10 +393,6 @@ const skills = [
     animation: popupSlide 0.4s ease-out;
   }
   
-  #work-popup.active .popup-content {
-    animation: popupSlide 0.4s ease-out;
-  }
-  
   @keyframes popupSlide {
     from {
       transform: translateY(-50px);
@@ -345,26 +404,24 @@ const skills = [
     }
   }
 
-  /* Droplet animation on close */
-  .droplet {
-    position: absolute;
-    width: 10px;
-    height: 10px;
-    background: #f40c3f;
-    border-radius: 50% 50% 50% 0;
-    transform: rotate(-45deg);
-    animation: droplet 0.6s ease-out forwards;
+  /* Skill accordion */
+  .skill-body {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s cubic-bezier(0.16, 1, 0.3, 1);
   }
-  
-  @keyframes droplet {
-    0% {
-      opacity: 1;
-      transform: rotate(-45deg) translateY(0);
-    }
-    100% {
-      opacity: 0;
-      transform: rotate(-45deg) translateY(100px);
-    }
+
+  .skill-accordion.open .skill-body {
+    max-height: 400px;
+  }
+
+  .skill-arrow {
+    transition: transform 0.3s ease;
+    display: inline-block;
+  }
+
+  .skill-accordion.open .skill-arrow {
+    transform: rotate(45deg);
   }
 
   /* Work content styling */
@@ -432,7 +489,7 @@ const skills = [
       card.addEventListener('click', () => {
         const title = card.querySelector('.work-title').textContent;
         const content = details.innerHTML;
-        
+
         popupTitle.textContent = title;
         popupBody.innerHTML = content;
         popup.classList.add('active');
@@ -442,38 +499,92 @@ const skills = [
     }
   });
   
-  // Close popup
-  function closePopup() {
-    popup.classList.remove('active');
-    popup.style.display = 'none';
-    document.body.style.overflow = '';
-    
-    // Create droplet animation
-    const popupContent = document.querySelector('.popup-content');
-    for (let i = 0; i < 20; i++) {
-      const droplet = document.createElement('div');
-      droplet.className = 'droplet';
-      droplet.style.left = Math.random() * 100 + '%';
-      droplet.style.top = '0';
-      droplet.style.animationDelay = Math.random() * 0.3 + 's';
-      popupContent.appendChild(droplet);
-      
-      setTimeout(() => droplet.remove(), 1000);
+  // Red bubble splatter on close
+  function createSplatter(originX, originY) {
+    const count = 14;
+    for (let i = 0; i < count; i++) {
+      const blob = document.createElement('div');
+      const angle = (i / count) * Math.PI * 2 + (Math.random() - 0.5) * 0.8;
+      const distance = 70 + Math.random() * 130;
+      const size = 7 + Math.random() * 16;
+      blob.style.cssText = `
+        position: fixed;
+        width: ${size}px;
+        height: ${size}px;
+        background: #f40c3f;
+        border-radius: 50%;
+        left: ${originX}px;
+        top: ${originY}px;
+        pointer-events: none;
+        z-index: 9999;
+        transform: translate(-50%, -50%);
+      `;
+      document.body.appendChild(blob);
+      const tx = Math.cos(angle) * distance;
+      const ty = Math.sin(angle) * distance;
+      if (typeof gsap !== 'undefined') {
+        gsap.to(blob, {
+          x: tx, y: ty,
+          opacity: 0,
+          scale: 0.1,
+          duration: 0.45 + Math.random() * 0.3,
+          ease: 'power3.out',
+          onComplete: () => blob.remove(),
+        });
+      } else {
+        setTimeout(() => blob.remove(), 600);
+      }
     }
   }
-  
+
+  // Close popup
+  function closePopup() {
+    const rect = popupClose.getBoundingClientRect();
+    const cx = rect.left + rect.width / 2;
+    const cy = rect.top + rect.height / 2;
+    createSplatter(cx, cy);
+
+    const popupContent = document.querySelector('.popup-content');
+    if (typeof gsap !== 'undefined' && popupContent) {
+      gsap.killTweensOf(popupContent);
+      gsap.to(popupContent, {
+        rotation: 30,
+        y: 80,
+        opacity: 0,
+        duration: 0.38,
+        ease: 'power2.in',
+        transformOrigin: 'center top',
+        onComplete: () => {
+          popup.classList.remove('active');
+          popup.style.display = 'none';
+          document.body.style.overflow = '';
+          gsap.set(popupContent, { rotation: 0, y: 0, opacity: 1 });
+        },
+      });
+    } else {
+      popup.classList.remove('active');
+      popup.style.display = 'none';
+      document.body.style.overflow = '';
+    }
+  }
+
   popupClose.addEventListener('click', closePopup);
   popupOverlay.addEventListener('click', closePopup);
 
-  // Grid fisheye effect
-  const gridBg = document.querySelector('.grid-bg');
-  document.addEventListener('mousemove', (e) => {
-    const x = e.clientX / window.innerWidth;
-    const y = e.clientY / window.innerHeight;
-    
-    if (gridBg) {
-      gridBg.style.transform = `perspective(500px) rotateX(${(y - 0.5) * 10}deg) rotateY(${(x - 0.5) * 10}deg)`;
-      gridBg.style.transformOrigin = `${x * 100}% ${y * 100}%`;
-    }
+  // Skill accordion toggle
+  document.querySelectorAll('.skill-accordion').forEach((accordion) => {
+    accordion.addEventListener('click', () => {
+      accordion.classList.toggle('open');
+    });
+  });
+
+  // Binary teleport: reposition to random location on each animation cycle
+  document.querySelectorAll('.binary-float').forEach((el) => {
+    el.addEventListener('animationiteration', () => {
+      el.style.top = (Math.random() * 80 + 5) + '%';
+      el.style.left = (Math.random() * 85 + 5) + '%';
+      el.style.right = 'auto';
+      el.style.bottom = 'auto';
+    });
   });
 </script>

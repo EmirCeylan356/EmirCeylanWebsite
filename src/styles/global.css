@@ -17,13 +17,13 @@
 
 html {
   scroll-behavior: smooth;
+  overflow-x: clip;
 }
 
 body {
   font-family: 'Inter', sans-serif;
   background-color: var(--color-bg);
   color: var(--color-text);
-  overflow-x: hidden;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -69,6 +69,13 @@ h1, h2, h3, h4, h5, h6 {
   box-shadow: 20px 20px 0px #000;
 }
 
+/* LinkedIn link global style (used in dynamically injected popup content) */
+.work-content a.linkedin-link {
+  color: #0077b5;
+  text-decoration: underline;
+  font-weight: bold;
+}
+
 /* Contrast toggle styles */
 .contrast-mode {
   --color-bg: #000000;
@@ -83,6 +90,17 @@ h1, h2, h3, h4, h5, h6 {
 
 .contrast-mode .project-card:hover {
   box-shadow: 20px 20px 0px #00ff00;
+}
+
+/* Keep work cards and skill boxes black in contrast mode */
+.contrast-mode .work-card:not(:hover) {
+  color: black !important;
+  border-color: black !important;
+}
+
+.contrast-mode .skill-box {
+  color: black !important;
+  border-color: black !important;
 }
 
 /* Smooth reveal */
