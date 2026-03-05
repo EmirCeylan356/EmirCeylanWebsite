@@ -58,11 +58,8 @@ const paintings = [
               <img 
                 src={painting.src} 
                 alt={painting.title}
-                class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110 grayscale group-hover:grayscale-0"
+                class="w-full h-full object-cover transition-transform duration-300 cursor-zoom-in active:scale-150"
               />
-              <div class="absolute inset-0 bg-[#f40c3f] opacity-0 group-hover:opacity-80 transition-opacity duration-300 flex items-center justify-center">
-                <p class="text-white font-black text-xl kinetic-text">{painting.title}</p>
-              </div>
             </div>
           ))}
         </div>
