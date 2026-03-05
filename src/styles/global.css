@@ -100,7 +100,18 @@ h1, h2, h3, h4, h5, h6 {
 
 .contrast-mode .skill-box {
   color: black !important;
-  border-color: black !important;
+  border-color: #00ff00 !important;
+  background-color: #000 !important;
+}
+
+.contrast-mode .skill-box .skill-header {
+  color: #00ff00 !important;
+}
+
+.contrast-mode .skill-box .skill-body span {
+  background-color: #000 !important;
+  color: #00ff00 !important;
+  border-color: #00ff00 !important;
 }
 
 /* Smooth reveal */
