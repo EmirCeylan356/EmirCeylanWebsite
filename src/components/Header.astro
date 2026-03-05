@@ -1,17 +1,21 @@
 ---
 const navItems = [
-  { name: 'ABOUT', href: '#about' },
-  { name: 'EXPERIENCE', href: '#experience' },
-  { name: 'WORK', href: '#projects' },
-  { name: 'SKILLS', href: '/skills' },
+  { name: 'MAIN', href: '/' },
+  { name: 'HOBBIES', href: '/hobbies' },
 ];
 ---
 
 <header class="fixed top-0 left-0 right-0 z-50 bg-[#f40c3f] border-b-4 border-black">
   <nav class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
-    <a href="/" class="text-2xl font-black tracking-tighter hover:scale-110 transition-transform">
-      EC<span class="text-white">_</span>
-    </a>
+    <div class="flex items-center gap-6">
+      <a href="/" class="text-2xl font-black tracking-tighter hover:scale-110 transition-transform">
+        EC<span class="text-white">_</span>
+      </a>
+    </div>
+    
+    <div class="flex-1 flex justify-center">
+      <span class="hidden md:block text-sm font-bold">CREATIVE DEVELOPER — TURKEY</span>
+    </div>
     
     <div class="flex items-center gap-4">
       <ul class="flex items-center gap-1">

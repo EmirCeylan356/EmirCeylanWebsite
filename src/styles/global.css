@@ -31,12 +31,14 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: 700;
 }
 
-/* Grid Background */
+/* Grid Background with Fisheye */
 .grid-bg {
   background-image: 
-    linear-gradient(rgba(0,0,0,0.1) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0,0,0,0.1) 1px, transparent 1px);
+    linear-gradient(rgba(0,0,0,0.15) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,0,0,0.15) 1px, transparent 1px);
   background-size: 50px 50px;
+  transform-style: preserve-3d;
+  transition: transform 0.1s ease-out;
 }
 
 /* Binary decoration */

@@ -47,6 +47,7 @@ const { title } = Astro.props;
       let contrastMode = false;
       const toggle = document.getElementById('contrast-toggle');
       const body = document.body;
+      const header = document.querySelector('header');
       
       if (toggle) {
         toggle.addEventListener('click', () => {
@@ -55,10 +56,12 @@ const { title } = Astro.props;
             body.classList.add('contrast-mode');
             body.style.backgroundColor = '#000';
             body.style.color = '#00ff00';
+            if (header) header.style.backgroundColor = '#000';
           } else {
             body.classList.remove('contrast-mode');
             body.style.backgroundColor = '#f40c3f';
             body.style.color = '#000';
+            if (header) header.style.backgroundColor = '#f40c3f';
           }
         });
       }

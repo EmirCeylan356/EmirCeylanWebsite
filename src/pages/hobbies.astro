@@ -1,0 +1,80 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+
+const activities = [
+  { title: 'ERASMUS+ EXCHANGE', description: 'Studied at University of Groningen, Netherlands — Cultural exchange and academic immersion.' },
+  { title: 'TEKNOFEST COMPETITION', description: 'Team lead for Medical AI competition — developing multimodal diagnostic tools.' },
+  { title: 'STUDENT COUNCIL', description: 'Active member representing students in university activities.' },
+  { title: 'MENTORING', description: 'Peer mentoring for incoming CS students.' },
+];
+
+const paintings = [
+  { title: 'PAINTING 01', src: '/images/painting-1.jpg' },
+  { title: 'PAINTING 02', src: '/images/painting-2.jpg' },
+  { title: 'PAINTING 03', src: '/images/painting-3.jpg' },
+  { title: 'PAINTING 04', src: '/images/painting-4.jpg' },
+];
+---
+
+<Layout title="HOBBIES — Emir Ceylan">
+  <Header />
+  
+  <main>
+    <!-- Activities Section -->
+    <section class="py-16 px-4">
+      <div class="max-w-7xl mx-auto">
+        <div class="flex items-end gap-4 mb-12">
+          <h2 class="text-5xl md:text-7xl font-black kinetic-text">
+            ACTIVITIES
+          </h2>
+          <div class="flex-1 h-4 bg-black"></div>
+          <span class="text-3xl font-black">/02</span>
+        </div>
+        
+        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-20">
+          {activities.map((activity, index) => (
+            <div class="group relative overflow-hidden border-4 border-black bg-black">
+              <img 
+                src={`/images/activity-${index + 1}.jpg`} 
+                alt={activity.title}
+                class="w-full h-48 object-cover transition-transform duration-500 group-hover:scale-110 grayscale group-hover:grayscale-0"
+              />
+              <div class="absolute inset-0 bg-black/70 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-center items-center p-4 text-center">
+                <p class="text-white font-black text-sm kinetic-text">{activity.title}</p>
+                <p class="text-gray-300 text-xs mt-2">{activity.description}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <!-- Paintings Section -->
+        <div class="flex items-end gap-4 mb-12">
+          <h2 class="text-5xl md:text-7xl font-black kinetic-text">
+            PAINTINGS
+          </h2>
+          <div class="flex-1 h-4 bg-black"></div>
+          <span class="text-3xl font-black">/04</span>
+        </div>
+        
+        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {paintings.map((painting, index) => (
+            <div class="group relative overflow-hidden border-4 border-black aspect-square bg-black">
+              <img 
+                src={painting.src} 
+                alt={painting.title}
+                class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110 grayscale group-hover:grayscale-0"
+              />
+              <div class="absolute inset-0 bg-[#f40c3f] opacity-0 group-hover:opacity-80 transition-opacity duration-300 flex items-center justify-center">
+                <p class="text-white font-black text-xl kinetic-text">{painting.title}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</Layout>
