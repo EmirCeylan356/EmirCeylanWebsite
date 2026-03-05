@@ -3,6 +3,13 @@ import Layout from '../layouts/Layout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 
+const activities = [
+  { title: 'ERASMUS+ EXCHANGE', description: 'Studied at University of Groningen, Netherlands — Cultural exchange and academic immersion.' },
+  { title: 'TEKNOFEST COMPETITION', description: 'Team lead for Medical AI competition — developing multimodal diagnostic tools.' },
+  { title: 'STUDENT COUNCIL', description: 'Active member representing students in university activities.' },
+  { title: 'MENTORING', description: 'Peer mentoring for incoming CS students.' },
+];
+
 const paintings = [
   { title: 'PAINTING 01', src: '/images/file_8---39151805-7313-4bb7-b8c8-1365aef884a3.jpg' },
   { title: 'PAINTING 02', src: '/images/file_9---c5cd81b7-8140-4595-8297-af32f0e2edba.jpg' },
@@ -23,9 +30,9 @@ const paintings = [
 <Layout title="HOBBIES — Emir Ceylan">
   <Header />
   
-  <main class="flex-1">
+  <main>
     <!-- Activities Section -->
-    <section class="pb-16 px-4" style="padding-top: 120px;">
+    <section class="py-16 px-4">
       <div class="max-w-7xl mx-auto">
         <div class="flex items-end gap-4 mb-12">
           <h2 class="text-5xl md:text-7xl font-black kinetic-text">
@@ -34,13 +41,21 @@ const paintings = [
           <div class="flex-1 h-4 bg-black"></div>
           <span class="text-3xl font-black">/02</span>
         </div>
-
-        <div class="mb-20">
-          <div class="bg-white border-4 border-black p-8 min-h-[200px]">
-            <p class="text-base leading-relaxed text-black">
-              <!-- Paragraph content will be added here -->
-            </p>
-          </div>
+        
+        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-20">
+          {activities.map((activity, index) => (
+            <div class="group relative overflow-hidden border-4 border-black bg-black">
+              <img 
+                src={`/images/activity-${index + 1}.jpg`} 
+                alt={activity.title}
+                class="w-full h-48 object-cover transition-transform duration-500 group-hover:scale-110 grayscale group-hover:grayscale-0"
+              />
+              <div class="absolute inset-0 bg-black/70 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-center items-center p-4 text-center">
+                <p class="text-white font-black text-sm kinetic-text">{activity.title}</p>
+                <p class="text-gray-300 text-xs mt-2">{activity.description}</p>
+              </div>
+            </div>
+          ))}
         </div>
 
         <!-- Paintings Section -->
@@ -53,12 +68,12 @@ const paintings = [
         </div>
         
         <div class="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
-          {paintings.map((painting) => (
-            <div class="group relative overflow-hidden border-4 border-black aspect-square bg-black">
+          {paintings.map((painting, index) => (
+            <div class="group relative overflow-hidden border-4 border-black aspect-square bg-black cursor-pointer painting-card" data-index={index}>
               <img 
                 src={painting.src} 
                 alt={painting.title}
-                class="w-full h-full object-cover transition-transform duration-300 cursor-zoom-in active:scale-150"
+                class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
               />
             </div>
           ))}
@@ -68,4 +83,65 @@ const paintings = [
   </main>
 
   <Footer />
+
+  <!-- Painting Popup -->
+  <div id="painting-popup" class="fixed inset-0 z-[100] hidden">
+    <div class="popup-overlay absolute inset-0 bg-black/95"></div>
+    <button id="popup-close" class="absolute top-4 right-4 text-white text-4xl font-bold z-[101] hover:scale-110 transition-transform">×</button>
+    <div class="popup-content relative z-[101] flex items-center justify-center h-full p-4">
+      <img id="popup-image" src="" alt="" class="max-h-[90vh] max-w-[90vw] object-contain" />
+    </div>
+  </div>
 </Layout>
+
+<style>
+  #painting-popup {
+    display: none;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  #painting-popup.active {
+    display: flex;
+  }
+</style>
+
+<script>
+  const paintings = [
+    { src: '/images/file_8---39151805-7313-4bb7-b8c8-1365aef884a3.jpg', title: 'PAINTING 01' },
+    { src: '/images/file_9---c5cd81b7-8140-4595-8297-af32f0e2edba.jpg', title: 'PAINTING 02' },
+    { src: '/images/file_10---714a56fd-d4fb-4316-8629-c6f06a4db7a8.jpg', title: 'PAINTING 03' },
+    { src: '/images/file_11---e6cf7245-cda7-4ca8-884c-55c891575493.jpg', title: 'PAINTING 04' },
+    { src: '/images/file_12---09cd522a-d5e5-433a-ac0f-d9c0c710c79a.jpg', title: 'PAINTING 05' },
+    { src: '/images/file_13---f94eea51-a229-4b42-bcf4-f489c8824e9b.jpg', title: 'PAINTING 06' },
+    { src: '/images/file_14---d6d37114-4da7-4cdf-896d-5b361bf9ac99.jpg', title: 'PAINTING 07' },
+    { src: '/images/file_15---cfdd2a00-8c9e-4367-8b88-c149ce15db2a.jpg', title: 'PAINTING 08' },
+    { src: '/images/file_16---a29e17b8-1972-4c3d-af3c-e4f65981a95f.jpg', title: 'PAINTING 09' },
+    { src: '/images/file_17---f463b1dd-1139-4fad-81a9-b4b5bddd0ef0.jpg', title: 'PAINTING 10' },
+    { src: '/images/file_19---7fd47930-b43e-4e33-a1d0-ce5384175a40.jpg', title: 'PAINTING 11' },
+    { src: '/images/file_20---4fa92226-8c06-4344-836a-2745c8ec1072.jpg', title: 'PAINTING 12' },
+    { src: '/images/file_21---7f73c515-6959-4117-bc6b-a178b7e1f1fa.jpg', title: 'PAINTING 13' },
+  ];
+
+  const popup = document.getElementById('painting-popup');
+  const popupImage = document.getElementById('popup-image');
+  const popupClose = document.getElementById('popup-close');
+  const popupOverlay = document.querySelector('.popup-overlay');
+  const paintingCards = document.querySelectorAll('.painting-card');
+
+  paintingCards.forEach((card, index) => {
+    card.addEventListener('click', () => {
+      popupImage.src = paintings[index].src;
+      popup.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    });
+  });
+
+  function closePopup() {
+    popup.classList.remove('active');
+    document.body.style.overflow = '';
+  }
+
+  popupClose.addEventListener('click', closePopup);
+  popupOverlay.addEventListener('click', closePopup);
+</script>
