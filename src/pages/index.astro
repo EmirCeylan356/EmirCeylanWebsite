@@ -316,7 +316,7 @@ const skills = [
   
   .marquee-content {
     display: inline-block;
-    animation: marquee 20s linear infinite;
+    animation: marquee 15s linear forwards;
   }
   
   @keyframes marquee {
@@ -327,17 +327,18 @@ const skills = [
   /* Binary float animation - reduced opacity */
   .binary-float {
     position: absolute;
-    animation: binaryFade 8s ease-in-out infinite;
+    animation: binaryFade 4s ease-in-out forwards;
     opacity: 0;
   }
   
   .binary-1 { top: 15%; left: 3%; animation-delay: 0s; }
-  .binary-2 { top: 50%; right: 3%; animation-delay: 3s; }
-  .binary-3 { bottom: 25%; left: 10%; animation-delay: 6s; }
+  .binary-2 { top: 50%; right: 3%; animation-delay: 1.5s; }
+  .binary-3 { bottom: 25%; left: 10%; animation-delay: 3s; }
   
   @keyframes binaryFade {
-    0%, 100% { opacity: 0; transform: translateY(20px); }
-    15%, 85% { opacity: 0.1; transform: translateY(0); }
+    0% { opacity: 0; transform: translateY(20px); }
+    15%, 70% { opacity: 0.08; transform: translateY(0); }
+    100% { opacity: 0; transform: translateY(-20px); }
   }
 
   /* Work card hover */
