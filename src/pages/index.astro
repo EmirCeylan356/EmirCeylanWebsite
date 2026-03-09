@@ -204,6 +204,16 @@ const skills = [
               data-work-id={work.id}
               data-is-wip={work.isWip ? 'true' : 'false'}
             >
+              <!-- Hover image reveal -->
+              <div class="work-image absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 overflow-hidden -z-10">
+                <div class="absolute inset-0 bg-gradient-to-br from-[#f40c3f] to-black"></div>
+                <div class="absolute inset-0 flex items-center justify-center">
+                  <div class="text-white/20 text-9xl font-black transform rotate-12" style="font-family: 'JetBrains Mono', monospace;">
+                    {work.title.substring(0, 2)}
+                  </div>
+                </div>
+              </div>
+              
               <p class="text-xs font-mono font-bold mb-2">{work.period}</p>
               <span class="work-title text-xl font-black mb-1 block">{work.title}</span>
               <p class="font-bold mb-2 text-sm">{work.subtitle}</p>
@@ -317,6 +327,10 @@ const skills = [
   }
 
   /* Work card hover */
+  .work-card {
+    overflow: hidden;
+  }
+  
   .work-card::after {
     content: '';
     position: absolute;
