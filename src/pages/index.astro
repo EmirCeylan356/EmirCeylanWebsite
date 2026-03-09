@@ -504,9 +504,9 @@ const skills = [
       }
     }
     
-    // Create particles
+    // Create particles - reduced count for subtler effect
     const particles = [];
-    const particleCount = Math.floor((width * height) / 15000);
+    const particleCount = Math.floor((width * height) / 40000); // Half as many
     
     for (let i = 0; i < particleCount; i++) {
       particles.push(new Particle());
@@ -523,8 +523,8 @@ const skills = [
     
     // Animation loop
     function animate() {
-      // Clear with fade effect
-      ctx.fillStyle = 'rgba(244, 12, 63, 0.05)';
+      // Clear with fade effect - very subtle
+      ctx.fillStyle = 'rgba(244, 12, 63, 0.02)';
       ctx.fillRect(0, 0, width, height);
       
       // Update and draw particles
@@ -547,7 +547,7 @@ const skills = [
       
       // Draw connections (neural network effect)
       ctx.strokeStyle = '#000000';
-      ctx.globalAlpha = 0.1;
+      ctx.globalAlpha = 0.05; // Much subtler
       
       for (let i = 0; i < particles.length; i++) {
         for (let j = i + 1; j < particles.length; j++) {
@@ -555,8 +555,8 @@ const skills = [
           const dy = particles[i].y - particles[j].y;
           const dist = Math.sqrt(dx * dx + dy * dy);
           
-          if (dist < 120) {
-            ctx.lineWidth = 1 - (dist / 120);
+          if (dist < 80) { // Shorter connection distance
+            ctx.lineWidth = 0.5;
             ctx.beginPath();
             ctx.moveTo(particles[i].x, particles[i].y);
             ctx.lineTo(particles[j].x, particles[j].y);
@@ -565,9 +565,9 @@ const skills = [
         }
       }
       
-      // Draw DNA helix effect (vertical connections)
+      // Draw DNA helix effect (vertical connections) - very subtle
       ctx.strokeStyle = '#f40c3f';
-      ctx.globalAlpha = 0.05;
+      ctx.globalAlpha = 0.02;
       
       for (let x = 0; x < width; x += 80) {
         ctx.beginPath();
