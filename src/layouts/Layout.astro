@@ -19,36 +19,6 @@ const { title } = Astro.props;
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700;900&family=JetBrains+Mono:wght@400;500;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@400;500;600;800&display=swap" rel="stylesheet">
-    <script>
-      // Lenis smooth scroll
-      const style = document.createElement('style');
-      style.textContent = `
-        html.lenis { height: auto; }
-        .lenis.lenis-smooth { scroll-behavior: auto !important; }
-        .lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
-        .lenis.lenis-stopped { overflow: hidden; }
-        .lenis.lenis-scrolling iframe { pointer-events: none; }
-      `;
-      document.head.appendChild(style);
-      
-      (function() {
-        const requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || function(fn) { return window.setTimeout(fn, 16); };
-        window.Lenis = function Lenis() {
-          var t = this;
-          t.running = false, t.raf = null, t.delta = 0, t.target = 0, t.y = 0;
-          t.docHeight = function() { return Math.max(document.body.scrollHeight, document.documentElement.scrollHeight); };
-          t.destroy = function() { t.running = false, cancelAnimationFrame(t.raf); };
-          t.start = function() { t.running = true, t.raf = requestAnimationFrame(t.animate); };
-          t.animate = function(e) {
-            t.target += (window.scrollY - t.target) * .1, t.y += (t.target - t.y) * .1, window.scrollTo(0, Math.round(t.y));
-            t.raf = requestAnimationFrame(t.animate);
-            if (Math.abs(window.scrollY - t.target) < 1 && Math.abs(t.y - t.target) < 1) { t.target = window.scrollY; window.scrollTo(0, t.target); }
-          };
-        };
-        new Lenis().start();
-        document.documentElement.classList.add('lenis');
-      })();
-    </script>
   </head>
   <body class="bg-[#f40c3f] text-black min-h-screen">
     <div class="fixed inset-0 grid-bg pointer-events-none z-0"></div>
