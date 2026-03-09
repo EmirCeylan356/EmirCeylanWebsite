@@ -54,14 +54,38 @@ const works = [
 ];
 
 const skills = [
-  { name: 'PYTHON' },
-  { name: 'MACHINE LEARNING' },
-  { name: 'DEEP LEARNING' },
-  { name: 'DATA SCIENCE' },
-  { name: 'DATA STRUCTURES' },
-  { name: 'ALGORITHMS' },
-  { name: 'RESEARCH' },
-  { name: 'BIOINFORMATICS' },
+  { 
+    name: 'PYTHON', 
+    description: 'Primary language for AI/ML development. Experienced with NumPy, Pandas, Scikit-learn, TensorFlow, and PyTorch.' 
+  },
+  { 
+    name: 'MACHINE LEARNING', 
+    description: 'Supervised and unsupervised learning, neural networks, reinforcement learning, and model optimization.' 
+  },
+  { 
+    name: 'DEEP LEARNING', 
+    description: 'CNNs, RNNs, Transformers, GANs, and applications in medical imaging and NLP.' 
+  },
+  { 
+    name: 'DATA SCIENCE', 
+    description: 'Statistical analysis, data visualization, exploratory data analysis, and insights extraction.' 
+  },
+  { 
+    name: 'DATA STRUCTURES', 
+    description: 'Arrays, linked lists, trees, graphs, heaps, and efficient algorithm design.' 
+  },
+  { 
+    name: 'ALGORITHMS', 
+    description: 'Sorting, searching, dynamic programming, greedy algorithms, and complexity analysis.' 
+  },
+  { 
+    name: 'RESEARCH', 
+    description: 'Academic writing, literature review, methodology design, and scientific methodology.' 
+  },
+  { 
+    name: 'BIOINFORMATICS', 
+    description: 'Applying computational methods to biological data, protein structure analysis, and genomic data processing.' 
+  },
 ];
 ---
 
@@ -215,9 +239,13 @@ const skills = [
         </div>
         
         <div class="grid md:grid-cols-2 gap-4 max-w-4xl">
-          {skills.map((skill) => (
-            <div class="bg-white border-4 border-black p-4 hover:translate-x-2 transition-transform">
-              <span class="font-black text-lg">{skill.name}</span>
+          {skills.map((skill, index) => (
+            <div 
+              class="skill-card bg-white border-4 border-black p-4 hover:translate-x-2 transition-transform cursor-pointer group"
+              data-skill-index={index}
+            >
+              <span class="font-black text-lg group-hover:text-[#f40c3f] transition-colors">{skill.name}</span>
+              <span class="float-right text-xl opacity-0 group-hover:opacity-100 transition-opacity">+</span>
             </div>
           ))}
         </div>
@@ -236,6 +264,19 @@ const skills = [
         <button id="popup-close" class="text-white text-2xl font-bold hover:scale-110 transition-transform">×</button>
       </div>
       <div id="popup-body" class="p-6 text-sm leading-relaxed">
+      </div>
+    </div>
+  </div>
+
+  <!-- Skill Popup -->
+  <div id="skill-popup" class="fixed inset-0 z-100 flex items-start justify-center p-20">
+    <div class="popup-overlay absolute inset-0 bg-black/80"></div>
+    <div class="popup-content relative z-[101] w-full max-w-xl bg-white border-4 border-black">
+      <div class="bg-[#f40c3f] text-white px-6 py-4 flex justify-between items-center">
+        <span id="skill-popup-title" class="font-black text-xl"></span>
+        <button id="skill-popup-close" class="text-white text-2xl font-bold hover:scale-110 transition-transform">×</button>
+      </div>
+      <div id="skill-popup-body" class="p-6 text-sm leading-relaxed">
       </div>
     </div>
   </div>
@@ -341,7 +382,21 @@ const skills = [
     display: flex;
   }
   
-  #work-popup.active .popup-content {
+  #skill-popup {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    align-items: flex-start;
+    justify-content: center;
+    padding-top: 80px;
+  }
+  
+  #skill-popup.active {
+    display: flex;
+  }
+  
+  #skill-popup.active .popup-content {
     animation: popupSlide 0.4s ease-out;
   }
   
@@ -397,6 +452,52 @@ const skills = [
 </style>
 
 <script is:inline>
+  // Skills data
+  const skillsData = [
+    { name: 'PYTHON', description: 'Primary language for AI/ML development. Experienced with NumPy, Pandas, Scikit-learn, TensorFlow, and PyTorch.' },
+    { name: 'MACHINE LEARNING', description: 'Supervised and unsupervised learning, neural networks, reinforcement learning, and model optimization.' },
+    { name: 'DEEP LEARNING', description: 'CNNs, RNNs, Transformers, GANs, and applications in medical imaging and NLP.' },
+    { name: 'DATA SCIENCE', description: 'Statistical analysis, data visualization, exploratory data analysis, and insights extraction.' },
+    { name: 'DATA STRUCTURES', description: 'Arrays, linked lists, trees, graphs, heaps, and efficient algorithm design.' },
+    { name: 'ALGORITHMS', description: 'Sorting, searching, dynamic programming, greedy algorithms, and complexity analysis.' },
+    { name: 'RESEARCH', description: 'Academic writing, literature review, methodology design, and scientific methodology.' },
+    { name: 'BIOINFORMATICS', description: 'Applying computational methods to biological data, protein structure analysis, and genomic data processing.' },
+  ];
+
+  // Skill popup handlers
+  const skillCards = document.querySelectorAll('.skill-card');
+  const skillPopup = document.getElementById('skill-popup');
+  const skillPopupTitle = document.getElementById('skill-popup-title');
+  const skillPopupBody = document.getElementById('skill-popup-body');
+  const skillPopupClose = document.getElementById('skill-popup-close');
+  const skillPopupOverlay = document.querySelector('#skill-popup .popup-overlay');
+  
+  skillCards.forEach(function(card) {
+    card.addEventListener('click', function() {
+      const index = parseInt(card.getAttribute('data-skill-index'));
+      const skill = skillsData[index];
+      
+      if (skillPopupTitle) skillPopupTitle.textContent = skill.name;
+      if (skillPopupBody) skillPopupBody.textContent = skill.description;
+      if (skillPopup) {
+        skillPopup.classList.add('active');
+        skillPopup.style.display = 'flex';
+      }
+      document.body.style.overflow = 'hidden';
+    });
+  });
+
+  function closeSkillPopup() {
+    if (skillPopup) {
+      skillPopup.classList.remove('active');
+      skillPopup.style.display = 'none';
+    }
+    document.body.style.overflow = '';
+  }
+  
+  if (skillPopupClose) skillPopupClose.addEventListener('click', closeSkillPopup);
+  if (skillPopupOverlay) skillPopupOverlay.addEventListener('click', closeSkillPopup);
+
   // Work card expand handlers
   const workCards = document.querySelectorAll('.work-card');
   const popup = document.getElementById('work-popup');
