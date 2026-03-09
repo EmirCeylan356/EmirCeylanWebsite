@@ -203,42 +203,52 @@ const skills = [
           <span class="text-3xl font-black">/02</span>
         </div>
         
-        <div class="grid md:grid-cols-2 gap-6">
-          {works.map((work) => (
-            <div 
-              class="work-card relative border-4 border-black p-6 cursor-pointer transition-all duration-300 hover:bg-black hover:text-white group"
-              data-work-id={work.id}
-              data-is-wip={work.isWip ? 'true' : 'false'}
-            >
-              <!-- Hover image reveal -->
-              <div class="work-image absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 overflow-hidden -z-10">
-                <div class="absolute inset-0 bg-gradient-to-br from-[#f40c3f] to-black"></div>
-                <div class="absolute inset-0 flex items-center justify-center">
-                  <div class="text-white/20 text-9xl font-black transform rotate-12" style="font-family: 'JetBrains Mono', monospace;">
-                    {work.title.substring(0, 2)}
+        <!-- Timeline -->
+        <div class="relative">
+          <!-- Timeline line -->
+          <div class="absolute left-0 md:left-1/2 top-0 bottom-0 w-0.5 bg-black hidden md:block"></div>
+          
+          <div class="space-y-8">
+            {works.map((work, index) => (
+              <div 
+                class="work-card relative border-4 border-black p-6 transition-all duration-300 hover:shadow-[8px_8px_0px_#000] bg-white"
+                data-work-id={work.id}
+                data-is-wip={work.isWip ? 'true' : 'false'}
+              >
+                <!-- Timeline dot (desktop) -->
+                <div class="absolute left-[-9px] top-1/2 w-4 h-4 bg-black rounded-full hidden md:block -translate-y-1/2"></div>
+                
+                <!-- Hover image reveal -->
+                <div class="work-image absolute inset-0 opacity-0 hover:opacity-100 transition-opacity duration-300 overflow-hidden -z-10 pointer-events-none">
+                  <div class="absolute inset-0 bg-gradient-to-br from-[#f40c3f] to-black"></div>
+                  <div class="absolute inset-0 flex items-center justify-center">
+                    <div class="text-white/20 text-9xl font-black transform rotate-12" style="font-family: 'JetBrains Mono', monospace;">
+                      {work.title.substring(0, 2)}
+                    </div>
                   </div>
                 </div>
-              </div>
-              
-              <p class="text-xs font-mono font-bold mb-2">{work.period}</p>
-              <span class="work-title text-xl font-black mb-1 block">{work.title}</span>
-              <p class="font-bold mb-2 text-sm">{work.subtitle}</p>
-              <p class="text-sm opacity-70">{work.description}</p>
-              
-              <button class="expand-btn mt-3 text-xs font-bold border-2 border-current px-3 py-1 inline-flex items-center gap-1 group-hover:bg-white group-hover:text-black">
-                <span>READ MORE</span>
-                <span class="expand-icon">+</span>
-              </button>
-              
-              <!-- Hidden details for popup -->
-              <div class="work-details hidden">
-                <div class="red-headline bg-[#f40c3f] text-white px-4 py-2 -mx-6 -mt-6 mb-4">
-                  <span class="font-black text-lg">{work.title}</span>
+                
+                <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
+                  <div class="flex-1">
+                    <p class="text-xs font-mono font-bold mb-2 text-[#f40c3f]">{work.period}</p>
+                    <span class="work-title text-xl font-black mb-1 block">{work.title}</span>
+                    <p class="font-bold mb-2 text-sm">{work.subtitle}</p>
+                    <p class="text-sm opacity-70 leading-relaxed">{work.description}</p>
+                  </div>
+                  
+                  <button class="expand-btn mt-3 md:mt-0 text-xs font-bold border-2 border-black px-4 py-2 inline-flex items-center gap-2 hover:bg-black hover:text-white transition-all self-start shrink-0">
+                    <span>READ MORE</span>
+                    <span class="expand-icon text-lg">+</span>
+                  </button>
                 </div>
-                <div class="work-content text-sm" set:html={work.details} />
+              
+                <!-- Hidden details (accordion style - slides down) -->
+                <div class="work-details hidden mt-6 pt-6 border-t-2 border-black/20">
+                  <div class="work-content text-sm leading-relaxed max-w-[65ch]" set:html={work.details} />
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </div>
     </section>
@@ -332,7 +342,7 @@ const skills = [
 
   /* Work card hover */
   .work-card {
-    overflow: hidden;
+    overflow: visible;
   }
   
   .work-card::after {
@@ -630,13 +640,8 @@ const skills = [
   if (skillPopupClose) skillPopupClose.addEventListener('click', closeSkillPopup);
   if (skillPopupOverlay) skillPopupOverlay.addEventListener('click', closeSkillPopup);
 
-  // Work card expand handlers
+  // Work card expand handlers (accordion style)
   const workCards = document.querySelectorAll('.work-card');
-  const popup = document.getElementById('work-popup');
-  const popupTitle = document.getElementById('popup-title');
-  const popupBody = document.getElementById('popup-body');
-  const popupClose = document.getElementById('popup-close');
-  const popupOverlay = document.querySelector('.popup-overlay');
   
   workCards.forEach(function(card) {
     const isWip = card.getAttribute('data-is-wip') === 'true';
@@ -670,51 +675,33 @@ const skills = [
           card.classList.remove('wip-hover');
         }, 3000);
       });
-    } else if (expandBtn) {
-      // Expand button - show in popup
+    } else if (expandBtn && details) {
+      // Expand button - show inline accordion
       expandBtn.addEventListener('click', function(e) {
         e.stopPropagation();
-        const titleEl = card.querySelector('.work-title');
-        const title = titleEl ? titleEl.textContent : '';
-        const content = details ? details.innerHTML : '';
         
-        if (popupTitle) popupTitle.textContent = title;
-        if (popupBody) popupBody.innerHTML = content;
-        if (popup) {
-          popup.classList.add('active');
-          popup.style.display = 'flex';
+        const isExpanded = details.classList.contains('expanded');
+        
+        // Close all other cards first (accordion behavior)
+        document.querySelectorAll('.work-details.expanded').forEach(function(d) {
+          d.classList.remove('expanded');
+          d.classList.add('hidden');
+        });
+        
+        if (isExpanded) {
+          details.classList.remove('expanded');
+          details.classList.add('hidden');
+          if (expandIcon) expandIcon.textContent = '+';
+          expandBtn.querySelector('span').textContent = 'READ MORE';
+        } else {
+          details.classList.remove('hidden');
+          details.classList.add('expanded');
+          if (expandIcon) expandIcon.textContent = '−';
+          expandBtn.querySelector('span').textContent = 'READ LESS';
         }
-        document.body.style.overflow = 'hidden';
       });
     }
   });
-  
-  // Close popup
-  function closePopup() {
-    if (popup) {
-      popup.classList.remove('active');
-      popup.style.display = 'none';
-    }
-    document.body.style.overflow = '';
-    
-    // Create droplet animation
-    const popupContent = document.querySelector('#work-popup .popup-content');
-    if (popupContent) {
-      for (let i = 0; i < 20; i++) {
-        const droplet = document.createElement('div');
-        droplet.className = 'droplet';
-        droplet.style.left = Math.random() * 100 + '%';
-        droplet.style.top = '0';
-        droplet.style.animationDelay = Math.random() * 0.3 + 's';
-        popupContent.appendChild(droplet);
-        
-        setTimeout(function() { droplet.remove(); }, 1000);
-      }
-    }
-  }
-  
-  if (popupClose) popupClose.addEventListener('click', closePopup);
-  if (popupOverlay) popupOverlay.addEventListener('click', closePopup);
 
   // Grid fisheye effect
   const gridBg = document.querySelector('.grid-bg');
