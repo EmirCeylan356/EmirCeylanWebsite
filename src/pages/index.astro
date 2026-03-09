@@ -90,6 +90,9 @@ const skills = [
 ---
 
 <Layout title="EMIR CEYLAN — Creative Developer">
+  <!-- WebGL Background -->
+  <canvas id="webgl-bg" class="fixed inset-0 w-full h-full -z-10"></canvas>
+  
   <Header />
   
   <main>
@@ -318,8 +321,6 @@ const skills = [
   .binary-1 { top: 15%; left: 3%; animation-delay: 0s; }
   .binary-2 { top: 50%; right: 3%; animation-delay: 3s; }
   .binary-3 { bottom: 25%; left: 10%; animation-delay: 6s; }
-  .binary-4 { top: 70%; left: 8%; animation-delay: 1s; }
-  .binary-5 { top: 30%; right: 8%; animation-delay: 4s; }
   
   @keyframes binaryFade {
     0%, 100% { opacity: 0; transform: translateY(20px); }
@@ -340,10 +341,6 @@ const skills = [
     font-weight: bold;
     opacity: 0;
     transition: opacity 0.3s;
-  }
-  
-  .work-card:hover::after {
-    opacity: 0;
   }
 
   .expand-btn {
@@ -382,7 +379,7 @@ const skills = [
   }
 
   /* Popup styles */
-  #work-popup {
+  #work-popup, #skill-popup {
     display: none;
     position: fixed;
     inset: 0;
@@ -392,25 +389,11 @@ const skills = [
     padding-top: 80px;
   }
   
-  #work-popup.active {
+  #work-popup.active, #skill-popup.active {
     display: flex;
   }
   
-  #skill-popup {
-    display: none;
-    position: fixed;
-    inset: 0;
-    z-index: 100;
-    align-items: flex-start;
-    justify-content: center;
-    padding-top: 80px;
-  }
-  
-  #skill-popup.active {
-    display: flex;
-  }
-  
-  #skill-popup.active .popup-content {
+  #work-popup.active .popup-content, #skill-popup.active .popup-content {
     animation: popupSlide 0.4s ease-out;
   }
   
@@ -466,6 +449,138 @@ const skills = [
 </style>
 
 <script is:inline>
+  // Three.js Neural Network Background
+  (function() {
+    const canvas = document.getElementById('webgl-bg');
+    if (!canvas) return;
+    
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+    
+    let width = window.innerWidth;
+    let height = window.innerHeight;
+    canvas.width = width;
+    canvas.height = height;
+    
+    // Particle class
+    class Particle {
+      constructor() {
+        this.x = Math.random() * width;
+        this.y = Math.random() * height;
+        this.vx = (Math.random() - 0.5) * 0.5;
+        this.vy = (Math.random() - 0.5) * 0.5;
+        this.radius = Math.random() * 2 + 1;
+        this.color = Math.random() > 0.5 ? '#f40c3f' : '#000000';
+      }
+      
+      update() {
+        this.x += this.vx;
+        this.y += this.vy;
+        
+        if (this.x < 0 || this.x > width) this.vx *= -1;
+        if (this.y < 0 || this.y > height) this.vy *= -1;
+      }
+      
+      draw() {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+        ctx.fillStyle = this.color;
+        ctx.globalAlpha = 0.6;
+        ctx.fill();
+      }
+    }
+    
+    // Create particles
+    const particles = [];
+    const particleCount = Math.floor((width * height) / 15000);
+    
+    for (let i = 0; i < particleCount; i++) {
+      particles.push(new Particle());
+    }
+    
+    // Mouse interaction
+    let mouseX = width / 2;
+    let mouseY = height / 2;
+    
+    document.addEventListener('mousemove', function(e) {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+    });
+    
+    // Animation loop
+    function animate() {
+      // Clear with fade effect
+      ctx.fillStyle = 'rgba(244, 12, 63, 0.05)';
+      ctx.fillRect(0, 0, width, height);
+      
+      // Update and draw particles
+      particles.forEach(function(p) {
+        p.update();
+        
+        // Mouse interaction - particles move away from mouse
+        const dx = mouseX - p.x;
+        const dy = mouseY - p.y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        
+        if (dist < 150) {
+          const force = (150 - dist) / 150;
+          p.x -= (dx / dist) * force * 2;
+          p.y -= (dy / dist) * force * 2;
+        }
+        
+        p.draw();
+      });
+      
+      // Draw connections (neural network effect)
+      ctx.strokeStyle = '#000000';
+      ctx.globalAlpha = 0.1;
+      
+      for (let i = 0; i < particles.length; i++) {
+        for (let j = i + 1; j < particles.length; j++) {
+          const dx = particles[i].x - particles[j].x;
+          const dy = particles[i].y - particles[j].y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          
+          if (dist < 120) {
+            ctx.lineWidth = 1 - (dist / 120);
+            ctx.beginPath();
+            ctx.moveTo(particles[i].x, particles[i].y);
+            ctx.lineTo(particles[j].x, particles[j].y);
+            ctx.stroke();
+          }
+        }
+      }
+      
+      // Draw DNA helix effect (vertical connections)
+      ctx.strokeStyle = '#f40c3f';
+      ctx.globalAlpha = 0.05;
+      
+      for (let x = 0; x < width; x += 80) {
+        ctx.beginPath();
+        ctx.moveTo(x, 0);
+        
+        for (let y = 0; y < height; y += 20) {
+          const offset = Math.sin(y * 0.02 + Date.now() * 0.001) * 20;
+          ctx.lineTo(x + offset, y);
+        }
+        
+        ctx.stroke();
+      }
+      
+      requestAnimationFrame(animate);
+    }
+    
+    animate();
+    
+    // Resize handler
+    window.addEventListener('resize', function() {
+      width = window.innerWidth;
+      height = window.innerHeight;
+      canvas.width = width;
+      canvas.height = height;
+    });
+  })();
+
   // Skills data
   const skillsData = [
     { name: 'PYTHON', description: 'Primary language for AI/ML development. Experienced with NumPy, Pandas, Scikit-learn, TensorFlow, and PyTorch.' },
@@ -580,7 +695,7 @@ const skills = [
     document.body.style.overflow = '';
     
     // Create droplet animation
-    const popupContent = document.querySelector('.popup-content');
+    const popupContent = document.querySelector('#work-popup .popup-content');
     if (popupContent) {
       for (let i = 0; i < 20; i++) {
         const droplet = document.createElement('div');
