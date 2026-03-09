@@ -185,6 +185,11 @@ const skills = [
               <p class="font-bold mb-2 text-sm">{work.subtitle}</p>
               <p class="text-sm opacity-70">{work.description}</p>
               
+              <button class="expand-btn mt-3 text-xs font-bold border-2 border-current px-3 py-1 inline-flex items-center gap-1 group-hover:bg-white group-hover:text-black">
+                <span>READ MORE</span>
+                <span class="expand-icon">+</span>
+              </button>
+              
               <!-- Hidden details for popup -->
               <div class="work-details hidden">
                 <div class="red-headline bg-[#f40c3f] text-white px-4 py-2 -mx-6 -mt-6 mb-4">
@@ -272,7 +277,7 @@ const skills = [
 
   /* Work card hover */
   .work-card::after {
-    content: 'Click for details →';
+    content: '';
     position: absolute;
     bottom: 1rem;
     right: 1rem;
@@ -283,7 +288,19 @@ const skills = [
   }
   
   .work-card:hover::after {
-    opacity: 1;
+    opacity: 0;
+  }
+
+  .expand-btn {
+    transition: transform 0.3s;
+  }
+  
+  .expand-icon {
+    transition: transform 0.3s;
+  }
+  
+  .expand-btn:hover .expand-icon {
+    transform: rotate(45deg);
   }
 
   /* WIP work card */
@@ -380,7 +397,7 @@ const skills = [
 </style>
 
 <script is:inline>
-  // Work card click handlers
+  // Work card expand handlers
   const workCards = document.querySelectorAll('.work-card');
   const popup = document.getElementById('work-popup');
   const popupTitle = document.getElementById('popup-title');
@@ -391,6 +408,8 @@ const skills = [
   workCards.forEach(function(card) {
     const isWip = card.getAttribute('data-is-wip') === 'true';
     const details = card.querySelector('.work-details');
+    const expandBtn = card.querySelector('.expand-btn');
+    const expandIcon = card.querySelector('.expand-icon');
     
     if (isWip) {
       // WIP - hover and click behavior
@@ -418,9 +437,10 @@ const skills = [
           card.classList.remove('wip-hover');
         }, 3000);
       });
-    } else {
-      // Normal - show popup
-      card.addEventListener('click', function() {
+    } else if (expandBtn) {
+      // Expand button - show in popup
+      expandBtn.addEventListener('click', function(e) {
+        e.stopPropagation();
         const titleEl = card.querySelector('.work-title');
         const title = titleEl ? titleEl.textContent : '';
         const content = details ? details.innerHTML : '';
