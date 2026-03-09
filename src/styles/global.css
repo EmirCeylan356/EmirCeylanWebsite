@@ -41,6 +41,12 @@ h1, h2, h3, h4, h5, h6 {
   font-family: 'JetBrains Mono', monospace;
 }
 
+/* Artistic headings - for contrast */
+.artistic-heading {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+}
+
 /* Grid Background with Fisheye */
 .grid-bg {
   background-image: 

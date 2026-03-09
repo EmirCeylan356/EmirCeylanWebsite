@@ -98,14 +98,14 @@ const skills = [
   <main>
     <!-- Hero Section -->
     <section class="min-h-screen flex items-center justify-center px-4 pt-20 pb-10 relative overflow-hidden">
-      <!-- Floating binary decoration -->
-      <div class="binary-float binary-1 text-xs font-mono hidden md:block" aria-hidden="true">
+      <!-- Floating binary decoration - subtle background -->
+      <div class="binary-float binary-1 text-xs font-mono hidden md:block" aria-hidden="true" style="opacity: 0.05; pointer-events: none;">
         101010101010<br>010101010101<br>101010101010
       </div>
-      <div class="binary-float binary-2 text-xs font-mono hidden md:block" aria-hidden="true">
+      <div class="binary-float binary-2 text-xs font-mono hidden md:block" aria-hidden="true" style="opacity: 0.05; pointer-events: none;">
         010101010101<br>101010101010<br>010101010101
       </div>
-      <div class="binary-float binary-3 text-xs font-mono hidden md:block" aria-hidden="true">
+      <div class="binary-float binary-3 text-xs font-mono hidden md:block" aria-hidden="true" style="opacity: 0.05; pointer-events: none;">
         111000111000<br>000111000111<br>111000111000
       </div>
       
@@ -166,26 +166,29 @@ const skills = [
     </section>
 
     <!-- About Section -->
-    <section id="about" class="py-16 px-4">
-      <div class="max-w-4xl mx-auto text-left">
+    <section id="about" class="py-16 px-4 relative">
+      <!-- Dark readable container -->
+      <div class="max-w-4xl mx-auto">
         <div class="mb-8">
           <h2 class="text-5xl md:text-7xl font-black kinetic-text">
             ABOUT <span class="text-3xl">/01</span>
           </h2>
         </div>
         
-        <p class="text-xl md:text-2xl font-bold leading-tight mb-6 text-left">
-          Computer Science student at <span class="bg-[#f40c3f] text-white px-2">Sabancı University</span> passionate about AI applications in healthcare. Building the future of medical AI.
-        </p>
-        <p class="text-lg mt-6 opacity-80 max-w-2xl text-left">
-          Driven by the potential of AI to bridge gaps in modern medicine, I focus on developing intelligent systems that are as ethical as they are efficient. My work at Sabancı University centers on collaborating with professors and fellow students to build projects that connect deep CS knowledge with complex medical hurdles to find practical, scalable solutions.
-        </p>
-        <p class="text-lg mt-4 opacity-80 max-w-2xl text-left">
-          Outside of the lab, I balance the logic of neural networks with painting, a creative outlet that allows me to view technical challenges through a more expressive, lateral-thinking lens.
-        </p>
-        <p class="text-lg font-bold mt-6 text-left">
-          Expected Graduation: 2027
-        </p>
+        <div class="bg-black/80 backdrop-blur-sm p-8 border-l-4 border-[#f40c3f]">
+          <p class="text-xl md:text-2xl font-bold leading-tight mb-6 text-left text-white">
+            Computer Science student at <span class="bg-[#f40c3f] text-white px-2">Sabancı University</span> passionate about AI applications in healthcare. Building the future of medical AI.
+          </p>
+          <p class="text-lg mt-6 opacity-90 max-w-[65ch] text-left leading-relaxed text-gray-200">
+            Driven by the potential of AI to bridge gaps in modern medicine, I focus on developing intelligent systems that are as ethical as they are efficient. My work at Sabancı University centers on collaborating with professors and fellow students to build projects that connect deep CS knowledge with complex medical hurdles to find practical, scalable solutions.
+          </p>
+          <p class="text-lg mt-4 opacity-90 max-w-[65ch] text-left leading-relaxed text-gray-200">
+            Outside of the lab, I balance the logic of neural networks with painting, a creative outlet that allows me to view technical challenges through a more expressive, lateral-thinking lens.
+          </p>
+          <p class="text-lg font-bold mt-6 text-left text-white">
+            Expected Graduation: 2027
+          </p>
+        </div>
       </div>
     </section>
 
