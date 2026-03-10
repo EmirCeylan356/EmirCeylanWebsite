@@ -7,18 +7,6 @@ const works = [
   {
     id: 1,
     period: '2026 — PRESENT',
-    title: 'PROJECT LEAD',
-    subtitle: 'Teknofest Medical AI',
-    description: 'Leading multidisciplinary team to develop multimodal diagnostic tools.',
-    details: `<p>As the Project Lead for <strong>DeepMyelinAI</strong>, I head a multidisciplinary team developing an explainable AI-based clinical decision support system for <strong>Multiple Sclerosis (MS)</strong>.</p>
-<p>I oversee the integration of multimodal data—including CSF biomarkers, genetic risk profiles, and longitudinal clinical disability scores—into a unified machine learning framework designed for early diagnosis and disability progression prediction.</p>
-<p>My role involves managing the full development lifecycle: from engineering <strong>Temporal Transformer</strong> architectures for longitudinal tracking to implementing <strong>XAI layers (SHAP/LIME)</strong> to ensure clinical transparency.</p>
-<p>By aligning our system with the <strong>2024 McDonald Criteria</strong>, I ensure our technical solutions meet rigorous medical standards, ultimately aiming to provide neurologists with actionable, data-driven insights.</p>`,
-    link: '',
-  },
-  {
-    id: 2,
-    period: '2026 — PRESENT',
     title: 'TEACHING ASSISTANT',
     subtitle: 'DSA 210: Data Science',
     description: 'Assisting Prof. Oznur Tastan and Ozgun Yargi. Mentoring students in ML.',
@@ -28,7 +16,7 @@ const works = [
     link: '',
   },
   {
-    id: 3,
+    id: 2,
     period: '2025 — 2026 Fall',
     title: 'UNDERGRADUATE RESEARCHER',
     subtitle: 'PURE - Sabancı University',
@@ -38,6 +26,18 @@ const works = [
 <p>By utilizing literature mining and network analysis, I identified key knowledge gaps and emerging trends necessary for developing trustworthy and clinically deployable AI systems.</p>
 <p><a href="https://www.linkedin.com/posts/emir-ceylan-student-482775332_pure-undergraduateresearch-ai-ugcPost-7433604110798544896-2cDY" target="_blank" class="linkedin-link">The LinkedIn Post</a></p>`,
     link: 'https://www.linkedin.com/posts/emir-ceylan-student-482775332_pure-undergraduateresearch-ai-ugcPost-7433604110798544896-2cDY',
+  },
+  {
+    id: 3,
+    period: '2026 — PRESENT',
+    title: 'PROJECT LEAD',
+    subtitle: 'Teknofest Medical AI',
+    description: 'Leading multidisciplinary team to develop multimodal diagnostic tools.',
+    details: `<p>As the Project Lead for <strong>DeepMyelinAI</strong>, I head a multidisciplinary team developing an explainable AI-based clinical decision support system for <strong>Multiple Sclerosis (MS)</strong>.</p>
+<p>I oversee the integration of multimodal data—including CSF biomarkers, genetic risk profiles, and longitudinal clinical disability scores—into a unified machine learning framework designed for early diagnosis and disability progression prediction.</p>
+<p>My role involves managing the full development lifecycle: from engineering <strong>Temporal Transformer</strong> architectures for longitudinal tracking to implementing <strong>XAI layers (SHAP/LIME)</strong> to ensure clinical transparency.</p>
+<p>By aligning our system with the <strong>2024 McDonald Criteria</strong>, I ensure our technical solutions meet rigorous medical standards, ultimately aiming to provide neurologists with actionable, data-driven insights.</p>`,
+    link: '',
   },
   {
     id: 4,
@@ -51,89 +51,106 @@ const works = [
     link: '',
     isWip: true,
   },
+  {
+    id: 5,
+    period: '2024 — 2025',
+    title: 'ML DEVELOPER',
+    subtitle: 'Osteogenesis Imperfecta (OI) Pathogenicity Prediction',
+    description: 'ENS 210: Bioinformatics Project. Surpassing SIFT and general-purpose diagnostic tools.',
+    details: `<p>In this project, I developed a high-precision machine learning model to predict the pathogenicity of variants in the <strong>COL1A1</strong> and <strong>COL1A2</strong> genes, which are primary causes of Osteogenesis Imperfecta (OI) — a rare genetic disorder affecting bone fragility.</p>
+<p>Using a curated dataset from ClinVar, I engineered biologically meaningful features and trained multiple classifiers, ultimately achieving performance that surpassed established tools such as <strong>SIFT</strong> and general-purpose diagnostic predictors.</p>
+<p>The pipeline included variant filtering, feature selection, cross-validation, and interpretability analysis — resulting in a reproducible and clinically relevant bioinformatics workflow.</p>
+<p><a href="https://github.com/Riwex/ENS210_Project" target="_blank" class="linkedin-link">View on GitHub →</a></p>`,
+    link: 'https://github.com/Riwex/ENS210_Project',
+  },
+  {
+    id: 6,
+    period: '2024 — 2025',
+    title: 'RESEARCH CONTRIBUTOR',
+    subtitle: 'AI-Engineered Enzymes for Polymer Digestion',
+    description: 'Molecular Biology Research. Optimizing PETase enzymes for sustainable plastic degradation.',
+    details: `<p>Under the supervision of <strong>İleyna Sevde Üvak</strong>, I contributed to a molecular biology research project focused on computationally optimizing <strong>PETase enzymes</strong> for efficient degradation of PET plastics.</p>
+<p>I applied computational biology techniques — including protein structure analysis and mutation screening — to identify candidate enzyme variants with improved thermostability and catalytic efficiency.</p>
+<p>This work sits at the intersection of synthetic biology and environmental sustainability, exploring how AI-driven enzyme engineering can accelerate the development of biological solutions to plastic pollution.</p>`,
+    link: '',
+  },
+  {
+    id: 7,
+    period: '2025 — PRESENT',
+    title: 'BOARD MEMBER & HEAD OF BIOTECH',
+    subtitle: 'Sabancı University Deep Technologies Club',
+    description: 'Leading the BioTech division and fostering a high-tech community through hands-on events.',
+    details: `<p>As a Board Member and the Head of the <strong>BioTech Division</strong> at Sabancı University's Deep Technologies Club, I lead initiatives that bridge cutting-edge biology with emerging technology.</p>
+<p>My role involves organizing workshops, seminars, and hands-on projects that expose students to topics like CRISPR, synthetic biology, computational genomics, and AI-driven drug discovery.</p>
+<p>I also coordinate interdisciplinary collaborations between CS, biology, and engineering students — cultivating a community of innovators passionate about the future of life sciences and deep tech.</p>`,
+    link: '',
+  },
 ];
 
-const skills = [
-  { 
-    name: 'PYTHON', 
-    description: 'Primary language for AI/ML development. Experienced with NumPy, Pandas, Scikit-learn, TensorFlow, and PyTorch.' 
-  },
-  { 
-    name: 'MACHINE LEARNING', 
-    description: 'Supervised and unsupervised learning, neural networks, reinforcement learning, and model optimization.' 
-  },
-  { 
-    name: 'DEEP LEARNING', 
-    description: 'CNNs, RNNs, Transformers, GANs, and applications in medical imaging and NLP.' 
-  },
-  { 
-    name: 'DATA SCIENCE', 
-    description: 'Statistical analysis, data visualization, exploratory data analysis, and insights extraction.' 
-  },
-  { 
-    name: 'DATA STRUCTURES', 
-    description: 'Arrays, linked lists, trees, graphs, heaps, and efficient algorithm design.' 
-  },
-  { 
-    name: 'ALGORITHMS', 
-    description: 'Sorting, searching, dynamic programming, greedy algorithms, and complexity analysis.' 
-  },
-  { 
-    name: 'RESEARCH', 
-    description: 'Academic writing, literature review, methodology design, and scientific methodology.' 
-  },
-  { 
-    name: 'BIOINFORMATICS', 
-    description: 'Applying computational methods to biological data, protein structure analysis, and genomic data processing.' 
-  },
+const skillCategories = [
+  { title: 'PROGRAMMING', items: ['Python', 'C++'] },
+  { title: 'LIBRARIES', items: ['NumPy', 'pandas', 'matplotlib', 'scikit-learn', 'Biopython'] },
+  { title: 'TOOLS', items: ['Git/GitHub', 'Jupyter Notebook', 'Ubuntu', 'Claude Code', 'Clawbot'] },
+  { title: 'LANGUAGES', items: ['English (Fluent, C1)', 'Turkish (Native)'] },
+  { title: 'CREATIVE SKILLS', items: ['Adobe Photoshop', 'Adobe Premiere Pro', 'Digital Illustration', 'Painting', 'Drawing'] },
+  { title: 'INTERESTS', items: ['Bioinformatics', 'AI in Medicine', 'Chess', 'Archery', 'Jiu-Jitsu', 'Fitness', 'Tattoo Design'] },
 ];
 ---
 
 <Layout title="EMIR CEYLAN — Creative Developer">
-  <!-- WebGL Background -->
-  <canvas id="webgl-bg" class="fixed inset-0 w-full h-full -z-10"></canvas>
-  
   <Header />
-  
+
   <main>
     <!-- Hero Section -->
     <section class="min-h-screen flex items-center justify-center px-4 pt-20 pb-10 relative overflow-hidden">
-      <!-- Floating binary decoration - subtle background -->
-      <div class="binary-float binary-1 text-xs font-mono hidden md:block" aria-hidden="true" style="opacity: 0.05; pointer-events: none;">
+      <!-- Floating binary decoration -->
+      <div class="binary-float binary-1 text-xs font-mono hidden md:block">
         101010101010<br>010101010101<br>101010101010
       </div>
-      <div class="binary-float binary-2 text-xs font-mono hidden md:block" aria-hidden="true" style="opacity: 0.05; pointer-events: none;">
+      <div class="binary-float binary-2 text-xs font-mono hidden md:block">
         010101010101<br>101010101010<br>010101010101
       </div>
-      <div class="binary-float binary-3 text-xs font-mono hidden md:block" aria-hidden="true" style="opacity: 0.05; pointer-events: none;">
+      <div class="binary-float binary-3 text-xs font-mono hidden md:block">
         111000111000<br>000111000111<br>111000111000
       </div>
-      
+      <div class="binary-float binary-4 text-xs font-mono hidden md:block">
+        110011001100<br>001100110011<br>110011001100
+      </div>
+      <div class="binary-float binary-5 text-xs font-mono hidden md:block">
+        100110100110<br>011001011001<br>100110100110
+      </div>
+      <div class="binary-float binary-6 text-xs font-mono hidden md:block">
+        010101010101<br>101010101010<br>010101010101
+      </div>
+      <div class="binary-float binary-7 text-xs font-mono hidden md:block">
+        111100001111<br>000011110000<br>111100001111
+      </div>
+
       <div class="max-w-5xl mx-auto text-center relative z-10">
-        <h1 class="kinetic-text text-6xl md:text-8xl lg:text-[10rem] font-black -mt-4 leading-none">
+        <h1 class="kinetic-text text-7xl md:text-9xl lg:text-[13rem] font-black -mt-4 leading-none">
           EMİR<br/>
           <span class="text-white" style="text-shadow: 4px 4px 0 #000;">CEYLAN</span>
         </h1>
-        
+
         <p class="text-lg md:text-xl font-bold max-w-2xl mx-auto mb-8 bg-black text-white inline-block px-4 py-2">
           CS STUDENT — AI FOR HEALTHCARE
         </p>
-        
+
         <div class="flex flex-wrap gap-4 justify-center">
-          <a 
-            href="#work" 
+          <a
+            href="#work"
             class="px-8 py-4 bg-black text-white font-bold text-lg border-4 border-black hover:bg-white hover:text-black transition-all hover:shadow-[8px_8px_0px_#000]"
           >
             MY WORK →
           </a>
-          <a 
-            href="#contact" 
+          <a
+            href="#contact"
             class="px-8 py-4 bg-white text-black font-bold text-lg border-4 border-black hover:bg-black hover:text-white transition-all"
           >
             CONTACT
           </a>
         </div>
-        
+
         <!-- Scroll indicator -->
         <div class="mt-16 animate-bounce">
           <span class="text-4xl">↓</span>
@@ -142,112 +159,88 @@ const skills = [
     </section>
 
     <!-- Awards Bar -->
-    <section class="bg-black text-white py-3 border-y-4 border-black overflow-hidden" aria-label="Roles and titles">
-      <div class="max-w-7xl mx-auto px-4">
-        <div class="marquee-container">
-          <div class="marquee-content" aria-hidden="true">
-            <span class="font-bold text-lg mx-12">★ Medical AI Specialist</span>
-            <span class="font-bold text-lg mx-12">★ Data Scientist</span>
-            <span class="font-bold text-lg mx-12">★ Machine Learning Researcher</span>
-            <span class="font-bold text-lg mx-12">★ Sabancı University TA</span>
-            <span class="font-bold text-lg mx-12">★ Team Leader</span>
-            <span class="font-bold text-lg mx-12">★ XAI Enthusiast</span>
-            <span class="font-bold text-lg mx-12">★ Artist</span>
-            <span class="font-bold text-lg mx-12">★ Medical AI Specialist</span>
-            <span class="font-bold text-lg mx-12">★ Data Scientist</span>
-            <span class="font-bold text-lg mx-12">★ Machine Learning Researcher</span>
-            <span class="font-bold text-lg mx-12">★ Sabancı University TA</span>
-            <span class="font-bold text-lg mx-12">★ Team Leader</span>
-            <span class="font-bold text-lg mx-12">★ XAI Enthusiast</span>
-            <span class="font-bold text-lg mx-12">★ Artist</span>
-          </div>
+    <section class="bg-black text-white py-3 border-y-4 border-black overflow-hidden">
+      <div class="marquee-container">
+        <div class="marquee-content">
+          <span class="font-bold text-lg mx-12">  ★ Medical AI Specialist</span>
+          <span class="font-bold text-lg mx-12">  ★ Data Scientist</span>
+          <span class="font-bold text-lg mx-12">  ★ Machine Learning Researcher</span>
+          <span class="font-bold text-lg mx-12">  ★ Sabancı University TA</span>
+          <span class="font-bold text-lg mx-12">  ★ Team Leader</span>
+          <span class="font-bold text-lg mx-12">  ★ XAI Enthusiast</span>
+          <span class="font-bold text-lg mx-12 text-[#f40c3f]"> ★ Artist</span>
+          <span class="font-bold text-lg mx-12">  ★ Medical AI Specialist</span>
+          <span class="font-bold text-lg mx-12">  ★ Data Scientist</span>
+          <span class="font-bold text-lg mx-12">  ★ Machine Learning Researcher</span>
+          <span class="font-bold text-lg mx-12">  ★ Sabancı University TA</span>
+          <span class="font-bold text-lg mx-12">  ★ Team Leader</span>
+          <span class="font-bold text-lg mx-12">  ★ XAI Enthusiast</span>
+          <span class="font-bold text-lg mx-12 text-[#f40c3f]"> ★ Artist</span>
         </div>
       </div>
     </section>
 
     <!-- About Section -->
-    <section id="about" class="py-16 px-4 relative">
-      <!-- Dark readable container -->
-      <div class="max-w-4xl mx-auto">
+    <section id="about" class="py-16 px-4">
+      <div class="max-w-4xl mx-auto text-left">
         <div class="mb-8">
           <h2 class="text-5xl md:text-7xl font-black kinetic-text">
             ABOUT <span class="text-3xl">/01</span>
           </h2>
         </div>
-        
-        <div class="bg-black/80 backdrop-blur-sm p-8 border-l-4 border-[#f40c3f]">
-          <p class="text-xl md:text-2xl font-bold leading-tight mb-6 text-left text-white">
-            Computer Science student at <span class="bg-[#f40c3f] text-white px-2">Sabancı University</span> passionate about AI applications in healthcare. Building the future of medical AI.
-          </p>
-          <p class="text-lg mt-6 opacity-90 max-w-[65ch] text-left leading-relaxed text-gray-200">
-            Driven by the potential of AI to bridge gaps in modern medicine, I focus on developing intelligent systems that are as ethical as they are efficient. My work at Sabancı University centers on collaborating with professors and fellow students to build projects that connect deep CS knowledge with complex medical hurdles to find practical, scalable solutions.
-          </p>
-          <p class="text-lg mt-4 opacity-90 max-w-[65ch] text-left leading-relaxed text-gray-200">
-            Outside of the lab, I balance the logic of neural networks with painting, a creative outlet that allows me to view technical challenges through a more expressive, lateral-thinking lens.
-          </p>
-          <p class="text-lg font-bold mt-6 text-left text-white">
-            Expected Graduation: 2027
-          </p>
-        </div>
+
+        <p class="text-xl md:text-2xl font-bold leading-tight mb-6 text-left">
+          Computer Science student at <span class="bg-[#f40c3f] text-white px-2">Sabancı University</span> passionate about AI applications in healthcare. Building the future of medical AI.
+        </p>
+        <p class="text-lg mt-6 leading-relaxed text-left">
+          Driven by the potential of AI to bridge gaps in modern medicine, I focus on developing intelligent systems that are as ethical as they are efficient. My work at Sabancı University centers on collaborating with professors and fellow students to build projects that connect deep CS knowledge with complex medical hurdles to find practical, scalable solutions.
+        </p>
+        <p class="text-lg mt-4 leading-relaxed text-left">
+          Outside of the lab, I balance the logic of neural networks with painting, a creative outlet that allows me to view technical challenges through a more expressive, lateral-thinking lens.
+        </p>
+        <p class="text-lg font-bold mt-6 text-left">
+          Expected Graduation: 2027
+        </p>
       </div>
     </section>
 
     <!-- Work Section -->
-    <section id="work" class="py-16 px-4 bg-white border-y-4 border-black">
+    <section id="work" class="py-16 px-4 border-y-4 border-black" style="background-color: #e8f5e9;">
       <div class="max-w-7xl mx-auto">
         <div class="flex items-end gap-4 mb-12">
           <h2 class="text-5xl md:text-7xl font-black kinetic-text">
             WORK
           </h2>
           <div class="flex-1 h-4 bg-black"></div>
-          <span class="text-3xl font-black">/02</span>
+          <span class="text-3xl font-black">/07</span>
         </div>
-        
-        <!-- Timeline -->
-        <div class="relative">
-          <!-- Timeline line -->
-          <div class="absolute left-0 md:left-1/2 top-0 bottom-0 w-0.5 bg-black hidden md:block"></div>
-          
-          <div class="space-y-8">
-            {works.map((work, index) => (
-              <div 
-                class="work-card relative border-4 border-black p-6 transition-all duration-300 hover:shadow-[8px_8px_0px_#000] bg-white"
-                data-work-id={work.id}
-                data-is-wip={work.isWip ? 'true' : 'false'}
-              >
-                <!-- Timeline dot (desktop) -->
-                <div class="absolute left-[-9px] top-1/2 w-4 h-4 bg-black rounded-full hidden md:block -translate-y-1/2"></div>
-                
-                <!-- Hover image reveal -->
-                <div class="work-image absolute inset-0 opacity-0 hover:opacity-100 transition-opacity duration-300 overflow-hidden -z-10 pointer-events-none">
-                  <div class="absolute inset-0 bg-gradient-to-br from-[#f40c3f] to-black"></div>
-                  <div class="absolute inset-0 flex items-center justify-center">
-                    <div class="text-white/20 text-9xl font-black transform rotate-12" style="font-family: 'JetBrains Mono', monospace;">
-                      {work.title.substring(0, 2)}
-                    </div>
-                  </div>
-                </div>
-                
-                <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
-                  <div class="flex-1">
-                    <p class="text-xs font-mono font-bold mb-2 text-[#f40c3f]">{work.period}</p>
-                    <span class="work-title text-xl font-black mb-1 block">{work.title}</span>
-                    <p class="font-bold mb-2 text-sm">{work.subtitle}</p>
-                    <p class="text-sm opacity-70 leading-relaxed">{work.description}</p>
-                  </div>
-                  
-                  <button class="expand-btn mt-3 md:mt-0 text-xs font-bold border-2 border-black px-4 py-2 inline-flex items-center gap-2 hover:bg-black hover:text-white transition-all self-start shrink-0">
-                    <span>READ MORE</span>
-                    <span class="expand-icon text-lg">+</span>
-                  </button>
-                </div>
-              
-                <!-- Hidden details (accordion style - slides down) -->
-                <div class="work-details hidden mt-6 pt-6 border-t-2 border-black/20">
-                  <div class="work-content text-sm leading-relaxed max-w-[65ch]" set:html={work.details} />
-                </div>
+
+        <div class="grid md:grid-cols-2 gap-6">
+          {works.map((work) => (
+            <div
+              class="work-card relative border-4 border-black p-6 cursor-pointer transition-all duration-300 hover:bg-black hover:text-white group"
+              data-work-id={work.id}
+              data-is-wip={work.isWip ? 'true' : 'false'}
+            >
+              <p class="text-xs font-mono font-bold mb-2">{work.period}</p>
+              <span class="work-title text-xl font-black mb-1 block">{work.title}</span>
+              <p class="font-bold mb-2 text-sm">{work.subtitle}</p>
+              <p class="text-sm opacity-70">{work.description}</p>
+
+              <!-- Hidden details for popup -->
+              <div class="work-details hidden">
+                <div class="work-content text-sm" set:html={work.details} />
               </div>
-            ))}
+            </div>
+          ))}
+
+          <!-- Permanent WIP placeholder for grid symmetry -->
+          <div class="relative border-4 border-black border-dashed p-6 flex items-center justify-center select-none opacity-60">
+            <div class="text-center">
+              <p class="text-xs font-mono font-bold mb-2">COMING SOON</p>
+              <span class="text-xl font-black mb-1 block">WORK IN PROGRESS</span>
+              <p class="text-sm opacity-70">Something new is being built...</p>
+            </div>
           </div>
         </div>
       </div>
@@ -261,17 +254,23 @@ const skills = [
             SKILLS
           </h2>
           <div class="flex-1 h-4 bg-black"></div>
-          <span class="text-3xl font-black">/03</span>
+          <span class="text-3xl font-black">/06</span>
         </div>
-        
-        <div class="grid md:grid-cols-2 gap-4 max-w-4xl">
-          {skills.map((skill, index) => (
-            <div 
-              class="skill-card bg-white border-4 border-black p-4 hover:translate-x-2 transition-transform cursor-pointer group"
-              data-skill-index={index}
-            >
-              <span class="font-black text-lg group-hover:text-[#f40c3f] transition-colors">{skill.name}</span>
-              <span class="float-right text-xl opacity-0 group-hover:opacity-100 transition-opacity">+</span>
+
+        <div class="flex flex-col gap-0 max-w-2xl">
+          {skillCategories.map((category) => (
+            <div class="skill-box skill-accordion border-4 border-black -mb-[4px] cursor-pointer">
+              <div class="skill-header px-5 py-4 flex justify-between items-center hover:bg-black hover:text-white transition-colors duration-200">
+                <span class="font-black text-lg">{category.title}</span>
+                <span class="skill-arrow font-black text-2xl leading-none">+</span>
+              </div>
+              <div class="skill-body">
+                <div class="flex flex-col">
+                  {category.items.map((item) => (
+                    <span class="px-5 py-2 border-t-2 border-black text-sm font-bold bg-white text-black">{item}</span>
+                  ))}
+                </div>
+              </div>
             </div>
           ))}
         </div>
@@ -282,27 +281,14 @@ const skills = [
   <Footer />
 
   <!-- Popup Modal -->
-  <div id="work-popup" class="fixed inset-0 z-100 flex items-start justify-center p-20">
+  <div id="work-popup" class="fixed inset-0 z-[100] flex items-start justify-center p-20">
     <div class="popup-overlay absolute inset-0 bg-black/80"></div>
     <div class="popup-content relative z-[101] w-full max-w-2xl bg-white border-4 border-black max-h-[70vh] overflow-y-auto">
       <div class="red-headline bg-[#f40c3f] text-white px-6 py-4 flex justify-between items-center">
         <span id="popup-title" class="font-black text-xl"></span>
-        <button id="popup-close" class="text-white text-2xl font-bold hover:scale-110 transition-transform">×</button>
+        <button id="popup-close" class="text-white text-2xl font-bold hover:opacity-70 transition-opacity">×</button>
       </div>
       <div id="popup-body" class="p-6 text-sm leading-relaxed">
-      </div>
-    </div>
-  </div>
-
-  <!-- Skill Popup -->
-  <div id="skill-popup" class="fixed inset-0 z-100 flex items-start justify-center p-20">
-    <div class="popup-overlay absolute inset-0 bg-black/80"></div>
-    <div class="popup-content relative z-[101] w-full max-w-xl bg-white border-4 border-black">
-      <div class="bg-[#f40c3f] text-white px-6 py-4 flex justify-between items-center">
-        <span id="skill-popup-title" class="font-black text-xl"></span>
-        <button id="skill-popup-close" class="text-white text-2xl font-bold hover:scale-110 transition-transform">×</button>
-      </div>
-      <div id="skill-popup-body" class="p-6 text-sm leading-relaxed">
       </div>
     </div>
   </div>
@@ -313,41 +299,45 @@ const skills = [
     overflow: hidden;
     white-space: nowrap;
   }
-  
+
   .marquee-content {
     display: inline-block;
-    animation: marquee 15s linear forwards;
-  }
-  
-  @keyframes marquee {
-    0% { transform: translateX(100vw); }
-    100% { transform: translateX(-100%); }
+    animation: marquee 15s linear infinite;
   }
 
-  /* Binary float animation - reduced opacity */
+  @keyframes marquee {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  /* Binary float animation */
   .binary-float {
     position: absolute;
-    animation: binaryFade 4s ease-in-out forwards;
+    animation: binaryFade 8s ease-in-out infinite;
     opacity: 0;
   }
-  
-  .binary-1 { top: 15%; left: 3%; animation-delay: 0s; }
-  .binary-2 { top: 50%; right: 3%; animation-delay: 1.5s; }
-  .binary-3 { bottom: 25%; left: 10%; animation-delay: 3s; }
-  
+
+  .binary-1 { top: 15%; left: 3%;  animation-delay: 0s; }
+  .binary-2 { top: 50%; right: 3%; animation-delay: 3s; }
+  .binary-3 { bottom: 25%; left: 10%; animation-delay: 6s; }
+  .binary-4 { top: 70%; left: 8%;  animation-delay: 1s; }
+  .binary-5 { top: 30%; right: 8%; animation-delay: 4s; }
+  .binary-6 { top: 20%; right: 18%; animation-delay: 2s; }
+  .binary-7 { bottom: 15%; right: 12%; animation-delay: 5s; }
+
   @keyframes binaryFade {
-    0% { opacity: 0; transform: translateY(20px); }
-    15%, 70% { opacity: 0.08; transform: translateY(0); }
-    100% { opacity: 0; transform: translateY(-20px); }
+    0%, 100% { opacity: 0; transform: translateY(20px); }
+    15%, 85% { opacity: 0.25; transform: translateY(0); }
+  }
+
+  /* Work card base */
+  .work-card {
+    overflow: hidden;
   }
 
   /* Work card hover */
-  .work-card {
-    overflow: visible;
-  }
-  
   .work-card::after {
-    content: '';
+    content: 'Click for details →';
     position: absolute;
     bottom: 1rem;
     right: 1rem;
@@ -357,16 +347,8 @@ const skills = [
     transition: opacity 0.3s;
   }
 
-  .expand-btn {
-    transition: transform 0.3s;
-  }
-  
-  .expand-icon {
-    transition: transform 0.3s;
-  }
-  
-  .expand-btn:hover .expand-icon {
-    transform: rotate(45deg);
+  .work-card:hover::after {
+    opacity: 1;
   }
 
   /* WIP work card */
@@ -374,14 +356,14 @@ const skills = [
     background-color: black !important;
     color: white !important;
   }
-  
+
   .work-card.wip-hover .text-xs,
   .work-card.wip-hover .text-sm,
   .work-card.wip-hover .font-bold,
   .work-card.wip-hover .work-title {
     opacity: 0;
   }
-  
+
   .work-card.wip-hover::before {
     content: 'Work In Progress...';
     position: absolute;
@@ -393,7 +375,7 @@ const skills = [
   }
 
   /* Popup styles */
-  #work-popup, #skill-popup {
+  #work-popup {
     display: none;
     position: fixed;
     inset: 0;
@@ -402,15 +384,15 @@ const skills = [
     justify-content: center;
     padding-top: 80px;
   }
-  
-  #work-popup.active, #skill-popup.active {
+
+  #work-popup.active {
     display: flex;
   }
-  
-  #work-popup.active .popup-content, #skill-popup.active .popup-content {
+
+  #work-popup.active .popup-content {
     animation: popupSlide 0.4s ease-out;
   }
-  
+
   @keyframes popupSlide {
     from {
       transform: translateY(-50px);
@@ -422,26 +404,24 @@ const skills = [
     }
   }
 
-  /* Droplet animation on close */
-  .droplet {
-    position: absolute;
-    width: 10px;
-    height: 10px;
-    background: #f40c3f;
-    border-radius: 50% 50% 50% 0;
-    transform: rotate(-45deg);
-    animation: droplet 0.6s ease-out forwards;
+  /* Skill accordion */
+  .skill-body {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s cubic-bezier(0.16, 1, 0.3, 1);
   }
-  
-  @keyframes droplet {
-    0% {
-      opacity: 1;
-      transform: rotate(-45deg) translateY(0);
-    }
-    100% {
-      opacity: 0;
-      transform: rotate(-45deg) translateY(100px);
-    }
+
+  .skill-accordion.open .skill-body {
+    max-height: 400px;
+  }
+
+  .skill-arrow {
+    transition: transform 0.3s ease;
+    display: inline-block;
+  }
+
+  .skill-accordion.open .skill-arrow {
+    transform: rotate(45deg);
   }
 
   /* Work content styling */
@@ -450,11 +430,11 @@ const skills = [
     font-weight: 900;
     margin-bottom: 1rem;
   }
-  
+
   .work-content p {
     margin-bottom: 0.75rem;
   }
-  
+
   .work-content a.linkedin-link {
     color: #0077b5;
     text-decoration: underline;
@@ -462,257 +442,128 @@ const skills = [
   }
 </style>
 
-<script is:inline>
-  // Three.js Neural Network Background
-  (function() {
-    const canvas = document.getElementById('webgl-bg');
-    if (!canvas) return;
-    
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
-    
-    let width = window.innerWidth;
-    let height = window.innerHeight;
-    canvas.width = width;
-    canvas.height = height;
-    
-    // Particle class
-    class Particle {
-      constructor() {
-        this.x = Math.random() * width;
-        this.y = Math.random() * height;
-        this.vx = (Math.random() - 0.5) * 0.5;
-        this.vy = (Math.random() - 0.5) * 0.5;
-        this.radius = Math.random() * 2 + 1;
-        this.color = Math.random() > 0.5 ? '#f40c3f' : '#000000';
-      }
-      
-      update() {
-        this.x += this.vx;
-        this.y += this.vy;
-        
-        if (this.x < 0 || this.x > width) this.vx *= -1;
-        if (this.y < 0 || this.y > height) this.vy *= -1;
-      }
-      
-      draw() {
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-        ctx.fillStyle = this.color;
-        ctx.globalAlpha = 0.6;
-        ctx.fill();
-      }
-    }
-    
-    // Create particles - reduced count for subtler effect
-    const particles = [];
-    const particleCount = Math.floor((width * height) / 40000); // Half as many
-    
-    for (let i = 0; i < particleCount; i++) {
-      particles.push(new Particle());
-    }
-    
-    // Mouse interaction
-    let mouseX = width / 2;
-    let mouseY = height / 2;
-    
-    document.addEventListener('mousemove', function(e) {
-      mouseX = e.clientX;
-      mouseY = e.clientY;
-    });
-    
-    // Animation loop
-    function animate() {
-      // Clear with fade effect - very subtle
-      ctx.fillStyle = 'rgba(244, 12, 63, 0.02)';
-      ctx.fillRect(0, 0, width, height);
-      
-      // Update and draw particles
-      particles.forEach(function(p) {
-        p.update();
-        
-        // Mouse interaction - particles move away from mouse
-        const dx = mouseX - p.x;
-        const dy = mouseY - p.y;
-        const dist = Math.sqrt(dx * dx + dy * dy);
-        
-        if (dist < 150) {
-          const force = (150 - dist) / 150;
-          p.x -= (dx / dist) * force * 2;
-          p.y -= (dy / dist) * force * 2;
-        }
-        
-        p.draw();
-      });
-      
-      // Draw connections (neural network effect)
-      ctx.strokeStyle = '#000000';
-      ctx.globalAlpha = 0.05; // Much subtler
-      
-      for (let i = 0; i < particles.length; i++) {
-        for (let j = i + 1; j < particles.length; j++) {
-          const dx = particles[i].x - particles[j].x;
-          const dy = particles[i].y - particles[j].y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-          
-          if (dist < 80) { // Shorter connection distance
-            ctx.lineWidth = 0.5;
-            ctx.beginPath();
-            ctx.moveTo(particles[i].x, particles[i].y);
-            ctx.lineTo(particles[j].x, particles[j].y);
-            ctx.stroke();
-          }
-        }
-      }
-      
-      // Draw DNA helix effect (vertical connections) - very subtle
-      ctx.strokeStyle = '#f40c3f';
-      ctx.globalAlpha = 0.02;
-      
-      for (let x = 0; x < width; x += 80) {
-        ctx.beginPath();
-        ctx.moveTo(x, 0);
-        
-        for (let y = 0; y < height; y += 20) {
-          const offset = Math.sin(y * 0.02 + Date.now() * 0.001) * 20;
-          ctx.lineTo(x + offset, y);
-        }
-        
-        ctx.stroke();
-      }
-      
-      requestAnimationFrame(animate);
-    }
-    
-    animate();
-    
-    // Resize handler
-    window.addEventListener('resize', function() {
-      width = window.innerWidth;
-      height = window.innerHeight;
-      canvas.width = width;
-      canvas.height = height;
-    });
-  })();
-
-  // Skills data
-  const skillsData = [
-    { name: 'PYTHON', description: 'Primary language for AI/ML development. Experienced with NumPy, Pandas, Scikit-learn, TensorFlow, and PyTorch.' },
-    { name: 'MACHINE LEARNING', description: 'Supervised and unsupervised learning, neural networks, reinforcement learning, and model optimization.' },
-    { name: 'DEEP LEARNING', description: 'CNNs, RNNs, Transformers, GANs, and applications in medical imaging and NLP.' },
-    { name: 'DATA SCIENCE', description: 'Statistical analysis, data visualization, exploratory data analysis, and insights extraction.' },
-    { name: 'DATA STRUCTURES', description: 'Arrays, linked lists, trees, graphs, heaps, and efficient algorithm design.' },
-    { name: 'ALGORITHMS', description: 'Sorting, searching, dynamic programming, greedy algorithms, and complexity analysis.' },
-    { name: 'RESEARCH', description: 'Academic writing, literature review, methodology design, and scientific methodology.' },
-    { name: 'BIOINFORMATICS', description: 'Applying computational methods to biological data, protein structure analysis, and genomic data processing.' },
-  ];
-
-  // Skill popup handlers
-  const skillCards = document.querySelectorAll('.skill-card');
-  const skillPopup = document.getElementById('skill-popup');
-  const skillPopupTitle = document.getElementById('skill-popup-title');
-  const skillPopupBody = document.getElementById('skill-popup-body');
-  const skillPopupClose = document.getElementById('skill-popup-close');
-  const skillPopupOverlay = document.querySelector('#skill-popup .popup-overlay');
-  
-  skillCards.forEach(function(card) {
-    card.addEventListener('click', function() {
-      const index = parseInt(card.getAttribute('data-skill-index'));
-      const skill = skillsData[index];
-      
-      if (skillPopupTitle) skillPopupTitle.textContent = skill.name;
-      if (skillPopupBody) skillPopupBody.textContent = skill.description;
-      if (skillPopup) {
-        skillPopup.classList.add('active');
-        skillPopup.style.display = 'flex';
-      }
-      document.body.style.overflow = 'hidden';
-    });
-  });
-
-  function closeSkillPopup() {
-    if (skillPopup) {
-      skillPopup.classList.remove('active');
-      skillPopup.style.display = 'none';
-    }
-    document.body.style.overflow = '';
-  }
-  
-  if (skillPopupClose) skillPopupClose.addEventListener('click', closeSkillPopup);
-  if (skillPopupOverlay) skillPopupOverlay.addEventListener('click', closeSkillPopup);
-
-  // Work card expand handlers (accordion style)
+<script>
+  // Work card click handlers
   const workCards = document.querySelectorAll('.work-card');
-  
-  workCards.forEach(function(card) {
+  const popup = document.getElementById('work-popup');
+  const popupTitle = document.getElementById('popup-title');
+  const popupBody = document.getElementById('popup-body');
+  const popupClose = document.getElementById('popup-close');
+  const popupOverlay = document.querySelector('.popup-overlay');
+
+  workCards.forEach(card => {
     const isWip = card.getAttribute('data-is-wip') === 'true';
     const details = card.querySelector('.work-details');
-    const expandBtn = card.querySelector('.expand-btn');
-    const expandIcon = card.querySelector('.expand-icon');
-    
+
     if (isWip) {
-      // WIP - hover and click behavior
-      card.addEventListener('mouseenter', function() {
-        if (!card.classList.contains('clicked')) {
-          card.classList.add('wip-hover');
-        }
+      card.addEventListener('mouseenter', () => {
+        if (!card.classList.contains('clicked')) card.classList.add('wip-hover');
       });
-      
-      card.addEventListener('mouseleave', function() {
-        if (!card.classList.contains('clicked')) {
-          card.classList.remove('wip-hover');
-        }
+      card.addEventListener('mouseleave', () => {
+        if (!card.classList.contains('clicked')) card.classList.remove('wip-hover');
       });
-      
-      card.addEventListener('click', function() {
+      card.addEventListener('click', () => {
         if (card.classList.contains('clicked')) return;
-        
-        card.classList.add('clicked');
-        card.classList.add('wip-hover');
-        
-        // Reset after 3 seconds
-        setTimeout(function() {
-          card.classList.remove('clicked');
-          card.classList.remove('wip-hover');
-        }, 3000);
+        card.classList.add('clicked', 'wip-hover');
+        setTimeout(() => card.classList.remove('clicked', 'wip-hover'), 3000);
       });
-    } else if (expandBtn && details) {
-      // Expand button - show inline accordion
-      expandBtn.addEventListener('click', function(e) {
-        e.stopPropagation();
-        
-        const isExpanded = details.classList.contains('expanded');
-        
-        // Close all other cards first (accordion behavior)
-        document.querySelectorAll('.work-details.expanded').forEach(function(d) {
-          d.classList.remove('expanded');
-          d.classList.add('hidden');
-        });
-        
-        if (isExpanded) {
-          details.classList.remove('expanded');
-          details.classList.add('hidden');
-          if (expandIcon) expandIcon.textContent = '+';
-          expandBtn.querySelector('span').textContent = 'READ MORE';
-        } else {
-          details.classList.remove('hidden');
-          details.classList.add('expanded');
-          if (expandIcon) expandIcon.textContent = '−';
-          expandBtn.querySelector('span').textContent = 'READ LESS';
-        }
+    } else {
+      card.addEventListener('click', () => {
+        const title = card.querySelector('.work-title').textContent;
+        const content = details.innerHTML;
+        popupTitle.textContent = title;
+        popupBody.innerHTML = content;
+        popup.classList.add('active');
+        popup.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
       });
     }
   });
 
-  // Grid fisheye effect
-  const gridBg = document.querySelector('.grid-bg');
-  document.addEventListener('mousemove', function(e) {
-    const x = e.clientX / window.innerWidth;
-    const y = e.clientY / window.innerHeight;
-    
-    if (gridBg) {
-      gridBg.style.transform = 'perspective(500px) rotateX(' + ((y - 0.5) * 10) + 'deg) rotateY(' + ((x - 0.5) * 10) + 'deg)';
-      gridBg.style.transformOrigin = (x * 100) + '% ' + (y * 100) + '%';
+  // Red bubble splatter on close
+  function createSplatter(originX, originY) {
+    const count = 14;
+    for (let i = 0; i < count; i++) {
+      const blob = document.createElement('div');
+      const angle = (i / count) * Math.PI * 2 + (Math.random() - 0.5) * 0.8;
+      const distance = 70 + Math.random() * 130;
+      const size = 7 + Math.random() * 16;
+      blob.style.cssText = `
+        position: fixed;
+        width: ${size}px;
+        height: ${size}px;
+        background: #f40c3f;
+        border-radius: 50%;
+        left: ${originX}px;
+        top: ${originY}px;
+        pointer-events: none;
+        z-index: 9999;
+        transform: translate(-50%, -50%);
+      `;
+      document.body.appendChild(blob);
+      const tx = Math.cos(angle) * distance;
+      const ty = Math.sin(angle) * distance;
+      if (typeof gsap !== 'undefined') {
+        gsap.to(blob, {
+          x: tx, y: ty,
+          opacity: 0,
+          scale: 0.1,
+          duration: 0.45 + Math.random() * 0.3,
+          ease: 'power3.out',
+          onComplete: () => blob.remove(),
+        });
+      } else {
+        setTimeout(() => blob.remove(), 600);
+      }
     }
+  }
+
+  // Close popup with GSAP tilt + slide + fade
+  function closePopup() {
+    const rect = popupClose.getBoundingClientRect();
+    createSplatter(rect.left + rect.width / 2, rect.top + rect.height / 2);
+
+    const popupContent = document.querySelector('.popup-content');
+    if (typeof gsap !== 'undefined' && popupContent) {
+      gsap.killTweensOf(popupContent);
+      gsap.to(popupContent, {
+        rotation: 30,
+        y: 80,
+        opacity: 0,
+        duration: 0.38,
+        ease: 'power2.in',
+        transformOrigin: 'center top',
+        onComplete: () => {
+          popup.classList.remove('active');
+          popup.style.display = 'none';
+          document.body.style.overflow = '';
+          gsap.set(popupContent, { rotation: 0, y: 0, opacity: 1 });
+        },
+      });
+    } else {
+      popup.classList.remove('active');
+      popup.style.display = 'none';
+      document.body.style.overflow = '';
+    }
+  }
+
+  popupClose.addEventListener('click', closePopup);
+  popupOverlay.addEventListener('click', closePopup);
+
+  // Skill accordion toggle
+  document.querySelectorAll('.skill-accordion').forEach((accordion) => {
+    accordion.addEventListener('click', () => {
+      accordion.classList.toggle('open');
+    });
+  });
+
+  // Binary teleport: reposition to random location on each animation cycle
+  document.querySelectorAll('.binary-float').forEach((el) => {
+    el.addEventListener('animationiteration', () => {
+      el.style.top = (Math.random() * 80 + 5) + '%';
+      el.style.left = (Math.random() * 85 + 5) + '%';
+      el.style.right = 'auto';
+      el.style.bottom = 'auto';
+    });
   });
 </script>
