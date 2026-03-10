@@ -22,6 +22,18 @@ const { title } = Astro.props;
   </head>
   <body class="bg-[#f40c3f] text-black min-h-screen">
     <div class="fixed inset-0 grid-bg pointer-events-none z-0"></div>
+
+    <!-- DNA Helix scroll-driven background video -->
+    <video
+      id="dna-bg"
+      src="/videos/dna-helix.mp4"
+      muted
+      playsinline
+      preload="auto"
+      class="fixed inset-0 w-full h-full pointer-events-none z-[1]"
+      style="object-fit: cover; opacity: 0.35; mix-blend-mode: screen; filter: hue-rotate(140deg) saturate(2) brightness(1.2);"
+    ></video>
+
     <canvas id="fisheye-canvas" class="fixed pointer-events-none z-[2]" style="display:none;"></canvas>
     
     <!-- Contrast Toggle -->
@@ -152,6 +164,21 @@ const { title } = Astro.props;
           if (!raf) raf = requestAnimationFrame(drawFisheye);
         });
         document.addEventListener('mouseleave', () => { fisheyeCanvas.style.display = 'none'; });
+      }
+
+      // Scroll-driven DNA helix video
+      const dnaBg = document.getElementById('dna-bg');
+      if (dnaBg) {
+        dnaBg.addEventListener('loadedmetadata', () => {
+          function scrubVideo() {
+            const scrollTop = window.scrollY || document.documentElement.scrollTop;
+            const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+            const progress = maxScroll > 0 ? scrollTop / maxScroll : 0;
+            dnaBg.currentTime = progress * dnaBg.duration;
+          }
+          window.addEventListener('scroll', scrubVideo, { passive: true });
+          scrubVideo();
+        });
       }
 
       // Reveal animations

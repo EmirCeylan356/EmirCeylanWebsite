@@ -32,21 +32,6 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: 700;
 }
 
-/* Font pairing - Technical sections use mono, creative sections use serif */
-#about, #hobbies, #about + section, .hobbies-section {
-  font-family: 'Playfair Display', serif;
-}
-
-.technical, #skills, #work, code, .mono {
-  font-family: 'JetBrains Mono', monospace;
-}
-
-/* Artistic headings - for contrast */
-.artistic-heading {
-  font-family: 'Playfair Display', serif;
-  font-style: italic;
-}
-
 /* Grid Background with Fisheye */
 .grid-bg {
   background-image: 
