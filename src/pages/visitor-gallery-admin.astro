@@ -1,0 +1,131 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+
+// Simple password protection - change this to your desired admin password
+const ADMIN_PASSWORD = "emir2026";
+
+const { searchParams } = Astro.url;
+const password = searchParams.get('password');
+const action = searchParams.get('action');
+const isAuthenticated = password === ADMIN_PASSWORD;
+
+// Load current submissions
+import galleryData from '../data/gallery-submissions.json';
+let submissions = galleryData || [];
+
+// Handle approve/reject actions
+if (isAuthenticated && action) {
+  const id = searchParams.get('id');
+  if (action === 'approve' && id) {
+    // Would need to add from Google Sheets - this is a placeholder
+    // In real implementation, you'd fetch from Google Sheets API
+  }
+}
+---
+
+<Layout title="GALLERY ADMIN — Emir Ceylan">
+  <Header />
+  
+  <main>
+    <section class="py-16 px-4">
+      <div class="max-w-7xl mx-auto">
+        
+        {!isAuthenticated ? (
+          <!-- Login Form -->
+          <div class="max-w-md mx-auto">
+            <h2 class="text-4xl font-black mb-8">ADMIN LOGIN</h2>
+            <form method="get" class="space-y-4">
+              <div>
+                <label class="block font-bold mb-2">Password</label>
+                <input 
+                  type="password" 
+                  name="password"
+                  required
+                  class="w-full p-3 border-4 border-black font-bold"
+                  placeholder="Enter admin password"
+                />
+              </div>
+              <button 
+                type="submit" 
+                class="w-full py-4 bg-black text-white font-bold text-xl border-4 border-black hover:bg-gray-800"
+              >
+                LOGIN →
+              </button>
+            </form>
+          </div>
+        ) : (
+          <!-- Admin Dashboard -->
+          <div>
+            <div class="flex items-center justify-between mb-8">
+              <h2 class="text-4xl font-black">GALLERY ADMIN</h2>
+              <a href="/visitor-gallery/admin" class="px-4 py-2 bg-gray-200 border-2 border-black font-bold hover:bg-gray-300">
+                ← Back
+              </a>
+            </div>
+
+            <div class="bg-green-100 border-4 border-green-600 p-4 mb-8">
+              <p class="font-bold">✓ Logged in as admin</p>
+              <p class="text-sm">Add approved artworks by editing: <code class="bg-white px-2">src/data/gallery-submissions.json</code></p>
+            </div>
+
+            <!-- Current Approved Artworks -->
+            <div class="mb-12">
+              <h3 class="text-2xl font-black mb-4">APPROVED ARTWORKS ({submissions.length})</h3>
+              
+              {submissions.length === 0 ? (
+                <p class="opacity-70">No approved artworks yet.</p>
+              ) : (
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {submissions.map((artwork, index) => (
+                    <div class="border-4 border-black bg-white p-4">
+                      <img 
+                        src={artwork.image} 
+                        alt={artwork.title}
+                        class="w-full h-auto border-2 border-black mb-3"
+                      />
+                      <h4 class="font-black text-lg">{artwork.title}</h4>
+                      <p class="font-bold text-sm opacity-70">by {artwork.name}</p>
+                      <p class="text-xs opacity-50">{artwork.email}</p>
+                      <button 
+                        onclick={`removeArtwork(${index})`}
+                        class="mt-2 px-3 py-1 bg-red-500 text-white font-bold text-sm border-2 border-red-700 hover:bg-red-600"
+                      >
+                        Remove
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            <!-- Instructions -->
+            <div class="bg-gray-100 border-4 border-black p-6">
+              <h3 class="text-xl font-black mb-4">HOW TO ADD ARTWORKS</h3>
+              <ol class="space-y-2 list-decimal list-inside">
+                <li>Go to your Google Form responses in Google Sheets</li>
+                <li>Review new submissions</li>
+                <li>Download the artwork images</li>
+                <li>Edit <code class="bg-white px-1">src/data/gallery-submissions.json</code></li>
+                <li>Add new artwork entries in this format:</li>
+              </ol>
+              <pre class="mt-4 bg-black text-green-400 p-4 overflow-x-auto text-sm">{'{'}"name": "Artist Name", "email": "artist@email.com", "title": "Artwork Title", "image": "https://example.com/image.jpg", "date": "2026-03-11"{'}'}</pre>
+            </div>
+          </div>
+        )}
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</Layout>
+
+<script is:inline>
+  function removeArtwork(index) {
+    if (confirm('Remove this artwork from the gallery?')) {
+      // This would need server-side handling in production
+      alert('To remove artworks, edit the JSON file directly. This is a static site!');
+    }
+  }
+</script>
