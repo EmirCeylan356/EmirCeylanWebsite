@@ -25,7 +25,7 @@ const approvedArtworks = galleryData || [];
           <!-- Drawing Canvas Section -->
           <div>
             <h3 class="text-2xl font-black mb-4">DRAW YOUR ART</h3>
-            <p class="text-sm mb-4 opacity-70">Draw below, then click "Download" to save your artwork. Upload it using the Google Form link!</p>
+            <p class="text-sm mb-4 opacity-70">Draw your masterpiece below, then submit it!</p>
             
             <!-- Tool Bar -->
             <div class="flex flex-wrap gap-3 mb-4">
@@ -52,7 +52,6 @@ const approvedArtworks = galleryData || [];
               </div>
 
               <button id="clear-btn" class="px-4 py-2 bg-[#f40c3f] text-white font-bold border-2 border-black hover:bg-red-700">Clear</button>
-              <button id="download-btn" class="px-4 py-2 bg-black text-white font-bold border-2 border-black hover:bg-gray-800">Download</button>
             </div>
 
             <!-- Canvas -->
@@ -64,31 +63,28 @@ const approvedArtworks = galleryData || [];
             ></canvas>
           </div>
 
-          <!-- Submission Form -->
+          <!-- Submission Form (Embedded Google Form) -->
           <div>
             <h3 class="text-2xl font-black mb-4">SUBMIT YOUR ARTWORK</h3>
             
-            <div class="mb-6 p-4 bg-gray-100 border-4 border-black">
-              <p class="font-bold mb-2">How to submit:</p>
-              <ol class="text-sm space-y-1 list-decimal list-inside">
-                <li>Draw your art on the canvas</li>
-                <li>Click <strong>Download</strong> to save it</li>
-                <li>Click the button below to open the submission form</li>
-                <li>Upload your saved image + fill in details</li>
-              </ol>
+            <!-- Embedded Google Form -->
+            <div class="border-4 border-black bg-white" style="min-height: 500px;">
+              <iframe 
+                src="https://docs.google.com/forms/d/e/1FAIpQLSe9I_8IxIa2aOmFj87WntLS9Xp-7czR7YzxU6Ro1zLHgMaVBw/viewform?embedded=true" 
+                width="100%" 
+                height="500" 
+                frameborder="0" 
+                marginheight="0" 
+                marginwidth="0"
+                loading="lazy"
+              >
+                Loading…
+              </iframe>
             </div>
-
-            <a 
-              href="https://docs.google.com/forms/d/e/1FAIpQLSe9I_8IxIa2aOmFj87WntLS9Xp-7czR7YzxU6Ro1zLHgMaVBw/viewform" 
-              target="_blank"
-              class="block w-full py-4 bg-[#f40c3f] text-white font-bold text-xl text-center border-4 border-black hover:bg-red-700 transition-colors"
-            >
-              OPEN SUBMISSION FORM →
-            </a>
           </div>
         </div>
 
-        <!-- Gallery Preview -->
+        <!-- Gallery -->
         <div class="mt-16">
           <h3 class="text-3xl font-black mb-8">GALLERY</h3>
           
@@ -290,17 +286,6 @@ const approvedArtworks = galleryData || [];
     clearBtn.addEventListener('click', function() {
       ctx.fillStyle = '#FFFFFF';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
-    });
-  }
-
-  // Download button
-  const downloadBtn = document.getElementById('download-btn');
-  if (downloadBtn) {
-    downloadBtn.addEventListener('click', function() {
-      const link = document.createElement('a');
-      link.download = 'my-artwork.png';
-      link.href = canvas.toDataURL('image/png');
-      link.click();
     });
   }
 </script>
