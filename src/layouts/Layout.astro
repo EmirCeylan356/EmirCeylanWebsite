@@ -31,7 +31,7 @@ const { title } = Astro.props;
       playsinline
       preload="auto"
       class="fixed inset-0 w-full h-full pointer-events-none z-[1]"
-      style="object-fit: cover; opacity: 0.35; mix-blend-mode: screen; filter: hue-rotate(140deg) saturate(2) brightness(1.2);"
+      style="object-fit: cover; opacity: 0.6; mix-blend-mode: screen; filter: hue-rotate(140deg) saturate(2) brightness(1.2);"
     ></video>
 
     <canvas id="fisheye-canvas" class="fixed pointer-events-none z-[2]" style="display:none;"></canvas>
@@ -166,18 +166,45 @@ const { title } = Astro.props;
         document.addEventListener('mouseleave', () => { fisheyeCanvas.style.display = 'none'; });
       }
 
-      // Scroll-driven DNA helix video
+      // Scroll-driven DNA helix video — smooth lerp on rAF
       const dnaBg = document.getElementById('dna-bg');
       if (dnaBg) {
-        dnaBg.addEventListener('loadedmetadata', () => {
-          function scrubVideo() {
-            const scrollTop = window.scrollY || document.documentElement.scrollTop;
-            const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
-            const progress = maxScroll > 0 ? scrollTop / maxScroll : 0;
-            dnaBg.currentTime = progress * dnaBg.duration;
+        let targetTime = 0;
+        let lerpedTime = 0;
+        let rafRunning = false;
+
+        function getTargetTime() {
+          const scrollTop = window.scrollY || document.documentElement.scrollTop;
+          const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+          const progress = maxScroll > 0 ? Math.min(scrollTop / maxScroll, 1) : 0;
+          return progress * (dnaBg.duration || 0);
+        }
+
+        function rafLoop() {
+          const diff = targetTime - lerpedTime;
+          if (Math.abs(diff) > 0.001) {
+            lerpedTime += diff * 0.1;  // lerp factor: higher = snappier
+            dnaBg.currentTime = lerpedTime;
+            requestAnimationFrame(rafLoop);
+          } else {
+            lerpedTime = targetTime;
+            dnaBg.currentTime = lerpedTime;
+            rafRunning = false;
           }
-          window.addEventListener('scroll', scrubVideo, { passive: true });
-          scrubVideo();
+        }
+
+        window.addEventListener('scroll', () => {
+          targetTime = getTargetTime();
+          if (!rafRunning) {
+            rafRunning = true;
+            requestAnimationFrame(rafLoop);
+          }
+        }, { passive: true });
+
+        dnaBg.addEventListener('loadedmetadata', () => {
+          targetTime = getTargetTime();
+          lerpedTime = targetTime;
+          dnaBg.currentTime = lerpedTime;
         });
       }
 
