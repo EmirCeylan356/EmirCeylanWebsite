@@ -6,15 +6,16 @@ const socials = [
 ];
 ---
 
-<footer id="contact" class="py-12" style="background:#000; border-top:2px solid var(--primary-green);">
+<footer id="contact" class="py-12" style="background:var(--bg-surface); border-top:1px solid var(--border-color);">
   <div class="max-w-7xl mx-auto px-4">
     <div class="grid md:grid-cols-2 gap-10 items-center">
 
       <div>
-        <h2 class="text-5xl md:text-7xl font-black mb-4 kinetic-text glow-text">
-          LET'S<span style="color:rgba(0,255,65,0.4);">_</span>CONNECT
+        <p class="text-xs font-mono mb-3" style="color:var(--text-secondary); letter-spacing:0.15em;">04 / CONTACT</p>
+        <h2 class="text-5xl md:text-7xl font-black mb-4 kinetic-text" style="color:var(--text-primary);">
+          LET'S<span style="color:var(--accent);">_</span>CONNECT
         </h2>
-        <p class="text-sm font-mono" style="color:rgba(0,255,65,0.4); letter-spacing:0.08em;">
+        <p class="text-sm font-mono" style="color:var(--text-secondary);">
           Have a project in mind or just want to chat?
         </p>
       </div>
@@ -22,8 +23,8 @@ const socials = [
       <div class="flex flex-col gap-5">
         <a
           href="mailto:emir.ceylan@sabanciuniv.edu"
-          class="footer-cta inline-flex items-center justify-center px-6 py-4 font-bold text-lg font-mono"
-          style="background:var(--primary-green); color:#000; border:2px solid var(--primary-green);"
+          class="footer-cta inline-flex items-center justify-center px-6 py-4 font-bold text-sm font-mono cut-corner"
+          style="background:var(--accent); color:#000; border:1px solid var(--accent); letter-spacing:0.08em;"
         >
           GET IN TOUCH →
         </a>
@@ -34,28 +35,26 @@ const socials = [
               <a
                 href={social.url}
                 target="_blank"
-                class="social-link px-4 py-2 font-bold font-mono text-sm whitespace-nowrap"
-                style="border:2px solid var(--primary-green); color:var(--primary-green);"
+                class="social-link px-4 py-2 font-bold font-mono text-xs whitespace-nowrap cut-corner-sm"
+                style="border:1px solid var(--border-color); color:var(--text-secondary); letter-spacing:0.08em;"
               >
                 {social.name}
               </a>
-              <span class="font-mono text-sm truncate" style="color:rgba(0,255,65,0.35);">{social.short}</span>
+              <span class="font-mono text-xs truncate" style="color:var(--text-secondary); opacity:0.5;">{social.short}</span>
             </div>
           ))}
         </div>
       </div>
     </div>
 
-    <!-- Binary decoration -->
-    <div class="mt-12 py-3 binary-border text-center">
-      <p class="font-mono text-xs" style="color:rgba(0,255,65,0.25);">
+    <div class="mt-12" style="height:1px; background:var(--border-color);"></div>
+
+    <div class="mt-6 flex items-center justify-between">
+      <p class="font-mono text-xs" style="color:var(--text-secondary); opacity:0.4;">
         01000011 01010011 00100000 01010011 01010100 01010101 01000100 01000101 01001110 01010100
       </p>
-    </div>
-
-    <div class="mt-6 text-center">
-      <p class="font-bold font-mono text-xs" style="color:rgba(0,255,65,0.25);">
-        © {new Date().getFullYear()} EMİR CEYLAN. ALL RIGHTS RESERVED.
+      <p class="font-mono text-xs" style="color:var(--text-secondary); opacity:0.4;">
+        © {new Date().getFullYear()} EMİR CEYLAN
       </p>
     </div>
   </div>
@@ -67,14 +66,16 @@ const socials = [
   }
   .footer-cta:hover {
     background: transparent;
-    color: var(--primary-green);
-    box-shadow: 8px 8px 0 rgba(0,255,65,0.25);
+    color: var(--accent);
+    box-shadow: 0 0 16px var(--accent-glow);
   }
   .social-link {
-    transition: background 0.2s ease, color 0.2s ease;
+    transition: border-color 0.2s ease, color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
   }
   .social-link:hover {
-    background: var(--primary-green);
+    border-color: var(--accent);
     color: #000;
+    background: var(--accent);
+    box-shadow: 0 0 8px var(--accent-glow);
   }
 </style>
