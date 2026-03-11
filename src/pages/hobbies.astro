@@ -290,16 +290,17 @@ const C = {
   <main class="flex-1" style="padding-top:80px;">
 
     <!-- ═══ ACTIVITIES — 3-Tab Interface ═════════════════════════════════════ -->
-    <section id="activities" style="background:#000; padding:48px 0 0;">
+    <section id="activities" style="background:var(--bg-base); padding:48px 0 0;">
       <div class="max-w-7xl mx-auto px-8">
         <div class="flex items-end gap-4 mb-10">
-          <h2 class="text-5xl md:text-7xl font-black kinetic-text glow-text">ACTIVITIES</h2>
-          <div class="flex-1" style="background:rgba(0,255,65,0.25); height:2px;"></div>
-          <span class="text-3xl font-black" style="color:rgba(0,255,65,0.45);">/03</span>
+          <p class="font-mono text-xs" style="color:var(--text-secondary); letter-spacing:0.15em; align-self:center;">01 /</p>
+          <h2 class="text-5xl md:text-7xl font-black kinetic-text" style="color:var(--text-primary);">ACTIVITIES</h2>
+          <div class="flex-1" style="background:var(--border-color); height:1px;"></div>
+          <span class="text-xl font-black font-mono" style="color:var(--text-secondary);">/03</span>
         </div>
 
         <!-- Tab Navigation -->
-        <div class="tab-nav flex gap-0 mb-0" style="border-bottom:2px solid rgba(0,255,65,0.2);">
+        <div class="tab-nav flex gap-0 mb-0" style="border-bottom:1px solid var(--border-color);">
           <button class="tab-btn active" data-tab="sport">
             [ SPORT ]
           </button>
@@ -313,21 +314,21 @@ const C = {
       </div>
 
       <!-- ── SPORT Tab ───────────────────────────────────────────────────── -->
-      <div id="tab-sport" class="tab-panel active" style="background:#000;">
+      <div id="tab-sport" class="tab-panel active" style="background:var(--bg-base);">
         <div class="max-w-7xl mx-auto px-8 py-14">
           <div class="grid md:grid-cols-2 gap-16 items-start">
 
             <!-- Left: intro -->
             <div>
-              <p class="font-mono text-xs mb-4" style="color:rgba(0,255,65,0.35); letter-spacing:0.15em;">PHYSICAL REALITY</p>
+              <p class="font-mono text-xs mb-4" style="color:var(--text-secondary); letter-spacing:0.15em;">PHYSICAL REALITY</p>
               <h3 class="text-4xl md:text-5xl font-black glow-text mb-6" style="line-height:1;">THE BODY<br>AS PRACTICE</h3>
-              <p class="text-base mb-5" style="color:rgba(0,204,51,0.85); line-height:1.7;">
+              <p class="text-base mb-5" style="color:var(--text-secondary); line-height:1.7;">
                 I train Brazilian Jiu-Jitsu as a blue belt. The mat is one of the few places where thinking too much will get you tapped out — you have to react, adapt, and accept when you lose. I've been submitted by smaller people more times than I can count, and that's the point.
               </p>
-              <p class="text-base mb-5" style="color:rgba(0,204,51,0.85); line-height:1.7;">
+              <p class="text-base mb-5" style="color:var(--text-secondary); line-height:1.7;">
                 Archery came later. It's the opposite of BJJ in almost every way — no opponent, no urgency, just you and the stillness between breaths. The arrow doesn't care how you're feeling that day.
               </p>
-              <p class="text-base" style="color:rgba(0,204,51,0.85); line-height:1.7;">
+              <p class="text-base" style="color:var(--text-secondary); line-height:1.7;">
                 Daily conditioning keeps everything running. Not for aesthetics — for the simple fact that having energy changes how you move through the rest of life.
               </p>
             </div>
@@ -335,28 +336,28 @@ const C = {
             <!-- Right: discipline cards -->
             <div class="flex flex-col gap-4">
 
-              <div class="sport-card p-6" style="border:1px solid rgba(0,255,65,0.2); background:rgba(0,255,65,0.03);">
+              <div class="sport-card p-6" style="border:1px solid var(--border-color); background:transparent;">
                 <div class="flex items-center gap-4 mb-3">
                   <span class="font-mono text-2xl font-black glow-text">BJJ</span>
-                  <span class="font-mono text-xs px-2 py-1" style="border:1px solid rgba(0,255,65,0.3); color:rgba(0,255,65,0.6);">BLUE BELT</span>
+                  <span class="font-mono text-xs px-2 py-1" style="border:1px solid var(--border-color); color:var(--accent-dim);">BLUE BELT</span>
                 </div>
-                <p class="text-sm font-mono" style="color:rgba(0,204,51,0.7); line-height:1.6;">Brazilian Jiu-Jitsu. Ground grappling, positional control, submissions. The sport where the smaller person can win if they're smarter.</p>
+                <p class="text-sm font-mono" style="color:var(--text-secondary); line-height:1.6;">Brazilian Jiu-Jitsu. Ground grappling, positional control, submissions. The sport where the smaller person can win if they're smarter.</p>
               </div>
 
-              <div class="sport-card p-6" style="border:1px solid rgba(0,255,65,0.2); background:rgba(0,255,65,0.03);">
+              <div class="sport-card p-6" style="border:1px solid var(--border-color); background:transparent;">
                 <div class="flex items-center gap-4 mb-3">
                   <span class="font-mono text-2xl font-black glow-text">ARCHERY</span>
-                  <span class="font-mono text-xs px-2 py-1" style="border:1px solid rgba(0,255,65,0.3); color:rgba(0,255,65,0.6);">RECURVE</span>
+                  <span class="font-mono text-xs px-2 py-1" style="border:1px solid var(--border-color); color:var(--accent-dim);">RECURVE</span>
                 </div>
-                <p class="text-sm font-mono" style="color:rgba(0,204,51,0.7); line-height:1.6;">Focus, breath control, stillness under pressure. The discipline of archery is mostly about learning to do nothing while everything tries to make you flinch.</p>
+                <p class="text-sm font-mono" style="color:var(--text-secondary); line-height:1.6;">Focus, breath control, stillness under pressure. The discipline of archery is mostly about learning to do nothing while everything tries to make you flinch.</p>
               </div>
 
-              <div class="sport-card p-6" style="border:1px solid rgba(0,255,65,0.2); background:rgba(0,255,65,0.03);">
+              <div class="sport-card p-6" style="border:1px solid var(--border-color); background:transparent;">
                 <div class="flex items-center gap-4 mb-3">
                   <span class="font-mono text-2xl font-black glow-text">CONDITIONING</span>
-                  <span class="font-mono text-xs px-2 py-1" style="border:1px solid rgba(0,255,65,0.3); color:rgba(0,255,65,0.6);">DAILY</span>
+                  <span class="font-mono text-xs px-2 py-1" style="border:1px solid var(--border-color); color:var(--accent-dim);">DAILY</span>
                 </div>
-                <p class="text-sm font-mono" style="color:rgba(0,204,51,0.7); line-height:1.6;">Strength and endurance work that supports everything else. Consistency over intensity. The goal is showing up tomorrow.</p>
+                <p class="text-sm font-mono" style="color:var(--text-secondary); line-height:1.6;">Strength and endurance work that supports everything else. Consistency over intensity. The goal is showing up tomorrow.</p>
               </div>
 
             </div>
@@ -365,38 +366,38 @@ const C = {
       </div>
 
       <!-- ── ART Tab ─────────────────────────────────────────────────────── -->
-      <div id="tab-art" class="tab-panel" style="background:#050505;">
+      <div id="tab-art" class="tab-panel" style="background:var(--bg-surface);">
         <div class="max-w-7xl mx-auto px-8 py-14">
           <div class="grid md:grid-cols-2 gap-16 items-start mb-14">
 
             <!-- Left: intro -->
             <div>
-              <p class="font-mono text-xs mb-4" style="color:rgba(0,255,65,0.35); letter-spacing:0.15em;">THE STUDIO</p>
+              <p class="font-mono text-xs mb-4" style="color:var(--text-secondary); letter-spacing:0.15em;">THE STUDIO</p>
               <h3 class="text-4xl md:text-5xl font-black glow-text mb-6" style="line-height:1;">OIL<br>PAINTING</h3>
-              <p class="text-base mb-5" style="color:rgba(0,204,51,0.85); line-height:1.7;">
+              <p class="text-base mb-5" style="color:var(--text-secondary); line-height:1.7;">
                 I've been painting with oils since I was a teenager. There's something about a medium that dries slowly and demands commitment — you can't undo a stroke, you can only paint over it, and you carry every previous decision forward.
               </p>
-              <p class="text-base mb-5" style="color:rgba(0,204,51,0.85); line-height:1.7;">
+              <p class="text-base mb-5" style="color:var(--text-secondary); line-height:1.7;">
                 Most of my work starts without a clear plan. I mix a color that feels right, make a mark, and respond to it. The discipline is in resisting the urge to over-explain — in painting, too much intention usually kills the thing you were trying to make.
               </p>
-              <p class="text-base" style="color:rgba(0,204,51,0.85); line-height:1.7;">
+              <p class="text-base" style="color:var(--text-secondary); line-height:1.7;">
                 I work across oil, acrylic, charcoal, and mixed media. The gallery below is the work that made it past my own editing — 13 pieces kept from the ones that didn't.
               </p>
             </div>
 
             <!-- Right: stats -->
             <div class="flex flex-col gap-6">
-              <div style="border-left:3px solid rgba(0,255,65,0.4); padding-left:20px;">
+              <div style="border-left:2px solid var(--accent); padding-left:20px;">
                 <div class="font-black text-5xl glow-text">13</div>
-                <div class="font-mono text-xs mt-1" style="color:rgba(0,255,65,0.4); letter-spacing:0.12em;">SELECTED WORKS</div>
+                <div class="font-mono text-xs mt-1" style="color:var(--text-secondary); letter-spacing:0.12em;">SELECTED WORKS</div>
               </div>
-              <div style="border-left:3px solid rgba(0,255,65,0.2); padding-left:20px;">
-                <div class="font-black text-5xl" style="color:rgba(0,255,65,0.6);">OIL</div>
-                <div class="font-mono text-xs mt-1" style="color:rgba(0,255,65,0.4); letter-spacing:0.12em;">PRIMARY MEDIUM</div>
+              <div style="border-left:2px solid var(--border-color); padding-left:20px;">
+                <div class="font-black text-5xl" style="color:var(--accent-dim);">OIL</div>
+                <div class="font-mono text-xs mt-1" style="color:var(--text-secondary); letter-spacing:0.12em;">PRIMARY MEDIUM</div>
               </div>
-              <div style="border-left:3px solid rgba(0,255,65,0.1); padding-left:20px;">
-                <div class="font-black text-5xl" style="color:rgba(0,255,65,0.4);">2023–</div>
-                <div class="font-mono text-xs mt-1" style="color:rgba(0,255,65,0.3); letter-spacing:0.12em;">ACTIVE PERIOD</div>
+              <div style="border-left:2px solid var(--border-color); padding-left:20px;">
+                <div class="font-black text-5xl" style="color:var(--text-secondary);">2023–</div>
+                <div class="font-mono text-xs mt-1" style="color:var(--text-secondary); letter-spacing:0.12em;">ACTIVE PERIOD</div>
               </div>
             </div>
 
@@ -404,7 +405,7 @@ const C = {
 
           <!-- Gallery -->
           <div class="mb-2">
-            <p class="text-xs font-mono" style="color:rgba(0,255,65,0.3); letter-spacing:0.12em;">← SCROLL TO EXPLORE · CLICK IMAGE TO OPEN →</p>
+            <p class="text-xs font-mono" style="color:var(--text-secondary); letter-spacing:0.12em;">← SCROLL TO EXPLORE · CLICK IMAGE TO OPEN →</p>
           </div>
 
           <div id="art-viewport" class="relative overflow-hidden" style="height:68vh; touch-action:pan-y;">
@@ -414,18 +415,18 @@ const C = {
               {artworks.map((d) => (
                 <div class="art-item group flex-shrink-0 relative cursor-pointer" data-id={d.id}
                   style="width:300px; height:400px; transition:transform 0.4s ease;">
-                  <div class="art-frame relative w-full h-full overflow-hidden" style="border:1px solid rgba(0,255,65,0.2);">
+                  <div class="art-frame relative w-full h-full overflow-hidden" style="border:1px solid var(--border-color);">
                     <img src={d.src} alt={d.title} class="art-img w-full h-full object-cover" loading="lazy"
                       style="filter:brightness(0.82) contrast(1.1) grayscale(0.3); transition:filter 0.45s ease;" />
                     <div class="art-grain absolute inset-0 pointer-events-none" style="opacity:0.25;"></div>
                     <!-- Title tag -->
-                    <div class="absolute top-0 left-0 right-0 translate-y-[-100%] group-hover:translate-y-0 transition-transform duration-300 z-20 px-3 py-2" style="background:rgba(0,255,65,0.9);">
+                    <div class="absolute top-0 left-0 right-0 translate-y-[-100%] group-hover:translate-y-0 transition-transform duration-300 z-20 px-3 py-2" style="background:var(--accent);">
                       <span class="text-black text-[10px] font-black font-mono tracking-widest">{d.title}</span>
                     </div>
                     <!-- Info panel -->
-                    <div class="absolute bottom-0 left-0 right-0 translate-y-full group-hover:translate-y-0 transition-transform duration-300 z-20 p-3" style="background:rgba(0,0,0,0.92); border-top:1px solid rgba(0,255,65,0.3);">
-                      <p class="text-[10px] font-mono mb-1" style="color:rgba(0,255,65,0.8);">MEDIUM: {d.medium} | {d.year}</p>
-                      <p class="text-[10px] font-mono" style="color:rgba(0,255,65,0.5);">CLICK TO VIEW →</p>
+                    <div class="absolute bottom-0 left-0 right-0 translate-y-full group-hover:translate-y-0 transition-transform duration-300 z-20 p-3" style="background:rgba(0,0,0,0.92); border-top:1px solid var(--border-color);">
+                      <p class="text-[10px] font-mono mb-1" style="color:var(--accent);">MEDIUM: {d.medium} | {d.year}</p>
+                      <p class="text-[10px] font-mono" style="color:var(--text-secondary);">CLICK TO VIEW →</p>
                     </div>
                   </div>
                 </div>
@@ -440,27 +441,27 @@ const C = {
       </div>
 
       <!-- ── THINK Tab ───────────────────────────────────────────────────── -->
-      <div id="tab-think" class="tab-panel" style="background:#000;">
+      <div id="tab-think" class="tab-panel" style="background:var(--bg-base);">
         <div class="max-w-7xl mx-auto px-8 py-14">
           <div class="grid md:grid-cols-2 gap-16 items-start">
 
             <!-- Chess -->
             <div>
-              <p class="font-mono text-xs mb-4" style="color:rgba(0,255,65,0.35); letter-spacing:0.15em;">CURIOSITY & STRATEGY</p>
+              <p class="font-mono text-xs mb-4" style="color:var(--text-secondary); letter-spacing:0.15em;">CURIOSITY & STRATEGY</p>
               <h3 class="text-4xl md:text-5xl font-black glow-text mb-6" style="line-height:1;">CHESS<br>& BOOKS</h3>
 
-              <div class="mb-10 p-6" style="border:1px solid rgba(0,255,65,0.25); background:rgba(0,255,65,0.03);">
+              <div class="mb-10 p-6" style="border:1px solid rgba(0,255,65,0.25); background:transparent;">
                 <div class="flex items-center gap-4 mb-4">
                   <span class="font-mono text-3xl font-black glow-text">♟</span>
                   <div>
                     <div class="font-black text-xl glow-text">CHESS</div>
-                    <div class="font-mono text-xs" style="color:rgba(0,255,65,0.4); letter-spacing:0.1em;">1800 ELO — RAPID</div>
+                    <div class="font-mono text-xs" style="color:var(--text-secondary); letter-spacing:0.1em;">1800 ELO — RAPID</div>
                   </div>
                 </div>
-                <p class="text-sm font-mono mb-3" style="color:rgba(0,204,51,0.75); line-height:1.7;">
+                <p class="text-sm font-mono mb-3" style="color:var(--text-secondary); line-height:1.7;">
                   I've been playing chess seriously for a few years. At 1800 I'm comfortable with most tactical patterns — the gap now is not calculation, it's judgment about when to exchange pieces and when to keep the tension.
                 </p>
-                <p class="text-sm font-mono" style="color:rgba(0,204,51,0.75); line-height:1.7;">
+                <p class="text-sm font-mono" style="color:var(--text-secondary); line-height:1.7;">
                   I study endgames more than openings. Openings are memorized — endgames are understood. That distinction matters.
                 </p>
               </div>
@@ -469,38 +470,38 @@ const C = {
 
             <!-- Books -->
             <div>
-              <p class="font-mono text-xs mb-6" style="color:rgba(0,255,65,0.35); letter-spacing:0.15em;">CURRENTLY READING / HAVE READ</p>
+              <p class="font-mono text-xs mb-6" style="color:var(--text-secondary); letter-spacing:0.15em;">CURRENTLY READING / HAVE READ</p>
 
               <div class="flex flex-col gap-4">
 
-                <div class="book-card p-5" style="border:1px solid rgba(0,255,65,0.2); background:rgba(0,255,65,0.02);">
+                <div class="book-card p-5" style="border:1px solid var(--border-color); background:rgba(0,255,65,0.02);">
                   <div class="flex items-start gap-4">
                     <span class="font-mono font-black text-lg glow-text mt-1">I.</span>
                     <div>
-                      <div class="font-black text-base" style="color:var(--primary-green);">Crime and Punishment</div>
-                      <div class="font-mono text-xs mb-2" style="color:rgba(0,255,65,0.4);">Fyodor Dostoevsky</div>
+                      <div class="font-black text-base" style="color:var(--accent);">Crime and Punishment</div>
+                      <div class="font-mono text-xs mb-2" style="color:var(--text-secondary);">Fyodor Dostoevsky</div>
                       <p class="text-xs font-mono" style="color:rgba(0,204,51,0.65); line-height:1.6;">A man who convinces himself his own logic is airtight, then watches it collapse under the weight of what he can't reason away. The most honest book about arrogance I've read.</p>
                     </div>
                   </div>
                 </div>
 
-                <div class="book-card p-5" style="border:1px solid rgba(0,255,65,0.2); background:rgba(0,255,65,0.02);">
+                <div class="book-card p-5" style="border:1px solid var(--border-color); background:rgba(0,255,65,0.02);">
                   <div class="flex items-start gap-4">
                     <span class="font-mono font-black text-lg glow-text mt-1">II.</span>
                     <div>
-                      <div class="font-black text-base" style="color:var(--primary-green);">Sapiens</div>
-                      <div class="font-mono text-xs mb-2" style="color:rgba(0,255,65,0.4);">Yuval Noah Harari</div>
+                      <div class="font-black text-base" style="color:var(--accent);">Sapiens</div>
+                      <div class="font-mono text-xs mb-2" style="color:var(--text-secondary);">Yuval Noah Harari</div>
                       <p class="text-xs font-mono" style="color:rgba(0,204,51,0.65); line-height:1.6;">Useful for putting everything in context. The agricultural revolution as the greatest con in human history is a framing I think about more than I expected when I first read it.</p>
                     </div>
                   </div>
                 </div>
 
-                <div class="book-card p-5" style="border:1px solid rgba(0,255,65,0.2); background:rgba(0,255,65,0.02);">
+                <div class="book-card p-5" style="border:1px solid var(--border-color); background:rgba(0,255,65,0.02);">
                   <div class="flex items-start gap-4">
                     <span class="font-mono font-black text-lg glow-text mt-1">III.</span>
                     <div>
-                      <div class="font-black text-base" style="color:var(--primary-green);">The Origin of Species</div>
-                      <div class="font-mono text-xs mb-2" style="color:rgba(0,255,65,0.4);">Charles Darwin</div>
+                      <div class="font-black text-base" style="color:var(--accent);">The Origin of Species</div>
+                      <div class="font-mono text-xs mb-2" style="color:var(--text-secondary);">Charles Darwin</div>
                       <p class="text-xs font-mono" style="color:rgba(0,204,51,0.65); line-height:1.6;">Still astonishing that one person observed this much and made it cohere. The argument builds so carefully that by the time you reach the conclusion, it already feels inevitable.</p>
                     </div>
                   </div>
@@ -516,23 +517,23 @@ const C = {
     </section>
 
     <!-- ═══ TRAVELS — SVG World Map ════════════════════════════════════════════ -->
-    <section id="travels" style="background:#000; padding:80px 0 0; border-top:1px solid rgba(0,255,65,0.1);">
+    <section id="travels" style="background:var(--bg-base); padding:80px 0 0; border-top:1px solid var(--border-color);">
       <div class="max-w-7xl mx-auto px-8 pb-10">
         <div class="flex items-end gap-4">
-          <h2 class="text-5xl md:text-7xl font-black kinetic-text glow-text">TRAVELS</h2>
-          <div class="flex-1" style="background:rgba(0,255,65,0.25); height:2px;"></div>
-          <span class="text-3xl font-black" style="color:rgba(0,255,65,0.45);">/{travels.length.toString().padStart(2,'0')}</span>
+          <h2 class="text-5xl md:text-7xl font-black kinetic-text" style="color:var(--text-primary);">TRAVELS</h2>
+          <div class="flex-1" style="background:var(--border-color); height:1px;"></div>
+          <span class="text-xl font-black font-mono" style="color:var(--text-secondary);">/{travels.length.toString().padStart(2,'0')}</span>
         </div>
-        <div id="map-coords" class="font-mono text-xs mt-3" style="color:rgba(0,255,65,0.25); letter-spacing:0.12em;">
+        <div id="map-coords" class="font-mono text-xs mt-3" style="color:var(--text-secondary); opacity:0.5; letter-spacing:0.12em;">
           MOVE CURSOR OVER MAP — LAT: —  LON: —
         </div>
       </div>
 
-      <div style="position:relative; width:100%; overflow:hidden; border-top:1px solid rgba(0,255,65,0.1); border-bottom:1px solid rgba(0,255,65,0.1);">
+      <div style="position:relative; width:100%; overflow:hidden; border-top:1px solid var(--border-color); border-bottom:1px solid var(--border-color);">
         <svg id="travel-map" viewBox="0 0 1000 500" preserveAspectRatio="xMidYMid meet"
-          style="width:100%; max-height:72vh; display:block; background:#020202; cursor:crosshair;">
+          style="width:100%; max-height:72vh; display:block; background:#0A0A0D; cursor:crosshair;">
 
-          <g stroke="rgba(0,255,65,0.05)" stroke-width="0.5" fill="none">
+          <g stroke="rgba(51,51,56,0.8)" stroke-width="0.5" fill="none">
             <line x1="0" y1="79"  x2="1000" y2="79"  />
             <line x1="0" y1="145" x2="1000" y2="145" />
             <line x1="0" y1="182" x2="1000" y2="182" />
@@ -555,7 +556,7 @@ const C = {
             <line x1="917" y1="0" x2="917" y2="500" />
           </g>
 
-          <g style="font-family:monospace; font-size:7px; fill:rgba(0,255,65,0.15);">
+          <g style="font-family:monospace; font-size:7px; fill:rgba(138,138,147,0.4);">
             <text x="6" y="248">0°</text>
             <text x="6" y="143">60°N</text>
             <text x="6" y="213">30°N</text>
@@ -563,7 +564,7 @@ const C = {
             <text x="582" y="10">30°E</text>
           </g>
 
-          <g fill="rgba(0,255,65,0.04)" stroke="rgba(0,255,65,0.12)" stroke-width="0.8" stroke-linejoin="round">
+          <g fill="rgba(30,30,36,0.9)" stroke="rgba(51,51,56,1)" stroke-width="0.8" stroke-linejoin="round">
             <path d={C.northAmerica} />
             <path d={C.southAmerica} />
             <path d={C.greenland} />
@@ -583,7 +584,7 @@ const C = {
           {travels.map(t => (
             <path
               d={`M ${homeBase.x},${homeBase.y} Q ${t.cpx},${t.cpy} ${t.x},${t.y}`}
-              fill="none" stroke="rgba(0,255,65,0.4)" stroke-width="1"
+              fill="none" stroke="rgba(214,255,0,0.3)" stroke-width="1"
               stroke-dasharray="4 8" class="flight-path"
             />
           ))}
@@ -591,15 +592,15 @@ const C = {
           <g class="home-node">
             <circle cx={homeBase.x} cy={homeBase.y} r="3.5" fill="#fff" />
             <circle cx={homeBase.x} cy={homeBase.y} r="3.5" fill="none" stroke="rgba(255,255,255,0.5)" stroke-width="1" class="pulse-home" />
-            <text x={homeBase.x + 7} y={homeBase.y + 3} style="font-family:monospace; font-size:8px; fill:rgba(0,255,65,0.55); letter-spacing:0.08em;">IST [HOME]</text>
+            <text x={homeBase.x + 7} y={homeBase.y + 3} style="font-family:monospace; font-size:8px; fill:rgba(138,138,147,0.7); letter-spacing:0.08em;">IST [HOME]</text>
           </g>
 
           {travels.map(t => (
             <g class="travel-node" data-id={t.id} style="cursor:pointer;">
               <circle cx={t.x} cy={t.y} r="12" fill="rgba(0,0,0,0)" />
-              <circle cx={t.x} cy={t.y} r="3.5" fill="var(--primary-green)" class="node-dot" />
-              <circle cx={t.x} cy={t.y} r="3.5" fill="none" stroke="var(--primary-green)" stroke-width="1" class="pulse-ring" />
-              <text x={t.x + 7} y={t.y + 3} style="font-family:monospace; font-size:8px; fill:rgba(0,255,65,0.45); letter-spacing:0.06em;">{t.city}</text>
+              <circle cx={t.x} cy={t.y} r="3.5" fill="var(--accent)" class="node-dot" />
+              <circle cx={t.x} cy={t.y} r="3.5" fill="none" stroke="var(--accent)" stroke-width="1" class="pulse-ring" />
+              <text x={t.x + 7} y={t.y + 3} style="font-family:monospace; font-size:8px; fill:rgba(214,255,0,0.6); letter-spacing:0.06em;">{t.city}</text>
             </g>
           ))}
         </svg>
@@ -608,11 +609,11 @@ const C = {
       <div class="max-w-7xl mx-auto px-8 py-6 flex gap-8 flex-wrap">
         <div class="flex items-center gap-2">
           <div style="width:8px; height:8px; border-radius:50%; background:#fff;"></div>
-          <span class="font-mono text-[10px]" style="color:rgba(0,255,65,0.3); letter-spacing:0.1em;">HOME BASE</span>
+          <span class="font-mono text-[10px]" style="color:var(--text-secondary); letter-spacing:0.1em;">HOME BASE</span>
         </div>
         <div class="flex items-center gap-2">
-          <div style="width:8px; height:8px; border-radius:50%; background:var(--primary-green);"></div>
-          <span class="font-mono text-[10px]" style="color:rgba(0,255,65,0.3); letter-spacing:0.1em;">VISITED — CLICK TO OPEN PASSPORT</span>
+          <div style="width:8px; height:8px; border-radius:50%; background:var(--accent);"></div>
+          <span class="font-mono text-[10px]" style="color:var(--text-secondary); letter-spacing:0.1em;">VISITED — CLICK TO OPEN PASSPORT</span>
         </div>
       </div>
       <div style="padding-bottom:80px;"></div>
@@ -623,29 +624,29 @@ const C = {
   <!-- ═══ ART LIGHTBOX MODAL ═══════════════════════════════════════════════════ -->
   <div id="art-lightbox" class="fixed inset-0 z-[400] flex items-center justify-center p-4 md:p-8" style="background:rgba(0,0,0,0.95); display:none;">
     <div id="art-lightbox-content" class="relative w-full max-w-5xl max-h-[90vh] flex flex-col md:flex-row overflow-hidden"
-      style="border:2px solid var(--primary-green);">
+      style="border:1px solid var(--border-color);">
       <!-- Image panel -->
       <div class="art-lb-img-wrap flex-shrink-0" style="width:100%; max-width:480px; background:#0a0a0a;">
         <img id="art-lb-img" src="" alt="" style="width:100%; height:100%; object-fit:cover; display:block; min-height:300px; max-height:70vh;" loading="lazy" />
       </div>
       <!-- Info panel -->
-      <div class="art-lb-info flex-1 flex flex-col overflow-y-auto" style="background:#000; padding:40px; border-left:1px solid rgba(0,255,65,0.2);">
-        <div id="art-lb-id" class="font-mono text-xs mb-4" style="color:rgba(0,255,65,0.3); letter-spacing:0.15em;"></div>
+      <div class="art-lb-info flex-1 flex flex-col overflow-y-auto" style="background:var(--bg-base); padding:40px; border-left:1px solid var(--border-color);">
+        <div id="art-lb-id" class="font-mono text-xs mb-4" style="color:var(--text-secondary); letter-spacing:0.15em;"></div>
         <h3 id="art-lb-title" class="font-black text-3xl mb-2 glow-text" style="font-family:'Space Grotesk'; line-height:1;"></h3>
         <div class="flex gap-4 mb-6">
-          <span id="art-lb-medium" class="font-mono text-xs" style="color:rgba(0,255,65,0.45);"></span>
-          <span id="art-lb-year" class="font-mono text-xs" style="color:rgba(0,255,65,0.3);"></span>
+          <span id="art-lb-medium" class="font-mono text-xs" style="color:var(--text-secondary);"></span>
+          <span id="art-lb-year" class="font-mono text-xs" style="color:var(--text-secondary);"></span>
         </div>
-        <div style="height:1px; background:rgba(0,255,65,0.12); margin-bottom:24px;"></div>
-        <p id="art-lb-desc" class="text-sm leading-relaxed flex-1" style="color:rgba(0,204,51,0.85); line-height:1.75;"></p>
+        <div style="height:1px; background:var(--border-color); margin-bottom:24px;"></div>
+        <p id="art-lb-desc" class="text-sm leading-relaxed flex-1" style="color:var(--text-secondary); line-height:1.75;"></p>
         <!-- Handwritten caption -->
-        <div class="mt-8 pt-6" style="border-top:1px solid rgba(0,255,65,0.08);">
-          <p id="art-lb-caption" class="font-handwritten text-xl" style="color:rgba(0,255,65,0.5);"></p>
+        <div class="mt-8 pt-6" style="border-top:1px solid var(--border-color);">
+          <p id="art-lb-caption" class="font-handwritten text-xl" style="color:var(--text-secondary);"></p>
         </div>
       </div>
       <!-- Close -->
       <button id="art-lb-close" class="absolute top-4 right-4 font-mono text-sm font-bold"
-        style="color:rgba(0,255,65,0.5); background:none; border:none; cursor:pointer; letter-spacing:0.1em; z-index:10;">
+        style="color:var(--text-secondary); background:none; border:none; cursor:pointer; letter-spacing:0.1em; z-index:10;">
         × CLOSE
       </button>
     </div>
@@ -653,27 +654,27 @@ const C = {
 
   <!-- ═══ PASSPORT CARD ════════════════════════════════════════════════════════ -->
   <div id="passport-card" class="fixed top-0 right-0 h-full z-[300] pointer-events-none" style="width:min(420px,100vw);">
-    <div class="relative h-full flex flex-col" style="background:#050505; border-left:1px solid rgba(0,255,65,0.2);">
-      <div id="passport-photo-wrap" style="height:280px; overflow:hidden; border-bottom:1px solid rgba(0,255,65,0.1); position:relative; background:#0a0a0a; flex-shrink:0;">
+    <div class="relative h-full flex flex-col" style="background:var(--bg-surface); border-left:1px solid var(--border-color);">
+      <div id="passport-photo-wrap" style="height:280px; overflow:hidden; border-bottom:1px solid var(--border-color); position:relative; background:#0a0a0a; flex-shrink:0;">
         <img id="passport-img" src="" alt="" style="width:100%;height:100%;object-fit:cover;display:none;filter:grayscale(1) contrast(1.15);" loading="lazy" />
         <div id="passport-no-photo" class="absolute inset-0 flex flex-col items-center justify-center gap-2">
-          <span class="font-mono text-xs" style="color:rgba(0,255,65,0.15);">[ NO PHOTO YET ]</span>
+          <span class="font-mono text-xs" style="color:var(--text-secondary); opacity:0.4;">[ NO PHOTO YET ]</span>
         </div>
-        <div class="absolute top-4 left-4 px-3 py-1" style="background:rgba(0,255,65,0.15); border:1px solid rgba(0,255,65,0.3);">
-          <span id="passport-status" class="font-mono text-[10px] font-bold" style="color:var(--primary-green); letter-spacing:0.15em;"></span>
+        <div class="absolute top-4 left-4 px-3 py-1" style="background:rgba(214,255,0,0.08); border:1px solid var(--border-color);">
+          <span id="passport-status" class="font-mono text-[10px] font-bold" style="color:var(--accent); letter-spacing:0.15em;"></span>
         </div>
       </div>
       <div style="padding:32px; flex:1; overflow:auto;">
         <div style="border-bottom:1px solid rgba(0,255,65,0.08); padding-bottom:20px; margin-bottom:20px;">
-          <div id="passport-date" class="font-mono text-[10px] mb-4" style="color:rgba(0,255,65,0.3); letter-spacing:0.15em;"></div>
+          <div id="passport-date" class="font-mono text-[10px] mb-4" style="color:var(--text-secondary); letter-spacing:0.15em;"></div>
           <div id="passport-city" class="font-black glow-text" style="font-family:'Space Grotesk'; font-size:clamp(32px,8vw,52px); line-height:1; margin-bottom:4px;"></div>
-          <div id="passport-country" class="font-mono text-xs" style="color:rgba(0,255,65,0.35); letter-spacing:0.1em;"></div>
+          <div id="passport-country" class="font-mono text-xs" style="color:var(--text-secondary); letter-spacing:0.1em;"></div>
         </div>
-        <p id="passport-memory" class="font-mono text-sm" style="color:rgba(0,204,51,0.6); line-height:1.7; font-style:italic;"></p>
-        <div id="passport-coords" class="font-mono text-[10px] mt-6" style="color:rgba(0,255,65,0.35); letter-spacing:0.1em;"></div>
+        <p id="passport-memory" class="font-mono text-sm" style="color:var(--text-secondary); line-height:1.7; font-style:italic;"></p>
+        <div id="passport-coords" class="font-mono text-[10px] mt-6" style="color:var(--text-secondary); letter-spacing:0.1em;"></div>
       </div>
       <button id="passport-close" class="absolute top-4 right-4 font-mono text-xs"
-        style="color:rgba(0,255,65,0.35); background:none; border:none; cursor:pointer; letter-spacing:0.1em;">
+        style="color:var(--text-secondary); background:none; border:none; cursor:pointer; letter-spacing:0.1em;">
         × CLOSE
       </button>
     </div>
@@ -685,23 +686,23 @@ const C = {
 <style>
   /* ── Tab navigation ──────────────────────────────────────────────────────── */
   .tab-btn {
-    font-family: monospace;
-    font-size: 13px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
     font-weight: 700;
-    letter-spacing: 0.12em;
-    color: rgba(0,255,65,0.35);
+    letter-spacing: 0.14em;
+    color: var(--text-secondary);
     background: transparent;
     border: none;
-    border-bottom: 3px solid transparent;
+    border-bottom: 2px solid transparent;
     padding: 14px 28px;
     cursor: pointer;
     transition: color 0.2s ease, border-color 0.2s ease;
-    margin-bottom: -2px;
+    margin-bottom: -1px;
   }
-  .tab-btn:hover { color: rgba(0,255,65,0.7); }
+  .tab-btn:hover { color: var(--text-primary); }
   .tab-btn.active {
-    color: var(--primary-green);
-    border-bottom-color: var(--primary-green);
+    color: var(--accent);
+    border-bottom-color: var(--accent);
   }
 
   /* ── Tab panels ──────────────────────────────────────────────────────────── */
@@ -710,27 +711,27 @@ const C = {
 
   /* ── Sport cards ─────────────────────────────────────────────────────────── */
   .sport-card {
-    transition: border-color 0.25s ease, background 0.25s ease;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
   }
   .sport-card:hover {
-    border-color: rgba(0,255,65,0.5) !important;
-    background: rgba(0,255,65,0.06) !important;
+    border-color: var(--accent) !important;
+    box-shadow: 0 0 10px var(--accent-glow) !important;
   }
 
   /* ── Book cards ──────────────────────────────────────────────────────────── */
   .book-card {
-    transition: border-color 0.25s ease, background 0.25s ease;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
   }
   .book-card:hover {
-    border-color: rgba(0,255,65,0.4) !important;
-    background: rgba(0,255,65,0.05) !important;
+    border-color: var(--accent) !important;
+    box-shadow: 0 0 10px var(--accent-glow) !important;
   }
 
   /* ── Art Gallery ─────────────────────────────────────────────────────────── */
   .art-bg-grid {
     background-image:
-      linear-gradient(rgba(0,255,65,0.04) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(0,255,65,0.04) 1px, transparent 1px);
+      linear-gradient(rgba(214,255,0,0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(214,255,0,0.025) 1px, transparent 1px);
     background-size: 48px 48px;
   }
 
@@ -742,8 +743,8 @@ const C = {
 
   .art-item:hover .art-img   { filter: brightness(1) contrast(1.05) grayscale(0) !important; }
   .art-item:hover .art-grain { opacity: 0 !important; }
-  .art-item:hover            { transform: scale(1.04); }
-  .art-item:hover .art-frame { border-color: rgba(0,255,65,0.6) !important; box-shadow: 0 0 20px rgba(0,255,65,0.15); }
+  .art-item:hover            { transform: scale(1.03); }
+  .art-item:hover .art-frame { border-color: var(--accent) !important; box-shadow: 0 0 12px var(--accent-glow); }
 
   #art-viewport.grabbing { cursor: grabbing; }
 
@@ -784,7 +785,7 @@ const C = {
   }
 
   .travel-node:hover .node-dot { opacity: 1; }
-  .travel-node:hover text { fill: rgba(0,255,65,0.8) !important; }
+  .travel-node:hover text { fill: rgba(214,255,0,0.9) !important; }
 
   /* ── Art Lightbox ────────────────────────────────────────────────────────── */
   #art-lightbox.active { display: flex !important; }

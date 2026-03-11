@@ -18,17 +18,13 @@ const { title } = Astro.props;
     <title>{title}</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700;900&family=Inter:wght@400;500;600;800&family=Caveat:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700;900&family=Inter:wght@400;500;600;800&family=JetBrains+Mono:wght@400;500;700&family=Caveat:wght@400;600&display=swap" rel="stylesheet">
   </head>
-  <body class="min-h-screen" style="background:#000000; color:var(--primary-green);">
+  <body class="min-h-screen" style="background:var(--bg-base); color:var(--text-primary);">
     <div class="fixed inset-0 grid-bg pointer-events-none z-0"></div>
 
-    <!-- DNA Helix canvas — dim background layer -->
-    <canvas id="dna-canvas" class="fixed inset-0 pointer-events-none z-[1]" style="mix-blend-mode: screen; opacity: 0.18;"></canvas>
-
-    <!-- Frosted depth layer: softly blurs DNA into background -->
-    <div class="fixed inset-0 pointer-events-none z-[2]"
-      style="backdrop-filter: blur(1.5px); -webkit-backdrop-filter: blur(1.5px); background: rgba(0,0,0,0.12);"></div>
+    <!-- DNA Helix canvas — sits behind all solid panels -->
+    <canvas id="dna-canvas" class="fixed inset-0 pointer-events-none z-[1]" style="mix-blend-mode: screen; opacity: 0.22;"></canvas>
 
     <div id="main-content" class="relative z-10 min-h-screen flex flex-col">
       <slot />
@@ -99,10 +95,10 @@ const { title } = Astro.props;
               const bright = i === 0 ? 1 : fade * 0.85;
               ctx.globalAlpha = alpha * bright;
               // Lead char: bright white-green; trail: dim green
-              ctx.fillStyle = i === 0 ? '#aaffaa' : '#00FF41';
+              ctx.fillStyle = i === 0 ? '#c8d0d8' : '#6a7a8a';
               if (i === 0) {
-                ctx.shadowColor = '#00FF41';
-                ctx.shadowBlur  = 8;
+                ctx.shadowColor = '#00E5FF';
+                ctx.shadowBlur  = 6;
               } else {
                 ctx.shadowBlur = 0;
               }
@@ -153,18 +149,18 @@ const { title } = Astro.props;
           for (let i = 0; i <= segs; i += 5) {
             const a = s1[i], b = s2[i];
             const d = (a.depth + b.depth) / 2;
-            ctx.globalAlpha = alpha * (0.1 + d * 0.35);
-            ctx.strokeStyle = '#00FF41';
-            ctx.lineWidth   = 1.5 + d * 3;
-            ctx.shadowColor = 'rgba(0,255,65,0.3)';
-            ctx.shadowBlur  = d > 0.5 ? 4 : 0;
+            ctx.globalAlpha = alpha * (0.08 + d * 0.28);
+            ctx.strokeStyle = '#4A6080';
+            ctx.lineWidth   = 1 + d * 2.5;
+            ctx.shadowColor = 'rgba(0,229,255,0.2)';
+            ctx.shadowBlur  = d > 0.5 ? 3 : 0;
             ctx.beginPath();
             ctx.moveTo(a.x, a.y);
             ctx.lineTo(b.x, b.y);
             ctx.stroke();
             if (i % 10 === 0) {
-              ctx.globalAlpha = alpha * d * 0.55;
-              ctx.fillStyle   = '#00FF41';
+              ctx.globalAlpha = alpha * d * 0.35;
+              ctx.fillStyle   = '#6A8AA0';
               ctx.shadowBlur  = 0;
               ctx.font        = 'bold 9px monospace';
               ctx.textAlign   = 'center';
@@ -179,11 +175,11 @@ const { title } = Astro.props;
             const a  = 0.18 + seg.d * 0.72;
 
             // Neon glow on front-facing segments
-            ctx.shadowColor = '#00FF41';
-            ctx.shadowBlur  = seg.d > 0.65 ? 10 : (seg.d > 0.4 ? 4 : 0);
+            ctx.shadowColor = '#00E5FF';
+            ctx.shadowBlur  = seg.d > 0.65 ? 8 : (seg.d > 0.4 ? 3 : 0);
             ctx.globalAlpha = alpha * a;
             ctx.lineWidth   = lw;
-            ctx.strokeStyle = '#00FF41';
+            ctx.strokeStyle = seg.d > 0.55 ? '#5A7A95' : '#3A4E60';
             ctx.beginPath();
             ctx.moveTo(seg.p.x, seg.p.y);
             ctx.lineTo(seg.q.x, seg.q.y);
@@ -192,9 +188,9 @@ const { title } = Astro.props;
             // Bright specular highlight on front-facing segments
             if (seg.d > 0.5) {
               ctx.shadowBlur  = 0;
-              ctx.globalAlpha = alpha * (seg.d - 0.5) * 0.6;
-              ctx.lineWidth   = Math.max(1.5, lw * 0.22);
-              ctx.strokeStyle = 'rgba(180,255,180,0.85)';
+              ctx.globalAlpha = alpha * (seg.d - 0.5) * 0.5;
+              ctx.lineWidth   = Math.max(1, lw * 0.18);
+              ctx.strokeStyle = 'rgba(160,210,230,0.7)';
               ctx.beginPath();
               ctx.moveTo(seg.p.x - 2.5, seg.p.y);
               ctx.lineTo(seg.q.x - 2.5, seg.q.y);

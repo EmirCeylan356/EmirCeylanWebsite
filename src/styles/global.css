@@ -1,25 +1,37 @@
 @import "tailwindcss";
 
-/* ── CSS Custom Properties ────────────────────────────────────── */
+/* ── Y2K Cyber-Brutalism Design System ────────────────────────── */
 :root {
-  --primary-green:  #00FF41;
-  --green-dim:      #00CC33;
-  --green-dark:     #004d14;
-  --green-faint:    rgba(0, 255, 65, 0.15);
-  --bg-black:       #000000;
-  --bg-panel:       #050505;
-  --bg-card:        #0a0a0a;
+  /* Color palette */
+  --bg-base:       #0C0C0F;
+  --bg-surface:    #16161A;
+  --bg-elevated:   #1E1E24;
+  --text-primary:  #E2E2E6;
+  --text-secondary:#8A8A93;
+  --accent:        #D6FF00;
+  --accent-dim:    rgba(214,255,0,0.6);
+  --accent-glow:   rgba(214,255,0,0.2);
+  --border-color:  #333338;
+  --border-accent: #D6FF00;
+
+  /* Legacy aliases — keeps old references working */
+  --primary-green: #D6FF00;
+  --green-dim:     #B8D900;
+  --bg-black:      #0C0C0F;
+  --bg-panel:      #16161A;
+  --bg-card:       #1E1E24;
 }
 
 @theme {
-  --color-bg:            #000000;
-  --color-bg-dark:       #050505;
-  --color-accent:        #00FF41;
-  --color-accent-bright: #00FF41;
-  --color-text:          #00FF41;
-  --color-text-light:    #00FF41;
+  --color-bg:            #0C0C0F;
+  --color-bg-dark:       #16161A;
+  --color-accent:        #D6FF00;
+  --color-accent-bright: #D6FF00;
+  --color-text:          #E2E2E6;
+  --color-text-light:    #8A8A93;
 }
 
+/* ── Reset ──────────────────────────────────────────────────────── */
 * {
   margin: 0;
   padding: 0;
@@ -32,11 +44,17 @@ html {
   overflow-x: clip;
 }
 
+::selection {
+  background: var(--accent);
+  color: #000;
+}
+
+/* ── Base Typography ─────────────────────────────────────────────── */
 body {
-  font-family: 'Inter', sans-serif;
+  font-family: 'Inter', 'DM Sans', sans-serif;
   font-weight: 500;
-  background-color: var(--bg-black);
-  color: var(--primary-green);
+  background-color: var(--bg-base);
+  color: var(--text-primary);
   letter-spacing: 0.01em;
   line-height: 1.7;
 }
@@ -45,16 +63,25 @@ h1, h2, h3, h4, h5, h6 {
   font-family: 'Space Grotesk', sans-serif;
   font-weight: 700;
   letter-spacing: 0.02em;
+  color: var(--text-primary);
 }
 
-/* All green text gets slight letter-spacing to prevent bleed */
+p {
+  line-height: 1.7;
+  color: var(--text-primary);
+}
+
 p, span, li, a, label, div {
   font-weight: 500;
 }
 
-/* Paragraphs always 1.7 line-height */
-p {
-  line-height: 1.7;
+/* Monospace / terminal elements */
+.font-mono,
+code,
+pre,
+[class*="font-mono"] {
+  font-family: 'JetBrains Mono', 'IBM Plex Mono', monospace !important;
+  font-weight: 500;
 }
 
 /* Handwritten font for captions */
@@ -64,139 +91,161 @@ p {
   letter-spacing: 0.03em;
 }
 
-/* ── Grid Background ─────────────────────────────────────────── */
+/* ── Brutalist Panel System ──────────────────────────────────────── */
+.panel {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  padding: 2rem;
+  border-radius: 0;
+  position: relative;
+}
+
+.panel-elevated {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-color);
+  padding: 2rem;
+  border-radius: 0;
+}
+
+/* ── Cut-corner Clip-Path Utility ───────────────────────────────── */
+.cut-corner {
+  clip-path: polygon(12px 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%, 0 12px);
+}
+.cut-corner-sm {
+  clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px);
+}
+
+/* ── Accent / Glow Utilities ─────────────────────────────────────── */
+.glow-text {
+  color: var(--accent);
+  text-shadow:
+    0 0 6px rgba(214,255,0,0.5),
+    0 0 18px rgba(214,255,0,0.25);
+}
+
+.accent-text { color: var(--accent); }
+.secondary-text { color: var(--text-secondary); }
+
+/* ── Grid Background ─────────────────────────────────────────────── */
 .grid-bg {
   background-image:
-    linear-gradient(rgba(0,255,65,0.07) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0,255,65,0.07) 1px, transparent 1px);
-  background-size: 50px 50px;
+    linear-gradient(rgba(214,255,0,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(214,255,0,0.03) 1px, transparent 1px);
+  background-size: 60px 60px;
 }
 
-/* ── Scan-line overlay (terminal effect) ─────────────────────── */
-.scanline-overlay {
-  background: repeating-linear-gradient(
-    0deg,
-    transparent,
-    transparent 2px,
-    rgba(0, 255, 65, 0.018) 2px,
-    rgba(0, 255, 65, 0.018) 4px
-  );
-  pointer-events: none;
-  animation: scanlineScroll 10s linear infinite;
-}
-
-@keyframes scanlineScroll {
-  from { background-position: 0 0; }
-  to   { background-position: 0 -200px; }
-}
-
-/* ── Binary decoration ───────────────────────────────────────── */
-.binary-border {
-  background: repeating-linear-gradient(
-    90deg,
-    var(--primary-green) 0px,
-    var(--primary-green) 2px,
-    transparent 2px,
-    transparent 10px
-  );
-}
-
-/* ── Kinetic typography ──────────────────────────────────────── */
+/* ── Kinetic Typography ──────────────────────────────────────────── */
 .kinetic-text {
   text-transform: uppercase;
   letter-spacing: -0.02em;
   line-height: 0.9;
 }
 
-/* ── Neon glow helper ────────────────────────────────────────── */
-.glow-text {
-  color: var(--primary-green);
-  text-shadow:
-    0 0 4px var(--primary-green),
-    0 0 14px rgba(0,255,65,0.5);
-}
-
-/* ── Card hover effect ───────────────────────────────────────── */
-.project-card {
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-.project-card:hover {
-  transform: translateY(-10px) rotateX(5deg);
-  box-shadow: 20px 20px 0px var(--primary-green);
-}
-
-/* ── LinkedIn link ───────────────────────────────────────────── */
-.work-content a.linkedin-link {
-  color: var(--primary-green);
-  text-decoration: underline;
-  font-weight: bold;
-}
-
-/* ── Work cards (Matrix theme) ───────────────────────────────── */
+/* ── Work Cards (Brutalist Panel Style) ─────────────────────────── */
 .work-card {
-  border: 4px solid var(--primary-green) !important;
-  color: var(--primary-green) !important;
-  background: transparent !important;
-  transition: background 0.25s ease, color 0.25s ease, box-shadow 0.25s ease;
+  background: var(--bg-surface) !important;
+  border: 1px solid var(--border-color) !important;
+  color: var(--text-primary) !important;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 .work-card:hover {
-  background: var(--primary-green) !important;
-  color: #000 !important;
-  box-shadow: 8px 8px 0 rgba(0,255,65,0.4) !important;
+  border-color: var(--accent) !important;
+  box-shadow: 0 0 12px var(--accent-glow) !important;
+  background: var(--bg-surface) !important;
+  color: var(--text-primary) !important;
 }
 .work-card:hover p,
 .work-card:hover span,
 .work-card:hover .opacity-70 {
-  color: rgba(0,0,0,0.8) !important;
+  color: var(--text-primary) !important;
   opacity: 1 !important;
 }
 
-/* ── Skill boxes (Matrix theme) ──────────────────────────────── */
+/* ── Skill Boxes ─────────────────────────────────────────────────── */
 .skill-box {
-  border-color: var(--primary-green) !important;
-  background: transparent !important;
-  color: var(--primary-green) !important;
+  border-color: var(--border-color) !important;
+  background: var(--bg-surface) !important;
+  color: var(--text-primary) !important;
 }
 .skill-box .skill-header {
-  color: var(--primary-green) !important;
+  color: var(--text-primary) !important;
 }
 .skill-box .skill-header:hover {
-  background: var(--primary-green) !important;
+  background: var(--accent) !important;
   color: #000 !important;
 }
 .skill-box .skill-body span {
   background: transparent !important;
-  color: var(--green-dim) !important;
-  border-color: rgba(0,255,65,0.18) !important;
+  color: var(--text-secondary) !important;
+  border-color: var(--border-color) !important;
 }
 
-/* ── Smooth reveal ───────────────────────────────────────────── */
+/* ── Reveal Animation ────────────────────────────────────────────── */
 .reveal {
   opacity: 0;
-  transform: translateY(50px);
-  transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  transform: translateY(40px);
+  transition: all 0.7s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .reveal.visible {
   opacity: 1;
   transform: translateY(0);
 }
 
-/* ── Float ───────────────────────────────────────────────────── */
+/* ── Float ───────────────────────────────────────────────────────── */
 @keyframes float {
   0%, 100% { transform: translateY(0); }
-  50%       { transform: translateY(-20px); }
+  50%       { transform: translateY(-16px); }
 }
 .float { animation: float 6s ease-in-out infinite; }
 
-/* ── Stagger ─────────────────────────────────────────────────── */
-.stagger > * { opacity: 0; transform: translateY(30px); }
-.stagger.visible > *:nth-child(1) { animation: fadeInUp 0.6s ease forwards 0.1s; }
-.stagger.visible > *:nth-child(2) { animation: fadeInUp 0.6s ease forwards 0.2s; }
-.stagger.visible > *:nth-child(3) { animation: fadeInUp 0.6s ease forwards 0.3s; }
-.stagger.visible > *:nth-child(4) { animation: fadeInUp 0.6s ease forwards 0.4s; }
-.stagger.visible > *:nth-child(5) { animation: fadeInUp 0.6s ease forwards 0.5s; }
-.stagger.visible > *:nth-child(6) { animation: fadeInUp 0.6s ease forwards 0.6s; }
+/* ── Stagger ─────────────────────────────────────────────────────── */
+.stagger > * { opacity: 0; transform: translateY(24px); }
+.stagger.visible > *:nth-child(1) { animation: fadeInUp 0.5s ease forwards 0.1s; }
+.stagger.visible > *:nth-child(2) { animation: fadeInUp 0.5s ease forwards 0.2s; }
+.stagger.visible > *:nth-child(3) { animation: fadeInUp 0.5s ease forwards 0.3s; }
+.stagger.visible > *:nth-child(4) { animation: fadeInUp 0.5s ease forwards 0.4s; }
+.stagger.visible > *:nth-child(5) { animation: fadeInUp 0.5s ease forwards 0.5s; }
+.stagger.visible > *:nth-child(6) { animation: fadeInUp 0.5s ease forwards 0.6s; }
 
 @keyframes fadeInUp {
   to { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Binary decoration strip ─────────────────────────────────────── */
+.binary-border {
+  background: repeating-linear-gradient(
+    90deg,
+    var(--border-color) 0px,
+    var(--border-color) 2px,
+    transparent 2px,
+    transparent 10px
+  );
+}
+
+/* ── Scanline overlay (subtle, stays for ART tab vibe) ──────────── */
+.scanline-overlay {
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(214,255,0,0.01) 2px,
+    rgba(214,255,0,0.01) 4px
+  );
+  pointer-events: none;
+}
+
+/* ── Project card (legacy) ───────────────────────────────────────── */
+.project-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.project-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 0 20px var(--accent-glow);
+}
+
+/* ── LinkedIn link ───────────────────────────────────────────────── */
+.work-content a.linkedin-link {
+  color: var(--accent);
+  text-decoration: underline;
+  font-weight: bold;
 }
