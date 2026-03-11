@@ -24,9 +24,7 @@ const { title } = Astro.props;
     <div class="fixed inset-0 grid-bg pointer-events-none z-0"></div>
 
     <!-- DNA Helix canvas background -->
-    <canvas id="dna-canvas" class="fixed inset-0 pointer-events-none z-[1]" style="mix-blend-mode: multiply; opacity: 0.62;"></canvas>
-
-    <canvas id="fisheye-canvas" class="fixed pointer-events-none z-[2]" style="display:none;"></canvas>
+    <canvas id="dna-canvas" class="fixed inset-0 pointer-events-none z-[1]" style="mix-blend-mode: multiply; opacity: 0.55;"></canvas>
     
     <!-- Contrast Toggle -->
     <button 
@@ -71,93 +69,6 @@ const { title } = Astro.props;
         });
       }
       
-      // Fisheye grid distortion canvas
-      const fisheyeCanvas = document.getElementById('fisheye-canvas');
-      if (fisheyeCanvas) {
-        const ctx = fisheyeCanvas.getContext('2d');
-        const R = 180;       // lens radius px
-        const SIZE = R * 2 + 4;
-        const GRID = 50;     // must match .grid-bg background-size
-        fisheyeCanvas.width = SIZE;
-        fisheyeCanvas.height = SIZE;
-        let mx = -1000, my = -1000, raf = null;
-
-        function drawFisheye() {
-          const cx = SIZE / 2, cy = SIZE / 2;
-          const isContrast = document.body.classList.contains('contrast-mode');
-          const bgFill  = isContrast ? '#000000' : '#f40c3f';
-          const lineCol = isContrast ? 'rgba(0,255,0,0.2)' : 'rgba(0,0,0,0.15)';
-
-          ctx.clearRect(0, 0, SIZE, SIZE);
-
-          // Clip to circle
-          ctx.save();
-          ctx.beginPath();
-          ctx.arc(cx, cy, R, 0, Math.PI * 2);
-          ctx.clip();
-
-          // Cover static grid underneath
-          ctx.fillStyle = bgFill;
-          ctx.fillRect(0, 0, SIZE, SIZE);
-
-          ctx.strokeStyle = lineCol;
-          ctx.lineWidth = 1;
-
-          // Align grid to cursor position so lines match the static background
-          const ox = ((mx % GRID) + GRID) % GRID;
-          const oy = ((my % GRID) + GRID) % GRID;
-
-          // Barrel warp: points pushed outward from center, strongest at centre
-          function warp(px, py) {
-            const dx = px - cx, dy = py - cy;
-            const r = Math.sqrt(dx * dx + dy * dy);
-            if (r >= R || r < 0.01) return [px, py];
-            const n = r / R;
-            const rOut = r * (1 + Math.pow(1 - n, 2.2) * 0.9);
-            return [cx + (dx / r) * rOut, cy + (dy / r) * rOut];
-          }
-
-          // Cover enough lines across the full lens diameter (R can span ~4 grid cells)
-          const spread = (Math.ceil(R / GRID) + 1) * GRID;
-
-          // Trace vertical grid lines through the lens
-          for (let gx = -ox - spread; gx <= R + GRID; gx += GRID) {
-            ctx.beginPath();
-            let first = true;
-            for (let gy = -R; gy <= R; gy += 3) {
-              const [px, py] = warp(cx + gx, cy + gy);
-              first ? (ctx.moveTo(px, py), first = false) : ctx.lineTo(px, py);
-            }
-            ctx.stroke();
-          }
-
-          // Trace horizontal grid lines through the lens
-          for (let gy = -oy - spread; gy <= R + GRID; gy += GRID) {
-            ctx.beginPath();
-            let first = true;
-            for (let gx = -R; gx <= R; gx += 3) {
-              const [px, py] = warp(cx + gx, cy + gy);
-              first ? (ctx.moveTo(px, py), first = false) : ctx.lineTo(px, py);
-            }
-            ctx.stroke();
-          }
-
-          ctx.restore();
-          // No rim border
-
-          raf = null;
-        }
-
-        document.addEventListener('mousemove', (e) => {
-          mx = e.clientX; my = e.clientY;
-          fisheyeCanvas.style.left = (mx - SIZE / 2) + 'px';
-          fisheyeCanvas.style.top  = (my - SIZE / 2) + 'px';
-          fisheyeCanvas.style.display = 'block';
-          if (!raf) raf = requestAnimationFrame(drawFisheye);
-        });
-        document.addEventListener('mouseleave', () => { fisheyeCanvas.style.display = 'none'; });
-      }
-
       // ── DNA Helix → Code Rain canvas background ──────────────────────────
       (function() {
         const cv = document.getElementById('dna-canvas');
@@ -202,20 +113,20 @@ const { title } = Astro.props;
           if (alpha <= 0) return;
           cols.forEach(col => {
             col.y += col.speed;
-            if (col.y > H + col.trail * 18) col.y = -col.trail * 18;
+            if (col.y > H + col.trail * 22) col.y = -col.trail * 22;
             col.tick++;
-            if (col.tick % 8 === 0) {
+            if (col.tick % 6 === 0) {
               const idx = Math.floor(Math.random() * col.chars.length);
               col.chars[idx] = CHARS[Math.floor(Math.random() * CHARS.length)];
             }
             col.chars.forEach((ch, i) => {
-              const y = col.y - i * 18;
+              const y = col.y - i * 22;
               if (y < 0 || y > H) return;
               const fade = 1 - i / col.trail;
-              const bright = i === 0 ? 1 : fade * 0.8;
+              const bright = i === 0 ? 1 : fade * 0.85;
               ctx.globalAlpha = alpha * bright;
-              ctx.fillStyle = i === 0 ? '#fff' : '#000';
-              ctx.font = `${i === 0 ? 13 : 11}px monospace`;
+              ctx.fillStyle = '#000';
+              ctx.font = `bold ${i === 0 ? 17 : 14}px monospace`;
               ctx.fillText(ch, col.x, y);
             });
           });
@@ -227,10 +138,10 @@ const { title } = Astro.props;
         function drawHelix(alpha) {
           if (alpha <= 0) return;
           const cx   = W / 2;
-          const amp  = Math.min(W * 0.13, 130);   // strand spread
-          const freq = 2.8;                         // coils visible
-          const segs = 140;
-          const rot  = time * 0.55;                // spin speed
+          const amp  = Math.min(W * 0.14, 145);
+          const freq = 2.8;
+          const segs = 160;
+          const rot  = time * 0.55;
 
           const s1 = [], s2 = [];
           for (let i = 0; i <= segs; i++) {
@@ -238,78 +149,113 @@ const { title } = Astro.props;
             const y     = -10 + t * (H + 20);
             const angle = t * Math.PI * 2 * freq + rot;
             const cosA  = Math.cos(angle);
-            const depth = (cosA + 1) / 2;          // 0 = back, 1 = front
-            s1.push({ x: cx + amp * cosA,  y, depth });
-            s2.push({ x: cx - amp * cosA,  y, depth: 1 - depth });
+            const depth = (cosA + 1) / 2;
+            s1.push({ x: cx + amp * cosA, y, depth });
+            s2.push({ x: cx - amp * cosA, y, depth: 1 - depth });
           }
 
-          // Rungs + base pair labels
+          ctx.lineCap  = 'round';
+          ctx.lineJoin = 'round';
+
+          // Helper: draw one tube pass (body + highlight)
+          function tubePath(pts, minD, maxD) {
+            ctx.beginPath();
+            let drawing = false;
+            pts.forEach((p, i) => {
+              if (p.depth >= minD && p.depth <= maxD) {
+                drawing ? ctx.lineTo(p.x, p.y) : ctx.moveTo(p.x, p.y);
+                drawing = true;
+              } else {
+                if (drawing) ctx.stroke();
+                ctx.beginPath();
+                drawing = false;
+              }
+            });
+            if (drawing) ctx.stroke();
+          }
+
+          // ── Rungs (drawn before strands so strands sit on top) ────────────
           const BASES = ['A','T','G','C','A','T','G','C'];
           for (let i = 0; i <= segs; i += 5) {
             const a = s1[i], b = s2[i];
             const d = (a.depth + b.depth) / 2;
-            ctx.globalAlpha = alpha * (d * 0.65 + 0.18);
+            // Shadow rung
+            ctx.globalAlpha = alpha * (d * 0.5 + 0.1);
             ctx.strokeStyle = '#000';
-            ctx.lineWidth   = 2 + d * 2.5;
+            ctx.lineWidth   = 4 + d * 5;
+            ctx.shadowColor = 'rgba(0,0,0,0.25)';
+            ctx.shadowBlur  = 4;
             ctx.beginPath();
             ctx.moveTo(a.x, a.y);
             ctx.lineTo(b.x, b.y);
             ctx.stroke();
-
-            // Label at rung midpoint when facing front-ish
-            if (i % 10 === 0 && d > 0.55) {
-              const mx = (a.x + b.x) / 2;
-              const ch = BASES[(i / 5) % BASES.length];
-              ctx.globalAlpha = alpha * d * 0.9;
+            // Highlight rung
+            ctx.globalAlpha = alpha * d * 0.3;
+            ctx.strokeStyle = 'rgba(90,90,90,0.9)';
+            ctx.lineWidth   = 1.5;
+            ctx.shadowBlur  = 0;
+            ctx.beginPath();
+            ctx.moveTo(a.x - 2, a.y);
+            ctx.lineTo(b.x - 2, b.y);
+            ctx.stroke();
+            // Base labels
+            if (i % 10 === 0 && d > 0.6) {
+              const lx = (a.x + b.x) / 2;
+              ctx.globalAlpha = alpha * d * 0.85;
               ctx.fillStyle   = '#000';
-              ctx.font        = 'bold 9px monospace';
+              ctx.font        = 'bold 11px monospace';
               ctx.textAlign   = 'center';
-              ctx.fillText(ch, mx, a.y - 2);
+              ctx.fillText(BASES[(i / 5) % BASES.length], lx, a.y - 2);
               ctx.textAlign   = 'left';
             }
           }
 
-          // Back strand (lower z-order, dimmer)
-          ctx.globalAlpha = alpha * 0.5;
-          ctx.strokeStyle = '#000';
-          ctx.lineWidth   = 3;
-          ctx.beginPath();
-          s1.forEach((p, i) => {
-            if (p.depth < 0.5) { i === 0 || p.depth < s1[i-1]?.depth ? ctx.moveTo(p.x, p.y) : ctx.lineTo(p.x, p.y); }
-            else ctx.moveTo(p.x, p.y);
-          });
-          ctx.stroke();
-
-          ctx.beginPath();
-          s2.forEach((p, i) => {
-            if (p.depth < 0.5) { i === 0 || p.depth < s2[i-1]?.depth ? ctx.moveTo(p.x, p.y) : ctx.lineTo(p.x, p.y); }
-            else ctx.moveTo(p.x, p.y);
-          });
-          ctx.stroke();
-
-          // Front strand (solid)
-          function drawStrand(pts, baseAlpha) {
-            let inSeg = false;
+          // ── Back strands (depth < 0.5) ────────────────────────────────────
+          ctx.shadowBlur = 0;
+          [[s1, 1], [s2, 0.8]].forEach(([pts, aScale]) => {
+            // Tube body
+            ctx.globalAlpha = alpha * aScale * 0.45;
+            ctx.strokeStyle = '#000';
+            ctx.lineWidth   = 10;
+            tubePath(pts, 0, 0.5);
+            // Tube highlight
+            ctx.globalAlpha = alpha * aScale * 0.2;
+            ctx.strokeStyle = 'rgba(70,70,70,0.8)';
+            ctx.lineWidth   = 3;
             ctx.beginPath();
-            pts.forEach((p, i) => {
-              if (p.depth >= 0.5) {
-                ctx.globalAlpha = baseAlpha * alpha * (0.55 + p.depth * 0.45);
-                inSeg ? ctx.lineTo(p.x, p.y) : ctx.moveTo(p.x, p.y);
-                inSeg = true;
-              } else {
-                if (inSeg) ctx.stroke();
-                ctx.beginPath();
-                inSeg = false;
-              }
+            pts.filter(p => p.depth < 0.5).forEach((p, i) => {
+              i === 0 ? ctx.moveTo(p.x - 2, p.y) : ctx.lineTo(p.x - 2, p.y);
             });
-            if (inSeg) ctx.stroke();
-          }
+            ctx.stroke();
+          });
 
-          ctx.strokeStyle = '#000';
-          ctx.lineWidth   = 4.5;
-          drawStrand(s1, 1);
-          ctx.lineWidth   = 3.5;
-          drawStrand(s2, 0.8);
+          // ── Front strands (depth >= 0.5) ──────────────────────────────────
+          [[s1, 1], [s2, 0.85]].forEach(([pts, aScale]) => {
+            // Shadow pass
+            ctx.shadowColor = 'rgba(0,0,0,0.35)';
+            ctx.shadowBlur  = 8;
+            ctx.globalAlpha = alpha * aScale * 0.95;
+            ctx.strokeStyle = '#000';
+            ctx.lineWidth   = 18;
+            tubePath(pts, 0.5, 1);
+            // Mid pass
+            ctx.shadowBlur  = 0;
+            ctx.globalAlpha = alpha * aScale * 0.9;
+            ctx.strokeStyle = 'rgba(15,15,15,1)';
+            ctx.lineWidth   = 14;
+            tubePath(pts, 0.5, 1);
+            // Highlight
+            ctx.globalAlpha = alpha * aScale * 0.5;
+            ctx.strokeStyle = 'rgba(80,80,80,0.9)';
+            ctx.lineWidth   = 4;
+            ctx.beginPath();
+            pts.filter(p => p.depth >= 0.5).forEach((p, i) => {
+              i === 0 ? ctx.moveTo(p.x - 3, p.y) : ctx.lineTo(p.x - 3, p.y);
+            });
+            ctx.stroke();
+          });
+
+          ctx.shadowBlur = 0;
         }
 
         // ── Animation loop ────────────────────────────────────────────────

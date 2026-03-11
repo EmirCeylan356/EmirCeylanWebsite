@@ -3,21 +3,35 @@ import Layout from '../layouts/Layout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 
-const activities = [
-  { title: 'ERASMUS+ EXCHANGE', description: 'Studied at University of Groningen, Netherlands — Cultural exchange and academic immersion.' },
-  { title: 'TEKNOFEST COMPETITION', description: 'Team lead for Medical AI competition — developing multimodal diagnostic tools.' },
-  { title: 'STUDENT COUNCIL', description: 'Active member representing students in university activities.' },
-  { title: 'MENTORING', description: 'Peer mentoring for incoming CS students.' },
+const portals = [
+  {
+    word: 'STRIKE',
+    status: 'Active: Jiu-Jitsu / Archery',
+    gradient: 'linear-gradient(135deg, #f40c3f 0%, #6b0019 100%)',
+    desc: 'BJJ blue belt in training. Archery for focus and precision.',
+  },
+  {
+    word: 'MOVE',
+    status: 'Daily: High-Intensity Training',
+    gradient: 'linear-gradient(135deg, #ff6b2c 0%, #7a2800 100%)',
+    desc: 'Calisthenics, HIIT and functional strength — movement as discipline.',
+  },
+  {
+    word: 'THINK',
+    status: 'Strategy: Chess @ 1400 ELO',
+    gradient: 'linear-gradient(135deg, #4a4aff 0%, #000055 100%)',
+    desc: 'Tactical openings and endgame studies. Chess as a model for decision-making.',
+  },
 ];
 
 // Add your drawing images to /public/images/drawings/ and update src fields
 const drawings = [
-  { id: 1, title: 'FIGURE STUDY I',   type: 'CHARCOAL',    year: 2025, status: 'PHYSICAL',     depth: 1, src: '' },
-  { id: 2, title: 'PORTRAIT II',      type: 'PENCIL',      year: 2024, status: 'PHYSICAL',     depth: 2, src: '' },
-  { id: 3, title: 'URBAN SKETCH',     type: 'INK PEN',     year: 2025, status: 'PHYSICAL',     depth: 1, src: '' },
-  { id: 4, title: 'ABSTRACT IV',      type: 'MIXED MEDIA', year: 2025, status: 'IN PROGRESS',  depth: 3, src: '' },
-  { id: 5, title: 'LANDSCAPE STUDY',  type: 'GRAPHITE',    year: 2024, status: 'PHYSICAL',     depth: 2, src: '' },
-  { id: 6, title: 'COMPOSITION V',    type: 'CHARCOAL',    year: 2025, status: 'PHYSICAL',     depth: 1, src: '' },
+  { id: 1, title: 'FIGURE STUDY I',   type: 'CHARCOAL',    year: 2025, status: 'PHYSICAL',    depth: 1, src: '' },
+  { id: 2, title: 'PORTRAIT II',      type: 'PENCIL',      year: 2024, status: 'PHYSICAL',    depth: 2, src: '' },
+  { id: 3, title: 'URBAN SKETCH',     type: 'INK PEN',     year: 2025, status: 'PHYSICAL',    depth: 1, src: '' },
+  { id: 4, title: 'ABSTRACT IV',      type: 'MIXED MEDIA', year: 2025, status: 'IN PROGRESS', depth: 3, src: '' },
+  { id: 5, title: 'LANDSCAPE STUDY',  type: 'GRAPHITE',    year: 2024, status: 'PHYSICAL',    depth: 2, src: '' },
+  { id: 6, title: 'COMPOSITION V',    type: 'CHARCOAL',    year: 2025, status: 'PHYSICAL',    depth: 1, src: '' },
 ];
 
 const paintings = [
@@ -42,98 +56,96 @@ const paintings = [
 
   <main class="flex-1" style="padding-top: 80px;">
 
-    <!-- Activities Section -->
-    <section class="py-16 px-4">
-      <div class="max-w-7xl mx-auto">
-        <div class="flex items-end gap-4 mb-12">
-          <h2 class="text-5xl md:text-7xl font-black kinetic-text">ACTIVITIES</h2>
-          <div class="flex-1 h-4 bg-black"></div>
-          <span class="text-3xl font-black">/02</span>
+    <!-- ═══════════════════════════════════════════════════════════
+         ACTIVITIES — Action Portals
+    ══════════════════════════════════════════════════════════════ -->
+    <section id="activities" class="activities-section relative" style="background:#050505; overflow:hidden;">
+
+      <!-- Section header -->
+      <div class="max-w-7xl mx-auto px-8 pt-16 pb-6">
+        <div class="flex items-end gap-4">
+          <h2 class="text-5xl md:text-7xl font-black kinetic-text" style="color:#fff;">ACTIVITIES</h2>
+          <div class="flex-1 h-4" style="background:rgba(255,255,255,0.3);"></div>
+          <span class="text-3xl font-black" style="color:#fff;">/03</span>
         </div>
-        <div class="bg-white border-4 border-black p-8 min-h-[200px]">
-          <p class="text-lg leading-relaxed">
-            Activities content coming soon.
-          </p>
-        </div>
+      </div>
+
+      <!-- Full-screen dim overlay (activates on hover) -->
+      <div id="portals-dim" class="absolute inset-0 pointer-events-none z-[1]" style="background:transparent; transition:background 0.4s ease;"></div>
+
+      <!-- Portal rows -->
+      <div class="portals-container" style="padding-bottom:60px;">
+        {portals.map((p, i) => (
+          <div
+            class="portal-item"
+            data-index={i}
+            style={`--fill-gradient: ${p.gradient};`}
+          >
+            <!-- Status micro-copy -->
+            <div class="portal-status">[{p.status}]</div>
+
+            <!-- Word with two layers: outline base + gradient fill -->
+            <div class="portal-word-wrapper">
+              <span class="portal-base">{p.word}</span>
+              <span class="portal-fill">{p.word}</span>
+            </div>
+
+            <!-- Description (slides in on hover) -->
+            <div class="portal-desc">{p.desc}</div>
+          </div>
+        ))}
       </div>
     </section>
 
-    <!-- ═══════════════════════════════════════════════════════════════
+    <!-- ═══════════════════════════════════════════════════════════
          DRAWINGS — Immersive Horizontal Parallax Gallery
-    ════════════════════════════════════════════════════════════════ -->
+    ══════════════════════════════════════════════════════════════ -->
     <section id="drawings" class="drawings-section relative" style="background:#050505;">
 
-      <!-- Section header -->
       <div class="max-w-7xl mx-auto px-4 pt-16 pb-8">
         <div class="flex items-end gap-4">
           <h2 class="text-5xl md:text-7xl font-black kinetic-text drawings-title">DRAWINGS</h2>
           <div class="flex-1 h-4 drawings-rule"></div>
           <span class="text-3xl font-black drawings-title">/06</span>
         </div>
-        <p class="text-xs font-mono mt-3 drawings-hint">
-          ← SCROLL TO EXPLORE — HOVER FOR DETAILS →
-        </p>
+        <p class="text-xs font-mono mt-3 drawings-hint">← SCROLL TO EXPLORE — HOVER FOR DETAILS →</p>
       </div>
 
-      <!-- Gallery viewport (intercepts wheel → horizontal) -->
       <div id="drawings-viewport" class="relative overflow-hidden" style="height:68vh; touch-action:pan-y;">
-
-        <!-- Layer 1 — Blueprint grid background (parallax 0.2×) -->
         <div id="drawings-bg" class="absolute inset-0 pointer-events-none drawings-bg-grid"></div>
 
-        <!-- Layer 3 — Ink splatter foreground (parallax 1.5×) -->
         <div id="drawings-fg" class="absolute inset-0 pointer-events-none z-10 overflow-hidden" aria-hidden="true">
           <div class="ink-blob" style="width:340px;height:340px;top:8%;left:18%;opacity:0.06;border-radius:62% 38% 70% 30%/45% 55% 45% 55%;"></div>
           <div class="ink-blob" style="width:220px;height:280px;top:40%;left:55%;opacity:0.05;border-radius:40% 60% 30% 70%/60% 40% 70% 30%;"></div>
           <div class="ink-blob" style="width:180px;height:160px;top:65%;left:30%;opacity:0.07;border-radius:70% 30% 50% 50%/30% 70% 60% 40%;"></div>
           <div class="ink-blob" style="width:400px;height:300px;top:10%;left:75%;opacity:0.05;border-radius:38% 62% 63% 37%/41% 44% 56% 59%;"></div>
-          <div class="ink-blob" style="width:150px;height:200px;top:55%;left:85%;opacity:0.08;border-radius:50% 50% 30% 70%/40% 60% 40% 60%;"></div>
         </div>
 
-        <!-- Layer 2 — Drawing cards track (1×) -->
         <div id="drawings-track" class="absolute top-0 left-0 flex items-center gap-10 px-20 z-5" style="height:100%; width:max-content; will-change:transform;">
           {drawings.map((d) => {
             const w = 300 - d.depth * 18;
             const h = 400 - d.depth * 18;
             const depthBlur = d.depth > 1 ? `blur(${(d.depth - 1) * 1.8}px)` : 'none';
             return (
-              <div
-                class="drawing-item group flex-shrink-0 relative"
-                data-depth={d.depth}
-                style={`width:${w}px; height:${h}px; filter:${depthBlur}; transition: filter 0.5s ease, transform 0.4s ease;`}
-              >
+              <div class="drawing-item group flex-shrink-0 relative" data-depth={d.depth}
+                style={`width:${w}px; height:${h}px; filter:${depthBlur}; transition: filter 0.5s ease, transform 0.4s ease;`}>
                 <div class="drawing-frame relative w-full h-full overflow-hidden" style="border:1px solid rgba(255,255,255,0.15);">
-
                   {d.src ? (
-                    <img
-                      src={d.src}
-                      alt={d.title}
-                      class="drawing-img w-full h-full object-cover"
-                      style="filter: brightness(0.82) contrast(1.12) sepia(0.08); transition: filter 0.45s ease;"
-                    />
+                    <img src={d.src} alt={d.title} class="drawing-img w-full h-full object-cover"
+                      style="filter: brightness(0.82) contrast(1.12) sepia(0.08); transition: filter 0.45s ease;" />
                   ) : (
                     <div class="w-full h-full flex flex-col items-center justify-center gap-3" style="background:#0d0d0d; border:1px dashed rgba(255,255,255,0.12);">
                       <span class="font-mono text-xs" style="color:rgba(255,255,255,0.2);">[ ADD DRAWING ]</span>
                       <span class="font-mono text-[10px]" style="color:rgba(255,255,255,0.1);">{d.title}</span>
                     </div>
                   )}
-
-                  <!-- Grain texture overlay -->
                   <div class="drawing-grain absolute inset-0 pointer-events-none" style="opacity:0.35; transition:opacity 0.45s ease;"></div>
-
-                  <!-- Title badge (top-left, reveals on hover) -->
                   <div class="absolute top-0 left-0 px-3 py-1 translate-y-[-100%] group-hover:translate-y-0 transition-transform duration-300 z-20" style="background:#f40c3f;">
                     <span class="text-white text-[10px] font-black font-mono tracking-widest">{d.title}</span>
                   </div>
-
-                  <!-- Metadata tag (bottom, reveals on hover) -->
                   <div class="absolute bottom-0 left-0 right-0 translate-y-full group-hover:translate-y-0 transition-transform duration-300 z-20 p-3" style="background:rgba(5,5,5,0.92); backdrop-filter:blur(4px);">
-                    <p class="text-[10px] font-mono mb-1" style="color:rgba(255,255,255,0.85); letter-spacing:0.08em;">
-                      TYPE: {d.type} | YEAR: {d.year}
-                    </p>
-                    <p class="text-[10px] font-mono" style="color:rgba(244,12,63,0.9); letter-spacing:0.08em;">
-                      STATUS: {d.status}
-                    </p>
+                    <p class="text-[10px] font-mono mb-1" style="color:rgba(255,255,255,0.85); letter-spacing:0.08em;">TYPE: {d.type} | YEAR: {d.year}</p>
+                    <p class="text-[10px] font-mono" style="color:rgba(244,12,63,0.9); letter-spacing:0.08em;">STATUS: {d.status}</p>
                   </div>
                 </div>
               </div>
@@ -142,15 +154,13 @@ const paintings = [
         </div>
       </div>
 
-      <!-- Progress bar -->
       <div style="height:1px; background:rgba(255,255,255,0.08);">
         <div id="drawings-progress" style="height:100%; width:0%; background:#f40c3f; transition:none;"></div>
       </div>
-
       <div style="padding-bottom:64px;"></div>
     </section>
 
-    <!-- Paintings Section -->
+    <!-- Paintings -->
     <section class="py-16 px-4">
       <div class="max-w-7xl mx-auto">
         <div class="flex items-end gap-4 mb-12">
@@ -161,11 +171,7 @@ const paintings = [
         <div class="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
           {paintings.map((painting, index) => (
             <div class="group relative overflow-hidden border-4 border-black aspect-square bg-black cursor-pointer painting-card" data-index={index}>
-              <img
-                src={painting.src}
-                alt={painting.title}
-                class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-              />
+              <img src={painting.src} alt={painting.title} class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" />
             </div>
           ))}
         </div>
@@ -187,12 +193,119 @@ const paintings = [
 </Layout>
 
 <style>
-  /* ── Drawings section colours ─────────────────────────────────── */
+  /* ── Action Portals ─────────────────────────────────────────────── */
+  .portals-container {
+    border-top: 1px solid rgba(255,255,255,0.08);
+  }
+
+  .portal-item {
+    position: relative;
+    padding: 12px 48px 16px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    cursor: none;
+    overflow: hidden;
+    transition: background 0.3s ease;
+    z-index: 2;
+  }
+
+  .portal-status {
+    font-family: monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    color: rgba(255,255,255,0.28);
+    margin-bottom: 2px;
+    transition: color 0.3s ease;
+  }
+
+  .portal-item:hover .portal-status {
+    color: rgba(255,255,255,0.6);
+  }
+
+  .portal-word-wrapper {
+    position: relative;
+    display: inline-block;
+    line-height: 0.88;
+    will-change: transform;
+  }
+
+  .portal-base,
+  .portal-fill {
+    display: block;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 900;
+    font-size: clamp(72px, 17vw, 220px);
+    letter-spacing: -0.04em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    user-select: none;
+  }
+
+  /* Outlined text — default state */
+  .portal-base {
+    -webkit-text-stroke: 1.5px rgba(255,255,255,0.55);
+    color: transparent;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Gradient-filled text — revealed by clip-path on hover */
+  .portal-fill {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: var(--fill-gradient);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    clip-path: inset(0 100% 0 0);
+    transition: clip-path 0.6s cubic-bezier(0.77, 0, 0.175, 1);
+    z-index: 2;
+  }
+
+  .portal-item:hover .portal-fill {
+    clip-path: inset(0 0% 0 0);
+  }
+
+  /* Scale on hover */
+  .portal-item:hover .portal-word-wrapper {
+    transform: scaleX(1.01);
+  }
+
+  /* Description */
+  .portal-desc {
+    font-family: monospace;
+    font-size: 12px;
+    color: rgba(255,255,255,0);
+    letter-spacing: 0.06em;
+    margin-top: 4px;
+    max-height: 0;
+    overflow: hidden;
+    transition: color 0.35s ease 0.15s, max-height 0.35s ease;
+  }
+
+  .portal-item:hover .portal-desc {
+    color: rgba(255,255,255,0.45);
+    max-height: 40px;
+  }
+
+  /* Mobile: IntersectionObserver triggers fill */
+  @media (pointer: coarse) {
+    .portal-fill {
+      transition: clip-path 1s ease;
+    }
+    .portal-item.in-view .portal-fill {
+      clip-path: inset(0 0% 0 0);
+    }
+    .portal-item:hover .portal-base {
+      -webkit-text-stroke-color: rgba(255,255,255,0.8);
+    }
+  }
+
+  /* ── Drawings section ───────────────────────────────────────────── */
   .drawings-title { color: #fff; }
   .drawings-rule  { background: rgba(255,255,255,0.35); height: 4px; }
   .drawings-hint  { color: rgba(255,255,255,0.3); letter-spacing: 0.12em; }
 
-  /* Blueprint grid background */
   .drawings-bg-grid {
     background-image:
       linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
@@ -200,42 +313,29 @@ const paintings = [
     background-size: 48px 48px;
   }
 
-  /* Ink blobs */
   .ink-blob {
     position: absolute;
     background: #fff;
     filter: blur(32px);
   }
 
-  /* Grain texture via SVG filter */
   .drawing-grain {
     background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.4'/%3E%3C/svg%3E");
     background-size: 180px 180px;
     mix-blend-mode: overlay;
   }
 
-  /* Clear grain + show full image on hover */
-  .drawing-item:hover .drawing-img {
-    filter: none !important;
-  }
-  .drawing-item:hover .drawing-grain {
-    opacity: 0 !important;
-  }
+  .drawing-item:hover .drawing-img { filter: none !important; }
+  .drawing-item:hover .drawing-grain { opacity: 0 !important; }
+  .drawing-item:hover { transform: scale(1.04); filter: none !important; }
 
-  /* Scale up on hover */
-  .drawing-item:hover {
-    transform: scale(1.04);
-    filter: none !important;
-  }
-
-  /* Grabbing cursor while dragging */
   #drawings-viewport.grabbing { cursor: grabbing; }
 
-  /* ── Painting popup ───────────────────────────────────────────── */
+  /* ── Painting popup ─────────────────────────────────────────────── */
   #painting-popup { display: none; align-items: center; justify-content: center; }
   #painting-popup.active { display: flex; }
 
-  /* ── Mobile: vertical snap scroll ────────────────────────────── */
+  /* ── Mobile drawings snap ───────────────────────────────────────── */
   @media (pointer: coarse) {
     #drawings-viewport {
       overflow-x: scroll;
@@ -245,18 +345,130 @@ const paintings = [
       height: 75vw;
       touch-action: pan-x;
     }
-    #drawings-track {
-      position: relative !important;
-      transform: none !important;
-    }
-    .drawing-item {
-      scroll-snap-align: center;
-    }
+    #drawings-track { position: relative !important; transform: none !important; }
+    .drawing-item { scroll-snap-align: center; }
     #drawings-bg, #drawings-fg, #drawings-progress { display: none; }
   }
 </style>
 
 <script>
+  // ── Action Portals ────────────────────────────────────────────────
+  (function() {
+    const items  = document.querySelectorAll('.portal-item');
+    const dim    = document.getElementById('portals-dim');
+
+    items.forEach(item => {
+      const wrapper = item.querySelector('.portal-word-wrapper');
+
+      item.addEventListener('mousemove', (e) => {
+        const rect = item.getBoundingClientRect();
+        const dx   = (e.clientX - rect.left - rect.width  / 2) * 0.09;
+        const dy   = (e.clientY - rect.top  - rect.height / 2) * 0.04;
+
+        if (typeof gsap !== 'undefined') {
+          gsap.to(wrapper, { x: dx, y: dy, duration: 0.35, ease: 'power2.out', overwrite: 'auto' });
+        }
+
+        if (dim) dim.style.background = 'rgba(0,0,0,0.52)';
+      });
+
+      item.addEventListener('mouseleave', () => {
+        if (typeof gsap !== 'undefined') {
+          gsap.to(wrapper, { x: 0, y: 0, duration: 0.9, ease: 'elastic.out(1, 0.35)', overwrite: 'auto' });
+        }
+        if (dim) dim.style.background = 'transparent';
+      });
+    });
+
+    // Mobile: IntersectionObserver triggers fill
+    if (window.matchMedia('(pointer: coarse)').matches) {
+      const obs = new IntersectionObserver(entries => {
+        entries.forEach(e => {
+          if (e.isIntersecting) e.target.classList.add('in-view');
+        });
+      }, { threshold: 0.55 });
+      items.forEach(item => obs.observe(item));
+    }
+  })();
+
+  // ── Drawings horizontal parallax ──────────────────────────────────
+  (function() {
+    if (window.matchMedia('(pointer: coarse)').matches) return;
+
+    const viewport = document.getElementById('drawings-viewport');
+    const track    = document.getElementById('drawings-track');
+    const bgLayer  = document.getElementById('drawings-bg');
+    const fgLayer  = document.getElementById('drawings-fg');
+    const progress = document.getElementById('drawings-progress');
+    const items    = document.querySelectorAll('.drawing-item');
+    if (!viewport || !track) return;
+
+    let targetX = 0, currentX = 0, maxX = 0;
+    let isOver  = false, isDragging = false;
+    let dragStartX = 0, dragStartCurrent = 0;
+
+    function calcMax() { maxX = Math.max(0, track.scrollWidth - viewport.offsetWidth); }
+    calcMax();
+    window.addEventListener('resize', calcMax);
+
+    viewport.addEventListener('wheel', (e) => {
+      if (!isOver) return;
+      e.preventDefault();
+      targetX -= e.deltaY * 1.3;
+      targetX  = Math.max(-maxX, Math.min(0, targetX));
+    }, { passive: false });
+
+    viewport.addEventListener('mouseenter', () => { isOver = true; });
+    viewport.addEventListener('mouseleave', () => { isOver = false; });
+
+    viewport.addEventListener('mousedown', (e) => {
+      isDragging = true;
+      dragStartX = e.clientX;
+      dragStartCurrent = targetX;
+      viewport.classList.add('grabbing');
+    });
+    window.addEventListener('mousemove', (e) => {
+      if (!isDragging) return;
+      targetX = Math.max(-maxX, Math.min(0, dragStartCurrent + (e.clientX - dragStartX)));
+    });
+    window.addEventListener('mouseup', () => {
+      isDragging = false;
+      viewport.classList.remove('grabbing');
+    });
+
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const depth = parseInt(entry.target.dataset.depth) || 1;
+          entry.target.style.filter = depth > 1 ? `blur(${(depth - 1) * 1.2}px)` : 'none';
+        }
+      });
+    }, { root: viewport, threshold: 0.3 });
+    items.forEach(item => observer.observe(item));
+
+    function raf() {
+      requestAnimationFrame(raf);
+      currentX += (targetX - currentX) * 0.08;
+      const x = Math.round(currentX * 100) / 100;
+      track.style.transform = `translateX(${x}px)`;
+      if (bgLayer) bgLayer.style.transform = `translateX(${x * 0.2}px)`;
+      if (fgLayer) fgLayer.style.transform = `translateX(${x * 1.5}px)`;
+      if (progress) progress.style.width = (maxX > 0 ? (Math.abs(x) / maxX) * 100 : 0) + '%';
+
+      const vcx = viewport.offsetWidth / 2;
+      items.forEach(item => {
+        if (item.matches(':hover')) return;
+        const rect  = item.getBoundingClientRect();
+        const dist  = Math.abs(rect.left + rect.width / 2 - vcx);
+        const depth = parseInt(item.dataset.depth) || 1;
+        const mb    = (depth - 1) * 2.2;
+        const blur  = Math.min(mb, (dist / (viewport.offsetWidth * 0.6)) * mb);
+        item.style.filter = blur > 0.1 ? `blur(${blur}px)` : 'none';
+      });
+    }
+    raf();
+  })();
+
   // ── Paintings lightbox ────────────────────────────────────────────
   const paintingsList = [
     '/images/file_8---39151805-7313-4bb7-b8c8-1365aef884a3.jpg',
@@ -273,9 +485,9 @@ const paintings = [
     '/images/file_20---4fa92226-8c06-4344-836a-2745c8ec1072.jpg',
     '/images/file_21---7f73c515-6959-4117-bc6b-a178b7e1f1fa.jpg',
   ];
-  const popup       = document.getElementById('painting-popup');
-  const popupImage  = document.getElementById('popup-image');
-  const popupClose  = document.getElementById('popup-close');
+  const popup        = document.getElementById('painting-popup');
+  const popupImage   = document.getElementById('popup-image');
+  const popupClose   = document.getElementById('popup-close');
   const popupOverlay = document.querySelector('.popup-overlay');
 
   document.querySelectorAll('.painting-card').forEach((card, i) => {
@@ -285,112 +497,7 @@ const paintings = [
       document.body.style.overflow = 'hidden';
     });
   });
-  function closePainting() {
-    popup.classList.remove('active');
-    document.body.style.overflow = '';
-  }
+  function closePainting() { popup.classList.remove('active'); document.body.style.overflow = ''; }
   popupClose?.addEventListener('click', closePainting);
   popupOverlay?.addEventListener('click', closePainting);
-
-  // ── Drawings horizontal parallax gallery ─────────────────────────
-  (function() {
-    // Skip on touch devices (CSS snap scroll handles it)
-    if (window.matchMedia('(pointer: coarse)').matches) return;
-
-    const viewport = document.getElementById('drawings-viewport');
-    const track    = document.getElementById('drawings-track');
-    const bgLayer  = document.getElementById('drawings-bg');
-    const fgLayer  = document.getElementById('drawings-fg');
-    const progress = document.getElementById('drawings-progress');
-    const items    = document.querySelectorAll('.drawing-item');
-    if (!viewport || !track) return;
-
-    let targetX  = 0;
-    let currentX = 0;
-    let maxX     = 0;
-    let isOver   = false;
-
-    function calcMax() {
-      maxX = Math.max(0, track.scrollWidth - viewport.offsetWidth);
-    }
-    calcMax();
-    window.addEventListener('resize', calcMax);
-
-    // Wheel → horizontal
-    viewport.addEventListener('wheel', (e) => {
-      if (!isOver) return;
-      e.preventDefault();
-      targetX -= e.deltaY * 1.3;
-      targetX  = Math.max(-maxX, Math.min(0, targetX));
-    }, { passive: false });
-
-    viewport.addEventListener('mouseenter', () => { isOver = true; });
-    viewport.addEventListener('mouseleave', () => { isOver = false; });
-
-    // Cursor grabbing on drag
-    let isDragging = false, dragStartX = 0, dragStartCurrent = 0;
-    viewport.addEventListener('mousedown', (e) => {
-      isDragging = true;
-      dragStartX = e.clientX;
-      dragStartCurrent = targetX;
-      viewport.classList.add('grabbing');
-    });
-    window.addEventListener('mousemove', (e) => {
-      if (!isDragging) return;
-      const dx = e.clientX - dragStartX;
-      targetX  = Math.max(-maxX, Math.min(0, dragStartCurrent + dx));
-    });
-    window.addEventListener('mouseup', () => {
-      isDragging = false;
-      viewport.classList.remove('grabbing');
-    });
-
-    // IntersectionObserver — clear blur when item scrolls into view
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.style.filter = entry.target.dataset.depth > 1
-            ? `blur(${(entry.target.dataset.depth - 1) * 1.2}px)`
-            : 'none';
-        }
-      });
-    }, { root: viewport, threshold: 0.3 });
-    items.forEach(item => observer.observe(item));
-
-    // rAF loop — lerp + parallax layers
-    function raf() {
-      requestAnimationFrame(raf);
-
-      // Fluid inertia lerp (0.07 = slow drag, 0.12 = snappier)
-      currentX += (targetX - currentX) * 0.08;
-
-      // Guard against tiny jitter
-      const snapped = Math.round(currentX * 100) / 100;
-
-      track.style.transform = `translateX(${snapped}px)`;
-
-      // Parallax layers
-      if (bgLayer) bgLayer.style.transform = `translateX(${snapped * 0.2}px)`;
-      if (fgLayer) fgLayer.style.transform = `translateX(${snapped * 1.5}px)`;
-
-      // Progress bar
-      const pct = maxX > 0 ? (Math.abs(snapped) / maxX) * 100 : 0;
-      if (progress) progress.style.width = pct + '%';
-
-      // Per-item: clear blur when centred in viewport
-      const vcx = viewport.offsetWidth / 2;
-      items.forEach(item => {
-        const rect   = item.getBoundingClientRect();
-        const itemCx = rect.left + rect.width / 2;
-        const dist   = Math.abs(itemCx - vcx);
-        const depth  = parseInt(item.dataset.depth) || 1;
-        const maxBlur = (depth - 1) * 2.2;
-        const blur   = Math.min(maxBlur, (dist / (viewport.offsetWidth * 0.6)) * maxBlur);
-        if (!item.matches(':hover')) {
-          item.style.filter = blur > 0.1 ? `blur(${blur}px)` : 'none';
-        }
-      });
-    }
-    raf();
-  })();
 </script>
