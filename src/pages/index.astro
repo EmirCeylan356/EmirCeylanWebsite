@@ -88,12 +88,12 @@ const works = [
 ];
 
 const skillCategories = [
-  { title: 'PROGRAMMING', items: ['Python', 'C++'] },
-  { title: 'LIBRARIES', items: ['NumPy', 'pandas', 'matplotlib', 'scikit-learn', 'Biopython'] },
-  { title: 'TOOLS', items: ['Git/GitHub', 'Jupyter Notebook', 'Ubuntu', 'Claude Code', 'Clawbot'] },
-  { title: 'LANGUAGES', items: ['English (Fluent, C1)', 'Turkish (Native)'] },
-  { title: 'CREATIVE SKILLS', items: ['Adobe Photoshop', 'Adobe Premiere Pro', 'Digital Illustration', 'Painting', 'Drawing'] },
-  { title: 'INTERESTS', items: ['Bioinformatics', 'AI in Medicine', 'Chess', 'Archery', 'Jiu-Jitsu', 'Fitness', 'Tattoo Design'] },
+  { title: 'PROGRAMMING',    items: ['Python', 'C++'] },
+  { title: 'LIBRARIES',      items: ['NumPy', 'pandas', 'matplotlib', 'scikit-learn', 'Biopython'] },
+  { title: 'TOOLS',          items: ['Git/GitHub', 'Jupyter Notebook', 'Ubuntu', 'Claude Code', 'Clawbot'] },
+  { title: 'LANGUAGES',      items: ['English (Fluent, C1)', 'Turkish (Native)'] },
+  { title: 'CREATIVE SKILLS',items: ['Adobe Photoshop', 'Adobe Premiere Pro', 'Digital Illustration', 'Painting', 'Drawing'] },
+  { title: 'INTERESTS',      items: ['Bioinformatics', 'AI in Medicine', 'Chess', 'Archery', 'Jiu-Jitsu', 'Fitness', 'Tattoo Design'] },
 ];
 ---
 
@@ -101,175 +101,197 @@ const skillCategories = [
   <Header />
 
   <main>
-    <!-- Hero Section -->
+    <!-- ═══ HERO ══════════════════════════════════════════════════════════════ -->
     <section class="min-h-screen flex items-center justify-center px-4 pt-20 pb-10 relative overflow-hidden">
-      <!-- Floating binary decoration -->
-      <div class="binary-float binary-1 text-xs font-mono hidden md:block">
+
+      <!-- Floating binary decorations -->
+      <div class="binary-float binary-1 text-xs font-mono hidden md:block" style="color:rgba(0,255,65,0.18);">
         101010101010<br>010101010101<br>101010101010
       </div>
-      <div class="binary-float binary-2 text-xs font-mono hidden md:block">
+      <div class="binary-float binary-2 text-xs font-mono hidden md:block" style="color:rgba(0,255,65,0.12);">
         010101010101<br>101010101010<br>010101010101
       </div>
-      <div class="binary-float binary-3 text-xs font-mono hidden md:block">
+      <div class="binary-float binary-3 text-xs font-mono hidden md:block" style="color:rgba(0,255,65,0.15);">
         111000111000<br>000111000111<br>111000111000
       </div>
-      <div class="binary-float binary-4 text-xs font-mono hidden md:block">
+      <div class="binary-float binary-4 text-xs font-mono hidden md:block" style="color:rgba(0,255,65,0.1);">
         110011001100<br>001100110011<br>110011001100
       </div>
-      <div class="binary-float binary-5 text-xs font-mono hidden md:block">
+      <div class="binary-float binary-5 text-xs font-mono hidden md:block" style="color:rgba(0,255,65,0.13);">
         100110100110<br>011001011001<br>100110100110
       </div>
-      <div class="binary-float binary-6 text-xs font-mono hidden md:block">
+      <div class="binary-float binary-6 text-xs font-mono hidden md:block" style="color:rgba(0,255,65,0.1);">
         010101010101<br>101010101010<br>010101010101
       </div>
-      <div class="binary-float binary-7 text-xs font-mono hidden md:block">
+      <div class="binary-float binary-7 text-xs font-mono hidden md:block" style="color:rgba(0,255,65,0.14);">
         111100001111<br>000011110000<br>111100001111
       </div>
 
       <div class="max-w-5xl mx-auto text-center relative z-10">
-        <h1 class="kinetic-text text-7xl md:text-9xl lg:text-[13rem] font-black -mt-4 leading-none">
+        <h1 class="kinetic-text text-7xl md:text-9xl lg:text-[13rem] font-black -mt-4 leading-none glow-text">
           EMİR<br/>
-          <span class="text-white" style="text-shadow: 4px 4px 0 #000;">CEYLAN</span>
+          <span style="color:#fff; text-shadow: 0 0 30px rgba(0,255,65,0.4), 4px 4px 0 rgba(0,255,65,0.2);">CEYLAN</span>
         </h1>
 
-        <p class="text-lg md:text-xl font-bold max-w-2xl mx-auto mb-8 bg-black text-white inline-block px-4 py-2">
+        <p class="text-lg md:text-xl font-bold max-w-2xl mx-auto mb-8 font-mono inline-block px-4 py-2"
+          style="background:rgba(0,255,65,0.1); color:var(--primary-green); border:1px solid rgba(0,255,65,0.3);">
           CS STUDENT — AI FOR HEALTHCARE
         </p>
 
         <div class="flex flex-wrap gap-4 justify-center">
-          <a
-            href="#work"
-            class="px-8 py-4 bg-black text-white font-bold text-lg border-4 border-black hover:bg-white hover:text-black transition-all hover:shadow-[8px_8px_0px_#000]"
-          >
+          <a href="#work" class="hero-btn-primary px-8 py-4 font-bold text-lg font-mono"
+            style="background:var(--primary-green); color:#000; border:2px solid var(--primary-green);">
             MY WORK →
           </a>
-          <a
-            href="#contact"
-            class="px-8 py-4 bg-white text-black font-bold text-lg border-4 border-black hover:bg-black hover:text-white transition-all"
-          >
+          <a href="#contact" class="hero-btn-outline px-8 py-4 font-bold text-lg font-mono"
+            style="background:transparent; color:var(--primary-green); border:2px solid var(--primary-green);">
             CONTACT
           </a>
         </div>
 
-        <!-- Scroll indicator -->
-        <div class="mt-16 animate-bounce">
+        <div class="mt-16 animate-bounce" style="color:var(--primary-green);">
           <span class="text-4xl">↓</span>
         </div>
       </div>
     </section>
 
-    <!-- Awards Bar -->
-    <section class="bg-black text-white py-3 border-y-4 border-black overflow-hidden">
+    <!-- ═══ MARQUEE BAR ═══════════════════════════════════════════════════════ -->
+    <section class="py-3 overflow-hidden" style="background:#000; border-top:1px solid rgba(0,255,65,0.25); border-bottom:1px solid rgba(0,255,65,0.25);">
       <div class="marquee-container">
-        <div class="marquee-content">
-          <span class="font-bold text-lg mx-12">  ★ Medical AI Specialist</span>
-          <span class="font-bold text-lg mx-12">  ★ Data Scientist</span>
-          <span class="font-bold text-lg mx-12">  ★ Machine Learning Researcher</span>
-          <span class="font-bold text-lg mx-12">  ★ Sabancı University TA</span>
-          <span class="font-bold text-lg mx-12">  ★ Team Leader</span>
-          <span class="font-bold text-lg mx-12">  ★ XAI Enthusiast</span>
-          <span class="font-bold text-lg mx-12 text-[#f40c3f]"> ★ Artist</span>
-          <span class="font-bold text-lg mx-12">  ★ Medical AI Specialist</span>
-          <span class="font-bold text-lg mx-12">  ★ Data Scientist</span>
-          <span class="font-bold text-lg mx-12">  ★ Machine Learning Researcher</span>
-          <span class="font-bold text-lg mx-12">  ★ Sabancı University TA</span>
-          <span class="font-bold text-lg mx-12">  ★ Team Leader</span>
-          <span class="font-bold text-lg mx-12">  ★ XAI Enthusiast</span>
-          <span class="font-bold text-lg mx-12 text-[#f40c3f]"> ★ Artist</span>
+        <div class="marquee-content font-mono">
+          <span class="font-bold text-lg mx-12" style="color:rgba(0,255,65,0.7);">  ★ Medical AI Specialist</span>
+          <span class="font-bold text-lg mx-12" style="color:rgba(0,255,65,0.7);">  ★ Data Scientist</span>
+          <span class="font-bold text-lg mx-12" style="color:rgba(0,255,65,0.7);">  ★ Machine Learning Researcher</span>
+          <span class="font-bold text-lg mx-12" style="color:rgba(0,255,65,0.7);">  ★ Sabancı University TA</span>
+          <span class="font-bold text-lg mx-12" style="color:rgba(0,255,65,0.7);">  ★ Team Leader</span>
+          <span class="font-bold text-lg mx-12" style="color:rgba(0,255,65,0.7);">  ★ XAI Enthusiast</span>
+          <span class="font-bold text-lg mx-12 glow-text">  ★ Artist</span>
+          <span class="font-bold text-lg mx-12" style="color:rgba(0,255,65,0.7);">  ★ Medical AI Specialist</span>
+          <span class="font-bold text-lg mx-12" style="color:rgba(0,255,65,0.7);">  ★ Data Scientist</span>
+          <span class="font-bold text-lg mx-12" style="color:rgba(0,255,65,0.7);">  ★ Machine Learning Researcher</span>
+          <span class="font-bold text-lg mx-12" style="color:rgba(0,255,65,0.7);">  ★ Sabancı University TA</span>
+          <span class="font-bold text-lg mx-12" style="color:rgba(0,255,65,0.7);">  ★ Team Leader</span>
+          <span class="font-bold text-lg mx-12" style="color:rgba(0,255,65,0.7);">  ★ XAI Enthusiast</span>
+          <span class="font-bold text-lg mx-12 glow-text">  ★ Artist</span>
         </div>
       </div>
     </section>
 
-    <!-- About Section -->
-    <section id="about" class="py-16 px-4">
-      <div class="max-w-4xl mx-auto text-left">
-        <div class="mb-8">
-          <h2 class="text-5xl md:text-7xl font-black kinetic-text">
-            ABOUT <span class="text-3xl">/01</span>
-          </h2>
-        </div>
+    <!-- ═══ ABOUT ══════════════════════════════════════════════════════════════ -->
+    <section id="about" class="about-section relative py-20 px-4 overflow-hidden">
+      <!-- Scan-line overlay -->
+      <div class="scanline-overlay absolute inset-0"></div>
 
-        <div class="bg-white border-4 border-black p-8">
-          <p class="text-xl md:text-2xl font-bold leading-tight mb-6">
-            Computer Science student at <span class="bg-[#f40c3f] text-white px-2">Sabancı University</span> passionate about AI applications in healthcare. Building the future of medical AI.
-          </p>
-          <p class="text-lg mt-4 leading-relaxed">
-            Driven by the potential of AI to bridge gaps in modern medicine, I focus on developing intelligent systems that are as ethical as they are efficient. My work at Sabancı University centers on collaborating with professors and fellow students to build projects that connect deep CS knowledge with complex medical hurdles to find practical, scalable solutions.
-          </p>
-          <p class="text-lg mt-4 leading-relaxed">
-            Outside of the lab, I balance the logic of neural networks with painting, a creative outlet that allows me to view technical challenges through a more expressive, lateral-thinking lens.
-          </p>
-          <p class="text-lg font-bold mt-6 border-t-2 border-black pt-4">
-            Expected Graduation: 2027
-          </p>
+      <div class="max-w-7xl mx-auto relative z-10">
+        <!-- Split grid: label left, content right -->
+        <div class="grid md:grid-cols-3 gap-12 items-start">
+
+          <!-- Left: Bold terminal label -->
+          <div class="about-label">
+            <div class="font-black leading-none" style="font-family:'Space Grotesk'; font-size:clamp(64px,10vw,120px); color:var(--primary-green); line-height:0.9; text-shadow:0 0 20px rgba(0,255,65,0.3);">
+              01<br><span style="color:rgba(0,255,65,0.4);">/</span><br>ABOUT
+            </div>
+            <div class="mt-8 pl-4" style="border-left:3px solid rgba(0,255,65,0.4);">
+              <p class="font-mono text-xs" style="color:rgba(0,255,65,0.4); letter-spacing:0.15em;">SYSTEM PROFILE</p>
+              <p class="font-mono text-xs mt-2" style="color:rgba(0,255,65,0.3); letter-spacing:0.08em;">CLASS: 2027</p>
+              <p class="font-mono text-xs mt-1" style="color:rgba(0,255,65,0.3); letter-spacing:0.08em;">NODE: ISTANBUL, TR</p>
+            </div>
+          </div>
+
+          <!-- Right: Narrative content -->
+          <div class="md:col-span-2">
+            <p class="text-xl md:text-2xl font-bold mb-6" style="color:var(--green-dim); line-height:1.6;">
+              Computer Science student at
+              <span class="keyword-highlight" style="color:var(--primary-green); text-shadow:0 0 8px rgba(0,255,65,0.5);">Sabancı University</span>
+              passionate about AI applications in healthcare. Building the future of medical AI.
+            </p>
+            <p class="text-base mb-4" style="color:rgba(0,204,51,0.75); line-height:1.6;">
+              Driven by the potential of AI to bridge gaps in modern medicine, I focus on developing intelligent systems that are as ethical as they are efficient. My work at Sabancı University centers on collaborating with professors and fellow students to build projects that connect deep CS knowledge with complex medical hurdles to find practical, scalable solutions.
+            </p>
+            <p class="text-base mb-6" style="color:rgba(0,204,51,0.75); line-height:1.6;">
+              Outside of the lab, I balance the logic of neural networks with painting — a creative outlet that allows me to view technical challenges through a more expressive, lateral-thinking lens.
+            </p>
+
+            <div class="about-stat-row flex gap-6 flex-wrap">
+              <div class="about-stat">
+                <div class="font-black text-3xl glow-text">2027</div>
+                <div class="font-mono text-xs mt-1" style="color:rgba(0,255,65,0.45); letter-spacing:0.1em;">EXPECTED GRAD</div>
+              </div>
+              <div class="about-stat">
+                <div class="font-black text-3xl glow-text">07+</div>
+                <div class="font-mono text-xs mt-1" style="color:rgba(0,255,65,0.45); letter-spacing:0.1em;">PROJECTS</div>
+              </div>
+              <div class="about-stat">
+                <div class="font-black text-3xl glow-text">AI</div>
+                <div class="font-mono text-xs mt-1" style="color:rgba(0,255,65,0.45); letter-spacing:0.1em;">SPECIALIZATION</div>
+              </div>
+            </div>
+          </div>
+
         </div>
       </div>
     </section>
 
-    <!-- Work Section -->
-    <section id="work" class="py-16 px-4 border-y-4 border-black" style="background-color: #e8f5e9;">
+    <!-- ═══ WORK ═══════════════════════════════════════════════════════════════ -->
+    <section id="work" class="py-16 px-4" style="border-top:1px solid rgba(0,255,65,0.2); border-bottom:1px solid rgba(0,255,65,0.2);">
       <div class="max-w-7xl mx-auto">
         <div class="flex items-end gap-4 mb-12">
-          <h2 class="text-5xl md:text-7xl font-black kinetic-text">
-            WORK
-          </h2>
-          <div class="flex-1 h-4 bg-black"></div>
-          <span class="text-3xl font-black">/07</span>
+          <h2 class="text-5xl md:text-7xl font-black kinetic-text glow-text">WORK</h2>
+          <div class="flex-1 h-px" style="background:rgba(0,255,65,0.3);"></div>
+          <span class="text-3xl font-black" style="color:rgba(0,255,65,0.5);">/07</span>
         </div>
 
         <div class="grid md:grid-cols-2 gap-6">
           {works.map((work) => (
             <div
-              class="work-card relative border-4 border-black p-6 cursor-pointer transition-all duration-300 hover:bg-black hover:text-white group"
+              class="work-card relative p-6 cursor-pointer"
               data-work-id={work.id}
               data-is-wip={work.isWip ? 'true' : 'false'}
             >
-              <p class="text-xs font-mono font-bold mb-2">{work.period}</p>
+              <p class="text-xs font-mono font-bold mb-2" style="color:rgba(0,255,65,0.5); letter-spacing:0.1em;">{work.period}</p>
               <span class="work-title text-xl font-black mb-1 block">{work.title}</span>
-              <p class="font-bold mb-2 text-sm">{work.subtitle}</p>
-              <p class="text-sm opacity-70">{work.description}</p>
+              <p class="font-bold mb-2 text-sm" style="color:rgba(0,255,65,0.7);">{work.subtitle}</p>
+              <p class="text-sm" style="color:rgba(0,255,65,0.5);">{work.description}</p>
 
-              <!-- Hidden details for popup -->
               <div class="work-details hidden">
                 <div class="work-content text-sm" set:html={work.details} />
               </div>
             </div>
           ))}
 
-          <!-- Permanent WIP placeholder for grid symmetry -->
-          <div class="relative border-4 border-black border-dashed p-6 flex items-center justify-center select-none opacity-60">
+          <!-- Permanent WIP placeholder -->
+          <div class="relative p-6 flex items-center justify-center select-none"
+            style="border:4px dashed rgba(0,255,65,0.25); opacity:0.5;">
             <div class="text-center">
-              <p class="text-xs font-mono font-bold mb-2">COMING SOON</p>
+              <p class="text-xs font-mono font-bold mb-2" style="color:rgba(0,255,65,0.5);">COMING SOON</p>
               <span class="text-xl font-black mb-1 block">WORK IN PROGRESS</span>
-              <p class="text-sm opacity-70">Something new is being built...</p>
+              <p class="text-sm" style="color:rgba(0,255,65,0.4);">Something new is being built...</p>
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Skills Section -->
+    <!-- ═══ SKILLS ════════════════════════════════════════════════════════════ -->
     <section id="skills" class="py-16 px-4">
       <div class="max-w-7xl mx-auto">
         <div class="flex items-end gap-4 mb-12">
-          <h2 class="text-5xl md:text-7xl font-black kinetic-text">
-            SKILLS
-          </h2>
-          <div class="flex-1 h-4 bg-black"></div>
-          <span class="text-3xl font-black">/06</span>
+          <h2 class="text-5xl md:text-7xl font-black kinetic-text glow-text">SKILLS</h2>
+          <div class="flex-1 h-px" style="background:rgba(0,255,65,0.3);"></div>
+          <span class="text-3xl font-black" style="color:rgba(0,255,65,0.5);">/06</span>
         </div>
 
         <div class="flex flex-col gap-0 max-w-2xl">
           {skillCategories.map((category) => (
-            <div class="skill-box skill-accordion border-4 border-black -mb-[4px] cursor-pointer">
-              <div class="skill-header px-5 py-4 flex justify-between items-center hover:bg-black hover:text-white transition-colors duration-200">
-                <span class="font-black text-lg">{category.title}</span>
+            <div class="skill-box skill-accordion border-4 -mb-[4px] cursor-pointer">
+              <div class="skill-header px-5 py-4 flex justify-between items-center transition-colors duration-200">
+                <span class="font-black text-lg font-mono">{category.title}</span>
                 <span class="skill-arrow font-black text-2xl leading-none">+</span>
               </div>
               <div class="skill-body">
                 <div class="flex flex-col">
                   {category.items.map((item) => (
-                    <span class="px-5 py-2 border-t-2 border-black text-sm font-bold bg-white text-black">{item}</span>
+                    <span class="px-5 py-2 border-t-2 text-sm font-bold font-mono">{item}</span>
                   ))}
                 </div>
               </div>
@@ -282,101 +304,106 @@ const skillCategories = [
 
   <Footer />
 
-  <!-- Popup Modal -->
+  <!-- ═══ WORK POPUP MODAL ══════════════════════════════════════════════════ -->
   <div id="work-popup" class="fixed inset-0 z-[100] flex items-start justify-center p-20">
-    <div class="popup-overlay absolute inset-0 bg-black/80"></div>
-    <div class="popup-content relative z-[101] w-full max-w-2xl bg-white border-4 border-black max-h-[70vh] overflow-y-auto">
-      <div class="red-headline bg-[#f40c3f] text-white px-6 py-4 flex justify-between items-center">
-        <span id="popup-title" class="font-black text-xl"></span>
-        <button id="popup-close" class="text-white text-2xl font-bold hover:opacity-70 transition-opacity">×</button>
+    <div class="popup-overlay absolute inset-0" style="background:rgba(0,0,0,0.88);"></div>
+    <div class="popup-content relative z-[101] w-full max-w-2xl max-h-[70vh] overflow-y-auto"
+      style="background:#050505; border:2px solid var(--primary-green);">
+      <div class="popup-header px-6 py-4 flex justify-between items-center"
+        style="background:rgba(0,255,65,0.1); border-bottom:1px solid rgba(0,255,65,0.2);">
+        <span id="popup-title" class="font-black text-xl glow-text"></span>
+        <button id="popup-close" class="font-bold text-2xl transition-opacity hover:opacity-60"
+          style="color:var(--primary-green); background:none; border:none; cursor:pointer;">×</button>
       </div>
-      <div id="popup-body" class="p-6 text-sm leading-relaxed">
-      </div>
+      <div id="popup-body" class="p-6 text-sm leading-relaxed popup-body-text"></div>
     </div>
   </div>
 </Layout>
 
 <style>
-  .marquee-container {
-    overflow: hidden;
-    white-space: nowrap;
-  }
-
-  .marquee-content {
-    display: inline-block;
-    animation: marquee 15s linear infinite;
-  }
-
+  /* ── Marquee ─────────────────────────────────────────────────────────────── */
+  .marquee-container { overflow: hidden; white-space: nowrap; }
+  .marquee-content { display: inline-block; animation: marquee 15s linear infinite; }
   @keyframes marquee {
-    0% { transform: translateX(0); }
+    0%   { transform: translateX(0); }
     100% { transform: translateX(-50%); }
   }
 
-  /* Binary float animation */
+  /* ── Hero buttons ────────────────────────────────────────────────────────── */
+  .hero-btn-primary {
+    transition: background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+  }
+  .hero-btn-primary:hover {
+    background: transparent !important;
+    color: var(--primary-green) !important;
+    box-shadow: 8px 8px 0 rgba(0,255,65,0.25);
+  }
+  .hero-btn-outline {
+    transition: background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+  }
+  .hero-btn-outline:hover {
+    background: var(--primary-green) !important;
+    color: #000 !important;
+    box-shadow: 8px 8px 0 rgba(0,255,65,0.25);
+  }
+
+  /* ── Binary floats ───────────────────────────────────────────────────────── */
   .binary-float {
     position: absolute;
     animation: binaryFade 8s ease-in-out infinite;
     opacity: 0;
   }
-
-  .binary-1 { top: 15%; left: 3%;  animation-delay: 0s; }
-  .binary-2 { top: 50%; right: 3%; animation-delay: 3s; }
+  .binary-1 { top: 15%; left: 3%;   animation-delay: 0s; }
+  .binary-2 { top: 50%; right: 3%;  animation-delay: 3s; }
   .binary-3 { bottom: 25%; left: 10%; animation-delay: 6s; }
-  .binary-4 { top: 70%; left: 8%;  animation-delay: 1s; }
-  .binary-5 { top: 30%; right: 8%; animation-delay: 4s; }
+  .binary-4 { top: 70%; left: 8%;   animation-delay: 1s; }
+  .binary-5 { top: 30%; right: 8%;  animation-delay: 4s; }
   .binary-6 { top: 20%; right: 18%; animation-delay: 2s; }
   .binary-7 { bottom: 15%; right: 12%; animation-delay: 5s; }
 
   @keyframes binaryFade {
     0%, 100% { opacity: 0; transform: translateY(20px); }
-    15%, 85% { opacity: 0.25; transform: translateY(0); }
+    15%, 85%  { opacity: 1; transform: translateY(0); }
   }
 
-  /* Work card base */
-  .work-card {
-    overflow: hidden;
-  }
+  /* ── About section ───────────────────────────────────────────────────────── */
+  .about-section { background: #000; }
+  .about-stat { padding-right: 24px; border-right: 1px solid rgba(0,255,65,0.15); }
+  .about-stat:last-child { border-right: none; }
 
-  /* Work card hover */
+  /* ── Work card + WIP ─────────────────────────────────────────────────────── */
   .work-card::after {
     content: 'Click for details →';
     position: absolute;
-    bottom: 1rem;
-    right: 1rem;
-    font-size: 0.75rem;
-    font-weight: bold;
+    bottom: 1rem; right: 1rem;
+    font-size: 0.7rem;
+    font-family: monospace;
+    color: rgba(0,255,65,0.4);
+    letter-spacing: 0.08em;
     opacity: 0;
     transition: opacity 0.3s;
   }
+  .work-card:hover::after { opacity: 1; }
 
-  .work-card:hover::after {
-    opacity: 1;
-  }
-
-  /* WIP work card */
   .work-card.wip-hover {
-    background-color: black !important;
-    color: white !important;
+    background: var(--primary-green) !important;
+    color: #000 !important;
   }
-
   .work-card.wip-hover .text-xs,
   .work-card.wip-hover .text-sm,
   .work-card.wip-hover .font-bold,
-  .work-card.wip-hover .work-title {
-    opacity: 0;
-  }
-
+  .work-card.wip-hover .work-title { opacity: 0; }
   .work-card.wip-hover::before {
     content: 'Work In Progress...';
     position: absolute;
-    top: 50%;
-    left: 50%;
+    top: 50%; left: 50%;
     transform: translate(-50%, -50%);
     font-weight: bold;
     font-size: 1.25rem;
+    color: #000;
   }
 
-  /* Popup styles */
+  /* ── Popup ───────────────────────────────────────────────────────────────── */
   #work-popup {
     display: none;
     position: fixed;
@@ -386,84 +413,48 @@ const skillCategories = [
     justify-content: center;
     padding-top: 80px;
   }
-
-  #work-popup.active {
-    display: flex;
-  }
-
-  #work-popup.active .popup-content {
-    animation: popupSlide 0.4s ease-out;
-  }
+  #work-popup.active { display: flex; }
+  #work-popup.active .popup-content { animation: popupSlide 0.4s ease-out; }
 
   @keyframes popupSlide {
-    from {
-      transform: translateY(-50px);
-      opacity: 0;
-    }
-    to {
-      transform: translateY(0);
-      opacity: 1;
-    }
+    from { transform: translateY(-50px); opacity: 0; }
+    to   { transform: translateY(0); opacity: 1; }
   }
 
-  /* Skill accordion */
+  .popup-body-text { color: var(--green-dim); }
+  .popup-body-text p { margin-bottom: 0.75rem; }
+  .popup-body-text strong { color: var(--primary-green); }
+
+  /* ── Skill accordion ─────────────────────────────────────────────────────── */
   .skill-body {
     max-height: 0;
     overflow: hidden;
     transition: max-height 0.4s cubic-bezier(0.16, 1, 0.3, 1);
   }
-
-  .skill-accordion.open .skill-body {
-    max-height: 400px;
-  }
-
+  .skill-accordion.open .skill-body { max-height: 400px; }
   .skill-arrow {
-    transition: transform 0.3s ease;
     display: inline-block;
+    transition: transform 0.3s ease;
   }
-
-  .skill-accordion.open .skill-arrow {
-    transform: rotate(45deg);
-  }
-
-  /* Work content styling */
-  .work-content h2 {
-    font-size: 1.5rem;
-    font-weight: 900;
-    margin-bottom: 1rem;
-  }
-
-  .work-content p {
-    margin-bottom: 0.75rem;
-  }
-
-  .work-content a.linkedin-link {
-    color: #0077b5;
-    text-decoration: underline;
-    font-weight: bold;
-  }
+  .skill-accordion.open .skill-arrow { transform: rotate(45deg); }
 </style>
 
 <script>
   // Work card click handlers
   const workCards = document.querySelectorAll('.work-card');
-  const popup = document.getElementById('work-popup');
+  const popup      = document.getElementById('work-popup');
   const popupTitle = document.getElementById('popup-title');
-  const popupBody = document.getElementById('popup-body');
+  const popupBody  = document.getElementById('popup-body');
   const popupClose = document.getElementById('popup-close');
   const popupOverlay = document.querySelector('.popup-overlay');
 
   workCards.forEach(card => {
-    const isWip = card.getAttribute('data-is-wip') === 'true';
-    const details = card.querySelector('.work-details');
+    const isWip    = card.getAttribute('data-is-wip') === 'true';
+    const details  = card.querySelector('.work-details');
 
     if (isWip) {
-      card.addEventListener('mouseenter', () => {
-        if (!card.classList.contains('clicked')) card.classList.add('wip-hover');
-      });
-      card.addEventListener('mouseleave', () => {
-        if (!card.classList.contains('clicked')) card.classList.remove('wip-hover');
-      });
+      card.addEventListener('mouseenter', () => { if (!card.classList.contains('clicked')) card.classList.add('wip-hover'); });
+      card.addEventListener('mouseleave', () => { if (!card.classList.contains('clicked')) card.classList.remove('wip-hover'); });
       card.addEventListener('click', () => {
         if (card.classList.contains('clicked')) return;
         card.classList.add('clicked', 'wip-hover');
@@ -471,10 +462,10 @@ const skillCategories = [
       });
     } else {
       card.addEventListener('click', () => {
-        const title = card.querySelector('.work-title').textContent;
+        const title   = card.querySelector('.work-title').textContent;
         const content = details.innerHTML;
         popupTitle.textContent = title;
-        popupBody.innerHTML = content;
+        popupBody.innerHTML    = content;
         popup.classList.add('active');
         popup.style.display = 'flex';
         document.body.style.overflow = 'hidden';
@@ -482,25 +473,26 @@ const skillCategories = [
     }
   });
 
-  // Red bubble splatter on close
+  // Green splatter on close
   function createSplatter(originX, originY) {
     const count = 14;
     for (let i = 0; i < count; i++) {
-      const blob = document.createElement('div');
-      const angle = (i / count) * Math.PI * 2 + (Math.random() - 0.5) * 0.8;
+      const blob     = document.createElement('div');
+      const angle    = (i / count) * Math.PI * 2 + (Math.random() - 0.5) * 0.8;
       const distance = 70 + Math.random() * 130;
-      const size = 7 + Math.random() * 16;
+      const size     = 7 + Math.random() * 16;
       blob.style.cssText = `
         position: fixed;
         width: ${size}px;
         height: ${size}px;
-        background: #f40c3f;
+        background: #00FF41;
         border-radius: 50%;
         left: ${originX}px;
         top: ${originY}px;
         pointer-events: none;
         z-index: 9999;
         transform: translate(-50%, -50%);
+        box-shadow: 0 0 8px #00FF41;
       `;
       document.body.appendChild(blob);
       const tx = Math.cos(angle) * distance;
@@ -508,8 +500,7 @@ const skillCategories = [
       if (typeof gsap !== 'undefined') {
         gsap.to(blob, {
           x: tx, y: ty,
-          opacity: 0,
-          scale: 0.1,
+          opacity: 0, scale: 0.1,
           duration: 0.45 + Math.random() * 0.3,
           ease: 'power3.out',
           onComplete: () => blob.remove(),
@@ -520,18 +511,15 @@ const skillCategories = [
     }
   }
 
-  // Close popup with GSAP tilt + slide + fade
   function closePopup() {
-    const rect = popupClose.getBoundingClientRect();
+    const rect          = popupClose.getBoundingClientRect();
+    const popupContent  = document.querySelector('.popup-content');
     createSplatter(rect.left + rect.width / 2, rect.top + rect.height / 2);
 
-    const popupContent = document.querySelector('.popup-content');
     if (typeof gsap !== 'undefined' && popupContent) {
       gsap.killTweensOf(popupContent);
       gsap.to(popupContent, {
-        rotation: 30,
-        y: 80,
-        opacity: 0,
+        rotation: 30, y: 80, opacity: 0,
         duration: 0.38,
         ease: 'power2.in',
         transformOrigin: 'center top',
@@ -552,19 +540,17 @@ const skillCategories = [
   popupClose.addEventListener('click', closePopup);
   popupOverlay.addEventListener('click', closePopup);
 
-  // Skill accordion toggle
-  document.querySelectorAll('.skill-accordion').forEach((accordion) => {
-    accordion.addEventListener('click', () => {
-      accordion.classList.toggle('open');
-    });
+  // Skill accordion
+  document.querySelectorAll('.skill-accordion').forEach(accordion => {
+    accordion.addEventListener('click', () => accordion.classList.toggle('open'));
   });
 
-  // Binary teleport: reposition to random location on each animation cycle
-  document.querySelectorAll('.binary-float').forEach((el) => {
+  // Binary float teleport
+  document.querySelectorAll('.binary-float').forEach(el => {
     el.addEventListener('animationiteration', () => {
-      el.style.top = (Math.random() * 80 + 5) + '%';
-      el.style.left = (Math.random() * 85 + 5) + '%';
-      el.style.right = 'auto';
+      el.style.top    = (Math.random() * 80 + 5) + '%';
+      el.style.left   = (Math.random() * 85 + 5) + '%';
+      el.style.right  = 'auto';
       el.style.bottom = 'auto';
     });
   });

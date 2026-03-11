@@ -20,20 +20,12 @@ const { title } = Astro.props;
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700;900&family=Inter:wght@400;500;600;800&display=swap" rel="stylesheet">
   </head>
-  <body class="bg-[#f40c3f] text-black min-h-screen">
+  <body class="min-h-screen" style="background:#000000; color:var(--primary-green);">
     <div class="fixed inset-0 grid-bg pointer-events-none z-0"></div>
 
     <!-- DNA Helix canvas background -->
-    <canvas id="dna-canvas" class="fixed inset-0 pointer-events-none z-[1]" style="mix-blend-mode: multiply; opacity: 0.55;"></canvas>
-    
-    <!-- Contrast Toggle -->
-    <button 
-      id="contrast-toggle" 
-      class="fixed top-20 right-4 z-50 px-4 py-2 bg-black text-white font-bold text-sm border-2 border-black hover:bg-white hover:text-black transition-colors"
-    >
-      CONTRAST
-    </button>
-    
+    <canvas id="dna-canvas" class="fixed inset-0 pointer-events-none z-[1]" style="mix-blend-mode: screen; opacity: 0.7;"></canvas>
+
     <div id="main-content" class="relative z-10 min-h-screen flex flex-col">
       <slot />
     </div>
@@ -45,30 +37,7 @@ const { title } = Astro.props;
       if (typeof gsap !== 'undefined' && gsap.registerPlugin) {
         gsap.registerPlugin(ScrollTrigger);
       }
-      
-      // Contrast toggle
-      let contrastMode = false;
-      const toggle = document.getElementById('contrast-toggle');
-      const body = document.body;
-      const header = document.querySelector('header');
-      
-      if (toggle) {
-        toggle.addEventListener('click', () => {
-          contrastMode = !contrastMode;
-          if (contrastMode) {
-            body.classList.add('contrast-mode');
-            body.style.backgroundColor = '#000';
-            body.style.color = '#00ff00';
-            if (header) header.style.backgroundColor = '#000';
-          } else {
-            body.classList.remove('contrast-mode');
-            body.style.backgroundColor = '#f40c3f';
-            body.style.color = '#000';
-            if (header) header.style.backgroundColor = '#f40c3f';
-          }
-        });
-      }
-      
+
       // ── DNA Helix → Code Rain canvas background ──────────────────────────
       (function() {
         const cv = document.getElementById('dna-canvas');
@@ -125,11 +94,19 @@ const { title } = Astro.props;
               const fade = 1 - i / col.trail;
               const bright = i === 0 ? 1 : fade * 0.85;
               ctx.globalAlpha = alpha * bright;
-              ctx.fillStyle = '#000';
+              // Lead char: bright white-green; trail: dim green
+              ctx.fillStyle = i === 0 ? '#aaffaa' : '#00FF41';
+              if (i === 0) {
+                ctx.shadowColor = '#00FF41';
+                ctx.shadowBlur  = 8;
+              } else {
+                ctx.shadowBlur = 0;
+              }
               ctx.font = `bold ${i === 0 ? 17 : 14}px monospace`;
               ctx.fillText(ch, col.x, y);
             });
           });
+          ctx.shadowBlur = 0;
         }
 
         // ── DNA Helix ─────────────────────────────────────────────────────
@@ -172,16 +149,19 @@ const { title } = Astro.props;
           for (let i = 0; i <= segs; i += 5) {
             const a = s1[i], b = s2[i];
             const d = (a.depth + b.depth) / 2;
-            ctx.globalAlpha = alpha * (0.12 + d * 0.4);
-            ctx.strokeStyle = '#0d0d0d';
+            ctx.globalAlpha = alpha * (0.1 + d * 0.35);
+            ctx.strokeStyle = '#00FF41';
             ctx.lineWidth   = 1.5 + d * 3;
+            ctx.shadowColor = 'rgba(0,255,65,0.3)';
+            ctx.shadowBlur  = d > 0.5 ? 4 : 0;
             ctx.beginPath();
             ctx.moveTo(a.x, a.y);
             ctx.lineTo(b.x, b.y);
             ctx.stroke();
             if (i % 10 === 0) {
-              ctx.globalAlpha = alpha * d * 0.6;
-              ctx.fillStyle   = '#000';
+              ctx.globalAlpha = alpha * d * 0.55;
+              ctx.fillStyle   = '#00FF41';
+              ctx.shadowBlur  = 0;
               ctx.font        = 'bold 9px monospace';
               ctx.textAlign   = 'center';
               ctx.fillText(BASES[(i / 5) % BASES.length], (a.x + b.x) / 2, a.y - 1);
@@ -189,27 +169,28 @@ const { title } = Astro.props;
             }
           }
 
-          // ── Strands: draw each micro-segment with depth-scaled lineWidth ──
+          // ── Strands: per-segment depth-scaled lineWidth + Matrix green neon ──
           for (const seg of allSegs) {
-            const lw = 3 + seg.d * 15;   // 3px at back → 18px at front
+            const lw = 3 + seg.d * 15;
             const a  = 0.18 + seg.d * 0.72;
 
-            ctx.shadowBlur  = seg.d > 0.65 ? 5 : 0;
-            ctx.shadowColor = 'rgba(0,0,0,0.4)';
+            // Neon glow on front-facing segments
+            ctx.shadowColor = '#00FF41';
+            ctx.shadowBlur  = seg.d > 0.65 ? 10 : (seg.d > 0.4 ? 4 : 0);
             ctx.globalAlpha = alpha * a;
             ctx.lineWidth   = lw;
-            ctx.strokeStyle = '#111';
+            ctx.strokeStyle = '#00FF41';
             ctx.beginPath();
             ctx.moveTo(seg.p.x, seg.p.y);
             ctx.lineTo(seg.q.x, seg.q.y);
             ctx.stroke();
 
-            // Specular highlight on front-facing segments
+            // Bright specular highlight on front-facing segments
             if (seg.d > 0.5) {
               ctx.shadowBlur  = 0;
-              ctx.globalAlpha = alpha * (seg.d - 0.5) * 0.55;
+              ctx.globalAlpha = alpha * (seg.d - 0.5) * 0.6;
               ctx.lineWidth   = Math.max(1.5, lw * 0.22);
-              ctx.strokeStyle = 'rgba(95,95,95,0.8)';
+              ctx.strokeStyle = 'rgba(180,255,180,0.85)';
               ctx.beginPath();
               ctx.moveTo(seg.p.x - 2.5, seg.p.y);
               ctx.lineTo(seg.q.x - 2.5, seg.q.y);

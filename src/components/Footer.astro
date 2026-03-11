@@ -1,57 +1,80 @@
 ---
 const socials = [
-  { name: 'GITHUB', url: 'https://github.com/Riwex', short: '/Riwex' },
-  { name: 'LINKEDIN', url: 'https://linkedin.com/in/emirceylan', short: '/in/emirceylan' },
-  { name: 'EMAIL', url: 'mailto:emir.ceylan@sabanciuniv.edu', short: 'emir.ceylan@sabanciuniv.edu' },
+  { name: 'GITHUB',   url: 'https://github.com/Riwex',                       short: '/Riwex' },
+  { name: 'LINKEDIN', url: 'https://linkedin.com/in/emirceylan',              short: '/in/emirceylan' },
+  { name: 'EMAIL',    url: 'mailto:emir.ceylan@sabanciuniv.edu',              short: 'emir.ceylan@sabanciuniv.edu' },
 ];
 ---
 
-<footer id="contact" class="bg-black text-white py-12 border-t-4 border-black">
+<footer id="contact" class="py-12" style="background:#000; border-top:2px solid var(--primary-green);">
   <div class="max-w-7xl mx-auto px-4">
     <div class="grid md:grid-cols-2 gap-10 items-center">
+
       <div>
-        <h2 class="text-5xl md:text-7xl font-black mb-4 kinetic-text">
-          LET'S<span class="text-[#f40c3f]">_</span>CONNECT
+        <h2 class="text-5xl md:text-7xl font-black mb-4 kinetic-text glow-text">
+          LET'S<span style="color:rgba(0,255,65,0.4);">_</span>CONNECT
         </h2>
-        <p class="text-lg font-bold text-gray-400">
+        <p class="text-sm font-mono" style="color:rgba(0,255,65,0.4); letter-spacing:0.08em;">
           Have a project in mind or just want to chat?
         </p>
       </div>
-      
+
       <div class="flex flex-col gap-5">
-        <a 
-          href="mailto:emir.ceylan@sabanciuniv.edu" 
-          class="inline-flex items-center justify-center px-6 py-4 bg-[#f40c3f] text-white font-bold text-lg border-:bg-white hover:text4 border-white hover-black transition-all hover:shadow-[8px_8px_0px_#fff]"
+        <a
+          href="mailto:emir.ceylan@sabanciuniv.edu"
+          class="footer-cta inline-flex items-center justify-center px-6 py-4 font-bold text-lg font-mono"
+          style="background:var(--primary-green); color:#000; border:2px solid var(--primary-green);"
         >
           GET IN TOUCH →
         </a>
-        
+
         <div class="flex flex-col gap-2">
           {socials.map((social) => (
             <div class="flex items-center gap-3">
-              <a 
+              <a
                 href={social.url}
                 target="_blank"
-                class="px-4 py-2 border-2 border-white font-bold hover:bg-white hover:text-black transition-colors text-sm whitespace-nowrap"
+                class="social-link px-4 py-2 font-bold font-mono text-sm whitespace-nowrap"
+                style="border:2px solid var(--primary-green); color:var(--primary-green);"
               >
                 {social.name}
               </a>
-              <span class="text-gray-500 font-mono text-sm truncate">{social.short}</span>
+              <span class="font-mono text-sm truncate" style="color:rgba(0,255,65,0.35);">{social.short}</span>
             </div>
           ))}
         </div>
       </div>
     </div>
-    
+
     <!-- Binary decoration -->
     <div class="mt-12 py-3 binary-border text-center">
-      <p class="font-mono text-xs text-gray-500">
-        01000011 01010011 01010011 00100000 01010001 01010100 01010100 01000101 01001110 01010100
+      <p class="font-mono text-xs" style="color:rgba(0,255,65,0.25);">
+        01000011 01010011 00100000 01010011 01010100 01010101 01000100 01000101 01001110 01010100
       </p>
     </div>
-    
+
     <div class="mt-6 text-center">
-      <p class="font-bold text-gray-500">© {new Date().getFullYear()} EMİR CEYLAN. ALL RIGHTS RESERVED.</p>
+      <p class="font-bold font-mono text-xs" style="color:rgba(0,255,65,0.25);">
+        © {new Date().getFullYear()} EMİR CEYLAN. ALL RIGHTS RESERVED.
+      </p>
     </div>
   </div>
 </footer>
+
+<style>
+  .footer-cta {
+    transition: background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+  }
+  .footer-cta:hover {
+    background: transparent;
+    color: var(--primary-green);
+    box-shadow: 8px 8px 0 rgba(0,255,65,0.25);
+  }
+  .social-link {
+    transition: background 0.2s ease, color 0.2s ease;
+  }
+  .social-link:hover {
+    background: var(--primary-green);
+    color: #000;
+  }
+</style>

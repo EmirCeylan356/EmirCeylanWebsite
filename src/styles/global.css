@@ -1,12 +1,23 @@
 @import "tailwindcss";
 
+/* ── CSS Custom Properties ────────────────────────────────────── */
+:root {
+  --primary-green:  #00FF41;
+  --green-dim:      #00CC33;
+  --green-dark:     #004d14;
+  --green-faint:    rgba(0, 255, 65, 0.15);
+  --bg-black:       #000000;
+  --bg-panel:       #050505;
+  --bg-card:        #0a0a0a;
+}
+
 @theme {
-  --color-bg: #f40c3f;
-  --color-bg-dark: #0a0a0a;
-  --color-accent: #000000;
-  --color-accent-bright: #FF6B2C;
-  --color-text: #000000;
-  --color-text-light: #ffffff;
+  --color-bg:            #000000;
+  --color-bg-dark:       #050505;
+  --color-accent:        #00FF41;
+  --color-accent-bright: #00FF41;
+  --color-text:          #00FF41;
+  --color-text-light:    #00FF41;
 }
 
 * {
@@ -23,8 +34,8 @@ html {
 
 body {
   font-family: 'Inter', sans-serif;
-  background-color: var(--color-bg);
-  color: var(--color-text);
+  background-color: var(--bg-black);
+  color: var(--primary-green);
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -32,117 +43,132 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: 700;
 }
 
-/* Grid Background with Fisheye */
+/* ── Grid Background ─────────────────────────────────────────── */
 .grid-bg {
-  background-image: 
-    linear-gradient(rgba(0,0,0,0.15) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0,0,0,0.15) 1px, transparent 1px);
+  background-image:
+    linear-gradient(rgba(0,255,65,0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,255,65,0.07) 1px, transparent 1px);
   background-size: 50px 50px;
-  transform-style: preserve-3d;
-  transition: transform 0.1s ease-out;
 }
 
-/* Binary decoration */
+/* ── Scan-line overlay (terminal effect) ─────────────────────── */
+.scanline-overlay {
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 255, 65, 0.018) 2px,
+    rgba(0, 255, 65, 0.018) 4px
+  );
+  pointer-events: none;
+  animation: scanlineScroll 10s linear infinite;
+}
+
+@keyframes scanlineScroll {
+  from { background-position: 0 0; }
+  to   { background-position: 0 -200px; }
+}
+
+/* ── Binary decoration ───────────────────────────────────────── */
 .binary-border {
   background: repeating-linear-gradient(
     90deg,
-    #000 0px,
-    #000 2px,
+    var(--primary-green) 0px,
+    var(--primary-green) 2px,
     transparent 2px,
     transparent 10px
   );
 }
 
-/* Kinetic typography */
+/* ── Kinetic typography ──────────────────────────────────────── */
 .kinetic-text {
   text-transform: uppercase;
   letter-spacing: -0.02em;
   line-height: 0.9;
 }
 
-/* Card hover effect */
+/* ── Neon glow helper ────────────────────────────────────────── */
+.glow-text {
+  color: var(--primary-green);
+  text-shadow:
+    0 0 4px var(--primary-green),
+    0 0 14px rgba(0,255,65,0.5);
+}
+
+/* ── Card hover effect ───────────────────────────────────────── */
 .project-card {
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
-
 .project-card:hover {
   transform: translateY(-10px) rotateX(5deg);
-  box-shadow: 20px 20px 0px #000;
+  box-shadow: 20px 20px 0px var(--primary-green);
 }
 
-/* LinkedIn link global style (used in dynamically injected popup content) */
+/* ── LinkedIn link ───────────────────────────────────────────── */
 .work-content a.linkedin-link {
-  color: #0077b5;
+  color: var(--primary-green);
   text-decoration: underline;
   font-weight: bold;
 }
 
-/* Contrast toggle styles */
-.contrast-mode {
-  --color-bg: #000000;
-  --color-text: #00ff00;
+/* ── Work cards (Matrix theme) ───────────────────────────────── */
+.work-card {
+  border: 4px solid var(--primary-green) !important;
+  color: var(--primary-green) !important;
+  background: transparent !important;
+  transition: background 0.25s ease, color 0.25s ease, box-shadow 0.25s ease;
+}
+.work-card:hover {
+  background: var(--primary-green) !important;
+  color: #000 !important;
+  box-shadow: 8px 8px 0 rgba(0,255,65,0.4) !important;
+}
+.work-card:hover p,
+.work-card:hover span,
+.work-card:hover .opacity-70 {
+  color: rgba(0,0,0,0.8) !important;
+  opacity: 1 !important;
 }
 
-.contrast-mode .grid-bg {
-  background-image: 
-    linear-gradient(rgba(0,255,0,0.2) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0,255,0,0.2) 1px, transparent 1px);
+/* ── Skill boxes (Matrix theme) ──────────────────────────────── */
+.skill-box {
+  border-color: var(--primary-green) !important;
+  background: transparent !important;
+  color: var(--primary-green) !important;
+}
+.skill-box .skill-header {
+  color: var(--primary-green) !important;
+}
+.skill-box .skill-header:hover {
+  background: var(--primary-green) !important;
+  color: #000 !important;
+}
+.skill-box .skill-body span {
+  background: transparent !important;
+  color: var(--green-dim) !important;
+  border-color: rgba(0,255,65,0.18) !important;
 }
 
-.contrast-mode .project-card:hover {
-  box-shadow: 20px 20px 0px #00ff00;
-}
-
-/* Keep work cards and skill boxes black in contrast mode */
-.contrast-mode .work-card:not(:hover) {
-  color: black !important;
-  border-color: black !important;
-}
-
-.contrast-mode .skill-box {
-  color: black !important;
-  border-color: #00ff00 !important;
-  background-color: #000 !important;
-}
-
-.contrast-mode .skill-box .skill-header {
-  color: #00ff00 !important;
-}
-
-.contrast-mode .skill-box .skill-body span {
-  background-color: #000 !important;
-  color: #00ff00 !important;
-  border-color: #00ff00 !important;
-}
-
-/* Smooth reveal */
+/* ── Smooth reveal ───────────────────────────────────────────── */
 .reveal {
   opacity: 0;
   transform: translateY(50px);
   transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
 }
-
 .reveal.visible {
   opacity: 1;
   transform: translateY(0);
 }
 
-/* Floating animation */
+/* ── Float ───────────────────────────────────────────────────── */
 @keyframes float {
   0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-20px); }
+  50%       { transform: translateY(-20px); }
 }
+.float { animation: float 6s ease-in-out infinite; }
 
-.float {
-  animation: float 6s ease-in-out infinite;
-}
-
-/* Stagger animations */
-.stagger > * {
-  opacity: 0;
-  transform: translateY(30px);
-}
-
+/* ── Stagger ─────────────────────────────────────────────────── */
+.stagger > * { opacity: 0; transform: translateY(30px); }
 .stagger.visible > *:nth-child(1) { animation: fadeInUp 0.6s ease forwards 0.1s; }
 .stagger.visible > *:nth-child(2) { animation: fadeInUp 0.6s ease forwards 0.2s; }
 .stagger.visible > *:nth-child(3) { animation: fadeInUp 0.6s ease forwards 0.3s; }
@@ -151,8 +177,5 @@ h1, h2, h3, h4, h5, h6 {
 .stagger.visible > *:nth-child(6) { animation: fadeInUp 0.6s ease forwards 0.6s; }
 
 @keyframes fadeInUp {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  to { opacity: 1; transform: translateY(0); }
 }

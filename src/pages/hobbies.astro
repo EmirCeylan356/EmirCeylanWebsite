@@ -3,35 +3,98 @@ import Layout from '../layouts/Layout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 
+// ── Portals (renamed: SPORT / ART / THINK) ───────────────────────────────────
 const portals = [
-  { word: 'STRIKE', status: 'Active: Jiu-Jitsu / Archery', gradient: 'linear-gradient(135deg, #f40c3f 0%, #6b0019 100%)', desc: 'BJJ blue belt in training. Archery for focus and precision.' },
-  { word: 'MOVE',   status: 'Daily: High-Intensity Training', gradient: 'linear-gradient(135deg, #ff6b2c 0%, #7a2800 100%)', desc: 'Calisthenics, HIIT and functional strength — movement as discipline.' },
-  { word: 'THINK',  status: 'Strategy: Chess @ 1400 ELO', gradient: 'linear-gradient(135deg, #4a4aff 0%, #000055 100%)', desc: 'Tactical openings and endgame studies. Chess as a model for decision-making.' },
+  {
+    word: 'SPORT',
+    status: 'Active: Jiu-Jitsu / Archery',
+    gradient: 'linear-gradient(135deg, #00FF41 0%, #004d14 100%)',
+    desc: 'BJJ blue belt in training. Archery for focus and precision. Movement as discipline.',
+  },
+  {
+    word: 'ART',
+    status: 'Active: Painting / Drawing',
+    gradient: 'linear-gradient(135deg, #00CC33 0%, #003311 100%)',
+    desc: 'Oil painting and charcoal drawing — translating logic into visual language.',
+  },
+  {
+    word: 'THINK',
+    status: 'Strategy: Chess @ 1400 ELO',
+    gradient: 'linear-gradient(135deg, #009922 0%, #001a06 100%)',
+    desc: 'Tactical openings and endgame studies. Chess as a model for decision-making.',
+  },
 ];
 
-// Merged art gallery — drawings + paintings
+// ── Artworks (paintings only — no placeholders) ───────────────────────────────
 const artworks = [
-  { id: 1,  title: 'FIGURE STUDY I',  type: 'CHARCOAL',    year: 2025, status: 'PHYSICAL',    depth: 1, src: '' },
-  { id: 2,  title: 'PORTRAIT II',     type: 'PENCIL',      year: 2024, status: 'PHYSICAL',    depth: 2, src: '' },
-  { id: 3,  title: 'URBAN SKETCH',    type: 'INK PEN',     year: 2025, status: 'PHYSICAL',    depth: 1, src: '' },
-  { id: 4,  title: 'ABSTRACT IV',     type: 'MIXED MEDIA', year: 2025, status: 'IN PROGRESS', depth: 3, src: '' },
-  { id: 5,  title: 'LANDSCAPE STUDY', type: 'GRAPHITE',    year: 2024, status: 'PHYSICAL',    depth: 2, src: '' },
-  { id: 6,  title: 'COMPOSITION V',   type: 'CHARCOAL',    year: 2025, status: 'PHYSICAL',    depth: 1, src: '' },
-  { id: 7,  title: 'PAINTING 01', type: 'OIL', year: 2024, status: 'PHYSICAL', depth: 1, src: '/images/file_8---39151805-7313-4bb7-b8c8-1365aef884a3.jpg' },
-  { id: 8,  title: 'PAINTING 02', type: 'OIL', year: 2024, status: 'PHYSICAL', depth: 2, src: '/images/file_9---c5cd81b7-8140-4595-8297-af32f0e2edba.jpg' },
-  { id: 9,  title: 'PAINTING 03', type: 'OIL', year: 2024, status: 'PHYSICAL', depth: 1, src: '/images/file_10---714a56fd-d4fb-4316-8629-c6f06a4db7a8.jpg' },
-  { id: 10, title: 'PAINTING 04', type: 'OIL', year: 2024, status: 'PHYSICAL', depth: 3, src: '/images/file_11---e6cf7245-cda7-4ca8-884c-55c891575493.jpg' },
-  { id: 11, title: 'PAINTING 05', type: 'OIL', year: 2024, status: 'PHYSICAL', depth: 1, src: '/images/file_12---09cd522a-d5e5-433a-ac0f-d9c0c710c79a.jpg' },
-  { id: 12, title: 'PAINTING 06', type: 'OIL', year: 2024, status: 'PHYSICAL', depth: 2, src: '/images/file_13---f94eea51-a229-4b42-bcf4-f489c8824e9b.jpg' },
-  { id: 13, title: 'PAINTING 07', type: 'OIL', year: 2023, status: 'PHYSICAL', depth: 1, src: '/images/file_14---d6d37114-4da7-4cdf-896d-5b361bf9ac99.jpg' },
-  { id: 14, title: 'PAINTING 08', type: 'OIL', year: 2023, status: 'PHYSICAL', depth: 2, src: '/images/file_15---cfdd2a00-8c9e-4367-8b88-c149ce15db2a.jpg' },
-  { id: 15, title: 'PAINTING 09', type: 'OIL', year: 2023, status: 'PHYSICAL', depth: 1, src: '/images/file_16---a29e17b8-1972-4c3d-af3c-e4f65981a95f.jpg' },
-  { id: 16, title: 'PAINTING 10', type: 'OIL', year: 2023, status: 'PHYSICAL', depth: 3, src: '/images/file_17---f463b1dd-1139-4fad-81a9-b4b5bddd0ef0.jpg' },
-  { id: 17, title: 'PAINTING 11', type: 'OIL', year: 2023, status: 'PHYSICAL', depth: 1, src: '/images/file_19---7fd47930-b43e-4e33-a1d0-ce5384175a40.jpg' },
-  { id: 18, title: 'PAINTING 12', type: 'OIL', year: 2023, status: 'PHYSICAL', depth: 2, src: '/images/file_20---4fa92226-8c06-4344-836a-2745c8ec1072.jpg' },
-  { id: 19, title: 'PAINTING 13', type: 'OIL', year: 2023, status: 'PHYSICAL', depth: 1, src: '/images/file_21---7f73c515-6959-4117-bc6b-a178b7e1f1fa.jpg' },
+  {
+    id: 1,  title: 'FORM STUDY I',       medium: 'Oil on Canvas',  year: 2024, status: 'PHYSICAL',
+    src: '/images/file_8---39151805-7313-4bb7-b8c8-1365aef884a3.jpg',
+    desc: 'An exploration of negative space and structural tension. Built up with palette knife strokes, allowing the medium to dictate form. The result captures a sense of contained, kinetic energy.',
+  },
+  {
+    id: 2,  title: 'COMPOSITION II',     medium: 'Mixed Media',    year: 2024, status: 'PHYSICAL',
+    src: '/images/file_9---c5cd81b7-8140-4595-8297-af32f0e2edba.jpg',
+    desc: 'This piece began as a charcoal sketch deliberately obscured with oil glazes. The layering process mirrors how I think about ML models — iterative refinement where early assumptions are buried beneath later understanding.',
+  },
+  {
+    id: 3,  title: 'LANDSCAPE III',      medium: 'Oil on Canvas',  year: 2024, status: 'PHYSICAL',
+    src: '/images/file_10---714a56fd-d4fb-4316-8629-c6f06a4db7a8.jpg',
+    desc: 'Painted from memory of the Bosphorus at dusk. The color temperature shift from warm water to cool sky required constant decision-making — similar to balancing precision and intuition in computational work.',
+  },
+  {
+    id: 4,  title: 'FIGURE IV',          medium: 'Acrylic',        year: 2024, status: 'PHYSICAL',
+    src: '/images/file_11---e6cf7245-cda7-4ca8-884c-55c891575493.jpg',
+    desc: 'A study of anatomical structure using classical techniques. I focused on how light defines mass. The economy of marks — knowing what to leave out — is a discipline I carry into both art and code.',
+  },
+  {
+    id: 5,  title: 'ABSTRACTION V',      medium: 'Oil on Canvas',  year: 2024, status: 'PHYSICAL',
+    src: '/images/file_12---09cd522a-d5e5-433a-ac0f-d9c0c710c79a.jpg',
+    desc: 'Started with no plan — only color relationships. I let each layer react to the previous one, building a conversation between saturations. The process revealed patterns I had not consciously designed.',
+  },
+  {
+    id: 6,  title: 'TEXTURE VI',         medium: 'Mixed Media',    year: 2024, status: 'PHYSICAL',
+    src: '/images/file_13---f94eea51-a229-4b42-bcf4-f489c8824e9b.jpg',
+    desc: 'Combines impasto technique with fine ink work. The tension between rough texture and precise linework creates a dialogue I find similar to the interplay of raw data and polished model output.',
+  },
+  {
+    id: 7,  title: 'STILLNESS VII',      medium: 'Oil on Canvas',  year: 2023, status: 'PHYSICAL',
+    src: '/images/file_14---d6d37114-4da7-4cdf-896d-5b361bf9ac99.jpg',
+    desc: 'A meditation on quiet moments in noisy cities. Painted mostly in a single session to preserve immediacy. The muted palette was a deliberate choice to focus attention on shape rather than color.',
+  },
+  {
+    id: 8,  title: 'MOTION VIII',        medium: 'Acrylic',        year: 2023, status: 'PHYSICAL',
+    src: '/images/file_15---cfdd2a00-8c9e-4367-8b88-c149ce15db2a.jpg',
+    desc: 'Inspired by kinesiology diagrams, this piece tries to render the invisible force of movement. Gestural brushstrokes radiate from a central axis, creating a sense of kinetic momentum frozen in paint.',
+  },
+  {
+    id: 9,  title: 'DEPTH IX',           medium: 'Oil on Canvas',  year: 2023, status: 'PHYSICAL',
+    src: '/images/file_16---a29e17b8-1972-4c3d-af3c-e4f65981a95f.jpg',
+    desc: 'Built through dozens of transparent glaze layers, each shifting the value relationships beneath. The depth achieved is optical rather than physical — an illusion constructed through patience.',
+  },
+  {
+    id: 10, title: 'PATTERN X',          medium: 'Mixed Media',    year: 2023, status: 'PHYSICAL',
+    src: '/images/file_17---f463b1dd-1139-4fad-81a9-b4b5bddd0ef0.jpg',
+    desc: 'Geometric repetition interrupted by organic intrusions. The systematic grid gives way to hand-drawn imperfections, mirroring how biological systems subvert algorithmic prediction.',
+  },
+  {
+    id: 11, title: 'TENSION XI',         medium: 'Charcoal',       year: 2023, status: 'PHYSICAL',
+    src: '/images/file_19---7fd47930-b43e-4e33-a1d0-ce5384175a40.jpg',
+    desc: 'A charcoal study focused entirely on the relationship between light and shadow. Heavy blacks contrast with the white of untouched paper, using negative space as an active compositional element.',
+  },
+  {
+    id: 12, title: 'SIGNAL XII',         medium: 'Oil on Canvas',  year: 2023, status: 'PHYSICAL',
+    src: '/images/file_20---4fa92226-8c06-4344-836a-2745c8ec1072.jpg',
+    desc: 'Inspired by neural signal propagation, the composition follows branching paths that narrow and dissolve. A visual metaphor for how information decays across layers of a deep network.',
+  },
+  {
+    id: 13, title: 'THRESHOLD XIII',     medium: 'Mixed Media',    year: 2023, status: 'PHYSICAL',
+    src: '/images/file_21---7f73c515-6959-4117-bc6b-a178b7e1f1fa.jpg',
+    desc: 'Created at a transitional point — between academic years, between projects. The divided composition reflects the experience of standing at a boundary: one foot in what was, one in what is becoming.',
+  },
 ];
 
+// ── Travel map data ───────────────────────────────────────────────────────────
 const homeBase = { city: 'ISTANBUL', country: 'TURKEY', x: 581, y: 188 };
 
 const travels = [
@@ -49,7 +112,7 @@ const travels = [
   },
 ];
 
-// Simplified Mercator continent paths (viewBox 0 0 1000 500)
+// ── Simplified Mercator continent paths (viewBox 0 0 1000 500) ────────────────
 const C = {
   northAmerica:  'M94,145 L118,126 L148,116 L178,114 L208,120 L232,132 L250,148 L262,168 L265,190 L257,210 L241,225 L222,235 L206,244 L194,254 L190,268 L196,284 L210,298 L218,315 L212,328 L198,334 L182,328 L168,312 L158,290 L152,264 L148,240 L140,218 L126,200 L108,186 L96,170 Z',
   southAmerica:  'M242,265 L268,256 L290,260 L308,276 L318,298 L322,324 L318,350 L306,373 L288,388 L266,396 L246,394 L228,382 L216,362 L210,336 L212,308 L220,284 L232,270 Z',
@@ -71,15 +134,15 @@ const C = {
 <Layout title="HOBBIES — Emir Ceylan">
   <Header />
 
-  <main class="flex-1" style="padding-top: 80px;">
+  <main class="flex-1" style="padding-top:80px;">
 
-    <!-- ═══════════════════════════════════ ACTIVITIES ══════════════════════════════════ -->
-    <section id="activities" class="activities-section relative" style="background:#050505; overflow:hidden;">
+    <!-- ═══ ACTIVITIES — Action Portals ══════════════════════════════════════ -->
+    <section id="activities" class="activities-section relative" style="background:#000; overflow:hidden;">
       <div class="max-w-7xl mx-auto px-8 pt-16 pb-6">
         <div class="flex items-end gap-4">
-          <h2 class="text-5xl md:text-7xl font-black kinetic-text" style="color:#fff;">ACTIVITIES</h2>
-          <div class="flex-1" style="background:rgba(255,255,255,0.3); height:4px;"></div>
-          <span class="text-3xl font-black" style="color:#fff;">/03</span>
+          <h2 class="text-5xl md:text-7xl font-black kinetic-text glow-text">ACTIVITIES</h2>
+          <div class="flex-1" style="background:rgba(0,255,65,0.25); height:2px;"></div>
+          <span class="text-3xl font-black" style="color:rgba(0,255,65,0.45);">/03</span>
         </div>
       </div>
 
@@ -99,51 +162,39 @@ const C = {
       </div>
     </section>
 
-    <!-- ═══════════════════════════════════ ART GALLERY ════════════════════════════════ -->
+    <!-- ═══ ART — Horizontal Gallery with Lightbox ════════════════════════════ -->
     <section id="art" class="art-section relative" style="background:#050505;">
       <div class="max-w-7xl mx-auto px-4 pt-16 pb-8">
         <div class="flex items-end gap-4">
-          <h2 class="text-5xl md:text-7xl font-black kinetic-text art-title">ART</h2>
-          <div class="flex-1 art-rule"></div>
-          <span class="text-3xl font-black art-title">/{artworks.length.toString().padStart(2,'0')}</span>
+          <h2 class="text-5xl md:text-7xl font-black kinetic-text glow-text">ART</h2>
+          <div class="flex-1" style="background:rgba(0,255,65,0.25); height:2px;"></div>
+          <span class="text-3xl font-black" style="color:rgba(0,255,65,0.45);">/{artworks.length.toString().padStart(2,'0')}</span>
         </div>
-        <p class="text-xs font-mono mt-3 art-hint">← DRAWINGS · PAINTINGS — SCROLL TO EXPLORE →</p>
+        <p class="text-xs font-mono mt-3" style="color:rgba(0,255,65,0.3); letter-spacing:0.12em;">← SCROLL TO EXPLORE · CLICK IMAGE TO OPEN →</p>
       </div>
 
       <div id="art-viewport" class="relative overflow-hidden" style="height:68vh; touch-action:pan-y;">
         <div id="art-bg" class="absolute inset-0 pointer-events-none art-bg-grid"></div>
 
-        <div id="art-fg" class="absolute inset-0 pointer-events-none z-10 overflow-hidden" aria-hidden="true">
-          <div class="ink-blob" style="width:340px;height:340px;top:8%;left:18%;opacity:0.06;border-radius:62% 38% 70% 30%/45% 55% 45% 55%;"></div>
-          <div class="ink-blob" style="width:220px;height:280px;top:40%;left:55%;opacity:0.05;border-radius:40% 60% 30% 70%/60% 40% 70% 30%;"></div>
-          <div class="ink-blob" style="width:400px;height:300px;top:10%;left:75%;opacity:0.05;border-radius:38% 62% 63% 37%/41% 44% 56% 59%;"></div>
-        </div>
-
         <div id="art-track" class="absolute top-0 left-0 flex items-center gap-10 px-20" style="height:100%; width:max-content; will-change:transform;">
           {artworks.map((d) => {
-            const w = 300 - d.depth * 18;
-            const h = 400 - d.depth * 18;
-            const depthBlur = d.depth > 1 ? `blur(${(d.depth - 1) * 1.8}px)` : 'none';
+            const w = 300;
+            const h = 400;
             return (
-              <div class="art-item group flex-shrink-0 relative" data-depth={d.depth}
-                style={`width:${w}px; height:${h}px; filter:${depthBlur}; transition:filter 0.5s ease, transform 0.4s ease;`}>
-                <div class="art-frame relative w-full h-full overflow-hidden" style="border:1px solid rgba(255,255,255,0.15);">
-                  {d.src ? (
-                    <img src={d.src} alt={d.title} class="art-img w-full h-full object-cover"
-                      style="filter:brightness(0.82) contrast(1.12) sepia(0.08); transition:filter 0.45s ease;" loading="lazy" />
-                  ) : (
-                    <div class="w-full h-full flex flex-col items-center justify-center gap-3" style="background:#0d0d0d; border:1px dashed rgba(255,255,255,0.12);">
-                      <span class="font-mono text-xs" style="color:rgba(255,255,255,0.2);">[ ADD IMAGE ]</span>
-                      <span class="font-mono text-[10px]" style="color:rgba(255,255,255,0.1);">{d.title}</span>
-                    </div>
-                  )}
-                  <div class="art-grain absolute inset-0 pointer-events-none" style="opacity:0.35;"></div>
-                  <div class="absolute top-0 left-0 px-3 py-1 translate-y-[-100%] group-hover:translate-y-0 transition-transform duration-300 z-20" style="background:#f40c3f;">
-                    <span class="text-white text-[10px] font-black font-mono tracking-widest">{d.title}</span>
+              <div class="art-item group flex-shrink-0 relative cursor-pointer" data-id={d.id}
+                style={`width:${w}px; height:${h}px; transition:transform 0.4s ease;`}>
+                <div class="art-frame relative w-full h-full overflow-hidden" style="border:1px solid rgba(0,255,65,0.2);">
+                  <img src={d.src} alt={d.title} class="art-img w-full h-full object-cover" loading="lazy"
+                    style="filter:brightness(0.82) contrast(1.1) grayscale(0.3); transition:filter 0.45s ease;" />
+                  <div class="art-grain absolute inset-0 pointer-events-none" style="opacity:0.25;"></div>
+                  <!-- Title tag (slides down on hover) -->
+                  <div class="absolute top-0 left-0 right-0 translate-y-[-100%] group-hover:translate-y-0 transition-transform duration-300 z-20 px-3 py-2" style="background:rgba(0,255,65,0.9);">
+                    <span class="text-black text-[10px] font-black font-mono tracking-widest">{d.title}</span>
                   </div>
-                  <div class="absolute bottom-0 left-0 right-0 translate-y-full group-hover:translate-y-0 transition-transform duration-300 z-20 p-3" style="background:rgba(5,5,5,0.92);">
-                    <p class="text-[10px] font-mono mb-1" style="color:rgba(255,255,255,0.85);">TYPE: {d.type} | YEAR: {d.year}</p>
-                    <p class="text-[10px] font-mono" style="color:rgba(244,12,63,0.9);">STATUS: {d.status}</p>
+                  <!-- Info panel (slides up on hover) -->
+                  <div class="absolute bottom-0 left-0 right-0 translate-y-full group-hover:translate-y-0 transition-transform duration-300 z-20 p-3" style="background:rgba(0,0,0,0.92); border-top:1px solid rgba(0,255,65,0.3);">
+                    <p class="text-[10px] font-mono mb-1" style="color:rgba(0,255,65,0.8);">MEDIUM: {d.medium} | {d.year}</p>
+                    <p class="text-[10px] font-mono" style="color:rgba(0,255,65,0.5);">CLICK TO VIEW →</p>
                   </div>
                 </div>
               </div>
@@ -152,41 +203,39 @@ const C = {
         </div>
       </div>
 
-      <div style="height:1px; background:rgba(255,255,255,0.08);">
-        <div id="art-progress" style="height:100%; width:0%; background:#f40c3f; transition:none;"></div>
+      <div style="height:1px; background:rgba(0,255,65,0.08);">
+        <div id="art-progress" style="height:100%; width:0%; background:var(--primary-green); transition:none;"></div>
       </div>
       <div style="padding-bottom:64px;"></div>
     </section>
 
-    <!-- ═══════════════════════════════════ TRAVELS ════════════════════════════════════ -->
-    <section id="travels" style="background:#050505; padding:80px 0 0;">
+    <!-- ═══ TRAVELS — SVG World Map ════════════════════════════════════════════ -->
+    <section id="travels" style="background:#000; padding:80px 0 0;">
       <div class="max-w-7xl mx-auto px-8 pb-10">
         <div class="flex items-end gap-4">
-          <h2 class="text-5xl md:text-7xl font-black kinetic-text" style="color:#fff;">TRAVELS</h2>
-          <div class="flex-1" style="background:rgba(255,255,255,0.3); height:4px;"></div>
-          <span class="text-3xl font-black" style="color:#fff;">/{travels.length.toString().padStart(2,'0')}</span>
+          <h2 class="text-5xl md:text-7xl font-black kinetic-text glow-text">TRAVELS</h2>
+          <div class="flex-1" style="background:rgba(0,255,65,0.25); height:2px;"></div>
+          <span class="text-3xl font-black" style="color:rgba(0,255,65,0.45);">/{travels.length.toString().padStart(2,'0')}</span>
         </div>
-        <div id="map-coords" class="font-mono text-xs mt-3" style="color:rgba(255,255,255,0.22); letter-spacing:0.12em;">
-          MOVE CURSOR OVER MAP — LAT: — &nbsp; LON: —
+        <div id="map-coords" class="font-mono text-xs mt-3" style="color:rgba(0,255,65,0.25); letter-spacing:0.12em;">
+          MOVE CURSOR OVER MAP — LAT: —  LON: —
         </div>
       </div>
 
-      <!-- SVG World Map -->
-      <div id="map-wrap" style="position:relative; width:100%; overflow:hidden; border-top:1px solid rgba(255,255,255,0.06); border-bottom:1px solid rgba(255,255,255,0.06);">
+      <div style="position:relative; width:100%; overflow:hidden; border-top:1px solid rgba(0,255,65,0.1); border-bottom:1px solid rgba(0,255,65,0.1);">
         <svg id="travel-map" viewBox="0 0 1000 500" preserveAspectRatio="xMidYMid meet"
-          style="width:100%; max-height:72vh; display:block; background:#060606; cursor:crosshair;">
+          style="width:100%; max-height:72vh; display:block; background:#020202; cursor:crosshair;">
 
-          <!-- Graticule grid -->
-          <g stroke="rgba(255,255,255,0.04)" stroke-width="0.5" fill="none">
-            <line x1="0" y1="79"  x2="1000" y2="79"  />{/* 75°N */}
-            <line x1="0" y1="145" x2="1000" y2="145" />{/* 60°N */}
-            <line x1="0" y1="182" x2="1000" y2="182" />{/* 45°N */}
-            <line x1="0" y1="211" x2="1000" y2="211" />{/* 30°N */}
-            <line x1="0" y1="233" x2="1000" y2="233" />{/* 15°N */}
-            <line x1="0" y1="250" x2="1000" y2="250" />{/* equator */}
-            <line x1="0" y1="267" x2="1000" y2="267" />{/* 15°S */}
-            <line x1="0" y1="289" x2="1000" y2="289" />{/* 30°S */}
-            <line x1="0" y1="318" x2="1000" y2="318" />{/* 45°S */}
+          <g stroke="rgba(0,255,65,0.05)" stroke-width="0.5" fill="none">
+            <line x1="0" y1="79"  x2="1000" y2="79"  />
+            <line x1="0" y1="145" x2="1000" y2="145" />
+            <line x1="0" y1="182" x2="1000" y2="182" />
+            <line x1="0" y1="211" x2="1000" y2="211" />
+            <line x1="0" y1="233" x2="1000" y2="233" />
+            <line x1="0" y1="250" x2="1000" y2="250" />
+            <line x1="0" y1="267" x2="1000" y2="267" />
+            <line x1="0" y1="289" x2="1000" y2="289" />
+            <line x1="0" y1="318" x2="1000" y2="318" />
             <line x1="83"  y1="0" x2="83"  y2="500" />
             <line x1="167" y1="0" x2="167" y2="500" />
             <line x1="250" y1="0" x2="250" y2="500" />
@@ -200,18 +249,15 @@ const C = {
             <line x1="917" y1="0" x2="917" y2="500" />
           </g>
 
-          <!-- Graticule labels -->
-          <g style="font-family:monospace; font-size:7px; fill:rgba(255,255,255,0.1);">
+          <g style="font-family:monospace; font-size:7px; fill:rgba(0,255,65,0.15);">
             <text x="6" y="248">0°</text>
             <text x="6" y="143">60°N</text>
             <text x="6" y="213">30°N</text>
-            <text x="6" y="291">30°S</text>
             <text x="502" y="10">0°</text>
             <text x="582" y="10">30°E</text>
           </g>
 
-          <!-- Continents -->
-          <g fill="rgba(255,255,255,0.03)" stroke="#1c1c1c" stroke-width="0.8" stroke-linejoin="round">
+          <g fill="rgba(0,255,65,0.04)" stroke="rgba(0,255,65,0.12)" stroke-width="0.8" stroke-linejoin="round">
             <path d={C.northAmerica} />
             <path d={C.southAmerica} />
             <path d={C.greenland} />
@@ -228,46 +274,39 @@ const C = {
             <path d={C.australia} />
           </g>
 
-          <!-- Flight paths from Istanbul -->
           {travels.map(t => (
             <path
               d={`M ${homeBase.x},${homeBase.y} Q ${t.cpx},${t.cpy} ${t.x},${t.y}`}
-              fill="none"
-              stroke="rgba(244,12,63,0.35)"
-              stroke-width="1"
-              stroke-dasharray="4 8"
-              class="flight-path"
+              fill="none" stroke="rgba(0,255,65,0.4)" stroke-width="1"
+              stroke-dasharray="4 8" class="flight-path"
             />
           ))}
 
-          <!-- Home base: Istanbul -->
           <g class="home-node">
             <circle cx={homeBase.x} cy={homeBase.y} r="3.5" fill="#fff" />
-            <circle cx={homeBase.x} cy={homeBase.y} r="3.5" fill="none" stroke="rgba(255,255,255,0.6)" stroke-width="1" class="pulse-home" />
-            <text x={homeBase.x + 7} y={homeBase.y + 3} style="font-family:monospace; font-size:8px; fill:rgba(255,255,255,0.5); letter-spacing:0.08em;">IST [HOME]</text>
+            <circle cx={homeBase.x} cy={homeBase.y} r="3.5" fill="none" stroke="rgba(255,255,255,0.5)" stroke-width="1" class="pulse-home" />
+            <text x={homeBase.x + 7} y={homeBase.y + 3} style="font-family:monospace; font-size:8px; fill:rgba(0,255,65,0.55); letter-spacing:0.08em;">IST [HOME]</text>
           </g>
 
-          <!-- Travel city nodes -->
           {travels.map(t => (
             <g class="travel-node" data-id={t.id} style="cursor:pointer;">
               <circle cx={t.x} cy={t.y} r="12" fill="rgba(0,0,0,0)" />
-              <circle cx={t.x} cy={t.y} r="3.5" fill="#f40c3f" class="node-dot" />
-              <circle cx={t.x} cy={t.y} r="3.5" fill="none" stroke="#f40c3f" stroke-width="1" class="pulse-ring" />
-              <text x={t.x + 7} y={t.y + 3} style="font-family:monospace; font-size:8px; fill:rgba(255,255,255,0.38); letter-spacing:0.06em;">{t.city}</text>
+              <circle cx={t.x} cy={t.y} r="3.5" fill="var(--primary-green)" class="node-dot" />
+              <circle cx={t.x} cy={t.y} r="3.5" fill="none" stroke="var(--primary-green)" stroke-width="1" class="pulse-ring" />
+              <text x={t.x + 7} y={t.y + 3} style="font-family:monospace; font-size:8px; fill:rgba(0,255,65,0.45); letter-spacing:0.06em;">{t.city}</text>
             </g>
           ))}
         </svg>
       </div>
 
-      <!-- Legend -->
       <div class="max-w-7xl mx-auto px-8 py-6 flex gap-8 flex-wrap">
         <div class="flex items-center gap-2">
           <div style="width:8px; height:8px; border-radius:50%; background:#fff;"></div>
-          <span class="font-mono text-[10px]" style="color:rgba(255,255,255,0.3); letter-spacing:0.1em;">HOME BASE</span>
+          <span class="font-mono text-[10px]" style="color:rgba(0,255,65,0.3); letter-spacing:0.1em;">HOME BASE</span>
         </div>
         <div class="flex items-center gap-2">
-          <div style="width:8px; height:8px; border-radius:50%; background:#f40c3f;"></div>
-          <span class="font-mono text-[10px]" style="color:rgba(255,255,255,0.3); letter-spacing:0.1em;">VISITED — CLICK TO OPEN PASSPORT</span>
+          <div style="width:8px; height:8px; border-radius:50%; background:var(--primary-green);"></div>
+          <span class="font-mono text-[10px]" style="color:rgba(0,255,65,0.3); letter-spacing:0.1em;">VISITED — CLICK TO OPEN PASSPORT</span>
         </div>
       </div>
       <div style="padding-bottom:80px;"></div>
@@ -275,38 +314,59 @@ const C = {
 
   </main>
 
-  <!-- Passport Card (slides in from right) -->
+  <!-- ═══ ART LIGHTBOX MODAL ═══════════════════════════════════════════════════ -->
+  <div id="art-lightbox" class="fixed inset-0 z-[400] flex items-center justify-center p-4 md:p-8" style="background:rgba(0,0,0,0.95); display:none;">
+    <div id="art-lightbox-content" class="relative w-full max-w-5xl max-h-[90vh] flex flex-col md:flex-row overflow-hidden"
+      style="border:1px solid rgba(0,255,65,0.25);">
+      <!-- Image panel -->
+      <div class="art-lb-img-wrap flex-shrink-0" style="width:100%; max-width:480px; background:#0a0a0a;">
+        <img id="art-lb-img" src="" alt="" style="width:100%; height:100%; object-fit:cover; display:block; min-height:300px; max-height:70vh;" loading="lazy" />
+      </div>
+      <!-- Info panel -->
+      <div class="art-lb-info flex-1 flex flex-col overflow-y-auto" style="background:#050505; padding:40px; border-left:1px solid rgba(0,255,65,0.15);">
+        <div id="art-lb-id" class="font-mono text-xs mb-4" style="color:rgba(0,255,65,0.3); letter-spacing:0.15em;"></div>
+        <h3 id="art-lb-title" class="font-black text-3xl mb-2 glow-text" style="font-family:'Space Grotesk'; line-height:1;"></h3>
+        <div class="flex gap-4 mb-6">
+          <span id="art-lb-medium" class="font-mono text-xs" style="color:rgba(0,255,65,0.45);"></span>
+          <span id="art-lb-year" class="font-mono text-xs" style="color:rgba(0,255,65,0.3);"></span>
+        </div>
+        <div style="height:1px; background:rgba(0,255,65,0.12); margin-bottom:24px;"></div>
+        <p id="art-lb-desc" class="font-mono text-sm leading-relaxed flex-1" style="color:rgba(0,204,51,0.8);"></p>
+        <div class="mt-8 pt-6" style="border-top:1px solid rgba(0,255,65,0.08);">
+          <p class="font-mono text-[10px]" style="color:rgba(0,255,65,0.2); letter-spacing:0.1em;">STATUS: PHYSICAL ORIGINAL</p>
+        </div>
+      </div>
+      <!-- Close -->
+      <button id="art-lb-close" class="absolute top-4 right-4 font-mono text-sm font-bold"
+        style="color:rgba(0,255,65,0.5); background:none; border:none; cursor:pointer; letter-spacing:0.1em; z-index:10;">
+        × CLOSE
+      </button>
+    </div>
+  </div>
+
+  <!-- ═══ PASSPORT CARD ════════════════════════════════════════════════════════ -->
   <div id="passport-card" class="fixed top-0 right-0 h-full z-[300] pointer-events-none" style="width:min(420px,100vw);">
-    <div class="relative h-full flex flex-col" style="background:#080808; border-left:1px solid rgba(255,255,255,0.1);">
-      <!-- Photo area -->
-      <div id="passport-photo-wrap" style="height:300px; overflow:hidden; border-bottom:1px solid rgba(255,255,255,0.08); position:relative; background:#111; flex-shrink:0;">
+    <div class="relative h-full flex flex-col" style="background:#050505; border-left:1px solid rgba(0,255,65,0.2);">
+      <div id="passport-photo-wrap" style="height:280px; overflow:hidden; border-bottom:1px solid rgba(0,255,65,0.1); position:relative; background:#0a0a0a; flex-shrink:0;">
         <img id="passport-img" src="" alt="" style="width:100%;height:100%;object-fit:cover;display:none;filter:grayscale(1) contrast(1.15);" loading="lazy" />
         <div id="passport-no-photo" class="absolute inset-0 flex flex-col items-center justify-center gap-2">
-          <span class="font-mono text-xs" style="color:rgba(255,255,255,0.12);">[ NO PHOTO YET ]</span>
-          <span class="font-mono text-[10px]" style="color:rgba(255,255,255,0.06);">ADD TO travels ARRAY</span>
+          <span class="font-mono text-xs" style="color:rgba(0,255,65,0.15);">[ NO PHOTO YET ]</span>
         </div>
-        <!-- Red corner stamp -->
-        <div class="absolute top-4 left-4 px-3 py-1" style="background:#f40c3f;">
-          <span id="passport-status" class="font-mono text-[10px] font-bold text-white tracking-widest"></span>
+        <div class="absolute top-4 left-4 px-3 py-1" style="background:rgba(0,255,65,0.15); border:1px solid rgba(0,255,65,0.3);">
+          <span id="passport-status" class="font-mono text-[10px] font-bold" style="color:var(--primary-green); letter-spacing:0.15em;"></span>
         </div>
       </div>
-
-      <!-- Info -->
       <div style="padding:32px; flex:1; overflow:auto;">
-        <div style="border-bottom:1px solid rgba(255,255,255,0.06); padding-bottom:20px; margin-bottom:20px;">
-          <div id="passport-date" class="font-mono text-[10px] mb-4" style="color:rgba(255,255,255,0.25); letter-spacing:0.15em;"></div>
-          <div id="passport-city" class="font-black" style="font-family:'Space Grotesk'; font-size:clamp(36px,8vw,56px); color:#fff; line-height:1; margin-bottom:4px;"></div>
-          <div id="passport-country" class="font-mono text-xs" style="color:rgba(255,255,255,0.35); letter-spacing:0.1em;"></div>
+        <div style="border-bottom:1px solid rgba(0,255,65,0.08); padding-bottom:20px; margin-bottom:20px;">
+          <div id="passport-date" class="font-mono text-[10px] mb-4" style="color:rgba(0,255,65,0.3); letter-spacing:0.15em;"></div>
+          <div id="passport-city" class="font-black glow-text" style="font-family:'Space Grotesk'; font-size:clamp(32px,8vw,52px); line-height:1; margin-bottom:4px;"></div>
+          <div id="passport-country" class="font-mono text-xs" style="color:rgba(0,255,65,0.35); letter-spacing:0.1em;"></div>
         </div>
-        <p id="passport-memory" class="font-mono text-sm" style="color:rgba(255,255,255,0.55); line-height:1.7; font-style:italic;"></p>
-
-        <!-- Coordinates -->
-        <div id="passport-coords" class="font-mono text-[10px] mt-6" style="color:rgba(244,12,63,0.6); letter-spacing:0.1em;"></div>
+        <p id="passport-memory" class="font-mono text-sm" style="color:rgba(0,204,51,0.6); line-height:1.7; font-style:italic;"></p>
+        <div id="passport-coords" class="font-mono text-[10px] mt-6" style="color:rgba(0,255,65,0.35); letter-spacing:0.1em;"></div>
       </div>
-
-      <!-- Close -->
-      <button id="passport-close" class="absolute top-4 right-4 font-mono text-xs hover:text-white transition-colors"
-        style="color:rgba(255,255,255,0.3); background:none; border:none; cursor:pointer; letter-spacing:0.1em;">
+      <button id="passport-close" class="absolute top-4 right-4 font-mono text-xs"
+        style="color:rgba(0,255,65,0.35); background:none; border:none; cursor:pointer; letter-spacing:0.1em;">
         × CLOSE
       </button>
     </div>
@@ -317,15 +377,14 @@ const C = {
 
 <style>
   /* ── Action Portals ──────────────────────────────────────────────────────── */
-  .portals-container { border-top: 1px solid rgba(255,255,255,0.08); }
+  .portals-container { border-top:1px solid rgba(0,255,65,0.1); }
 
   .portal-item {
     position: relative;
     padding: 12px 48px 16px;
-    border-bottom: 1px solid rgba(255,255,255,0.08);
+    border-bottom: 1px solid rgba(0,255,65,0.08);
     cursor: none;
     overflow: hidden;
-    transition: background 0.3s ease;
     z-index: 2;
   }
 
@@ -333,11 +392,11 @@ const C = {
     font-family: monospace;
     font-size: 11px;
     letter-spacing: 0.12em;
-    color: rgba(255,255,255,0.28);
+    color: rgba(0,255,65,0.3);
     margin-bottom: 2px;
     transition: color 0.3s ease;
   }
-  .portal-item:hover .portal-status { color: rgba(255,255,255,0.6); }
+  .portal-item:hover .portal-status { color: rgba(0,255,65,0.65); }
 
   .portal-word-wrapper {
     position: relative;
@@ -358,10 +417,10 @@ const C = {
   }
 
   .portal-base {
-    -webkit-text-stroke: 1.5px rgba(255,255,255,0.55);
+    -webkit-text-stroke: 1.5px rgba(0,255,65,0.4);
     color: transparent;
-    position: relative;
     z-index: 1;
+    position: relative;
   }
 
   .portal-fill {
@@ -376,19 +435,18 @@ const C = {
     z-index: 2;
   }
   .portal-item:hover .portal-fill { clip-path: inset(0 0% 0 0); }
-  .portal-item:hover .portal-word-wrapper { transform: scaleX(1.01); }
 
   .portal-desc {
     font-family: monospace;
     font-size: 12px;
-    color: rgba(255,255,255,0);
+    color: rgba(0,255,65,0);
     letter-spacing: 0.06em;
     margin-top: 4px;
     max-height: 0;
     overflow: hidden;
     transition: color 0.35s ease 0.15s, max-height 0.35s ease;
   }
-  .portal-item:hover .portal-desc { color: rgba(255,255,255,0.45); max-height: 40px; }
+  .portal-item:hover .portal-desc { color: rgba(0,255,65,0.5); max-height:40px; }
 
   @media (pointer: coarse) {
     .portal-fill { transition: clip-path 1s ease; }
@@ -396,21 +454,11 @@ const C = {
   }
 
   /* ── Art Gallery ─────────────────────────────────────────────────────────── */
-  .art-title { color: #fff; }
-  .art-rule  { background: rgba(255,255,255,0.35); height: 4px; }
-  .art-hint  { color: rgba(255,255,255,0.3); letter-spacing: 0.12em; font-family: monospace; font-size: 11px; }
-
   .art-bg-grid {
     background-image:
-      linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
+      linear-gradient(rgba(0,255,65,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,255,65,0.04) 1px, transparent 1px);
     background-size: 48px 48px;
-  }
-
-  .ink-blob {
-    position: absolute;
-    background: #fff;
-    filter: blur(32px);
   }
 
   .art-grain {
@@ -419,9 +467,10 @@ const C = {
     mix-blend-mode: overlay;
   }
 
-  .art-item:hover .art-img   { filter: none !important; }
+  .art-item:hover .art-img   { filter: brightness(1) contrast(1.05) grayscale(0) !important; }
   .art-item:hover .art-grain { opacity: 0 !important; }
-  .art-item:hover            { transform: scale(1.04); filter: none !important; }
+  .art-item:hover            { transform: scale(1.04); }
+  .art-item:hover .art-frame { border-color: rgba(0,255,65,0.6) !important; box-shadow: 0 0 20px rgba(0,255,65,0.15); }
 
   #art-viewport.grabbing { cursor: grabbing; }
 
@@ -434,9 +483,9 @@ const C = {
       height: 75vw;
       touch-action: pan-x;
     }
-    #art-track { position: relative !important; transform: none !important; }
-    .art-item { scroll-snap-align: center; }
-    #art-bg, #art-fg, #art-progress { display: none; }
+    #art-track { position:relative !important; transform:none !important; }
+    .art-item  { scroll-snap-align: center; }
+    #art-bg, #art-progress { display: none; }
   }
 
   /* ── Travel Map ──────────────────────────────────────────────────────────── */
@@ -444,38 +493,38 @@ const C = {
     stroke-dasharray: 4 8;
     animation: flowDash 2s linear infinite;
   }
-
   @keyframes flowDash {
     from { stroke-dashoffset: 24; }
     to   { stroke-dashoffset: 0;  }
   }
 
-  /* Pulse rings on city nodes */
   .pulse-ring, .pulse-home {
     transform-box: fill-box;
     transform-origin: center;
     animation: pulseNode 2.2s ease-out infinite;
   }
-  .pulse-home { animation-duration: 3s; stroke: rgba(255,255,255,0.5); }
+  .pulse-home { animation-duration: 3s; }
 
   @keyframes pulseNode {
     0%   { transform: scale(1);   opacity: 0.85; }
     100% { transform: scale(4.5); opacity: 0; }
   }
 
-  .travel-node { transition: opacity 0.2s; }
-  .travel-node:hover .node-dot { r: 5; }
-  .travel-node:hover text { fill: rgba(255,255,255,0.75) !important; }
+  .travel-node:hover .node-dot { opacity: 1; }
+  .travel-node:hover text { fill: rgba(0,255,65,0.8) !important; }
+
+  /* ── Art Lightbox ────────────────────────────────────────────────────────── */
+  #art-lightbox.active { display: flex !important; }
+  #art-lightbox-content { animation: lbSlide 0.4s cubic-bezier(0.16,1,0.3,1); }
+
+  @keyframes lbSlide {
+    from { transform: scale(0.94) translateY(20px); opacity: 0; }
+    to   { transform: scale(1) translateY(0); opacity: 1; }
+  }
 
   /* ── Passport Card ────────────────────────────────────────────────────────── */
-  #passport-card {
-    transform: translateX(100%);
-    transition: none; /* GSAP handles this */
-    pointer-events: none;
-  }
-  #passport-card.open {
-    pointer-events: all;
-  }
+  #passport-card { transform: translateX(100%); pointer-events: none; }
+  #passport-card.open { pointer-events: all; }
 </style>
 
 <script>
@@ -493,7 +542,7 @@ const C = {
         if (typeof gsap !== 'undefined') {
           gsap.to(wrapper, { x: dx, y: dy, duration: 0.35, ease: 'power2.out', overwrite: 'auto' });
         }
-        if (dim) dim.style.background = 'rgba(0,0,0,0.52)';
+        if (dim) dim.style.background = 'rgba(0,0,0,0.6)';
       });
       item.addEventListener('mouseleave', () => {
         if (typeof gsap !== 'undefined') {
@@ -518,9 +567,7 @@ const C = {
     const viewport = document.getElementById('art-viewport');
     const track    = document.getElementById('art-track');
     const bgLayer  = document.getElementById('art-bg');
-    const fgLayer  = document.getElementById('art-fg');
     const progress = document.getElementById('art-progress');
-    const items    = document.querySelectorAll('.art-item');
     if (!viewport || !track) return;
 
     let targetX = 0, currentX = 0, maxX = 0;
@@ -556,47 +603,94 @@ const C = {
       const x = Math.round(currentX * 100) / 100;
       track.style.transform = `translateX(${x}px)`;
       if (bgLayer) bgLayer.style.transform = `translateX(${x * 0.2}px)`;
-      if (fgLayer) fgLayer.style.transform = `translateX(${x * 1.5}px)`;
       if (progress) progress.style.width = (maxX > 0 ? (Math.abs(x) / maxX) * 100 : 0) + '%';
-
-      const vcx = viewport.offsetWidth / 2;
-      items.forEach(item => {
-        if (item.matches(':hover')) return;
-        const rect  = item.getBoundingClientRect();
-        const dist  = Math.abs(rect.left + rect.width / 2 - vcx);
-        const depth = parseInt(item.dataset.depth) || 1;
-        const mb    = (depth - 1) * 2.2;
-        const blur  = Math.min(mb, (dist / (viewport.offsetWidth * 0.6)) * mb);
-        item.style.filter = blur > 0.1 ? `blur(${blur}px)` : 'none';
-      });
     }
     raf();
   })();
 
+  // ── Art Lightbox ──────────────────────────────────────────────────────────
+  (function() {
+    const artworksData = [
+      { id: 1,  title: 'FORM STUDY I',    medium: 'Oil on Canvas',  year: 2024, src: '/images/file_8---39151805-7313-4bb7-b8c8-1365aef884a3.jpg',  desc: 'An exploration of negative space and structural tension. Built up with palette knife strokes, allowing the medium to dictate form. The result captures a sense of contained, kinetic energy.' },
+      { id: 2,  title: 'COMPOSITION II',  medium: 'Mixed Media',    year: 2024, src: '/images/file_9---c5cd81b7-8140-4595-8297-af32f0e2edba.jpg',   desc: 'This piece began as a charcoal sketch deliberately obscured with oil glazes. The layering process mirrors how I think about ML models — iterative refinement where early assumptions are buried beneath later understanding.' },
+      { id: 3,  title: 'LANDSCAPE III',   medium: 'Oil on Canvas',  year: 2024, src: '/images/file_10---714a56fd-d4fb-4316-8629-c6f06a4db7a8.jpg', desc: 'Painted from memory of the Bosphorus at dusk. The color temperature shift from warm water to cool sky required constant decision-making — similar to balancing precision and intuition in computational work.' },
+      { id: 4,  title: 'FIGURE IV',       medium: 'Acrylic',        year: 2024, src: '/images/file_11---e6cf7245-cda7-4ca8-884c-55c891575493.jpg', desc: 'A study of anatomical structure using classical techniques. I focused on how light defines mass. The economy of marks — knowing what to leave out — is a discipline I carry into both art and code.' },
+      { id: 5,  title: 'ABSTRACTION V',   medium: 'Oil on Canvas',  year: 2024, src: '/images/file_12---09cd522a-d5e5-433a-ac0f-d9c0c710c79a.jpg', desc: 'Started with no plan — only color relationships. I let each layer react to the previous one, building a conversation between saturations. The process revealed patterns I had not consciously designed.' },
+      { id: 6,  title: 'TEXTURE VI',      medium: 'Mixed Media',    year: 2024, src: '/images/file_13---f94eea51-a229-4b42-bcf4-f489c8824e9b.jpg', desc: 'Combines impasto technique with fine ink work. The tension between rough texture and precise linework creates a dialogue similar to the interplay of raw data and polished model output.' },
+      { id: 7,  title: 'STILLNESS VII',   medium: 'Oil on Canvas',  year: 2023, src: '/images/file_14---d6d37114-4da7-4cdf-896d-5b361bf9ac99.jpg', desc: 'A meditation on quiet moments in noisy cities. Painted mostly in a single session to preserve immediacy. The muted palette focuses attention on shape rather than color.' },
+      { id: 8,  title: 'MOTION VIII',     medium: 'Acrylic',        year: 2023, src: '/images/file_15---cfdd2a00-8c9e-4367-8b88-c149ce15db2a.jpg', desc: 'Inspired by kinesiology diagrams, this piece renders the invisible force of movement. Gestural brushstrokes radiate from a central axis, creating kinetic momentum frozen in paint.' },
+      { id: 9,  title: 'DEPTH IX',        medium: 'Oil on Canvas',  year: 2023, src: '/images/file_16---a29e17b8-1972-4c3d-af3c-e4f65981a95f.jpg', desc: 'Built through dozens of transparent glaze layers, each shifting the value relationships beneath. The depth achieved is optical rather than physical — an illusion constructed through patience.' },
+      { id: 10, title: 'PATTERN X',       medium: 'Mixed Media',    year: 2023, src: '/images/file_17---f463b1dd-1139-4fad-81a9-b4b5bddd0ef0.jpg', desc: 'Geometric repetition interrupted by organic intrusions. The systematic grid gives way to hand-drawn imperfections, mirroring how biological systems subvert algorithmic prediction.' },
+      { id: 11, title: 'TENSION XI',      medium: 'Charcoal',       year: 2023, src: '/images/file_19---7fd47930-b43e-4e33-a1d0-ce5384175a40.jpg', desc: 'A charcoal study focused entirely on the relationship between light and shadow. Heavy blacks contrast with untouched paper, using negative space as an active compositional element.' },
+      { id: 12, title: 'SIGNAL XII',      medium: 'Oil on Canvas',  year: 2023, src: '/images/file_20---4fa92226-8c06-4344-836a-2745c8ec1072.jpg', desc: 'Inspired by neural signal propagation, the composition follows branching paths that narrow and dissolve. A visual metaphor for how information decays across layers of a deep network.' },
+      { id: 13, title: 'THRESHOLD XIII',  medium: 'Mixed Media',    year: 2023, src: '/images/file_21---7f73c515-6959-4117-bc6b-a178b7e1f1fa.jpg', desc: 'Created at a transitional point — between academic years, between projects. The divided composition reflects standing at a boundary: one foot in what was, one in what is becoming.' },
+    ];
+
+    const lb      = document.getElementById('art-lightbox');
+    const lbImg   = document.getElementById('art-lb-img');
+    const lbId    = document.getElementById('art-lb-id');
+    const lbTitle = document.getElementById('art-lb-title');
+    const lbMed   = document.getElementById('art-lb-medium');
+    const lbYear  = document.getElementById('art-lb-year');
+    const lbDesc  = document.getElementById('art-lb-desc');
+    const lbClose = document.getElementById('art-lb-close');
+
+    function openLightbox(artwork) {
+      lbImg.src       = artwork.src;
+      lbId.textContent    = `ARTWORK / ${String(artwork.id).padStart(2,'0')}`;
+      lbTitle.textContent = artwork.title;
+      lbMed.textContent   = artwork.medium;
+      lbYear.textContent  = String(artwork.year);
+      lbDesc.textContent  = artwork.desc;
+      lb.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeLightbox() {
+      lb.classList.remove('active');
+      document.body.style.overflow = '';
+      lbImg.src = '';
+    }
+
+    // Bind art item clicks — only when NOT dragging
+    let dragThreshold = false;
+    const viewport = document.getElementById('art-viewport');
+    if (viewport) {
+      viewport.addEventListener('mousedown', () => { dragThreshold = false; });
+      viewport.addEventListener('mousemove', () => { dragThreshold = true; });
+    }
+
+    document.querySelectorAll('.art-item').forEach(item => {
+      item.addEventListener('click', () => {
+        if (dragThreshold) return; // was a drag, not a click
+        const id = parseInt(item.dataset.id);
+        const artwork = artworksData.find(a => a.id === id);
+        if (artwork) openLightbox(artwork);
+      });
+    });
+
+    lbClose?.addEventListener('click', closeLightbox);
+    lb?.addEventListener('click', (e) => { if (e.target === lb) closeLightbox(); });
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeLightbox(); });
+  })();
+
   // ── Travel Map ────────────────────────────────────────────────────────────
   (function() {
-    // Travels data (synced with frontmatter)
     const travelsData = [
       { id: 'amsterdam', city: 'AMSTERDAM', country: 'NETHERLANDS', date: 'MARCH 2026', status: 'VISITED', memory: 'The rain in Amsterdam makes the canals look like oil paintings.', x: 514, y: 164, photo: '' },
       { id: 'london',    city: 'LONDON',    country: 'UNITED KINGDOM', date: 'FEBRUARY 2026', status: 'VISITED', memory: 'Eight million stories compressed into one Underground carriage at rush hour.', x: 499, y: 166, photo: '' },
     ];
-    const homeBase = { city: 'ISTANBUL', country: 'TURKEY', x: 581, y: 188 };
 
     const svg      = document.getElementById('travel-map');
     const coordsEl = document.getElementById('map-coords');
 
-    // Mouse → lat/lon coordinates display
     if (svg && coordsEl) {
       svg.addEventListener('mousemove', (e) => {
-        const rect = svg.getBoundingClientRect();
-        const scaleX = 1000 / rect.width;
-        const scaleY = 500  / rect.height;
-        const svgX = (e.clientX - rect.left) * scaleX;
-        const svgY = (e.clientY - rect.top)  * scaleY;
-
-        const lon = (svgX / 1000) * 360 - 180;
-        const lat = Math.atan(Math.sinh(Math.PI * (1 - 2 * svgY / 500))) * (180 / Math.PI);
-
+        const rect  = svg.getBoundingClientRect();
+        const svgX  = (e.clientX - rect.left)  * (1000 / rect.width);
+        const svgY  = (e.clientY - rect.top)   * (500  / rect.height);
+        const lon   = (svgX / 1000) * 360 - 180;
+        const lat   = Math.atan(Math.sinh(Math.PI * (1 - 2 * svgY / 500))) * (180 / Math.PI);
         const latStr = `${Math.abs(lat).toFixed(2)}°${lat >= 0 ? 'N' : 'S'}`;
         const lonStr = `${Math.abs(lon).toFixed(2)}°${lon >= 0 ? 'E' : 'W'}`;
         coordsEl.textContent = `LAT: ${latStr}   LON: ${lonStr}`;
@@ -606,37 +700,26 @@ const C = {
       });
     }
 
-    // Passport card
     const card    = document.getElementById('passport-card');
     const closeBtn = document.getElementById('passport-close');
 
     function openPassport(t) {
-      // Populate
       document.getElementById('passport-status').textContent  = t.status;
       document.getElementById('passport-city').textContent    = t.city;
       document.getElementById('passport-country').textContent = t.country;
       document.getElementById('passport-date').textContent    = t.date;
       document.getElementById('passport-memory').textContent  = `"${t.memory}"`;
-
       const lon = (t.x / 1000) * 360 - 180;
       const lat = Math.atan(Math.sinh(Math.PI * (1 - 2 * t.y / 500))) * (180 / Math.PI);
       document.getElementById('passport-coords').textContent =
         `${Math.abs(lat).toFixed(4)}°${lat >= 0 ? 'N' : 'S'} / ${Math.abs(lon).toFixed(4)}°${lon >= 0 ? 'E' : 'W'}`;
-
-      const img       = document.getElementById('passport-img');
-      const noPhoto   = document.getElementById('passport-no-photo');
-      if (t.photo) {
-        img.src = t.photo; img.style.display = 'block';
-        noPhoto.style.display = 'none';
-      } else {
-        img.style.display = 'none'; noPhoto.style.display = 'flex';
-      }
-
+      const img     = document.getElementById('passport-img');
+      const noPhoto = document.getElementById('passport-no-photo');
+      if (t.photo) { img.src = t.photo; img.style.display = 'block'; noPhoto.style.display = 'none'; }
+      else         { img.style.display = 'none'; noPhoto.style.display = 'flex'; }
       card.classList.add('open');
       if (typeof gsap !== 'undefined') {
         gsap.fromTo(card, { x: '100%' }, { x: '0%', duration: 0.55, ease: 'power3.out' });
-      } else {
-        card.style.transform = 'translateX(0%)';
       }
     }
 
@@ -644,31 +727,21 @@ const C = {
       if (typeof gsap !== 'undefined') {
         gsap.to(card, { x: '100%', duration: 0.4, ease: 'power3.in', onComplete: () => card.classList.remove('open') });
       } else {
-        card.style.transform = 'translateX(100%)'; card.classList.remove('open');
+        card.classList.remove('open');
       }
     }
 
-    // Bind city node clicks
     document.querySelectorAll('.travel-node').forEach(node => {
       node.addEventListener('click', () => {
-        const id = node.dataset.id;
-        const t  = travelsData.find(d => d.id === id);
+        const t = travelsData.find(d => d.id === node.dataset.id);
         if (t) openPassport(t);
       });
     });
 
     closeBtn?.addEventListener('click', closePassport);
-
-    // Close on backdrop click (outside card)
     document.addEventListener('click', (e) => {
-      if (card.classList.contains('open') && !card.contains(e.target) && !e.target.closest('.travel-node')) {
-        closePassport();
-      }
+      if (card.classList.contains('open') && !card.contains(e.target) && !e.target.closest('.travel-node')) closePassport();
     });
-
-    // Keyboard close
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && card.classList.contains('open')) closePassport();
-    });
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closePassport(); });
   })();
 </script>
