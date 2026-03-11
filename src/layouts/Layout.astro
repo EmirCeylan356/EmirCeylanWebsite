@@ -140,7 +140,7 @@ const { title } = Astro.props;
           const cx   = W / 2;
           const amp  = Math.min(W * 0.14, 145);
           const freq = 2.8;
-          const segs = 160;
+          const segs = 200;
           const rot  = time * 0.55;
 
           const s1 = [], s2 = [];
@@ -149,112 +149,73 @@ const { title } = Astro.props;
             const y     = -10 + t * (H + 20);
             const angle = t * Math.PI * 2 * freq + rot;
             const cosA  = Math.cos(angle);
-            const depth = (cosA + 1) / 2;
+            const depth = (cosA + 1) / 2; // 0 = back, 1 = front
             s1.push({ x: cx + amp * cosA, y, depth });
             s2.push({ x: cx - amp * cosA, y, depth: 1 - depth });
           }
 
           ctx.lineCap  = 'round';
-          ctx.lineJoin = 'round';
+          ctx.shadowBlur = 0;
 
-          // Helper: draw one tube pass (body + highlight)
-          function tubePath(pts, minD, maxD) {
-            ctx.beginPath();
-            let drawing = false;
-            pts.forEach((p, i) => {
-              if (p.depth >= minD && p.depth <= maxD) {
-                drawing ? ctx.lineTo(p.x, p.y) : ctx.moveTo(p.x, p.y);
-                drawing = true;
-              } else {
-                if (drawing) ctx.stroke();
-                ctx.beginPath();
-                drawing = false;
-              }
-            });
-            if (drawing) ctx.stroke();
+          // Collect all micro-segments from both strands, sort back→front
+          const allSegs = [];
+          for (let i = 0; i < segs; i++) {
+            const d1 = (s1[i].depth + s1[i+1].depth) / 2;
+            const d2 = (s2[i].depth + s2[i+1].depth) / 2;
+            allSegs.push({ p: s1[i], q: s1[i+1], d: d1 });
+            allSegs.push({ p: s2[i], q: s2[i+1], d: d2 });
           }
+          allSegs.sort((a, b) => a.d - b.d); // painter's algorithm
 
-          // ── Rungs (drawn before strands so strands sit on top) ────────────
+          // ── Rungs ─────────────────────────────────────────────────────────
           const BASES = ['A','T','G','C','A','T','G','C'];
           for (let i = 0; i <= segs; i += 5) {
             const a = s1[i], b = s2[i];
             const d = (a.depth + b.depth) / 2;
-            // Shadow rung
-            ctx.globalAlpha = alpha * (d * 0.5 + 0.1);
-            ctx.strokeStyle = '#000';
-            ctx.lineWidth   = 4 + d * 5;
-            ctx.shadowColor = 'rgba(0,0,0,0.25)';
-            ctx.shadowBlur  = 4;
+            ctx.globalAlpha = alpha * (0.12 + d * 0.4);
+            ctx.strokeStyle = '#0d0d0d';
+            ctx.lineWidth   = 1.5 + d * 3;
             ctx.beginPath();
             ctx.moveTo(a.x, a.y);
             ctx.lineTo(b.x, b.y);
             ctx.stroke();
-            // Highlight rung
-            ctx.globalAlpha = alpha * d * 0.3;
-            ctx.strokeStyle = 'rgba(90,90,90,0.9)';
-            ctx.lineWidth   = 1.5;
-            ctx.shadowBlur  = 0;
-            ctx.beginPath();
-            ctx.moveTo(a.x - 2, a.y);
-            ctx.lineTo(b.x - 2, b.y);
-            ctx.stroke();
-            // Base labels
-            if (i % 10 === 0 && d > 0.6) {
-              const lx = (a.x + b.x) / 2;
-              ctx.globalAlpha = alpha * d * 0.85;
+            if (i % 10 === 0) {
+              ctx.globalAlpha = alpha * d * 0.6;
               ctx.fillStyle   = '#000';
-              ctx.font        = 'bold 11px monospace';
+              ctx.font        = 'bold 9px monospace';
               ctx.textAlign   = 'center';
-              ctx.fillText(BASES[(i / 5) % BASES.length], lx, a.y - 2);
+              ctx.fillText(BASES[(i / 5) % BASES.length], (a.x + b.x) / 2, a.y - 1);
               ctx.textAlign   = 'left';
             }
           }
 
-          // ── Back strands (depth < 0.5) ────────────────────────────────────
-          ctx.shadowBlur = 0;
-          [[s1, 1], [s2, 0.8]].forEach(([pts, aScale]) => {
-            // Tube body
-            ctx.globalAlpha = alpha * aScale * 0.45;
-            ctx.strokeStyle = '#000';
-            ctx.lineWidth   = 10;
-            tubePath(pts, 0, 0.5);
-            // Tube highlight
-            ctx.globalAlpha = alpha * aScale * 0.2;
-            ctx.strokeStyle = 'rgba(70,70,70,0.8)';
-            ctx.lineWidth   = 3;
-            ctx.beginPath();
-            pts.filter(p => p.depth < 0.5).forEach((p, i) => {
-              i === 0 ? ctx.moveTo(p.x - 2, p.y) : ctx.lineTo(p.x - 2, p.y);
-            });
-            ctx.stroke();
-          });
+          // ── Strands: draw each micro-segment with depth-scaled lineWidth ──
+          for (const seg of allSegs) {
+            const lw = 3 + seg.d * 15;   // 3px at back → 18px at front
+            const a  = 0.18 + seg.d * 0.72;
 
-          // ── Front strands (depth >= 0.5) ──────────────────────────────────
-          [[s1, 1], [s2, 0.85]].forEach(([pts, aScale]) => {
-            // Shadow pass
-            ctx.shadowColor = 'rgba(0,0,0,0.35)';
-            ctx.shadowBlur  = 8;
-            ctx.globalAlpha = alpha * aScale * 0.95;
-            ctx.strokeStyle = '#000';
-            ctx.lineWidth   = 18;
-            tubePath(pts, 0.5, 1);
-            // Mid pass
-            ctx.shadowBlur  = 0;
-            ctx.globalAlpha = alpha * aScale * 0.9;
-            ctx.strokeStyle = 'rgba(15,15,15,1)';
-            ctx.lineWidth   = 14;
-            tubePath(pts, 0.5, 1);
-            // Highlight
-            ctx.globalAlpha = alpha * aScale * 0.5;
-            ctx.strokeStyle = 'rgba(80,80,80,0.9)';
-            ctx.lineWidth   = 4;
+            ctx.shadowBlur  = seg.d > 0.65 ? 5 : 0;
+            ctx.shadowColor = 'rgba(0,0,0,0.4)';
+            ctx.globalAlpha = alpha * a;
+            ctx.lineWidth   = lw;
+            ctx.strokeStyle = '#111';
             ctx.beginPath();
-            pts.filter(p => p.depth >= 0.5).forEach((p, i) => {
-              i === 0 ? ctx.moveTo(p.x - 3, p.y) : ctx.lineTo(p.x - 3, p.y);
-            });
+            ctx.moveTo(seg.p.x, seg.p.y);
+            ctx.lineTo(seg.q.x, seg.q.y);
             ctx.stroke();
-          });
 
+            // Specular highlight on front-facing segments
+            if (seg.d > 0.5) {
+              ctx.shadowBlur  = 0;
+              ctx.globalAlpha = alpha * (seg.d - 0.5) * 0.55;
+              ctx.lineWidth   = Math.max(1.5, lw * 0.22);
+              ctx.strokeStyle = 'rgba(95,95,95,0.8)';
+              ctx.beginPath();
+              ctx.moveTo(seg.p.x - 2.5, seg.p.y);
+              ctx.lineTo(seg.q.x - 2.5, seg.q.y);
+              ctx.stroke();
+            }
+          }
           ctx.shadowBlur = 0;
         }
 

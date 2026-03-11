@@ -4,51 +4,68 @@ import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 
 const portals = [
+  { word: 'STRIKE', status: 'Active: Jiu-Jitsu / Archery', gradient: 'linear-gradient(135deg, #f40c3f 0%, #6b0019 100%)', desc: 'BJJ blue belt in training. Archery for focus and precision.' },
+  { word: 'MOVE',   status: 'Daily: High-Intensity Training', gradient: 'linear-gradient(135deg, #ff6b2c 0%, #7a2800 100%)', desc: 'Calisthenics, HIIT and functional strength — movement as discipline.' },
+  { word: 'THINK',  status: 'Strategy: Chess @ 1400 ELO', gradient: 'linear-gradient(135deg, #4a4aff 0%, #000055 100%)', desc: 'Tactical openings and endgame studies. Chess as a model for decision-making.' },
+];
+
+// Merged art gallery — drawings + paintings
+const artworks = [
+  { id: 1,  title: 'FIGURE STUDY I',  type: 'CHARCOAL',    year: 2025, status: 'PHYSICAL',    depth: 1, src: '' },
+  { id: 2,  title: 'PORTRAIT II',     type: 'PENCIL',      year: 2024, status: 'PHYSICAL',    depth: 2, src: '' },
+  { id: 3,  title: 'URBAN SKETCH',    type: 'INK PEN',     year: 2025, status: 'PHYSICAL',    depth: 1, src: '' },
+  { id: 4,  title: 'ABSTRACT IV',     type: 'MIXED MEDIA', year: 2025, status: 'IN PROGRESS', depth: 3, src: '' },
+  { id: 5,  title: 'LANDSCAPE STUDY', type: 'GRAPHITE',    year: 2024, status: 'PHYSICAL',    depth: 2, src: '' },
+  { id: 6,  title: 'COMPOSITION V',   type: 'CHARCOAL',    year: 2025, status: 'PHYSICAL',    depth: 1, src: '' },
+  { id: 7,  title: 'PAINTING 01', type: 'OIL', year: 2024, status: 'PHYSICAL', depth: 1, src: '/images/file_8---39151805-7313-4bb7-b8c8-1365aef884a3.jpg' },
+  { id: 8,  title: 'PAINTING 02', type: 'OIL', year: 2024, status: 'PHYSICAL', depth: 2, src: '/images/file_9---c5cd81b7-8140-4595-8297-af32f0e2edba.jpg' },
+  { id: 9,  title: 'PAINTING 03', type: 'OIL', year: 2024, status: 'PHYSICAL', depth: 1, src: '/images/file_10---714a56fd-d4fb-4316-8629-c6f06a4db7a8.jpg' },
+  { id: 10, title: 'PAINTING 04', type: 'OIL', year: 2024, status: 'PHYSICAL', depth: 3, src: '/images/file_11---e6cf7245-cda7-4ca8-884c-55c891575493.jpg' },
+  { id: 11, title: 'PAINTING 05', type: 'OIL', year: 2024, status: 'PHYSICAL', depth: 1, src: '/images/file_12---09cd522a-d5e5-433a-ac0f-d9c0c710c79a.jpg' },
+  { id: 12, title: 'PAINTING 06', type: 'OIL', year: 2024, status: 'PHYSICAL', depth: 2, src: '/images/file_13---f94eea51-a229-4b42-bcf4-f489c8824e9b.jpg' },
+  { id: 13, title: 'PAINTING 07', type: 'OIL', year: 2023, status: 'PHYSICAL', depth: 1, src: '/images/file_14---d6d37114-4da7-4cdf-896d-5b361bf9ac99.jpg' },
+  { id: 14, title: 'PAINTING 08', type: 'OIL', year: 2023, status: 'PHYSICAL', depth: 2, src: '/images/file_15---cfdd2a00-8c9e-4367-8b88-c149ce15db2a.jpg' },
+  { id: 15, title: 'PAINTING 09', type: 'OIL', year: 2023, status: 'PHYSICAL', depth: 1, src: '/images/file_16---a29e17b8-1972-4c3d-af3c-e4f65981a95f.jpg' },
+  { id: 16, title: 'PAINTING 10', type: 'OIL', year: 2023, status: 'PHYSICAL', depth: 3, src: '/images/file_17---f463b1dd-1139-4fad-81a9-b4b5bddd0ef0.jpg' },
+  { id: 17, title: 'PAINTING 11', type: 'OIL', year: 2023, status: 'PHYSICAL', depth: 1, src: '/images/file_19---7fd47930-b43e-4e33-a1d0-ce5384175a40.jpg' },
+  { id: 18, title: 'PAINTING 12', type: 'OIL', year: 2023, status: 'PHYSICAL', depth: 2, src: '/images/file_20---4fa92226-8c06-4344-836a-2745c8ec1072.jpg' },
+  { id: 19, title: 'PAINTING 13', type: 'OIL', year: 2023, status: 'PHYSICAL', depth: 1, src: '/images/file_21---7f73c515-6959-4117-bc6b-a178b7e1f1fa.jpg' },
+];
+
+const homeBase = { city: 'ISTANBUL', country: 'TURKEY', x: 581, y: 188 };
+
+const travels = [
   {
-    word: 'STRIKE',
-    status: 'Active: Jiu-Jitsu / Archery',
-    gradient: 'linear-gradient(135deg, #f40c3f 0%, #6b0019 100%)',
-    desc: 'BJJ blue belt in training. Archery for focus and precision.',
+    id: 'amsterdam', city: 'AMSTERDAM', country: 'NETHERLANDS',
+    date: 'MARCH 2026', status: 'VISITED',
+    memory: 'The rain in Amsterdam makes the canals look like oil paintings.',
+    x: 514, y: 164, cpx: 548, cpy: 108, photo: '',
   },
   {
-    word: 'MOVE',
-    status: 'Daily: High-Intensity Training',
-    gradient: 'linear-gradient(135deg, #ff6b2c 0%, #7a2800 100%)',
-    desc: 'Calisthenics, HIIT and functional strength — movement as discipline.',
-  },
-  {
-    word: 'THINK',
-    status: 'Strategy: Chess @ 1400 ELO',
-    gradient: 'linear-gradient(135deg, #4a4aff 0%, #000055 100%)',
-    desc: 'Tactical openings and endgame studies. Chess as a model for decision-making.',
+    id: 'london', city: 'LONDON', country: 'UNITED KINGDOM',
+    date: 'FEBRUARY 2026', status: 'VISITED',
+    memory: 'Eight million stories compressed into one Underground carriage at rush hour.',
+    x: 499, y: 166, cpx: 540, cpy: 106, photo: '',
   },
 ];
 
-// Add your drawing images to /public/images/drawings/ and update src fields
-const drawings = [
-  { id: 1, title: 'FIGURE STUDY I',   type: 'CHARCOAL',    year: 2025, status: 'PHYSICAL',    depth: 1, src: '' },
-  { id: 2, title: 'PORTRAIT II',      type: 'PENCIL',      year: 2024, status: 'PHYSICAL',    depth: 2, src: '' },
-  { id: 3, title: 'URBAN SKETCH',     type: 'INK PEN',     year: 2025, status: 'PHYSICAL',    depth: 1, src: '' },
-  { id: 4, title: 'ABSTRACT IV',      type: 'MIXED MEDIA', year: 2025, status: 'IN PROGRESS', depth: 3, src: '' },
-  { id: 5, title: 'LANDSCAPE STUDY',  type: 'GRAPHITE',    year: 2024, status: 'PHYSICAL',    depth: 2, src: '' },
-  { id: 6, title: 'COMPOSITION V',    type: 'CHARCOAL',    year: 2025, status: 'PHYSICAL',    depth: 1, src: '' },
-];
-
-const paintings = [
-  { title: 'PAINTING 01', src: '/images/file_8---39151805-7313-4bb7-b8c8-1365aef884a3.jpg' },
-  { title: 'PAINTING 02', src: '/images/file_9---c5cd81b7-8140-4595-8297-af32f0e2edba.jpg' },
-  { title: 'PAINTING 03', src: '/images/file_10---714a56fd-d4fb-4316-8629-c6f06a4db7a8.jpg' },
-  { title: 'PAINTING 04', src: '/images/file_11---e6cf7245-cda7-4ca8-884c-55c891575493.jpg' },
-  { title: 'PAINTING 05', src: '/images/file_12---09cd522a-d5e5-433a-ac0f-d9c0c710c79a.jpg' },
-  { title: 'PAINTING 06', src: '/images/file_13---f94eea51-a229-4b42-bcf4-f489c8824e9b.jpg' },
-  { title: 'PAINTING 07', src: '/images/file_14---d6d37114-4da7-4cdf-896d-5b361bf9ac99.jpg' },
-  { title: 'PAINTING 08', src: '/images/file_15---cfdd2a00-8c9e-4367-8b88-c149ce15db2a.jpg' },
-  { title: 'PAINTING 09', src: '/images/file_16---a29e17b8-1972-4c3d-af3c-e4f65981a95f.jpg' },
-  { title: 'PAINTING 10', src: '/images/file_17---f463b1dd-1139-4fad-81a9-b4b5bddd0ef0.jpg' },
-  { title: 'PAINTING 11', src: '/images/file_19---7fd47930-b43e-4e33-a1d0-ce5384175a40.jpg' },
-  { title: 'PAINTING 12', src: '/images/file_20---4fa92226-8c06-4344-836a-2745c8ec1072.jpg' },
-  { title: 'PAINTING 13', src: '/images/file_21---7f73c515-6959-4117-bc6b-a178b7e1f1fa.jpg' },
-];
+// Simplified Mercator continent paths (viewBox 0 0 1000 500)
+const C = {
+  northAmerica:  'M94,145 L118,126 L148,116 L178,114 L208,120 L232,132 L250,148 L262,168 L265,190 L257,210 L241,225 L222,235 L206,244 L194,254 L190,268 L196,284 L210,298 L218,315 L212,328 L198,334 L182,328 L168,312 L158,290 L152,264 L148,240 L140,218 L126,200 L108,186 L96,170 Z',
+  southAmerica:  'M242,265 L268,256 L290,260 L308,276 L318,298 L322,324 L318,350 L306,373 L288,388 L266,396 L246,394 L228,382 L216,362 L210,336 L212,308 L220,284 L232,270 Z',
+  greenland:     'M342,98 L368,82 L395,78 L412,86 L415,100 L406,112 L386,118 L360,116 L343,106 Z',
+  europe:        'M470,202 L478,194 L482,180 L480,168 L486,152 L494,144 L503,140 L511,136 L519,130 L528,126 L536,124 L545,126 L552,132 L557,138 L563,138 L570,143 L576,150 L580,160 L580,172 L575,182 L568,190 L559,196 L548,202 L535,206 L520,207 L506,205 L494,204 Z',
+  uk:            'M483,150 L490,140 L495,146 L493,157 L487,162 L482,157 Z',
+  scandinavia:   'M503,140 L505,128 L508,116 L512,106 L516,98 L522,95 L527,97 L528,106 L525,116 L520,124 L516,130 L511,136 Z',
+  northAfrica:   'M462,206 L490,204 L520,207 L548,210 L578,212 L608,215 L630,220 L645,228 L645,240 L630,245 L612,248 L593,250 L570,252 L545,255 L520,258 L500,257 L480,252 L465,244 L458,230 Z',
+  subAfrica:     'M480,252 L500,257 L520,258 L545,255 L570,255 L585,262 L598,275 L604,295 L602,320 L595,342 L583,360 L566,372 L546,378 L526,376 L508,367 L495,350 L486,328 L482,302 L480,278 L480,260 Z',
+  middleEast:    'M578,175 L598,172 L615,177 L628,188 L632,203 L628,220 L618,235 L608,248 L593,250 L580,245 L575,232 L573,215 L576,200 L578,188 Z',
+  asia:          'M580,160 L610,155 L642,148 L675,142 L708,138 L738,135 L765,134 L790,136 L812,144 L825,158 L824,175 L815,190 L798,200 L775,207 L748,210 L720,208 L695,208 L672,212 L652,220 L638,232 L630,238 L628,228 L628,208 L622,195 L612,185 L598,178 L590,172 L580,168 Z',
+  india:         'M700,205 L720,202 L738,208 L745,222 L742,240 L732,255 L718,268 L703,272 L690,265 L682,250 L680,232 L685,215 L693,207 Z',
+  seAsia:        'M756,212 L780,208 L802,215 L816,230 L816,248 L804,260 L786,266 L766,264 L750,255 L744,240 L748,224 Z',
+  japan:         'M862,168 L876,162 L886,168 L882,182 L869,187 L858,182 Z',
+  australia:     'M762,298 L794,290 L826,292 L850,306 L858,326 L852,348 L835,360 L812,366 L786,364 L762,354 L748,336 L746,315 L752,300 Z',
+};
 ---
 
 <Layout title="HOBBIES — Emir Ceylan">
@@ -56,96 +73,77 @@ const paintings = [
 
   <main class="flex-1" style="padding-top: 80px;">
 
-    <!-- ═══════════════════════════════════════════════════════════
-         ACTIVITIES — Action Portals
-    ══════════════════════════════════════════════════════════════ -->
+    <!-- ═══════════════════════════════════ ACTIVITIES ══════════════════════════════════ -->
     <section id="activities" class="activities-section relative" style="background:#050505; overflow:hidden;">
-
-      <!-- Section header -->
       <div class="max-w-7xl mx-auto px-8 pt-16 pb-6">
         <div class="flex items-end gap-4">
           <h2 class="text-5xl md:text-7xl font-black kinetic-text" style="color:#fff;">ACTIVITIES</h2>
-          <div class="flex-1 h-4" style="background:rgba(255,255,255,0.3);"></div>
+          <div class="flex-1" style="background:rgba(255,255,255,0.3); height:4px;"></div>
           <span class="text-3xl font-black" style="color:#fff;">/03</span>
         </div>
       </div>
 
-      <!-- Full-screen dim overlay (activates on hover) -->
       <div id="portals-dim" class="absolute inset-0 pointer-events-none z-[1]" style="background:transparent; transition:background 0.4s ease;"></div>
 
-      <!-- Portal rows -->
       <div class="portals-container" style="padding-bottom:60px;">
         {portals.map((p, i) => (
-          <div
-            class="portal-item"
-            data-index={i}
-            style={`--fill-gradient: ${p.gradient};`}
-          >
-            <!-- Status micro-copy -->
+          <div class="portal-item" data-index={i} style={`--fill-gradient: ${p.gradient};`}>
             <div class="portal-status">[{p.status}]</div>
-
-            <!-- Word with two layers: outline base + gradient fill -->
             <div class="portal-word-wrapper">
               <span class="portal-base">{p.word}</span>
               <span class="portal-fill">{p.word}</span>
             </div>
-
-            <!-- Description (slides in on hover) -->
             <div class="portal-desc">{p.desc}</div>
           </div>
         ))}
       </div>
     </section>
 
-    <!-- ═══════════════════════════════════════════════════════════
-         DRAWINGS — Immersive Horizontal Parallax Gallery
-    ══════════════════════════════════════════════════════════════ -->
-    <section id="drawings" class="drawings-section relative" style="background:#050505;">
-
+    <!-- ═══════════════════════════════════ ART GALLERY ════════════════════════════════ -->
+    <section id="art" class="art-section relative" style="background:#050505;">
       <div class="max-w-7xl mx-auto px-4 pt-16 pb-8">
         <div class="flex items-end gap-4">
-          <h2 class="text-5xl md:text-7xl font-black kinetic-text drawings-title">DRAWINGS</h2>
-          <div class="flex-1 h-4 drawings-rule"></div>
-          <span class="text-3xl font-black drawings-title">/06</span>
+          <h2 class="text-5xl md:text-7xl font-black kinetic-text art-title">ART</h2>
+          <div class="flex-1 art-rule"></div>
+          <span class="text-3xl font-black art-title">/{artworks.length.toString().padStart(2,'0')}</span>
         </div>
-        <p class="text-xs font-mono mt-3 drawings-hint">← SCROLL TO EXPLORE — HOVER FOR DETAILS →</p>
+        <p class="text-xs font-mono mt-3 art-hint">← DRAWINGS · PAINTINGS — SCROLL TO EXPLORE →</p>
       </div>
 
-      <div id="drawings-viewport" class="relative overflow-hidden" style="height:68vh; touch-action:pan-y;">
-        <div id="drawings-bg" class="absolute inset-0 pointer-events-none drawings-bg-grid"></div>
+      <div id="art-viewport" class="relative overflow-hidden" style="height:68vh; touch-action:pan-y;">
+        <div id="art-bg" class="absolute inset-0 pointer-events-none art-bg-grid"></div>
 
-        <div id="drawings-fg" class="absolute inset-0 pointer-events-none z-10 overflow-hidden" aria-hidden="true">
+        <div id="art-fg" class="absolute inset-0 pointer-events-none z-10 overflow-hidden" aria-hidden="true">
           <div class="ink-blob" style="width:340px;height:340px;top:8%;left:18%;opacity:0.06;border-radius:62% 38% 70% 30%/45% 55% 45% 55%;"></div>
           <div class="ink-blob" style="width:220px;height:280px;top:40%;left:55%;opacity:0.05;border-radius:40% 60% 30% 70%/60% 40% 70% 30%;"></div>
-          <div class="ink-blob" style="width:180px;height:160px;top:65%;left:30%;opacity:0.07;border-radius:70% 30% 50% 50%/30% 70% 60% 40%;"></div>
           <div class="ink-blob" style="width:400px;height:300px;top:10%;left:75%;opacity:0.05;border-radius:38% 62% 63% 37%/41% 44% 56% 59%;"></div>
         </div>
 
-        <div id="drawings-track" class="absolute top-0 left-0 flex items-center gap-10 px-20 z-5" style="height:100%; width:max-content; will-change:transform;">
-          {drawings.map((d) => {
+        <div id="art-track" class="absolute top-0 left-0 flex items-center gap-10 px-20" style="height:100%; width:max-content; will-change:transform;">
+          {artworks.map((d) => {
             const w = 300 - d.depth * 18;
             const h = 400 - d.depth * 18;
             const depthBlur = d.depth > 1 ? `blur(${(d.depth - 1) * 1.8}px)` : 'none';
             return (
-              <div class="drawing-item group flex-shrink-0 relative" data-depth={d.depth}
-                style={`width:${w}px; height:${h}px; filter:${depthBlur}; transition: filter 0.5s ease, transform 0.4s ease;`}>
-                <div class="drawing-frame relative w-full h-full overflow-hidden" style="border:1px solid rgba(255,255,255,0.15);">
+              <div class="art-item group flex-shrink-0 relative" data-depth={d.depth}
+                style={`width:${w}px; height:${h}px; filter:${depthBlur}; transition:filter 0.5s ease, transform 0.4s ease;`}>
+                <div class="art-frame relative w-full h-full overflow-hidden" style="border:1px solid rgba(255,255,255,0.15);">
                   {d.src ? (
-                    <img src={d.src} alt={d.title} class="drawing-img w-full h-full object-cover"
-                      style="filter: brightness(0.82) contrast(1.12) sepia(0.08); transition: filter 0.45s ease;" />
+                    <img src={d.src} alt={d.title} class="art-img w-full h-full object-cover"
+                      style="filter:brightness(0.82) contrast(1.12) sepia(0.08); transition:filter 0.45s ease;" loading="lazy" />
                   ) : (
                     <div class="w-full h-full flex flex-col items-center justify-center gap-3" style="background:#0d0d0d; border:1px dashed rgba(255,255,255,0.12);">
-                      <span class="font-mono text-xs" style="color:rgba(255,255,255,0.2);">[ ADD DRAWING ]</span>
+                      <span class="font-mono text-xs" style="color:rgba(255,255,255,0.2);">[ ADD IMAGE ]</span>
                       <span class="font-mono text-[10px]" style="color:rgba(255,255,255,0.1);">{d.title}</span>
                     </div>
                   )}
-                  <div class="drawing-grain absolute inset-0 pointer-events-none" style="opacity:0.35; transition:opacity 0.45s ease;"></div>
+                  <div class="art-grain absolute inset-0 pointer-events-none" style="opacity:0.35;"></div>
                   <div class="absolute top-0 left-0 px-3 py-1 translate-y-[-100%] group-hover:translate-y-0 transition-transform duration-300 z-20" style="background:#f40c3f;">
                     <span class="text-white text-[10px] font-black font-mono tracking-widest">{d.title}</span>
                   </div>
-                  <div class="absolute bottom-0 left-0 right-0 translate-y-full group-hover:translate-y-0 transition-transform duration-300 z-20 p-3" style="background:rgba(5,5,5,0.92); backdrop-filter:blur(4px);">
-                    <p class="text-[10px] font-mono mb-1" style="color:rgba(255,255,255,0.85); letter-spacing:0.08em;">TYPE: {d.type} | YEAR: {d.year}</p>
-                    <p class="text-[10px] font-mono" style="color:rgba(244,12,63,0.9); letter-spacing:0.08em;">STATUS: {d.status}</p>
+                  <div class="absolute bottom-0 left-0 right-0 translate-y-full group-hover:translate-y-0 transition-transform duration-300 z-20 p-3" style="background:rgba(5,5,5,0.92);">
+                    <p class="text-[10px] font-mono mb-1" style="color:rgba(255,255,255,0.85);">TYPE: {d.type} | YEAR: {d.year}</p>
+                    <p class="text-[10px] font-mono" style="color:rgba(244,12,63,0.9);">STATUS: {d.status}</p>
                   </div>
                 </div>
               </div>
@@ -155,48 +153,171 @@ const paintings = [
       </div>
 
       <div style="height:1px; background:rgba(255,255,255,0.08);">
-        <div id="drawings-progress" style="height:100%; width:0%; background:#f40c3f; transition:none;"></div>
+        <div id="art-progress" style="height:100%; width:0%; background:#f40c3f; transition:none;"></div>
       </div>
       <div style="padding-bottom:64px;"></div>
     </section>
 
-    <!-- Paintings -->
-    <section class="py-16 px-4">
-      <div class="max-w-7xl mx-auto">
-        <div class="flex items-end gap-4 mb-12">
-          <h2 class="text-5xl md:text-7xl font-black kinetic-text">PAINTINGS</h2>
-          <div class="flex-1 h-4 bg-black"></div>
-          <span class="text-3xl font-black">/13</span>
+    <!-- ═══════════════════════════════════ TRAVELS ════════════════════════════════════ -->
+    <section id="travels" style="background:#050505; padding:80px 0 0;">
+      <div class="max-w-7xl mx-auto px-8 pb-10">
+        <div class="flex items-end gap-4">
+          <h2 class="text-5xl md:text-7xl font-black kinetic-text" style="color:#fff;">TRAVELS</h2>
+          <div class="flex-1" style="background:rgba(255,255,255,0.3); height:4px;"></div>
+          <span class="text-3xl font-black" style="color:#fff;">/{travels.length.toString().padStart(2,'0')}</span>
         </div>
-        <div class="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
-          {paintings.map((painting, index) => (
-            <div class="group relative overflow-hidden border-4 border-black aspect-square bg-black cursor-pointer painting-card" data-index={index}>
-              <img src={painting.src} alt={painting.title} class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" />
-            </div>
-          ))}
+        <div id="map-coords" class="font-mono text-xs mt-3" style="color:rgba(255,255,255,0.22); letter-spacing:0.12em;">
+          MOVE CURSOR OVER MAP — LAT: — &nbsp; LON: —
         </div>
       </div>
+
+      <!-- SVG World Map -->
+      <div id="map-wrap" style="position:relative; width:100%; overflow:hidden; border-top:1px solid rgba(255,255,255,0.06); border-bottom:1px solid rgba(255,255,255,0.06);">
+        <svg id="travel-map" viewBox="0 0 1000 500" preserveAspectRatio="xMidYMid meet"
+          style="width:100%; max-height:72vh; display:block; background:#060606; cursor:crosshair;">
+
+          <!-- Graticule grid -->
+          <g stroke="rgba(255,255,255,0.04)" stroke-width="0.5" fill="none">
+            <line x1="0" y1="79"  x2="1000" y2="79"  />{/* 75°N */}
+            <line x1="0" y1="145" x2="1000" y2="145" />{/* 60°N */}
+            <line x1="0" y1="182" x2="1000" y2="182" />{/* 45°N */}
+            <line x1="0" y1="211" x2="1000" y2="211" />{/* 30°N */}
+            <line x1="0" y1="233" x2="1000" y2="233" />{/* 15°N */}
+            <line x1="0" y1="250" x2="1000" y2="250" />{/* equator */}
+            <line x1="0" y1="267" x2="1000" y2="267" />{/* 15°S */}
+            <line x1="0" y1="289" x2="1000" y2="289" />{/* 30°S */}
+            <line x1="0" y1="318" x2="1000" y2="318" />{/* 45°S */}
+            <line x1="83"  y1="0" x2="83"  y2="500" />
+            <line x1="167" y1="0" x2="167" y2="500" />
+            <line x1="250" y1="0" x2="250" y2="500" />
+            <line x1="333" y1="0" x2="333" y2="500" />
+            <line x1="417" y1="0" x2="417" y2="500" />
+            <line x1="500" y1="0" x2="500" y2="500" />
+            <line x1="583" y1="0" x2="583" y2="500" />
+            <line x1="667" y1="0" x2="667" y2="500" />
+            <line x1="750" y1="0" x2="750" y2="500" />
+            <line x1="833" y1="0" x2="833" y2="500" />
+            <line x1="917" y1="0" x2="917" y2="500" />
+          </g>
+
+          <!-- Graticule labels -->
+          <g style="font-family:monospace; font-size:7px; fill:rgba(255,255,255,0.1);">
+            <text x="6" y="248">0°</text>
+            <text x="6" y="143">60°N</text>
+            <text x="6" y="213">30°N</text>
+            <text x="6" y="291">30°S</text>
+            <text x="502" y="10">0°</text>
+            <text x="582" y="10">30°E</text>
+          </g>
+
+          <!-- Continents -->
+          <g fill="rgba(255,255,255,0.03)" stroke="#1c1c1c" stroke-width="0.8" stroke-linejoin="round">
+            <path d={C.northAmerica} />
+            <path d={C.southAmerica} />
+            <path d={C.greenland} />
+            <path d={C.europe} />
+            <path d={C.uk} />
+            <path d={C.scandinavia} />
+            <path d={C.northAfrica} />
+            <path d={C.subAfrica} />
+            <path d={C.middleEast} />
+            <path d={C.asia} />
+            <path d={C.india} />
+            <path d={C.seAsia} />
+            <path d={C.japan} />
+            <path d={C.australia} />
+          </g>
+
+          <!-- Flight paths from Istanbul -->
+          {travels.map(t => (
+            <path
+              d={`M ${homeBase.x},${homeBase.y} Q ${t.cpx},${t.cpy} ${t.x},${t.y}`}
+              fill="none"
+              stroke="rgba(244,12,63,0.35)"
+              stroke-width="1"
+              stroke-dasharray="4 8"
+              class="flight-path"
+            />
+          ))}
+
+          <!-- Home base: Istanbul -->
+          <g class="home-node">
+            <circle cx={homeBase.x} cy={homeBase.y} r="3.5" fill="#fff" />
+            <circle cx={homeBase.x} cy={homeBase.y} r="3.5" fill="none" stroke="rgba(255,255,255,0.6)" stroke-width="1" class="pulse-home" />
+            <text x={homeBase.x + 7} y={homeBase.y + 3} style="font-family:monospace; font-size:8px; fill:rgba(255,255,255,0.5); letter-spacing:0.08em;">IST [HOME]</text>
+          </g>
+
+          <!-- Travel city nodes -->
+          {travels.map(t => (
+            <g class="travel-node" data-id={t.id} style="cursor:pointer;">
+              <circle cx={t.x} cy={t.y} r="12" fill="rgba(0,0,0,0)" />
+              <circle cx={t.x} cy={t.y} r="3.5" fill="#f40c3f" class="node-dot" />
+              <circle cx={t.x} cy={t.y} r="3.5" fill="none" stroke="#f40c3f" stroke-width="1" class="pulse-ring" />
+              <text x={t.x + 7} y={t.y + 3} style="font-family:monospace; font-size:8px; fill:rgba(255,255,255,0.38); letter-spacing:0.06em;">{t.city}</text>
+            </g>
+          ))}
+        </svg>
+      </div>
+
+      <!-- Legend -->
+      <div class="max-w-7xl mx-auto px-8 py-6 flex gap-8 flex-wrap">
+        <div class="flex items-center gap-2">
+          <div style="width:8px; height:8px; border-radius:50%; background:#fff;"></div>
+          <span class="font-mono text-[10px]" style="color:rgba(255,255,255,0.3); letter-spacing:0.1em;">HOME BASE</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <div style="width:8px; height:8px; border-radius:50%; background:#f40c3f;"></div>
+          <span class="font-mono text-[10px]" style="color:rgba(255,255,255,0.3); letter-spacing:0.1em;">VISITED — CLICK TO OPEN PASSPORT</span>
+        </div>
+      </div>
+      <div style="padding-bottom:80px;"></div>
     </section>
 
   </main>
 
-  <Footer />
+  <!-- Passport Card (slides in from right) -->
+  <div id="passport-card" class="fixed top-0 right-0 h-full z-[300] pointer-events-none" style="width:min(420px,100vw);">
+    <div class="relative h-full flex flex-col" style="background:#080808; border-left:1px solid rgba(255,255,255,0.1);">
+      <!-- Photo area -->
+      <div id="passport-photo-wrap" style="height:300px; overflow:hidden; border-bottom:1px solid rgba(255,255,255,0.08); position:relative; background:#111; flex-shrink:0;">
+        <img id="passport-img" src="" alt="" style="width:100%;height:100%;object-fit:cover;display:none;filter:grayscale(1) contrast(1.15);" loading="lazy" />
+        <div id="passport-no-photo" class="absolute inset-0 flex flex-col items-center justify-center gap-2">
+          <span class="font-mono text-xs" style="color:rgba(255,255,255,0.12);">[ NO PHOTO YET ]</span>
+          <span class="font-mono text-[10px]" style="color:rgba(255,255,255,0.06);">ADD TO travels ARRAY</span>
+        </div>
+        <!-- Red corner stamp -->
+        <div class="absolute top-4 left-4 px-3 py-1" style="background:#f40c3f;">
+          <span id="passport-status" class="font-mono text-[10px] font-bold text-white tracking-widest"></span>
+        </div>
+      </div>
 
-  <!-- Painting lightbox -->
-  <div id="painting-popup" class="fixed inset-0 z-[100] hidden">
-    <div class="popup-overlay absolute inset-0 bg-black/95"></div>
-    <button id="popup-close" class="absolute top-4 right-4 text-white text-4xl font-bold z-[101] hover:scale-110 transition-transform">×</button>
-    <div class="popup-content relative z-[101] flex items-center justify-center h-full p-4">
-      <img id="popup-image" src="" alt="" class="max-h-[90vh] max-w-[90vw] object-contain" />
+      <!-- Info -->
+      <div style="padding:32px; flex:1; overflow:auto;">
+        <div style="border-bottom:1px solid rgba(255,255,255,0.06); padding-bottom:20px; margin-bottom:20px;">
+          <div id="passport-date" class="font-mono text-[10px] mb-4" style="color:rgba(255,255,255,0.25); letter-spacing:0.15em;"></div>
+          <div id="passport-city" class="font-black" style="font-family:'Space Grotesk'; font-size:clamp(36px,8vw,56px); color:#fff; line-height:1; margin-bottom:4px;"></div>
+          <div id="passport-country" class="font-mono text-xs" style="color:rgba(255,255,255,0.35); letter-spacing:0.1em;"></div>
+        </div>
+        <p id="passport-memory" class="font-mono text-sm" style="color:rgba(255,255,255,0.55); line-height:1.7; font-style:italic;"></p>
+
+        <!-- Coordinates -->
+        <div id="passport-coords" class="font-mono text-[10px] mt-6" style="color:rgba(244,12,63,0.6); letter-spacing:0.1em;"></div>
+      </div>
+
+      <!-- Close -->
+      <button id="passport-close" class="absolute top-4 right-4 font-mono text-xs hover:text-white transition-colors"
+        style="color:rgba(255,255,255,0.3); background:none; border:none; cursor:pointer; letter-spacing:0.1em;">
+        × CLOSE
+      </button>
     </div>
   </div>
+
+  <Footer />
 </Layout>
 
 <style>
-  /* ── Action Portals ─────────────────────────────────────────────── */
-  .portals-container {
-    border-top: 1px solid rgba(255,255,255,0.08);
-  }
+  /* ── Action Portals ──────────────────────────────────────────────────────── */
+  .portals-container { border-top: 1px solid rgba(255,255,255,0.08); }
 
   .portal-item {
     position: relative;
@@ -216,10 +337,7 @@ const paintings = [
     margin-bottom: 2px;
     transition: color 0.3s ease;
   }
-
-  .portal-item:hover .portal-status {
-    color: rgba(255,255,255,0.6);
-  }
+  .portal-item:hover .portal-status { color: rgba(255,255,255,0.6); }
 
   .portal-word-wrapper {
     position: relative;
@@ -228,8 +346,7 @@ const paintings = [
     will-change: transform;
   }
 
-  .portal-base,
-  .portal-fill {
+  .portal-base, .portal-fill {
     display: block;
     font-family: 'Space Grotesk', sans-serif;
     font-weight: 900;
@@ -240,7 +357,6 @@ const paintings = [
     user-select: none;
   }
 
-  /* Outlined text — default state */
   .portal-base {
     -webkit-text-stroke: 1.5px rgba(255,255,255,0.55);
     color: transparent;
@@ -248,11 +364,9 @@ const paintings = [
     z-index: 1;
   }
 
-  /* Gradient-filled text — revealed by clip-path on hover */
   .portal-fill {
     position: absolute;
-    top: 0;
-    left: 0;
+    top: 0; left: 0;
     background: var(--fill-gradient);
     -webkit-background-clip: text;
     background-clip: text;
@@ -261,17 +375,9 @@ const paintings = [
     transition: clip-path 0.6s cubic-bezier(0.77, 0, 0.175, 1);
     z-index: 2;
   }
+  .portal-item:hover .portal-fill { clip-path: inset(0 0% 0 0); }
+  .portal-item:hover .portal-word-wrapper { transform: scaleX(1.01); }
 
-  .portal-item:hover .portal-fill {
-    clip-path: inset(0 0% 0 0);
-  }
-
-  /* Scale on hover */
-  .portal-item:hover .portal-word-wrapper {
-    transform: scaleX(1.01);
-  }
-
-  /* Description */
   .portal-desc {
     font-family: monospace;
     font-size: 12px;
@@ -282,31 +388,19 @@ const paintings = [
     overflow: hidden;
     transition: color 0.35s ease 0.15s, max-height 0.35s ease;
   }
+  .portal-item:hover .portal-desc { color: rgba(255,255,255,0.45); max-height: 40px; }
 
-  .portal-item:hover .portal-desc {
-    color: rgba(255,255,255,0.45);
-    max-height: 40px;
-  }
-
-  /* Mobile: IntersectionObserver triggers fill */
   @media (pointer: coarse) {
-    .portal-fill {
-      transition: clip-path 1s ease;
-    }
-    .portal-item.in-view .portal-fill {
-      clip-path: inset(0 0% 0 0);
-    }
-    .portal-item:hover .portal-base {
-      -webkit-text-stroke-color: rgba(255,255,255,0.8);
-    }
+    .portal-fill { transition: clip-path 1s ease; }
+    .portal-item.in-view .portal-fill { clip-path: inset(0 0% 0 0); }
   }
 
-  /* ── Drawings section ───────────────────────────────────────────── */
-  .drawings-title { color: #fff; }
-  .drawings-rule  { background: rgba(255,255,255,0.35); height: 4px; }
-  .drawings-hint  { color: rgba(255,255,255,0.3); letter-spacing: 0.12em; }
+  /* ── Art Gallery ─────────────────────────────────────────────────────────── */
+  .art-title { color: #fff; }
+  .art-rule  { background: rgba(255,255,255,0.35); height: 4px; }
+  .art-hint  { color: rgba(255,255,255,0.3); letter-spacing: 0.12em; font-family: monospace; font-size: 11px; }
 
-  .drawings-bg-grid {
+  .art-bg-grid {
     background-image:
       linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
       linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
@@ -319,25 +413,20 @@ const paintings = [
     filter: blur(32px);
   }
 
-  .drawing-grain {
+  .art-grain {
     background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.4'/%3E%3C/svg%3E");
     background-size: 180px 180px;
     mix-blend-mode: overlay;
   }
 
-  .drawing-item:hover .drawing-img { filter: none !important; }
-  .drawing-item:hover .drawing-grain { opacity: 0 !important; }
-  .drawing-item:hover { transform: scale(1.04); filter: none !important; }
+  .art-item:hover .art-img   { filter: none !important; }
+  .art-item:hover .art-grain { opacity: 0 !important; }
+  .art-item:hover            { transform: scale(1.04); filter: none !important; }
 
-  #drawings-viewport.grabbing { cursor: grabbing; }
+  #art-viewport.grabbing { cursor: grabbing; }
 
-  /* ── Painting popup ─────────────────────────────────────────────── */
-  #painting-popup { display: none; align-items: center; justify-content: center; }
-  #painting-popup.active { display: flex; }
-
-  /* ── Mobile drawings snap ───────────────────────────────────────── */
   @media (pointer: coarse) {
-    #drawings-viewport {
+    #art-viewport {
       overflow-x: scroll;
       overflow-y: hidden;
       scroll-snap-type: x mandatory;
@@ -345,33 +434,67 @@ const paintings = [
       height: 75vw;
       touch-action: pan-x;
     }
-    #drawings-track { position: relative !important; transform: none !important; }
-    .drawing-item { scroll-snap-align: center; }
-    #drawings-bg, #drawings-fg, #drawings-progress { display: none; }
+    #art-track { position: relative !important; transform: none !important; }
+    .art-item { scroll-snap-align: center; }
+    #art-bg, #art-fg, #art-progress { display: none; }
+  }
+
+  /* ── Travel Map ──────────────────────────────────────────────────────────── */
+  .flight-path {
+    stroke-dasharray: 4 8;
+    animation: flowDash 2s linear infinite;
+  }
+
+  @keyframes flowDash {
+    from { stroke-dashoffset: 24; }
+    to   { stroke-dashoffset: 0;  }
+  }
+
+  /* Pulse rings on city nodes */
+  .pulse-ring, .pulse-home {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: pulseNode 2.2s ease-out infinite;
+  }
+  .pulse-home { animation-duration: 3s; stroke: rgba(255,255,255,0.5); }
+
+  @keyframes pulseNode {
+    0%   { transform: scale(1);   opacity: 0.85; }
+    100% { transform: scale(4.5); opacity: 0; }
+  }
+
+  .travel-node { transition: opacity 0.2s; }
+  .travel-node:hover .node-dot { r: 5; }
+  .travel-node:hover text { fill: rgba(255,255,255,0.75) !important; }
+
+  /* ── Passport Card ────────────────────────────────────────────────────────── */
+  #passport-card {
+    transform: translateX(100%);
+    transition: none; /* GSAP handles this */
+    pointer-events: none;
+  }
+  #passport-card.open {
+    pointer-events: all;
   }
 </style>
 
 <script>
-  // ── Action Portals ────────────────────────────────────────────────
+  // ── Action Portals ────────────────────────────────────────────────────────
   (function() {
-    const items  = document.querySelectorAll('.portal-item');
-    const dim    = document.getElementById('portals-dim');
+    const items = document.querySelectorAll('.portal-item');
+    const dim   = document.getElementById('portals-dim');
 
     items.forEach(item => {
       const wrapper = item.querySelector('.portal-word-wrapper');
-
       item.addEventListener('mousemove', (e) => {
         const rect = item.getBoundingClientRect();
-        const dx   = (e.clientX - rect.left - rect.width  / 2) * 0.09;
-        const dy   = (e.clientY - rect.top  - rect.height / 2) * 0.04;
-
+        const dx = (e.clientX - rect.left - rect.width  / 2) * 0.09;
+        const dy = (e.clientY - rect.top  - rect.height / 2) * 0.04;
         if (typeof gsap !== 'undefined') {
           gsap.to(wrapper, { x: dx, y: dy, duration: 0.35, ease: 'power2.out', overwrite: 'auto' });
         }
-
         if (dim) dim.style.background = 'rgba(0,0,0,0.52)';
       });
-
       item.addEventListener('mouseleave', () => {
         if (typeof gsap !== 'undefined') {
           gsap.to(wrapper, { x: 0, y: 0, duration: 0.9, ease: 'elastic.out(1, 0.35)', overwrite: 'auto' });
@@ -380,32 +503,28 @@ const paintings = [
       });
     });
 
-    // Mobile: IntersectionObserver triggers fill
     if (window.matchMedia('(pointer: coarse)').matches) {
       const obs = new IntersectionObserver(entries => {
-        entries.forEach(e => {
-          if (e.isIntersecting) e.target.classList.add('in-view');
-        });
+        entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in-view'); });
       }, { threshold: 0.55 });
       items.forEach(item => obs.observe(item));
     }
   })();
 
-  // ── Drawings horizontal parallax ──────────────────────────────────
+  // ── Art Gallery horizontal parallax ──────────────────────────────────────
   (function() {
     if (window.matchMedia('(pointer: coarse)').matches) return;
 
-    const viewport = document.getElementById('drawings-viewport');
-    const track    = document.getElementById('drawings-track');
-    const bgLayer  = document.getElementById('drawings-bg');
-    const fgLayer  = document.getElementById('drawings-fg');
-    const progress = document.getElementById('drawings-progress');
-    const items    = document.querySelectorAll('.drawing-item');
+    const viewport = document.getElementById('art-viewport');
+    const track    = document.getElementById('art-track');
+    const bgLayer  = document.getElementById('art-bg');
+    const fgLayer  = document.getElementById('art-fg');
+    const progress = document.getElementById('art-progress');
+    const items    = document.querySelectorAll('.art-item');
     if (!viewport || !track) return;
 
     let targetX = 0, currentX = 0, maxX = 0;
-    let isOver  = false, isDragging = false;
-    let dragStartX = 0, dragStartCurrent = 0;
+    let isOver = false, isDragging = false, dragStartX = 0, dragStartCurrent = 0;
 
     function calcMax() { maxX = Math.max(0, track.scrollWidth - viewport.offsetWidth); }
     calcMax();
@@ -422,29 +541,14 @@ const paintings = [
     viewport.addEventListener('mouseleave', () => { isOver = false; });
 
     viewport.addEventListener('mousedown', (e) => {
-      isDragging = true;
-      dragStartX = e.clientX;
-      dragStartCurrent = targetX;
+      isDragging = true; dragStartX = e.clientX; dragStartCurrent = targetX;
       viewport.classList.add('grabbing');
     });
     window.addEventListener('mousemove', (e) => {
       if (!isDragging) return;
       targetX = Math.max(-maxX, Math.min(0, dragStartCurrent + (e.clientX - dragStartX)));
     });
-    window.addEventListener('mouseup', () => {
-      isDragging = false;
-      viewport.classList.remove('grabbing');
-    });
-
-    const observer = new IntersectionObserver(entries => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          const depth = parseInt(entry.target.dataset.depth) || 1;
-          entry.target.style.filter = depth > 1 ? `blur(${(depth - 1) * 1.2}px)` : 'none';
-        }
-      });
-    }, { root: viewport, threshold: 0.3 });
-    items.forEach(item => observer.observe(item));
+    window.addEventListener('mouseup', () => { isDragging = false; viewport.classList.remove('grabbing'); });
 
     function raf() {
       requestAnimationFrame(raf);
@@ -469,35 +573,102 @@ const paintings = [
     raf();
   })();
 
-  // ── Paintings lightbox ────────────────────────────────────────────
-  const paintingsList = [
-    '/images/file_8---39151805-7313-4bb7-b8c8-1365aef884a3.jpg',
-    '/images/file_9---c5cd81b7-8140-4595-8297-af32f0e2edba.jpg',
-    '/images/file_10---714a56fd-d4fb-4316-8629-c6f06a4db7a8.jpg',
-    '/images/file_11---e6cf7245-cda7-4ca8-884c-55c891575493.jpg',
-    '/images/file_12---09cd522a-d5e5-433a-ac0f-d9c0c710c79a.jpg',
-    '/images/file_13---f94eea51-a229-4b42-bcf4-f489c8824e9b.jpg',
-    '/images/file_14---d6d37114-4da7-4cdf-896d-5b361bf9ac99.jpg',
-    '/images/file_15---cfdd2a00-8c9e-4367-8b88-c149ce15db2a.jpg',
-    '/images/file_16---a29e17b8-1972-4c3d-af3c-e4f65981a95f.jpg',
-    '/images/file_17---f463b1dd-1139-4fad-81a9-b4b5bddd0ef0.jpg',
-    '/images/file_19---7fd47930-b43e-4e33-a1d0-ce5384175a40.jpg',
-    '/images/file_20---4fa92226-8c06-4344-836a-2745c8ec1072.jpg',
-    '/images/file_21---7f73c515-6959-4117-bc6b-a178b7e1f1fa.jpg',
-  ];
-  const popup        = document.getElementById('painting-popup');
-  const popupImage   = document.getElementById('popup-image');
-  const popupClose   = document.getElementById('popup-close');
-  const popupOverlay = document.querySelector('.popup-overlay');
+  // ── Travel Map ────────────────────────────────────────────────────────────
+  (function() {
+    // Travels data (synced with frontmatter)
+    const travelsData = [
+      { id: 'amsterdam', city: 'AMSTERDAM', country: 'NETHERLANDS', date: 'MARCH 2026', status: 'VISITED', memory: 'The rain in Amsterdam makes the canals look like oil paintings.', x: 514, y: 164, photo: '' },
+      { id: 'london',    city: 'LONDON',    country: 'UNITED KINGDOM', date: 'FEBRUARY 2026', status: 'VISITED', memory: 'Eight million stories compressed into one Underground carriage at rush hour.', x: 499, y: 166, photo: '' },
+    ];
+    const homeBase = { city: 'ISTANBUL', country: 'TURKEY', x: 581, y: 188 };
 
-  document.querySelectorAll('.painting-card').forEach((card, i) => {
-    card.addEventListener('click', () => {
-      popupImage.src = paintingsList[i];
-      popup.classList.add('active');
-      document.body.style.overflow = 'hidden';
+    const svg      = document.getElementById('travel-map');
+    const coordsEl = document.getElementById('map-coords');
+
+    // Mouse → lat/lon coordinates display
+    if (svg && coordsEl) {
+      svg.addEventListener('mousemove', (e) => {
+        const rect = svg.getBoundingClientRect();
+        const scaleX = 1000 / rect.width;
+        const scaleY = 500  / rect.height;
+        const svgX = (e.clientX - rect.left) * scaleX;
+        const svgY = (e.clientY - rect.top)  * scaleY;
+
+        const lon = (svgX / 1000) * 360 - 180;
+        const lat = Math.atan(Math.sinh(Math.PI * (1 - 2 * svgY / 500))) * (180 / Math.PI);
+
+        const latStr = `${Math.abs(lat).toFixed(2)}°${lat >= 0 ? 'N' : 'S'}`;
+        const lonStr = `${Math.abs(lon).toFixed(2)}°${lon >= 0 ? 'E' : 'W'}`;
+        coordsEl.textContent = `LAT: ${latStr}   LON: ${lonStr}`;
+      });
+      svg.addEventListener('mouseleave', () => {
+        coordsEl.textContent = 'MOVE CURSOR OVER MAP — LAT: —   LON: —';
+      });
+    }
+
+    // Passport card
+    const card    = document.getElementById('passport-card');
+    const closeBtn = document.getElementById('passport-close');
+
+    function openPassport(t) {
+      // Populate
+      document.getElementById('passport-status').textContent  = t.status;
+      document.getElementById('passport-city').textContent    = t.city;
+      document.getElementById('passport-country').textContent = t.country;
+      document.getElementById('passport-date').textContent    = t.date;
+      document.getElementById('passport-memory').textContent  = `"${t.memory}"`;
+
+      const lon = (t.x / 1000) * 360 - 180;
+      const lat = Math.atan(Math.sinh(Math.PI * (1 - 2 * t.y / 500))) * (180 / Math.PI);
+      document.getElementById('passport-coords').textContent =
+        `${Math.abs(lat).toFixed(4)}°${lat >= 0 ? 'N' : 'S'} / ${Math.abs(lon).toFixed(4)}°${lon >= 0 ? 'E' : 'W'}`;
+
+      const img       = document.getElementById('passport-img');
+      const noPhoto   = document.getElementById('passport-no-photo');
+      if (t.photo) {
+        img.src = t.photo; img.style.display = 'block';
+        noPhoto.style.display = 'none';
+      } else {
+        img.style.display = 'none'; noPhoto.style.display = 'flex';
+      }
+
+      card.classList.add('open');
+      if (typeof gsap !== 'undefined') {
+        gsap.fromTo(card, { x: '100%' }, { x: '0%', duration: 0.55, ease: 'power3.out' });
+      } else {
+        card.style.transform = 'translateX(0%)';
+      }
+    }
+
+    function closePassport() {
+      if (typeof gsap !== 'undefined') {
+        gsap.to(card, { x: '100%', duration: 0.4, ease: 'power3.in', onComplete: () => card.classList.remove('open') });
+      } else {
+        card.style.transform = 'translateX(100%)'; card.classList.remove('open');
+      }
+    }
+
+    // Bind city node clicks
+    document.querySelectorAll('.travel-node').forEach(node => {
+      node.addEventListener('click', () => {
+        const id = node.dataset.id;
+        const t  = travelsData.find(d => d.id === id);
+        if (t) openPassport(t);
+      });
     });
-  });
-  function closePainting() { popup.classList.remove('active'); document.body.style.overflow = ''; }
-  popupClose?.addEventListener('click', closePainting);
-  popupOverlay?.addEventListener('click', closePainting);
+
+    closeBtn?.addEventListener('click', closePassport);
+
+    // Close on backdrop click (outside card)
+    document.addEventListener('click', (e) => {
+      if (card.classList.contains('open') && !card.contains(e.target) && !e.target.closest('.travel-node')) {
+        closePassport();
+      }
+    });
+
+    // Keyboard close
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && card.classList.contains('open')) closePassport();
+    });
+  })();
 </script>
