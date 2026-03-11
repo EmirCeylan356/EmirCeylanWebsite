@@ -10,6 +10,16 @@ const activities = [
   { title: 'MENTORING', description: 'Peer mentoring for incoming CS students.' },
 ];
 
+// Add your drawing images to /public/images/drawings/ and update src fields
+const drawings = [
+  { id: 1, title: 'FIGURE STUDY I',   type: 'CHARCOAL',    year: 2025, status: 'PHYSICAL',     depth: 1, src: '' },
+  { id: 2, title: 'PORTRAIT II',      type: 'PENCIL',      year: 2024, status: 'PHYSICAL',     depth: 2, src: '' },
+  { id: 3, title: 'URBAN SKETCH',     type: 'INK PEN',     year: 2025, status: 'PHYSICAL',     depth: 1, src: '' },
+  { id: 4, title: 'ABSTRACT IV',      type: 'MIXED MEDIA', year: 2025, status: 'IN PROGRESS',  depth: 3, src: '' },
+  { id: 5, title: 'LANDSCAPE STUDY',  type: 'GRAPHITE',    year: 2024, status: 'PHYSICAL',     depth: 2, src: '' },
+  { id: 6, title: 'COMPOSITION V',    type: 'CHARCOAL',    year: 2025, status: 'PHYSICAL',     depth: 1, src: '' },
+];
+
 const paintings = [
   { title: 'PAINTING 01', src: '/images/file_8---39151805-7313-4bb7-b8c8-1365aef884a3.jpg' },
   { title: 'PAINTING 02', src: '/images/file_9---c5cd81b7-8140-4595-8297-af32f0e2edba.jpg' },
@@ -29,49 +39,130 @@ const paintings = [
 
 <Layout title="HOBBIES — Emir Ceylan">
   <Header />
-  
-  <main>
+
+  <main class="flex-1" style="padding-top: 80px;">
+
     <!-- Activities Section -->
     <section class="py-16 px-4">
       <div class="max-w-7xl mx-auto">
         <div class="flex items-end gap-4 mb-12">
-          <h2 class="text-5xl md:text-7xl font-black kinetic-text">
-            ACTIVITIES
-          </h2>
+          <h2 class="text-5xl md:text-7xl font-black kinetic-text">ACTIVITIES</h2>
           <div class="flex-1 h-4 bg-black"></div>
           <span class="text-3xl font-black">/02</span>
         </div>
-        
-        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-20">
-          {activities.map((activity, index) => (
-            <div class="group relative overflow-hidden border-4 border-black bg-black">
-              <img 
-                src={`/images/activity-${index + 1}.jpg`} 
-                alt={activity.title}
-                class="w-full h-48 object-cover transition-transform duration-500 group-hover:scale-110 grayscale group-hover:grayscale-0"
-              />
-              <div class="absolute inset-0 bg-black/70 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-center items-center p-4 text-center">
-                <p class="text-white font-black text-sm kinetic-text">{activity.title}</p>
-                <p class="text-gray-300 text-xs mt-2">{activity.description}</p>
-              </div>
-            </div>
-          ))}
+        <div class="bg-white border-4 border-black p-8 min-h-[200px]">
+          <p class="text-lg leading-relaxed">
+            Activities content coming soon.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         DRAWINGS — Immersive Horizontal Parallax Gallery
+    ════════════════════════════════════════════════════════════════ -->
+    <section id="drawings" class="drawings-section relative" style="background:#050505;">
+
+      <!-- Section header -->
+      <div class="max-w-7xl mx-auto px-4 pt-16 pb-8">
+        <div class="flex items-end gap-4">
+          <h2 class="text-5xl md:text-7xl font-black kinetic-text drawings-title">DRAWINGS</h2>
+          <div class="flex-1 h-4 drawings-rule"></div>
+          <span class="text-3xl font-black drawings-title">/06</span>
+        </div>
+        <p class="text-xs font-mono mt-3 drawings-hint">
+          ← SCROLL TO EXPLORE — HOVER FOR DETAILS →
+        </p>
+      </div>
+
+      <!-- Gallery viewport (intercepts wheel → horizontal) -->
+      <div id="drawings-viewport" class="relative overflow-hidden" style="height:68vh; touch-action:pan-y;">
+
+        <!-- Layer 1 — Blueprint grid background (parallax 0.2×) -->
+        <div id="drawings-bg" class="absolute inset-0 pointer-events-none drawings-bg-grid"></div>
+
+        <!-- Layer 3 — Ink splatter foreground (parallax 1.5×) -->
+        <div id="drawings-fg" class="absolute inset-0 pointer-events-none z-10 overflow-hidden" aria-hidden="true">
+          <div class="ink-blob" style="width:340px;height:340px;top:8%;left:18%;opacity:0.06;border-radius:62% 38% 70% 30%/45% 55% 45% 55%;"></div>
+          <div class="ink-blob" style="width:220px;height:280px;top:40%;left:55%;opacity:0.05;border-radius:40% 60% 30% 70%/60% 40% 70% 30%;"></div>
+          <div class="ink-blob" style="width:180px;height:160px;top:65%;left:30%;opacity:0.07;border-radius:70% 30% 50% 50%/30% 70% 60% 40%;"></div>
+          <div class="ink-blob" style="width:400px;height:300px;top:10%;left:75%;opacity:0.05;border-radius:38% 62% 63% 37%/41% 44% 56% 59%;"></div>
+          <div class="ink-blob" style="width:150px;height:200px;top:55%;left:85%;opacity:0.08;border-radius:50% 50% 30% 70%/40% 60% 40% 60%;"></div>
         </div>
 
-        <!-- Paintings Section -->
+        <!-- Layer 2 — Drawing cards track (1×) -->
+        <div id="drawings-track" class="absolute top-0 left-0 flex items-center gap-10 px-20 z-5" style="height:100%; width:max-content; will-change:transform;">
+          {drawings.map((d) => {
+            const w = 300 - d.depth * 18;
+            const h = 400 - d.depth * 18;
+            const depthBlur = d.depth > 1 ? `blur(${(d.depth - 1) * 1.8}px)` : 'none';
+            return (
+              <div
+                class="drawing-item group flex-shrink-0 relative"
+                data-depth={d.depth}
+                style={`width:${w}px; height:${h}px; filter:${depthBlur}; transition: filter 0.5s ease, transform 0.4s ease;`}
+              >
+                <div class="drawing-frame relative w-full h-full overflow-hidden" style="border:1px solid rgba(255,255,255,0.15);">
+
+                  {d.src ? (
+                    <img
+                      src={d.src}
+                      alt={d.title}
+                      class="drawing-img w-full h-full object-cover"
+                      style="filter: brightness(0.82) contrast(1.12) sepia(0.08); transition: filter 0.45s ease;"
+                    />
+                  ) : (
+                    <div class="w-full h-full flex flex-col items-center justify-center gap-3" style="background:#0d0d0d; border:1px dashed rgba(255,255,255,0.12);">
+                      <span class="font-mono text-xs" style="color:rgba(255,255,255,0.2);">[ ADD DRAWING ]</span>
+                      <span class="font-mono text-[10px]" style="color:rgba(255,255,255,0.1);">{d.title}</span>
+                    </div>
+                  )}
+
+                  <!-- Grain texture overlay -->
+                  <div class="drawing-grain absolute inset-0 pointer-events-none" style="opacity:0.35; transition:opacity 0.45s ease;"></div>
+
+                  <!-- Title badge (top-left, reveals on hover) -->
+                  <div class="absolute top-0 left-0 px-3 py-1 translate-y-[-100%] group-hover:translate-y-0 transition-transform duration-300 z-20" style="background:#f40c3f;">
+                    <span class="text-white text-[10px] font-black font-mono tracking-widest">{d.title}</span>
+                  </div>
+
+                  <!-- Metadata tag (bottom, reveals on hover) -->
+                  <div class="absolute bottom-0 left-0 right-0 translate-y-full group-hover:translate-y-0 transition-transform duration-300 z-20 p-3" style="background:rgba(5,5,5,0.92); backdrop-filter:blur(4px);">
+                    <p class="text-[10px] font-mono mb-1" style="color:rgba(255,255,255,0.85); letter-spacing:0.08em;">
+                      TYPE: {d.type} | YEAR: {d.year}
+                    </p>
+                    <p class="text-[10px] font-mono" style="color:rgba(244,12,63,0.9); letter-spacing:0.08em;">
+                      STATUS: {d.status}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      <!-- Progress bar -->
+      <div style="height:1px; background:rgba(255,255,255,0.08);">
+        <div id="drawings-progress" style="height:100%; width:0%; background:#f40c3f; transition:none;"></div>
+      </div>
+
+      <div style="padding-bottom:64px;"></div>
+    </section>
+
+    <!-- Paintings Section -->
+    <section class="py-16 px-4">
+      <div class="max-w-7xl mx-auto">
         <div class="flex items-end gap-4 mb-12">
-          <h2 class="text-5xl md:text-7xl font-black kinetic-text">
-            PAINTINGS
-          </h2>
+          <h2 class="text-5xl md:text-7xl font-black kinetic-text">PAINTINGS</h2>
           <div class="flex-1 h-4 bg-black"></div>
           <span class="text-3xl font-black">/13</span>
         </div>
-        
         <div class="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
           {paintings.map((painting, index) => (
             <div class="group relative overflow-hidden border-4 border-black aspect-square bg-black cursor-pointer painting-card" data-index={index}>
-              <img 
-                src={painting.src} 
+              <img
+                src={painting.src}
                 alt={painting.title}
                 class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
               />
@@ -80,11 +171,12 @@ const paintings = [
         </div>
       </div>
     </section>
+
   </main>
 
   <Footer />
 
-  <!-- Painting Popup -->
+  <!-- Painting lightbox -->
   <div id="painting-popup" class="fixed inset-0 z-[100] hidden">
     <div class="popup-overlay absolute inset-0 bg-black/95"></div>
     <button id="popup-close" class="absolute top-4 right-4 text-white text-4xl font-bold z-[101] hover:scale-110 transition-transform">×</button>
@@ -95,53 +187,210 @@ const paintings = [
 </Layout>
 
 <style>
-  #painting-popup {
-    display: none;
-    align-items: center;
-    justify-content: center;
+  /* ── Drawings section colours ─────────────────────────────────── */
+  .drawings-title { color: #fff; }
+  .drawings-rule  { background: rgba(255,255,255,0.35); height: 4px; }
+  .drawings-hint  { color: rgba(255,255,255,0.3); letter-spacing: 0.12em; }
+
+  /* Blueprint grid background */
+  .drawings-bg-grid {
+    background-image:
+      linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
+    background-size: 48px 48px;
   }
-  
-  #painting-popup.active {
-    display: flex;
+
+  /* Ink blobs */
+  .ink-blob {
+    position: absolute;
+    background: #fff;
+    filter: blur(32px);
+  }
+
+  /* Grain texture via SVG filter */
+  .drawing-grain {
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.4'/%3E%3C/svg%3E");
+    background-size: 180px 180px;
+    mix-blend-mode: overlay;
+  }
+
+  /* Clear grain + show full image on hover */
+  .drawing-item:hover .drawing-img {
+    filter: none !important;
+  }
+  .drawing-item:hover .drawing-grain {
+    opacity: 0 !important;
+  }
+
+  /* Scale up on hover */
+  .drawing-item:hover {
+    transform: scale(1.04);
+    filter: none !important;
+  }
+
+  /* Grabbing cursor while dragging */
+  #drawings-viewport.grabbing { cursor: grabbing; }
+
+  /* ── Painting popup ───────────────────────────────────────────── */
+  #painting-popup { display: none; align-items: center; justify-content: center; }
+  #painting-popup.active { display: flex; }
+
+  /* ── Mobile: vertical snap scroll ────────────────────────────── */
+  @media (pointer: coarse) {
+    #drawings-viewport {
+      overflow-x: scroll;
+      overflow-y: hidden;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      height: 75vw;
+      touch-action: pan-x;
+    }
+    #drawings-track {
+      position: relative !important;
+      transform: none !important;
+    }
+    .drawing-item {
+      scroll-snap-align: center;
+    }
+    #drawings-bg, #drawings-fg, #drawings-progress { display: none; }
   }
 </style>
 
 <script>
-  const paintings = [
-    { src: '/images/file_8---39151805-7313-4bb7-b8c8-1365aef884a3.jpg', title: 'PAINTING 01' },
-    { src: '/images/file_9---c5cd81b7-8140-4595-8297-af32f0e2edba.jpg', title: 'PAINTING 02' },
-    { src: '/images/file_10---714a56fd-d4fb-4316-8629-c6f06a4db7a8.jpg', title: 'PAINTING 03' },
-    { src: '/images/file_11---e6cf7245-cda7-4ca8-884c-55c891575493.jpg', title: 'PAINTING 04' },
-    { src: '/images/file_12---09cd522a-d5e5-433a-ac0f-d9c0c710c79a.jpg', title: 'PAINTING 05' },
-    { src: '/images/file_13---f94eea51-a229-4b42-bcf4-f489c8824e9b.jpg', title: 'PAINTING 06' },
-    { src: '/images/file_14---d6d37114-4da7-4cdf-896d-5b361bf9ac99.jpg', title: 'PAINTING 07' },
-    { src: '/images/file_15---cfdd2a00-8c9e-4367-8b88-c149ce15db2a.jpg', title: 'PAINTING 08' },
-    { src: '/images/file_16---a29e17b8-1972-4c3d-af3c-e4f65981a95f.jpg', title: 'PAINTING 09' },
-    { src: '/images/file_17---f463b1dd-1139-4fad-81a9-b4b5bddd0ef0.jpg', title: 'PAINTING 10' },
-    { src: '/images/file_19---7fd47930-b43e-4e33-a1d0-ce5384175a40.jpg', title: 'PAINTING 11' },
-    { src: '/images/file_20---4fa92226-8c06-4344-836a-2745c8ec1072.jpg', title: 'PAINTING 12' },
-    { src: '/images/file_21---7f73c515-6959-4117-bc6b-a178b7e1f1fa.jpg', title: 'PAINTING 13' },
+  // ── Paintings lightbox ────────────────────────────────────────────
+  const paintingsList = [
+    '/images/file_8---39151805-7313-4bb7-b8c8-1365aef884a3.jpg',
+    '/images/file_9---c5cd81b7-8140-4595-8297-af32f0e2edba.jpg',
+    '/images/file_10---714a56fd-d4fb-4316-8629-c6f06a4db7a8.jpg',
+    '/images/file_11---e6cf7245-cda7-4ca8-884c-55c891575493.jpg',
+    '/images/file_12---09cd522a-d5e5-433a-ac0f-d9c0c710c79a.jpg',
+    '/images/file_13---f94eea51-a229-4b42-bcf4-f489c8824e9b.jpg',
+    '/images/file_14---d6d37114-4da7-4cdf-896d-5b361bf9ac99.jpg',
+    '/images/file_15---cfdd2a00-8c9e-4367-8b88-c149ce15db2a.jpg',
+    '/images/file_16---a29e17b8-1972-4c3d-af3c-e4f65981a95f.jpg',
+    '/images/file_17---f463b1dd-1139-4fad-81a9-b4b5bddd0ef0.jpg',
+    '/images/file_19---7fd47930-b43e-4e33-a1d0-ce5384175a40.jpg',
+    '/images/file_20---4fa92226-8c06-4344-836a-2745c8ec1072.jpg',
+    '/images/file_21---7f73c515-6959-4117-bc6b-a178b7e1f1fa.jpg',
   ];
-
-  const popup = document.getElementById('painting-popup');
-  const popupImage = document.getElementById('popup-image');
-  const popupClose = document.getElementById('popup-close');
+  const popup       = document.getElementById('painting-popup');
+  const popupImage  = document.getElementById('popup-image');
+  const popupClose  = document.getElementById('popup-close');
   const popupOverlay = document.querySelector('.popup-overlay');
-  const paintingCards = document.querySelectorAll('.painting-card');
 
-  paintingCards.forEach((card, index) => {
+  document.querySelectorAll('.painting-card').forEach((card, i) => {
     card.addEventListener('click', () => {
-      popupImage.src = paintings[index].src;
+      popupImage.src = paintingsList[i];
       popup.classList.add('active');
       document.body.style.overflow = 'hidden';
     });
   });
-
-  function closePopup() {
+  function closePainting() {
     popup.classList.remove('active');
     document.body.style.overflow = '';
   }
+  popupClose?.addEventListener('click', closePainting);
+  popupOverlay?.addEventListener('click', closePainting);
 
-  popupClose.addEventListener('click', closePopup);
-  popupOverlay.addEventListener('click', closePopup);
+  // ── Drawings horizontal parallax gallery ─────────────────────────
+  (function() {
+    // Skip on touch devices (CSS snap scroll handles it)
+    if (window.matchMedia('(pointer: coarse)').matches) return;
+
+    const viewport = document.getElementById('drawings-viewport');
+    const track    = document.getElementById('drawings-track');
+    const bgLayer  = document.getElementById('drawings-bg');
+    const fgLayer  = document.getElementById('drawings-fg');
+    const progress = document.getElementById('drawings-progress');
+    const items    = document.querySelectorAll('.drawing-item');
+    if (!viewport || !track) return;
+
+    let targetX  = 0;
+    let currentX = 0;
+    let maxX     = 0;
+    let isOver   = false;
+
+    function calcMax() {
+      maxX = Math.max(0, track.scrollWidth - viewport.offsetWidth);
+    }
+    calcMax();
+    window.addEventListener('resize', calcMax);
+
+    // Wheel → horizontal
+    viewport.addEventListener('wheel', (e) => {
+      if (!isOver) return;
+      e.preventDefault();
+      targetX -= e.deltaY * 1.3;
+      targetX  = Math.max(-maxX, Math.min(0, targetX));
+    }, { passive: false });
+
+    viewport.addEventListener('mouseenter', () => { isOver = true; });
+    viewport.addEventListener('mouseleave', () => { isOver = false; });
+
+    // Cursor grabbing on drag
+    let isDragging = false, dragStartX = 0, dragStartCurrent = 0;
+    viewport.addEventListener('mousedown', (e) => {
+      isDragging = true;
+      dragStartX = e.clientX;
+      dragStartCurrent = targetX;
+      viewport.classList.add('grabbing');
+    });
+    window.addEventListener('mousemove', (e) => {
+      if (!isDragging) return;
+      const dx = e.clientX - dragStartX;
+      targetX  = Math.max(-maxX, Math.min(0, dragStartCurrent + dx));
+    });
+    window.addEventListener('mouseup', () => {
+      isDragging = false;
+      viewport.classList.remove('grabbing');
+    });
+
+    // IntersectionObserver — clear blur when item scrolls into view
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.style.filter = entry.target.dataset.depth > 1
+            ? `blur(${(entry.target.dataset.depth - 1) * 1.2}px)`
+            : 'none';
+        }
+      });
+    }, { root: viewport, threshold: 0.3 });
+    items.forEach(item => observer.observe(item));
+
+    // rAF loop — lerp + parallax layers
+    function raf() {
+      requestAnimationFrame(raf);
+
+      // Fluid inertia lerp (0.07 = slow drag, 0.12 = snappier)
+      currentX += (targetX - currentX) * 0.08;
+
+      // Guard against tiny jitter
+      const snapped = Math.round(currentX * 100) / 100;
+
+      track.style.transform = `translateX(${snapped}px)`;
+
+      // Parallax layers
+      if (bgLayer) bgLayer.style.transform = `translateX(${snapped * 0.2}px)`;
+      if (fgLayer) fgLayer.style.transform = `translateX(${snapped * 1.5}px)`;
+
+      // Progress bar
+      const pct = maxX > 0 ? (Math.abs(snapped) / maxX) * 100 : 0;
+      if (progress) progress.style.width = pct + '%';
+
+      // Per-item: clear blur when centred in viewport
+      const vcx = viewport.offsetWidth / 2;
+      items.forEach(item => {
+        const rect   = item.getBoundingClientRect();
+        const itemCx = rect.left + rect.width / 2;
+        const dist   = Math.abs(itemCx - vcx);
+        const depth  = parseInt(item.dataset.depth) || 1;
+        const maxBlur = (depth - 1) * 2.2;
+        const blur   = Math.min(maxBlur, (dist / (viewport.offsetWidth * 0.6)) * maxBlur);
+        if (!item.matches(':hover')) {
+          item.style.filter = blur > 0.1 ? `blur(${blur}px)` : 'none';
+        }
+      });
+    }
+    raf();
+  })();
 </script>

@@ -24,7 +24,7 @@ const { title } = Astro.props;
     <div class="fixed inset-0 grid-bg pointer-events-none z-0"></div>
 
     <!-- DNA Helix canvas background -->
-    <canvas id="dna-canvas" class="fixed inset-0 pointer-events-none z-[1]" style="mix-blend-mode: multiply; opacity: 0.45;"></canvas>
+    <canvas id="dna-canvas" class="fixed inset-0 pointer-events-none z-[1]" style="mix-blend-mode: multiply; opacity: 0.62;"></canvas>
 
     <canvas id="fisheye-canvas" class="fixed pointer-events-none z-[2]" style="display:none;"></canvas>
     
@@ -248,9 +248,9 @@ const { title } = Astro.props;
           for (let i = 0; i <= segs; i += 5) {
             const a = s1[i], b = s2[i];
             const d = (a.depth + b.depth) / 2;
-            ctx.globalAlpha = alpha * (d * 0.55 + 0.12);
+            ctx.globalAlpha = alpha * (d * 0.65 + 0.18);
             ctx.strokeStyle = '#000';
-            ctx.lineWidth   = 1 + d * 1.5;
+            ctx.lineWidth   = 2 + d * 2.5;
             ctx.beginPath();
             ctx.moveTo(a.x, a.y);
             ctx.lineTo(b.x, b.y);
@@ -270,9 +270,9 @@ const { title } = Astro.props;
           }
 
           // Back strand (lower z-order, dimmer)
-          ctx.globalAlpha = alpha * 0.38;
+          ctx.globalAlpha = alpha * 0.5;
           ctx.strokeStyle = '#000';
-          ctx.lineWidth   = 1.8;
+          ctx.lineWidth   = 3;
           ctx.beginPath();
           s1.forEach((p, i) => {
             if (p.depth < 0.5) { i === 0 || p.depth < s1[i-1]?.depth ? ctx.moveTo(p.x, p.y) : ctx.lineTo(p.x, p.y); }
@@ -306,10 +306,10 @@ const { title } = Astro.props;
           }
 
           ctx.strokeStyle = '#000';
-          ctx.lineWidth   = 2.8;
+          ctx.lineWidth   = 4.5;
           drawStrand(s1, 1);
-          ctx.lineWidth   = 2.2;
-          drawStrand(s2, 0.75);
+          ctx.lineWidth   = 3.5;
+          drawStrand(s2, 0.8);
         }
 
         // ── Animation loop ────────────────────────────────────────────────
