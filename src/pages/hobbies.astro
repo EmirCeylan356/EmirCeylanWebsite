@@ -817,7 +817,8 @@ const C = {
         if (panel) {
           panel.classList.add('active');
           if (target === 'art') {
-            requestAnimationFrame(() => { window.dispatchEvent(new Event('resize')); });
+            // Delay so browser finishes laying out the newly-visible track
+            setTimeout(() => window.dispatchEvent(new Event('resize')), 80);
           }
         }
       });
@@ -839,9 +840,11 @@ const C = {
 
     function calcMax() {
       const w = track.scrollWidth - viewport.offsetWidth;
-      if (w > 0) maxX = w;
+      maxX = Math.max(0, w);
     }
-    setTimeout(calcMax, 200);
+    // Also recalc on first mouse-enter in case tab was hidden at load
+    viewport.addEventListener('mouseenter', calcMax, { once: false });
+    setTimeout(calcMax, 300);
     window.addEventListener('resize', calcMax);
 
     viewport.addEventListener('wheel', (e) => {
