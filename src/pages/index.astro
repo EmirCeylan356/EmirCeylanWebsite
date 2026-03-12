@@ -233,6 +233,7 @@ const skillCategories = [
               class="work-card relative p-6 cursor-pointer"
               data-work-id={work.id}
               data-is-wip={work.isWip ? 'true' : 'false'}
+              style="background:var(--bg-surface); border:1px solid var(--border-color);"
             >
               <p class="text-xs font-mono font-bold mb-2" style="color:var(--text-secondary); letter-spacing:0.12em;">{work.period}</p>
               <span class="work-title text-lg font-black mb-1 block" style="color:var(--text-primary);">{work.title}</span>
