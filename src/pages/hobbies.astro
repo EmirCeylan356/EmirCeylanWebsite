@@ -550,8 +550,13 @@ const C = {
       </div>
 
       <div style="position:relative; width:100%; overflow:hidden; border-top:1px solid var(--border-color); border-bottom:1px solid var(--border-color);">
+        <img src="/images/travel-map.jpg" alt="Travel Map" 
+          style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity:0.85;" />
+        
         <svg id="travel-map" viewBox="0 0 1000 500" preserveAspectRatio="xMidYMid meet"
-          style="width:100%; max-height:72vh; display:block; background:#0A0A0D; cursor:crosshair;">
+          style="position:relative; width:100%; max-height:72vh; display:block; cursor:crosshair; pointer-events:none;">
+        
+        <g style="pointer-events:auto;">
 
           <g stroke="rgba(51,51,56,0.8)" stroke-width="0.5" fill="none">
             <line x1="0" y1="79"  x2="1000" y2="79"  />
@@ -584,26 +589,7 @@ const C = {
             <text x="582" y="10">30°E</text>
           </g>
 
-          <g fill="rgba(30,30,36,0.9)" stroke="rgba(51,51,56,1)" stroke-width="0.8" stroke-linejoin="round">
-            <path d={C.northAmerica} />
-            <path d={C.southAmerica} />
-            <path d={C.greenland} />
-            <path d={C.europe} />
-            <path d={C.uk} />
-            <path d={C.scandinavia} />
-            <path d={C.northAfrica} />
-            <path d={C.subAfrica} />
-            <path d={C.middleEast} />
-            <path d={C.asia} />
-            <path d={C.india} />
-            <path d={C.seAsia} />
-            <path d={C.japan} />
-            <path d={C.china} />
-            <path d={C.australia} />
-            <path d={C.newZealand} />
-            <path d={C.indonesia} />
-            <path d={C.philippines} />
-          </g>
+          <!-- Interactive layer only - map background is now an image -->
 
           {travels.map(t => (
             <path
