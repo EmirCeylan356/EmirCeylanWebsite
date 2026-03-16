@@ -251,36 +251,53 @@ const artworks = [
 const homeBase = { city: 'ISTANBUL', country: 'TURKEY', x: 581, y: 188 };
 
 const travels = [
-  {
-    id: 'amsterdam', city: 'AMSTERDAM', country: 'NETHERLANDS',
-    date: 'MARCH 2026', status: 'VISITED',
-    memory: 'The rain in Amsterdam makes the canals look like oil paintings.',
-    x: 514, y: 164, cpx: 548, cpy: 108, photo: '',
-  },
-  {
-    id: 'london', city: 'LONDON', country: 'UNITED KINGDOM',
-    date: 'FEBRUARY 2026', status: 'VISITED',
-    memory: 'Eight million stories compressed into one Underground carriage at rush hour.',
-    x: 499, y: 166, cpx: 540, cpy: 106, photo: '',
-  },
+  { id: 'netherlands', city: 'AMSTERDAM', country: 'NETHERLANDS', date: '2026', x: 514, y: 164, cpx: 548, cpy: 108, memory: 'The rain makes the canals look like oil paintings.' },
+  { id: 'uk', city: 'LONDON', country: 'UNITED KINGDOM', date: '2026', x: 499, y: 166, cpx: 540, cpy: 106, memory: 'Eight million stories in one Underground carriage.' },
+  { id: 'germany', city: 'BERLIN', country: 'GERMANY', date: '2025', x: 525, y: 148, cpx: 555, cpy: 100, memory: '' },
+  { id: 'france', city: 'PARIS', country: 'FRANCE', date: '2025', x: 490, y: 162, cpx: 520, cpy: 90, memory: '' },
+  { id: 'italy', city: 'ROME', country: 'ITALY', date: '2025', x: 530, y: 178, cpx: 560, cpy: 100, memory: '' },
+  { id: 'spain', city: 'BARCELONA', country: 'SPAIN', date: '2025', x: 470, y: 178, cpx: 500, cpy: 80, memory: '' },
+  { id: 'portugal', city: 'LISBON', country: 'PORTUGAL', date: '2025', x: 450, y: 182, cpx: 480, cpy: 75, memory: '' },
+  { id: 'belgium', city: 'BRUSSELS', country: 'BELGIUM', date: '2026', x: 510, y: 155, cpx: 540, cpy: 95, memory: '' },
+  { id: 'switzerland', city: 'ZURICH', country: 'SWITZERLAND', date: '2025', x: 515, y: 165, cpx: 545, cpy: 90, memory: '' },
+  { id: 'austria', city: 'VIENNA', country: 'AUSTRIA', date: '2025', x: 540, y: 160, cpx: 560, cpy: 85, memory: '' },
+  { id: 'czechia', city: 'PRAGUE', country: 'CZECHIA', date: '2025', x: 540, y: 150, cpx: 565, cpy: 80, memory: '' },
+  { id: 'greece', city: 'ATHENS', country: 'GREECE', date: '2024', x: 560, y: 192, cpx: 590, cpy: 100, memory: '' },
+  { id: 'hungary', city: 'BUDAPEST', country: 'HUNGARY', date: '2025', x: 555, y: 162, cpx: 580, cpy: 85, memory: '' },
+  { id: 'poland', city: 'WARSAW', country: 'POLAND', date: '2025', x: 560, y: 145, cpx: 585, cpy: 75, memory: '' },
+  { id: 'croatia', city: 'DUBROVNIK', country: 'CROATIA', date: '2024', x: 545, y: 178, cpx: 575, cpy: 95, memory: '' },
+  { id: 'serbia', city: 'BELGRADE', country: 'SERBIA', date: '2024', x: 560, y: 180, cpx: 585, cpy: 95, memory: '' },
+  { id: 'bulgaria', city: 'SOFIA', country: 'BULGARIA', date: '2024', x: 575, y: 185, cpx: 600, cpy: 98, memory: '' },
+  { id: 'romania', city: 'BUCHAREST', country: 'ROMANIA', date: '2024', x: 580, y: 175, cpx: 605, cpy: 92, memory: '' },
+  { id: 'ukraine', city: 'KYIV', country: 'UKRAINE', date: '2024', x: 600, y: 155, cpx: 620, cpy: 80, memory: '' },
+  { id: 'russia', city: 'MOSCOW', country: 'RUSSIA', date: '2023', x: 620, y: 130, cpx: 640, cpy: 60, memory: '' },
+  { id: 'georgia', city: 'TBILISI', country: 'GEORGIA', date: '2023', x: 640, y: 188, cpx: 655, cpy: 100, memory: '' },
+  { id: 'usa', city: 'NEW YORK', country: 'UNITED STATES', date: '2023', x: 200, y: 165, cpx: 300, cpy: 80, memory: '' },
+  { id: 'canada', city: 'TORONTO', country: 'CANADA', date: '2023', x: 200, y: 120, cpx: 300, cpy: 50, memory: '' },
+  { id: 'japan', city: 'TOKYO', country: 'JAPAN', date: '2022', x: 885, y: 170, cpx: 750, cpy: 50, memory: '' },
+  { id: 'southkorea', city: 'SEOUL', country: 'SOUTH KOREA', date: '2022', x: 830, y: 178, cpx: 720, cpy: 55, memory: '' },
 ];
 
-// ── Simplified Mercator continent paths (viewBox 0 0 1000 500) ────────────────
+// ── World Map SVG Paths (viewBox 0 0 1000 500) ────────────────────────────────
 const C = {
-  northAmerica:  'M94,145 L118,126 L148,116 L178,114 L208,120 L232,132 L250,148 L262,168 L265,190 L257,210 L241,225 L222,235 L206,244 L194,254 L190,268 L196,284 L210,298 L218,315 L212,328 L198,334 L182,328 L168,312 L158,290 L152,264 L148,240 L140,218 L126,200 L108,186 L96,170 Z',
-  southAmerica:  'M242,265 L268,256 L290,260 L308,276 L318,298 L322,324 L318,350 L306,373 L288,388 L266,396 L246,394 L228,382 L216,362 L210,336 L212,308 L220,284 L232,270 Z',
-  greenland:     'M342,98 L368,82 L395,78 L412,86 L415,100 L406,112 L386,118 L360,116 L343,106 Z',
-  europe:        'M470,202 L478,194 L482,180 L480,168 L486,152 L494,144 L503,140 L511,136 L519,130 L528,126 L536,124 L545,126 L552,132 L557,138 L563,138 L570,143 L576,150 L580,160 L580,172 L575,182 L568,190 L559,196 L548,202 L535,206 L520,207 L506,205 L494,204 Z',
-  uk:            'M483,150 L490,140 L495,146 L493,157 L487,162 L482,157 Z',
-  scandinavia:   'M503,140 L505,128 L508,116 L512,106 L516,98 L522,95 L527,97 L528,106 L525,116 L520,124 L516,130 L511,136 Z',
-  northAfrica:   'M462,206 L490,204 L520,207 L548,210 L578,212 L608,215 L630,220 L645,228 L645,240 L630,245 L612,248 L593,250 L570,252 L545,255 L520,258 L500,257 L480,252 L465,244 L458,230 Z',
-  subAfrica:     'M480,252 L500,257 L520,258 L545,255 L570,255 L585,262 L598,275 L604,295 L602,320 L595,342 L583,360 L566,372 L546,378 L526,376 L508,367 L495,350 L486,328 L482,302 L480,278 L480,260 Z',
-  middleEast:    'M578,175 L598,172 L615,177 L628,188 L632,203 L628,220 L618,235 L608,248 L593,250 L580,245 L575,232 L573,215 L576,200 L578,188 Z',
-  asia:          'M580,160 L610,155 L642,148 L675,142 L708,138 L738,135 L765,134 L790,136 L812,144 L825,158 L824,175 L815,190 L798,200 L775,207 L748,210 L720,208 L695,208 L672,212 L652,220 L638,232 L630,238 L628,228 L628,208 L622,195 L612,185 L598,178 L590,172 L580,168 Z',
-  india:         'M700,205 L720,202 L738,208 L745,222 L742,240 L732,255 L718,268 L703,272 L690,265 L682,250 L680,232 L685,215 L693,207 Z',
-  seAsia:        'M756,212 L780,208 L802,215 L816,230 L816,248 L804,260 L786,266 L766,264 L750,255 L744,240 L748,224 Z',
-  japan:         'M862,168 L876,162 L886,168 L882,182 L869,187 L858,182 Z',
-  australia:     'M762,298 L794,290 L826,292 L850,306 L858,326 L852,348 L835,360 L812,366 L786,364 L762,354 L748,336 L746,315 L752,300 Z',
+  northAmerica: 'M55,120 L85,95 L120,80 L160,75 L195,85 L225,100 L250,115 L265,135 L270,160 L260,185 L245,205 L225,215 L200,225 L180,235 L165,250 L170,270 L185,290 L200,305 L195,320 L175,325 L155,310 L145,285 L135,255 L125,225 L105,195 L85,170 L65,145 Z',
+  southAmerica: 'M195,280 L220,265 L250,270 L280,295 L295,325 L300,360 L290,390 L270,410 L245,415 L225,400 L210,375 L200,345 L195,310 Z',
+  greenland: 'M320,70 L355,50 L385,45 L405,55 L410,75 L395,90 L370,95 L340,85 Z',
+  europe: 'M420,130 L450,105 L480,95 L510,90 L540,95 L560,110 L570,130 L565,155 L550,170 L530,180 L505,185 L480,180 L455,175 L430,165 L420,145 Z',
+  uk: 'M440,120 L450,110 L458,118 L455,132 L445,138 L438,130 Z',
+  scandinavia: 'M480,80 L490,60 L505,50 L520,55 L530,70 L525,85 L515,95 L500,100 L485,95 Z',
+  northAfrica: 'M420,190 L460,185 L500,190 L540,195 L575,205 L600,220 L605,245 L580,255 L550,260 L520,265 L490,260 L460,250 L435,235 L420,215 Z',
+  subAfrica: 'M460,260 L490,265 L520,268 L550,270 L575,290 L590,320 L595,355 L580,380 L555,395 L530,400 L505,390 L485,370 L470,345 L460,315 L455,285 Z',
+  middleEast: 'M560,175 L590,165 L615,175 L630,195 L625,220 L610,235 L585,240 L565,230 L555,210 L555,190 Z',
+  asia: 'M570,155 L620,140 L680,130 L740,125 L800,130 L850,145 L880,170 L885,195 L870,215 L840,230 L800,240 L760,245 L720,240 L680,245 L650,255 L630,270 L610,260 L600,235 L590,205 L580,180 Z',
+  india: 'M685,250 L720,240 L755,255 L770,280 L765,305 L745,320 L720,325 L695,310 L675,285 L675,265 Z',
+  seAsia: 'M790,260 L830,250 L855,265 L860,290 L845,310 L820,315 L795,305 L775,285 L775,270 Z',
+  japan: 'M870,145 L890,135 L905,145 L900,165 L880,175 L865,165 Z',
+  china: 'M780,175 L820,165 L855,175 L870,195 L865,220 L840,230 L810,225 L785,210 L775,190 Z',
+  australia: 'M800,340 L850,325 L895,335 L915,360 L910,390 L885,410 L850,415 L815,400 L790,375 L780,350 Z',
+  newZealand: 'M920,400 L935,395 L945,410 L940,430 L925,435 L915,420 Z',
+  indonesia: 'M780,295 L810,285 L835,295 L845,315 L830,330 L805,335 L780,320 Z',
+  philippines: 'M855,270 L870,265 L880,280 L875,295 L860,300 L850,285 Z',
 };
 ---
 
@@ -578,7 +595,11 @@ const C = {
             <path d={C.india} />
             <path d={C.seAsia} />
             <path d={C.japan} />
+            <path d={C.china} />
             <path d={C.australia} />
+            <path d={C.newZealand} />
+            <path d={C.indonesia} />
+            <path d={C.philippines} />
           </g>
 
           {travels.map(t => (
