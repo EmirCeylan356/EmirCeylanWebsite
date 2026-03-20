@@ -47,6 +47,8 @@ const seedJson = JSON.stringify(seedData || []);
                   style="letter-spacing:0.08em;">BRUSH</button>
                 <button id="eraser-btn" class="font-mono text-xs font-bold px-4 py-2 cut-corner-sm tool-btn"
                   style="letter-spacing:0.08em;">ERASER</button>
+                <button id="fill-btn" class="font-mono text-xs font-bold px-4 py-2 cut-corner-sm tool-btn"
+                  style="letter-spacing:0.08em;" title="Bucket fill">FILL</button>
               </div>
 
               <div class="toolbar-group" style="flex-wrap:wrap;">
@@ -60,6 +62,9 @@ const seedJson = JSON.stringify(seedData || []);
                 <button class="color-btn" data-color="#00C853" style="background:#00C853;"></button>
                 <button class="color-btn" data-color="#2196F3" style="background:#2196F3;"></button>
                 <button class="color-btn" data-color="#9C27B0" style="background:#9C27B0;"></button>
+                <button class="color-btn" data-color="#8B4513" style="background:#8B4513;"></button>
+                <button class="color-btn" data-color="#FFCD94" style="background:#FFCD94; box-shadow:0 0 0 1px var(--border-color);"></button>
+                <button class="color-btn" data-color="#FF69B4" style="background:#FF69B4;"></button>
               </div>
 
               <div class="toolbar-group">
@@ -70,10 +75,14 @@ const seedJson = JSON.stringify(seedData || []);
 
               <button id="clear-btn" class="clear-btn font-mono text-xs font-bold px-4 py-2 cut-corner-sm"
                 style="letter-spacing:0.08em;">CLEAR</button>
+              <button id="fullscreen-btn" class="fs-btn font-mono text-xs font-bold px-4 py-2 cut-corner-sm"
+                style="letter-spacing:0.08em;" title="Fullscreen">⛶</button>
             </div>
 
-            <canvas id="drawing-canvas" width="600" height="390"
-              style="width:100%; display:block; cursor:crosshair; border:1px solid var(--border-color); box-shadow:inset 0 0 30px rgba(0,0,0,0.5);"></canvas>
+            <div id="canvas-wrap" style="position:relative;">
+              <canvas id="drawing-canvas" width="600" height="390"
+                style="width:100%; display:block; cursor:crosshair; border:1px solid var(--border-color); box-shadow:inset 0 0 30px rgba(0,0,0,0.5);"></canvas>
+            </div>
 
             <p class="font-mono text-xs mt-3" style="color:var(--text-secondary); opacity:0.35; letter-spacing:0.08em;">
               600 x 390 — touch supported
@@ -217,6 +226,35 @@ window.__SEEDS__   = seedJson;
   }
   .clear-btn:hover { background: #FF0055; color: #fff; }
 
+  .fs-btn {
+    background: transparent; color: var(--text-secondary); border: 1px solid var(--border-color);
+    cursor: pointer; transition: border-color 0.15s, color 0.15s; font-size: 1rem;
+  }
+  .fs-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* Fullscreen canvas overlay */
+  .canvas-fullscreen-overlay {
+    position: fixed; inset: 0; z-index: 9999;
+    background: var(--bg-base);
+    display: flex; flex-direction: column;
+    padding: 1rem;
+  }
+  .canvas-fullscreen-overlay canvas {
+    flex: 1; width: 100%; height: auto; object-fit: contain;
+    border: 1px solid var(--border-color);
+    box-shadow: inset 0 0 30px rgba(0,0,0,0.5);
+    cursor: crosshair;
+  }
+  .canvas-fullscreen-bar {
+    display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem; flex-wrap: wrap;
+  }
+  .fs-close-btn {
+    margin-left: auto; background: transparent; color: #FF0055; border: 1px solid #FF0055;
+    font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; font-weight: 700;
+    padding: 0.4rem 0.75rem; cursor: pointer; letter-spacing: 0.08em;
+  }
+  .fs-close-btn:hover { background: #FF0055; color: #fff; }
+
   canvas { touch-action: none; }
 
   /* ── Form ─────────────────────────────────────────────────────────────────── */
@@ -319,7 +357,9 @@ window.__SEEDS__   = seedJson;
 
   var brushBtn  = document.getElementById('brush-btn');
   var eraserBtn = document.getElementById('eraser-btn');
+  var fillBtn   = document.getElementById('fill-btn');
   var clearBtn  = document.getElementById('clear-btn');
+  var fsBtn     = document.getElementById('fullscreen-btn');
   var sizeS = document.getElementById('size-s');
   var sizeM = document.getElementById('size-m');
   var sizeL = document.getElementById('size-l');
@@ -350,9 +390,41 @@ window.__SEEDS__   = seedJson;
     tool = t;
     brushBtn.classList.toggle('tool-active', t === 'brush');
     eraserBtn.classList.toggle('tool-active', t === 'eraser');
+    fillBtn.classList.toggle('tool-active', t === 'fill');
+    cv.style.cursor = t === 'fill' ? 'cell' : 'crosshair';
   }
   brushBtn.onclick  = function(){ setTool('brush'); };
   eraserBtn.onclick = function(){ setTool('eraser'); };
+  fillBtn.onclick   = function(){ setTool('fill'); };
+
+  /* ── Flood fill ──────────────────────────────────────────────────────── */
+  function hexToRgb(hex) {
+    var r = parseInt(hex.slice(1,3),16), g = parseInt(hex.slice(3,5),16), b = parseInt(hex.slice(5,7),16);
+    return [r, g, b];
+  }
+  function floodFill(cx, cy) {
+    var imgData = ctx.getImageData(0, 0, cv.width, cv.height);
+    var data = imgData.data;
+    var W = cv.width;
+    var idx = (cy * W + cx) * 4;
+    var tr = data[idx], tg = data[idx+1], tb = data[idx+2], ta = data[idx+3];
+    var fc = hexToRgb(color);
+    if (tr === fc[0] && tg === fc[1] && tb === fc[2] && ta === 255) return;
+    var stack = [cx + cy * W];
+    var visited = new Uint8Array(W * cv.height);
+    while (stack.length) {
+      var pos = stack.pop();
+      var x = pos % W, y = (pos / W) | 0;
+      if (x < 0 || x >= W || y < 0 || y >= cv.height) continue;
+      if (visited[pos]) continue;
+      var i = pos * 4;
+      if (data[i] !== tr || data[i+1] !== tg || data[i+2] !== tb || data[i+3] !== ta) continue;
+      visited[pos] = 1;
+      data[i] = fc[0]; data[i+1] = fc[1]; data[i+2] = fc[2]; data[i+3] = 255;
+      stack.push(pos+1, pos-1, pos+W, pos-W);
+    }
+    ctx.putImageData(imgData, 0, 0);
+  }
 
   /* ── Colors ──────────────────────────────────────────────────────────── */
   document.querySelectorAll('.color-btn').forEach(function(b){
@@ -384,16 +456,28 @@ window.__SEEDS__   = seedJson;
   };
 
   /* ── Drawing ─────────────────────────────────────────────────────────── */
-  function pos(e) {
-    var r = cv.getBoundingClientRect();
-    var sx = cv.width / r.width, sy = cv.height / r.height;
+  function pos(e, canvasEl) {
+    var target = canvasEl || cv;
+    var r = target.getBoundingClientRect();
+    var sx = target.width / r.width, sy = target.height / r.height;
     var src = e.touches ? e.touches[0] : e;
     return { x: (src.clientX - r.left) * sx, y: (src.clientY - r.top) * sy };
   }
-  function startD(e) { drawing = true; var p = pos(e); ctx.beginPath(); ctx.moveTo(p.x, p.y); e.preventDefault(); }
+  function startD(e) {
+    if (tool === 'fill') {
+      var p = pos(e, cv);
+      floodFill(Math.round(p.x), Math.round(p.y));
+      drawn = true;
+      prevImg.src = cv.toDataURL('image/jpeg', 0.5);
+      prevImg.style.display = 'block';
+      prevEmpty.style.display = 'none';
+      e.preventDefault(); return;
+    }
+    drawing = true; var p2 = pos(e, cv); ctx.beginPath(); ctx.moveTo(p2.x, p2.y); e.preventDefault();
+  }
   function doD(e) {
-    if (!drawing) return;
-    var p = pos(e);
+    if (!drawing || tool === 'fill') return;
+    var p = pos(e, cv);
     ctx.lineWidth = size;
     ctx.strokeStyle = tool === 'eraser' ? '#FFFFFF' : color;
     ctx.lineTo(p.x, p.y); ctx.stroke(); ctx.beginPath(); ctx.moveTo(p.x, p.y);
@@ -409,13 +493,60 @@ window.__SEEDS__   = seedJson;
     }
   }
 
-  cv.addEventListener('mousedown', startD);
-  cv.addEventListener('mousemove', doD);
-  cv.addEventListener('mouseup', stopD);
-  cv.addEventListener('mouseleave', stopD);
-  cv.addEventListener('touchstart', startD, { passive: false });
-  cv.addEventListener('touchmove', doD, { passive: false });
-  cv.addEventListener('touchend', stopD);
+  function attachDrawEvents(target, canvasEl) {
+    target.addEventListener('mousedown', startD);
+    target.addEventListener('mousemove', doD);
+    target.addEventListener('mouseup', stopD);
+    target.addEventListener('mouseleave', stopD);
+    target.addEventListener('touchstart', startD, { passive: false });
+    target.addEventListener('touchmove', doD, { passive: false });
+    target.addEventListener('touchend', stopD);
+  }
+  attachDrawEvents(cv, cv);
+
+  /* ── Fullscreen ──────────────────────────────────────────────────────── */
+  fsBtn.onclick = function() {
+    var overlay = document.createElement('div');
+    overlay.className = 'canvas-fullscreen-overlay';
+
+    var bar = document.createElement('div');
+    bar.className = 'canvas-fullscreen-bar';
+    bar.innerHTML = '<span class="font-mono text-xs font-bold" style="color:var(--accent);letter-spacing:0.1em;">FULLSCREEN MODE</span>';
+
+    var closeBtn = document.createElement('button');
+    closeBtn.className = 'fs-close-btn'; closeBtn.textContent = '✕ EXIT';
+    bar.appendChild(closeBtn);
+
+    var fsCanvas = document.createElement('canvas');
+    fsCanvas.width = cv.width; fsCanvas.height = cv.height;
+    var fsCtx = fsCanvas.getContext('2d');
+    fsCtx.drawImage(cv, 0, 0);
+    fsCtx.lineCap = 'round'; fsCtx.lineJoin = 'round';
+
+    overlay.appendChild(bar);
+    overlay.appendChild(fsCanvas);
+    document.body.appendChild(overlay);
+    document.body.style.overflow = 'hidden';
+
+    // Mirror draw events on fullscreen canvas
+    var fsSave = cv; cv = fsCanvas; ctx = fsCtx;
+    attachDrawEvents(fsCanvas, fsCanvas);
+
+    function closeFs() {
+      // Copy back to main canvas
+      cv = fsSave; ctx = cv.getContext('2d');
+      ctx.drawImage(fsCanvas, 0, 0);
+      if (drawn) {
+        prevImg.src = cv.toDataURL('image/jpeg', 0.5);
+        prevImg.style.display = 'block'; prevEmpty.style.display = 'none';
+      }
+      document.body.removeChild(overlay);
+      document.body.style.overflow = '';
+    }
+    closeBtn.onclick = closeFs;
+    overlay.addEventListener('keydown', function(e){ if(e.key==='Escape') closeFs(); });
+    fsCanvas.focus();
+  };
 
   /* ── Gallery load ────────────────────────────────────────────────────── */
   function esc(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
