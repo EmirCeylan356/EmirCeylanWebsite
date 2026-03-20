@@ -60,7 +60,7 @@ body {
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: 'Syne', sans-serif;
   font-weight: 700;
   letter-spacing: 0.02em;
   color: var(--text-primary);
@@ -248,4 +248,90 @@ pre,
   color: var(--accent);
   text-decoration: underline;
   font-weight: bold;
+}
+
+/* ── Glitch accent ───────────────────────────────────────────────── */
+@keyframes glitch-flicker {
+  0%, 90%, 100% {
+    text-shadow: 0 0 40px rgba(214,255,0,0.25);
+    transform: none;
+  }
+  91% {
+    text-shadow: -3px 0 #00E5FF, 3px 0 #FF0055, 0 0 40px rgba(214,255,0,0.45);
+    transform: skewX(-3deg) translateX(-2px);
+  }
+  92% {
+    text-shadow: 3px 0 #00E5FF, -3px 0 #FF0055, 0 0 40px rgba(214,255,0,0.2);
+    transform: skewX(2deg) translateX(2px);
+  }
+  93% {
+    text-shadow: -1px 0 var(--accent), 0 0 40px rgba(214,255,0,0.6);
+    transform: skewX(-1deg);
+  }
+  94% {
+    text-shadow: 0 0 40px rgba(214,255,0,0.25);
+    transform: none;
+  }
+}
+.glitch-accent {
+  display: inline-block;
+  animation: glitch-flicker 7s infinite;
+}
+
+/* ── Scanline sweep ──────────────────────────────────────────────── */
+@keyframes scanSweep {
+  from { top: -120px; opacity: 0; }
+  10%  { opacity: 1; }
+  90%  { opacity: 1; }
+  to   { top: 100%; opacity: 0; }
+}
+.hero-scanline {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 0;
+}
+.hero-scanline::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 120px;
+  background: linear-gradient(180deg, transparent, rgba(214,255,0,0.04), transparent);
+  animation: scanSweep 6s linear infinite 2s;
+}
+
+/* ── Hero corner frame ───────────────────────────────────────────── */
+.hero-name-frame {
+  position: relative;
+  display: inline-block;
+}
+.hero-name-frame::before,
+.hero-name-frame::after {
+  content: '';
+  position: absolute;
+  width: 28px;
+  height: 28px;
+  border-color: var(--accent);
+  border-style: solid;
+  opacity: 0;
+  transition: opacity 0.8s ease 1.5s;
+}
+.hero-name-frame::before {
+  top: -8px; left: -16px;
+  border-width: 2px 0 0 2px;
+}
+.hero-name-frame::after {
+  bottom: -8px; right: -16px;
+  border-width: 0 2px 2px 0;
+}
+.hero-name-frame.framed::before,
+.hero-name-frame.framed::after {
+  opacity: 0.5;
+}
+
+/* ── Hero char ───────────────────────────────────────────────────── */
+.hero-char {
+  display: inline-block;
 }

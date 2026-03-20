@@ -103,27 +103,31 @@ const skillCategories = [
   <main>
     <!-- ═══ HERO ══════════════════════════════════════════════════════════════ -->
     <section class="min-h-screen flex items-center justify-center px-4 pt-20 pb-10 relative overflow-hidden">
+      <!-- Scanline sweep effect -->
+      <div class="hero-scanline"></div>
 
       <div class="max-w-5xl mx-auto text-center relative z-10">
 
         <!-- System ID tag -->
-        <div class="inline-flex items-center gap-3 mb-8 px-4 py-2 font-mono text-xs"
-          style="background:var(--bg-surface); border:1px solid var(--border-color); color:var(--text-secondary); letter-spacing:0.14em;">
+        <div class="hero-tag inline-flex items-center gap-3 mb-8 px-4 py-2 font-mono text-xs"
+          style="background:var(--bg-surface); border:1px solid var(--border-color); color:var(--text-secondary); letter-spacing:0.14em; opacity:0;">
           <span style="width:6px; height:6px; border-radius:50%; background:var(--accent); display:inline-block; box-shadow:0 0 6px var(--accent);"></span>
           SYS_ID: EC_2027 — ISTANBUL / TR — ONLINE
         </div>
 
-        <h1 class="kinetic-text font-black -mt-2 leading-none" style="font-size:clamp(5rem,18vw,14rem); color:var(--text-primary);">
-          EMİR<br/>
-          <span style="color:var(--accent); text-shadow:0 0 40px rgba(214,255,0,0.25);">CEYLAN</span>
-        </h1>
+        <div class="hero-name-frame">
+          <h1 class="kinetic-text font-black -mt-2 leading-none" style="font-size:clamp(5rem,18vw,14rem); color:var(--text-primary);">
+            <span class="hero-line-1">EMİR</span><br/>
+            <span class="hero-line-2 glitch-accent" style="color:var(--accent);">CEYLAN</span>
+          </h1>
+        </div>
 
-        <p class="text-sm md:text-base font-bold max-w-2xl mx-auto mb-10 font-mono px-5 py-3 mt-4"
-          style="background:var(--bg-surface); color:var(--text-secondary); border:1px solid var(--border-color); letter-spacing:0.1em; display:inline-block;">
+        <p class="hero-subtitle text-sm md:text-base font-bold max-w-2xl mx-auto mb-10 font-mono px-5 py-3 mt-4"
+          style="background:var(--bg-surface); color:var(--text-secondary); border:1px solid var(--border-color); letter-spacing:0.1em; display:inline-block; opacity:0;">
           CS STUDENT — AI FOR HEALTHCARE
         </p>
 
-        <div class="flex flex-wrap gap-4 justify-center">
+        <div class="hero-ctas flex flex-wrap gap-4 justify-center" style="opacity:0;">
           <a href="#work" class="hero-btn-primary px-8 py-4 font-bold text-sm font-mono cut-corner"
             style="background:var(--accent); color:#000; border:1px solid var(--accent); letter-spacing:0.1em;">
             MY WORK →
@@ -134,7 +138,7 @@ const skillCategories = [
           </a>
         </div>
 
-        <div class="mt-16" style="color:var(--text-secondary);">
+        <div class="hero-scroll-hint mt-16" style="color:var(--text-secondary); opacity:0;">
           <span class="text-2xl animate-bounce block">↓</span>
         </div>
       </div>
@@ -171,7 +175,7 @@ const skillCategories = [
           <!-- Left: Section label panel -->
           <div class="panel about-label-panel">
             <p class="font-mono text-xs mb-4" style="color:var(--text-secondary); letter-spacing:0.15em;">01 / ABOUT</p>
-            <div class="font-black leading-none" style="font-family:'Space Grotesk'; font-size:clamp(56px,8vw,96px); color:var(--text-primary); line-height:0.88;">
+            <div class="font-black leading-none" style="font-family:'Syne'; font-size:clamp(56px,8vw,96px); color:var(--text-primary); line-height:0.88;">
               ABOUT
             </div>
             <div class="mt-8" style="border-top:1px solid var(--border-color); padding-top:20px;">
@@ -183,15 +187,15 @@ const skillCategories = [
             <!-- Stats inside left panel -->
             <div class="mt-8 flex flex-col gap-4" style="border-top:1px solid var(--border-color); padding-top:20px;">
               <div>
-                <div class="font-black text-2xl" style="color:var(--accent);">2027</div>
+                <div class="stat-num font-black text-2xl" style="color:var(--accent);">2027</div>
                 <div class="font-mono text-xs mt-1" style="color:var(--text-secondary); letter-spacing:0.1em;">EXPECTED GRAD</div>
               </div>
               <div>
-                <div class="font-black text-2xl" style="color:var(--accent);">07+</div>
+                <div class="stat-num font-black text-2xl" style="color:var(--accent);">07+</div>
                 <div class="font-mono text-xs mt-1" style="color:var(--text-secondary); letter-spacing:0.1em;">PROJECTS</div>
               </div>
               <div>
-                <div class="font-black text-2xl" style="color:var(--accent);">AI</div>
+                <div class="stat-num font-black text-2xl" style="color:var(--accent);">AI</div>
                 <div class="font-mono text-xs mt-1" style="color:var(--text-secondary); letter-spacing:0.1em;">SPECIALIZATION</div>
               </div>
             </div>
@@ -222,8 +226,8 @@ const skillCategories = [
       <div class="max-w-7xl mx-auto">
         <div class="flex items-end gap-4 mb-10">
           <p class="font-mono text-xs" style="color:var(--text-secondary); letter-spacing:0.15em; align-self:center;">02 /</p>
-          <h2 class="text-5xl md:text-7xl font-black kinetic-text" style="color:var(--text-primary);">WORK</h2>
-          <div class="flex-1 h-px" style="background:var(--border-color);"></div>
+          <h2 class="text-5xl md:text-7xl font-black kinetic-text work-heading" style="color:var(--text-primary);">WORK</h2>
+          <div class="section-line flex-1 h-px" style="background:var(--border-color);"></div>
           <span class="text-xl font-black font-mono" style="color:var(--text-secondary);">/07</span>
         </div>
 
@@ -264,8 +268,8 @@ const skillCategories = [
       <div class="max-w-7xl mx-auto">
         <div class="flex items-end gap-4 mb-10">
           <p class="font-mono text-xs" style="color:var(--text-secondary); letter-spacing:0.15em; align-self:center;">03 /</p>
-          <h2 class="text-5xl md:text-7xl font-black kinetic-text" style="color:var(--text-primary);">SKILLS</h2>
-          <div class="flex-1 h-px" style="background:var(--border-color);"></div>
+          <h2 class="text-5xl md:text-7xl font-black kinetic-text skills-heading" style="color:var(--text-primary);">SKILLS</h2>
+          <div class="section-line flex-1 h-px" style="background:var(--border-color);"></div>
           <span class="text-xl font-black font-mono" style="color:var(--text-secondary);">/06</span>
         </div>
 
@@ -299,7 +303,7 @@ const skillCategories = [
       style="background:var(--bg-surface); border:1px solid var(--border-color);">
       <div class="popup-header px-6 py-4 flex justify-between items-center"
         style="background:var(--bg-elevated); border-bottom:1px solid var(--border-color);">
-        <span id="popup-title" class="font-black text-lg" style="font-family:'Space Grotesk'; color:var(--text-primary);"></span>
+        <span id="popup-title" class="font-black text-lg" style="font-family:'Syne'; color:var(--text-primary);"></span>
         <button id="popup-close" class="font-bold text-2xl transition-all hover:opacity-60"
           style="color:var(--accent); background:none; border:none; cursor:pointer; line-height:1;">×</button>
       </div>
@@ -415,17 +419,17 @@ const skillCategories = [
 </style>
 
 <script>
-  // Work card click handlers
-  const workCards = document.querySelectorAll('.work-card');
-  const popup      = document.getElementById('work-popup');
-  const popupTitle = document.getElementById('popup-title');
-  const popupBody  = document.getElementById('popup-body');
-  const popupClose = document.getElementById('popup-close');
+  // ── Work card click handlers ────────────────────────────────────────────────
+  const workCards   = document.querySelectorAll('.work-card');
+  const popup       = document.getElementById('work-popup');
+  const popupTitle  = document.getElementById('popup-title');
+  const popupBody   = document.getElementById('popup-body');
+  const popupClose  = document.getElementById('popup-close');
   const popupOverlay = document.querySelector('.popup-overlay');
 
   workCards.forEach(card => {
-    const isWip    = card.getAttribute('data-is-wip') === 'true';
-    const details  = card.querySelector('.work-details');
+    const isWip   = card.getAttribute('data-is-wip') === 'true';
+    const details = card.querySelector('.work-details');
 
     if (isWip) {
       card.addEventListener('mouseenter', () => { if (!card.classList.contains('clicked')) card.classList.add('wip-hover'); });
@@ -448,7 +452,7 @@ const skillCategories = [
     }
   });
 
-  // Green splatter on close
+  // ── Green splatter on close ─────────────────────────────────────────────────
   function createSplatter(originX, originY) {
     const count = 14;
     for (let i = 0; i < count; i++) {
@@ -487,10 +491,9 @@ const skillCategories = [
   }
 
   function closePopup() {
-    const rect          = popupClose.getBoundingClientRect();
-    const popupContent  = document.querySelector('.popup-content');
+    const rect         = popupClose.getBoundingClientRect();
+    const popupContent = document.querySelector('.popup-content');
     createSplatter(rect.left + rect.width / 2, rect.top + rect.height / 2);
-
     if (typeof gsap !== 'undefined' && popupContent) {
       gsap.killTweensOf(popupContent);
       gsap.to(popupContent, {
@@ -515,12 +518,12 @@ const skillCategories = [
   popupClose.addEventListener('click', closePopup);
   popupOverlay.addEventListener('click', closePopup);
 
-  // Skill accordion
+  // ── Skill accordion ─────────────────────────────────────────────────────────
   document.querySelectorAll('.skill-accordion').forEach(accordion => {
     accordion.addEventListener('click', () => accordion.classList.toggle('open'));
   });
 
-  // Binary float teleport
+  // ── Binary float teleport ───────────────────────────────────────────────────
   document.querySelectorAll('.binary-float').forEach(el => {
     el.addEventListener('animationiteration', () => {
       el.style.top    = (Math.random() * 80 + 5) + '%';
@@ -529,4 +532,118 @@ const skillCategories = [
       el.style.bottom = 'auto';
     });
   });
+
+  // ── GSAP Entrance + Scroll Animations ──────────────────────────────────────
+  (function() {
+    // Fallback: if GSAP doesn't load, reveal everything
+    function revealAll() {
+      document.querySelectorAll('.hero-tag, .hero-subtitle, .hero-ctas, .hero-scroll-hint').forEach(el => {
+        el.style.opacity = '1';
+      });
+    }
+
+    if (typeof gsap === 'undefined') { revealAll(); return; }
+
+    // ── Character split utility ───────────────────────────────────────────
+    function splitToChars(el) {
+      if (!el) return [];
+      const text = el.textContent;
+      el.innerHTML = [...text].map(ch =>
+        `<span class="hero-char">${ch === ' ' ? '\u00A0' : ch}</span>`
+      ).join('');
+      return Array.from(el.querySelectorAll('.hero-char'));
+    }
+
+    const line1  = document.querySelector('.hero-line-1');
+    const chars1 = splitToChars(line1);
+
+    // ── Hero entrance timeline ────────────────────────────────────────────
+    const tl = gsap.timeline({ defaults: { ease: 'power4.out' } });
+
+    tl.from('.hero-tag', {
+        opacity: 0, y: -18, duration: 0.55,
+        onComplete: () => { document.querySelector('.hero-tag').style.opacity = ''; }
+      })
+      .from(chars1, {
+        opacity: 0,
+        y: 90,
+        rotationX: -70,
+        stagger: 0.055,
+        duration: 0.75,
+        transformPerspective: 500,
+        transformOrigin: 'bottom center',
+      }, '-=0.25')
+      .from('.hero-line-2', {
+        opacity: 0,
+        y: -70,
+        rotationX: 60,
+        duration: 0.75,
+        transformPerspective: 500,
+        transformOrigin: 'top center',
+        onComplete: () => {
+          // Activate corner brackets after name is revealed
+          document.querySelector('.hero-name-frame')?.classList.add('framed');
+        }
+      }, '-=0.5')
+      .from('.hero-subtitle', {
+        opacity: 0, scaleX: 0.5, duration: 0.45,
+        transformOrigin: 'center',
+        onComplete: () => { document.querySelector('.hero-subtitle').style.opacity = ''; }
+      }, '-=0.2')
+      .from('.hero-ctas', {
+        opacity: 0, y: 22, duration: 0.45,
+        onComplete: () => { document.querySelector('.hero-ctas').style.opacity = ''; }
+      }, '-=0.15')
+      .from('.hero-scroll-hint', {
+        opacity: 0, duration: 0.35,
+        onComplete: () => { document.querySelector('.hero-scroll-hint').style.opacity = ''; }
+      });
+
+    // ── Section line grow ─────────────────────────────────────────────────
+    gsap.utils.toArray('.section-line').forEach(line => {
+      gsap.fromTo(line,
+        { scaleX: 0, transformOrigin: 'left center' },
+        {
+          scaleX: 1,
+          duration: 1,
+          ease: 'power3.inOut',
+          scrollTrigger: { trigger: line, start: 'top 85%' }
+        }
+      );
+    });
+
+    // ── About section reveal ──────────────────────────────────────────────
+    gsap.from('#about .panel', {
+      opacity: 0, y: 45, stagger: 0.15, duration: 0.7, ease: 'power3.out',
+      scrollTrigger: { trigger: '#about', start: 'top 72%' }
+    });
+
+    gsap.from('.stat-num', {
+      opacity: 0, scale: 0.4, duration: 0.55, stagger: 0.12, ease: 'back.out(1.7)',
+      scrollTrigger: { trigger: '#about', start: 'top 65%' }
+    });
+
+    // ── Work section ──────────────────────────────────────────────────────
+    gsap.from('.work-heading', {
+      opacity: 0, x: -50, duration: 0.7, ease: 'power3.out',
+      scrollTrigger: { trigger: '#work', start: 'top 78%' }
+    });
+
+    gsap.from('.work-card', {
+      opacity: 0, y: 55, stagger: { amount: 0.7, from: 'start' },
+      duration: 0.65, ease: 'power3.out',
+      scrollTrigger: { trigger: '#work .grid', start: 'top 82%' }
+    });
+
+    // ── Skills section ────────────────────────────────────────────────────
+    gsap.from('.skills-heading', {
+      opacity: 0, x: -50, duration: 0.7, ease: 'power3.out',
+      scrollTrigger: { trigger: '#skills', start: 'top 78%' }
+    });
+
+    gsap.from('.skill-accordion', {
+      opacity: 0, x: -25, stagger: 0.09, duration: 0.5, ease: 'power3.out',
+      scrollTrigger: { trigger: '#skills .flex.flex-col', start: 'top 82%' }
+    });
+  })();
 </script>
