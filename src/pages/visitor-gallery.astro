@@ -510,25 +510,90 @@ window.__SEEDS__   = seedJson;
   attachDrawEvents(cv, cv);
 
   /* ── Fullscreen ──────────────────────────────────────────────────────── */
+  var COLORS = ['#222222','#FFFFFF','#D6FF00','#00E5FF','#FF0055','#FF6B2C','#FFD700','#00C853','#2196F3','#9C27B0','#8B4513','#FFCD94','#FF69B4'];
+  var SIZES_MAP = {S:3, M:8, L:16};
+
+  function makeBtn(text, css, onclick) {
+    var b = document.createElement('button');
+    b.textContent = text;
+    b.style.cssText = "font-family:'JetBrains Mono',monospace;font-size:0.65rem;font-weight:700;padding:0.35rem 0.6rem;cursor:pointer;letter-spacing:0.06em;border:1px solid var(--border-color);background:transparent;color:var(--text-primary);" + (css || '');
+    if (onclick) b.onclick = onclick;
+    return b;
+  }
+
+  function makeColorDot(c, isActive, onclick) {
+    var b = document.createElement('button');
+    b.style.cssText = 'width:20px;height:20px;border-radius:50%;border:2px solid transparent;cursor:pointer;background:' + c + ';flex-shrink:0;';
+    if (c === '#FFFFFF' || c === '#FFCD94') b.style.boxShadow = '0 0 0 1px #333338';
+    if (isActive) b.style.cssText += 'transform:scale(1.3);box-shadow:0 0 0 2px #D6FF00,0 0 8px rgba(214,255,0,0.4);';
+    b.onclick = onclick;
+    return b;
+  }
+
   fsBtn.onclick = function() {
-    // All styles inline because Astro scopes <style> and won't apply to dynamic elements
+    // Overlay
     var overlay = document.createElement('div');
-    overlay.style.cssText = 'position:fixed;inset:0;z-index:9999;background:var(--bg-base);display:flex;flex-direction:column;padding:1rem;';
+    overlay.style.cssText = 'position:fixed;inset:0;z-index:9999;background:var(--bg-base);display:flex;flex-direction:column;padding:0.5rem;';
 
-    var bar = document.createElement('div');
-    bar.style.cssText = 'display:flex;align-items:center;gap:0.75rem;margin-bottom:0.75rem;flex-shrink:0;';
-    var label = document.createElement('span');
-    label.textContent = 'FULLSCREEN MODE';
-    label.style.cssText = "color:var(--accent);letter-spacing:0.1em;font-family:'JetBrains Mono',monospace;font-size:0.75rem;font-weight:700;";
-    bar.appendChild(label);
+    // Top bar: tools + exit
+    var topBar = document.createElement('div');
+    topBar.style.cssText = 'display:flex;align-items:center;gap:0.4rem;flex-shrink:0;padding:0.25rem 0;overflow-x:auto;';
 
-    var closeBtn = document.createElement('button');
-    closeBtn.textContent = 'EXIT';
-    closeBtn.style.cssText = "margin-left:auto;background:transparent;color:#FF0055;border:1px solid #FF0055;font-family:'JetBrains Mono',monospace;font-size:0.75rem;font-weight:700;padding:0.4rem 0.75rem;cursor:pointer;letter-spacing:0.08em;";
-    bar.appendChild(closeBtn);
+    // Tool buttons
+    var fsTool = tool;
+    var fsColor = color;
+    var fsSize = size;
+    var toolBtns = {};
+    ['BRUSH','ERASER','FILL'].forEach(function(t) {
+      var tl = t.toLowerCase();
+      var b = makeBtn(t, '', function(){ fsTool = tl; updateFsToolbar(); });
+      toolBtns[tl] = b;
+      topBar.appendChild(b);
+    });
 
+    // Separator
+    var sep1 = document.createElement('span');
+    sep1.style.cssText = 'width:1px;height:16px;background:var(--border-color);flex-shrink:0;';
+    topBar.appendChild(sep1);
+
+    // Size buttons
+    var sizeBtns = {};
+    ['S','M','L'].forEach(function(s) {
+      var b = makeBtn(s, 'min-width:28px;text-align:center;', function(){ fsSize = SIZES_MAP[s]; updateFsToolbar(); });
+      sizeBtns[s] = b;
+      topBar.appendChild(b);
+    });
+
+    // Separator
+    var sep2 = document.createElement('span');
+    sep2.style.cssText = 'width:1px;height:16px;background:var(--border-color);flex-shrink:0;';
+    topBar.appendChild(sep2);
+
+    // Clear
+    var clearFsBtn = makeBtn('CLEAR', 'color:#FF0055;border-color:#FF0055;', function() {
+      fsCtx.fillStyle = '#FFFFFF';
+      fsCtx.fillRect(0, 0, fsCanvas.width, fsCanvas.height);
+    });
+    topBar.appendChild(clearFsBtn);
+
+    // Exit (fixed top-right so always visible)
+    var exitBtn = makeBtn('EXIT', 'position:fixed;top:0.5rem;right:0.5rem;z-index:10000;color:#FF0055;border-color:#FF0055;background:var(--bg-base);');
+
+    // Color bar
+    var colorBar = document.createElement('div');
+    colorBar.style.cssText = 'display:flex;align-items:center;gap:4px;flex-shrink:0;padding:0.25rem 0;overflow-x:auto;';
+    var colorDots = {};
+    COLORS.forEach(function(c) {
+      var dot = makeColorDot(c, c === fsColor, function() {
+        fsColor = c; fsTool = 'brush'; updateFsToolbar();
+      });
+      colorDots[c] = dot;
+      colorBar.appendChild(dot);
+    });
+
+    // Canvas wrap
     var wrap = document.createElement('div');
-    wrap.style.cssText = 'flex:1;display:flex;align-items:center;justify-content:center;min-height:0;';
+    wrap.style.cssText = 'flex:1;display:flex;align-items:center;justify-content:center;min-height:0;overflow:hidden;';
 
     var fsCanvas = document.createElement('canvas');
     fsCanvas.width = cv.width; fsCanvas.height = cv.height;
@@ -538,18 +603,96 @@ window.__SEEDS__   = seedJson;
     fsCtx.lineCap = 'round'; fsCtx.lineJoin = 'round';
 
     wrap.appendChild(fsCanvas);
-    overlay.appendChild(bar);
+    overlay.appendChild(topBar);
+    overlay.appendChild(colorBar);
     overlay.appendChild(wrap);
+    overlay.appendChild(exitBtn);
     document.body.appendChild(overlay);
     document.body.style.overflow = 'hidden';
 
-    // Swap drawing target to fullscreen canvas
-    var mainCv = cv, mainCtx = ctx;
-    cv = fsCanvas; ctx = fsCtx;
-    attachDrawEvents(fsCanvas, fsCanvas);
+    // Request landscape on mobile
+    try {
+      if (screen.orientation && screen.orientation.unlock) screen.orientation.unlock();
+    } catch(e){}
 
+    function updateFsToolbar() {
+      Object.keys(toolBtns).forEach(function(k) {
+        toolBtns[k].style.background = (fsTool === k) ? '#D6FF00' : 'transparent';
+        toolBtns[k].style.color = (fsTool === k) ? '#000' : 'var(--text-primary)';
+        toolBtns[k].style.borderColor = (fsTool === k) ? '#D6FF00' : 'var(--border-color)';
+      });
+      Object.keys(sizeBtns).forEach(function(k) {
+        var active = fsSize === SIZES_MAP[k];
+        sizeBtns[k].style.background = active ? '#D6FF00' : 'transparent';
+        sizeBtns[k].style.color = active ? '#000' : 'var(--text-primary)';
+        sizeBtns[k].style.borderColor = active ? '#D6FF00' : 'var(--border-color)';
+      });
+      Object.keys(colorDots).forEach(function(c) {
+        colorDots[c].style.transform = (c === fsColor && fsTool !== 'eraser') ? 'scale(1.3)' : 'scale(1)';
+        colorDots[c].style.boxShadow = (c === fsColor && fsTool !== 'eraser') ? '0 0 0 2px #D6FF00,0 0 8px rgba(214,255,0,0.4)' : (c === '#FFFFFF' || c === '#FFCD94' ? '0 0 0 1px #333338' : 'none');
+      });
+      fsCanvas.style.cursor = fsTool === 'fill' ? 'cell' : 'crosshair';
+    }
+    updateFsToolbar();
+
+    // FS drawing events (use local tool/color/size state)
+    var fsDrawing = false;
+    function fsPos(e) {
+      var r = fsCanvas.getBoundingClientRect();
+      var sx = fsCanvas.width / r.width, sy = fsCanvas.height / r.height;
+      var src = e.touches ? e.touches[0] : e;
+      return { x: (src.clientX - r.left) * sx, y: (src.clientY - r.top) * sy };
+    }
+    function fsFill(cx, cy) {
+      var imgData = fsCtx.getImageData(0, 0, fsCanvas.width, fsCanvas.height);
+      var data = imgData.data;
+      var W = fsCanvas.width;
+      var idx = (cy * W + cx) * 4;
+      var tr = data[idx], tg = data[idx+1], tb = data[idx+2], ta = data[idx+3];
+      var fc = hexToRgb(fsColor);
+      if (tr === fc[0] && tg === fc[1] && tb === fc[2] && ta === 255) return;
+      var stack = [cx + cy * W];
+      var visited = new Uint8Array(W * fsCanvas.height);
+      while (stack.length) {
+        var p = stack.pop();
+        var x = p % W, y = (p / W) | 0;
+        if (x < 0 || x >= W || y < 0 || y >= fsCanvas.height) continue;
+        if (visited[p]) continue;
+        var i = p * 4;
+        if (data[i] !== tr || data[i+1] !== tg || data[i+2] !== tb || data[i+3] !== ta) continue;
+        visited[p] = 1;
+        data[i] = fc[0]; data[i+1] = fc[1]; data[i+2] = fc[2]; data[i+3] = 255;
+        stack.push(p+1, p-1, p+W, p-W);
+      }
+      fsCtx.putImageData(imgData, 0, 0);
+    }
+    function fsStartD(e) {
+      if (fsTool === 'fill') {
+        var p = fsPos(e); fsFill(Math.round(p.x), Math.round(p.y));
+        drawn = true; e.preventDefault(); return;
+      }
+      fsDrawing = true; var p2 = fsPos(e); fsCtx.beginPath(); fsCtx.moveTo(p2.x, p2.y); e.preventDefault();
+    }
+    function fsDoD(e) {
+      if (!fsDrawing || fsTool === 'fill') return;
+      var p = fsPos(e);
+      fsCtx.lineWidth = fsSize;
+      fsCtx.strokeStyle = fsTool === 'eraser' ? '#FFFFFF' : fsColor;
+      fsCtx.lineTo(p.x, p.y); fsCtx.stroke(); fsCtx.beginPath(); fsCtx.moveTo(p.x, p.y);
+      drawn = true; e.preventDefault();
+    }
+    function fsStopD() { if (fsDrawing) { fsDrawing = false; fsCtx.beginPath(); } }
+
+    fsCanvas.addEventListener('mousedown', fsStartD);
+    fsCanvas.addEventListener('mousemove', fsDoD);
+    fsCanvas.addEventListener('mouseup', fsStopD);
+    fsCanvas.addEventListener('mouseleave', fsStopD);
+    fsCanvas.addEventListener('touchstart', fsStartD, { passive: false });
+    fsCanvas.addEventListener('touchmove', fsDoD, { passive: false });
+    fsCanvas.addEventListener('touchend', fsStopD);
+
+    // Close
     function closeFs() {
-      cv = mainCv; ctx = mainCtx;
       ctx.drawImage(fsCanvas, 0, 0);
       if (drawn) {
         prevImg.src = cv.toDataURL('image/jpeg', 0.5);
@@ -559,10 +702,9 @@ window.__SEEDS__   = seedJson;
       document.body.removeChild(overlay);
       document.body.style.overflow = '';
     }
-
     function escHandler(e) { if (e.key === 'Escape') closeFs(); }
     document.addEventListener('keydown', escHandler);
-    closeBtn.onclick = closeFs;
+    exitBtn.onclick = closeFs;
   };
 
   /* ── Gallery load ────────────────────────────────────────────────────── */
