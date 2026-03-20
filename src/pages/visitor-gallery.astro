@@ -239,14 +239,19 @@ window.__SEEDS__   = seedJson;
     display: flex; flex-direction: column;
     padding: 1rem;
   }
+  .canvas-fullscreen-overlay .fs-canvas-wrap {
+    flex: 1; display: flex; align-items: center; justify-content: center;
+    min-height: 0;
+  }
   .canvas-fullscreen-overlay canvas {
-    flex: 1; width: 100%; height: auto; object-fit: contain;
+    max-width: 100%; max-height: 100%;
     border: 1px solid var(--border-color);
     box-shadow: inset 0 0 30px rgba(0,0,0,0.5);
-    cursor: crosshair;
+    cursor: crosshair; touch-action: none;
   }
   .canvas-fullscreen-bar {
     display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem; flex-wrap: wrap;
+    flex-shrink: 0;
   }
   .fs-close-btn {
     margin-left: auto; background: transparent; color: #FF0055; border: 1px solid #FF0055;
@@ -506,46 +511,58 @@ window.__SEEDS__   = seedJson;
 
   /* ── Fullscreen ──────────────────────────────────────────────────────── */
   fsBtn.onclick = function() {
+    // All styles inline because Astro scopes <style> and won't apply to dynamic elements
     var overlay = document.createElement('div');
-    overlay.className = 'canvas-fullscreen-overlay';
+    overlay.style.cssText = 'position:fixed;inset:0;z-index:9999;background:var(--bg-base);display:flex;flex-direction:column;padding:1rem;';
 
     var bar = document.createElement('div');
-    bar.className = 'canvas-fullscreen-bar';
-    bar.innerHTML = '<span class="font-mono text-xs font-bold" style="color:var(--accent);letter-spacing:0.1em;">FULLSCREEN MODE</span>';
+    bar.style.cssText = 'display:flex;align-items:center;gap:0.75rem;margin-bottom:0.75rem;flex-shrink:0;';
+    var label = document.createElement('span');
+    label.textContent = 'FULLSCREEN MODE';
+    label.style.cssText = "color:var(--accent);letter-spacing:0.1em;font-family:'JetBrains Mono',monospace;font-size:0.75rem;font-weight:700;";
+    bar.appendChild(label);
 
     var closeBtn = document.createElement('button');
-    closeBtn.className = 'fs-close-btn'; closeBtn.textContent = '✕ EXIT';
+    closeBtn.textContent = 'EXIT';
+    closeBtn.style.cssText = "margin-left:auto;background:transparent;color:#FF0055;border:1px solid #FF0055;font-family:'JetBrains Mono',monospace;font-size:0.75rem;font-weight:700;padding:0.4rem 0.75rem;cursor:pointer;letter-spacing:0.08em;";
     bar.appendChild(closeBtn);
+
+    var wrap = document.createElement('div');
+    wrap.style.cssText = 'flex:1;display:flex;align-items:center;justify-content:center;min-height:0;';
 
     var fsCanvas = document.createElement('canvas');
     fsCanvas.width = cv.width; fsCanvas.height = cv.height;
+    fsCanvas.style.cssText = 'max-width:100%;max-height:100%;border:1px solid var(--border-color);box-shadow:inset 0 0 30px rgba(0,0,0,0.5);cursor:crosshair;touch-action:none;';
     var fsCtx = fsCanvas.getContext('2d');
     fsCtx.drawImage(cv, 0, 0);
     fsCtx.lineCap = 'round'; fsCtx.lineJoin = 'round';
 
+    wrap.appendChild(fsCanvas);
     overlay.appendChild(bar);
-    overlay.appendChild(fsCanvas);
+    overlay.appendChild(wrap);
     document.body.appendChild(overlay);
     document.body.style.overflow = 'hidden';
 
-    // Mirror draw events on fullscreen canvas
-    var fsSave = cv; cv = fsCanvas; ctx = fsCtx;
+    // Swap drawing target to fullscreen canvas
+    var mainCv = cv, mainCtx = ctx;
+    cv = fsCanvas; ctx = fsCtx;
     attachDrawEvents(fsCanvas, fsCanvas);
 
     function closeFs() {
-      // Copy back to main canvas
-      cv = fsSave; ctx = cv.getContext('2d');
+      cv = mainCv; ctx = mainCtx;
       ctx.drawImage(fsCanvas, 0, 0);
       if (drawn) {
         prevImg.src = cv.toDataURL('image/jpeg', 0.5);
         prevImg.style.display = 'block'; prevEmpty.style.display = 'none';
       }
+      document.removeEventListener('keydown', escHandler);
       document.body.removeChild(overlay);
       document.body.style.overflow = '';
     }
+
+    function escHandler(e) { if (e.key === 'Escape') closeFs(); }
+    document.addEventListener('keydown', escHandler);
     closeBtn.onclick = closeFs;
-    overlay.addEventListener('keydown', function(e){ if(e.key==='Escape') closeFs(); });
-    fsCanvas.focus();
   };
 
   /* ── Gallery load ────────────────────────────────────────────────────── */
