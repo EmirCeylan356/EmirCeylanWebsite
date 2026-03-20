@@ -2,290 +2,511 @@
 import Layout from '../layouts/Layout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
-import galleryData from '../data/gallery-submissions.json';
+import seedData from '../data/gallery-submissions.json';
 
-const approvedArtworks = galleryData || [];
+const supabaseUrl = import.meta.env.PUBLIC_SUPABASE_URL || '';
+const supabaseKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY || '';
+const seedJson = JSON.stringify(seedData || []);
 ---
 
 <Layout title="VISITOR GALLERY — Emir Ceylan">
   <Header />
-  
-  <main>
-    <section class="py-16 px-4">
+
+  <main style="padding-top: 80px;">
+
+    <!-- ═══ PAGE HEADER ══════════════════════════════════════════════════════ -->
+    <section style="padding:3rem 2rem 2rem; border-bottom:1px solid var(--border-color);">
       <div class="max-w-7xl mx-auto">
-        <div class="flex items-end gap-4 mb-12">
-          <h2 class="text-5xl md:text-7xl font-black kinetic-text">
-            VISITOR GALLERY
-          </h2>
-          <div class="flex-1 h-4 bg-black"></div>
-          <span class="text-3xl font-black">/NEW</span>
+        <p class="font-mono text-xs mb-3" style="color:var(--text-secondary); letter-spacing:0.15em;">NEURAL_ARCHIVE /</p>
+        <div class="flex items-end gap-4">
+          <h1 class="font-black kinetic-text" style="font-family:'Syne'; font-size:clamp(3rem,9vw,7rem); color:var(--text-primary); line-height:0.9;">
+            VISITOR<br/><span style="color:var(--accent);">GALLERY</span>
+          </h1>
+          <div class="flex-1 h-px" style="background:var(--border-color); margin-bottom:0.5rem;"></div>
+          <span id="artwork-count" class="font-black font-mono text-xl" style="color:var(--text-secondary); margin-bottom:0.4rem;">/--</span>
         </div>
+        <p class="font-mono text-xs mt-4" style="color:var(--text-secondary); opacity:0.6; letter-spacing:0.1em;">
+          &gt; DRAW_TOOL_ACTIVE — SUBMIT YOUR CREATION TO THE NEURAL ARCHIVE
+        </p>
+      </div>
+    </section>
 
-        <div class="grid lg:grid-cols-2 gap-8">
-          <!-- Drawing Canvas Section -->
-          <div>
-            <h3 class="text-2xl font-black mb-4">DRAW YOUR ART</h3>
-            <p class="text-sm mb-4 opacity-70">Draw your masterpiece below, then submit it!</p>
-            
-            <!-- Tool Bar -->
-            <div class="flex flex-wrap gap-3 mb-4">
-              <div class="flex gap-2">
-                <button id="brush-btn" class="tool-btn active px-4 py-2 bg-black text-white font-bold border-2 border-black">Brush</button>
-                <button id="eraser-btn" class="tool-btn px-4 py-2 bg-white text-black font-bold border-2 border-black hover:bg-black hover:text-white">Eraser</button>
-              </div>
-              
-              <div class="flex gap-1">
-                <button class="color-btn w-8 h-8 rounded-full border-2 border-black" data-color="#000000" style="background:#000"></button>
-                <button class="color-btn w-8 h-8 rounded-full border-2 border-black" data-color="#f40c3f" style="background:#f40c3f"></button>
-                <button class="color-btn w-8 h-8 rounded-full border-2 border-black" data-color="#FF6B2C" style="background:#FF6B2C"></button>
-                <button class="color-btn w-8 h-8 rounded-full border-2 border-black" data-color="#FFD700" style="background:#FFD700"></button>
-                <button class="color-btn w-8 h-8 rounded-full border-2 border-black" data-color="#00C853" style="background:#00C853"></button>
-                <button class="color-btn w-8 h-8 rounded-full border-2 border-black" data-color="#2196F3" style="background:#2196F3"></button>
-                <button class="color-btn w-8 h-8 rounded-full border-2 border-black" data-color="#9C27B0" style="background:#9C27B0"></button>
-                <button class="color-btn w-8 h-8 rounded-full border-2 border-black" data-color="#FFFFFF" data-default style="background:#FFF; border: 3px solid #000"></button>
-              </div>
+    <!-- ═══ DRAW + SUBMIT ════════════════════════════════════════════════════ -->
+    <section style="padding:3rem 2rem;">
+      <div class="max-w-7xl mx-auto">
+        <div class="vg-grid">
 
-              <div class="flex gap-2">
-                <button id="size-small" class="size-btn px-3 py-2 bg-white border-2 border-black font-bold text-sm">S</button>
-                <button id="size-medium" class="size-btn active px-3 py-2 bg-black text-white border-2 border-black font-bold text-sm">M</button>
-                <button id="size-large" class="size-btn px-3 py-2 bg-white border-2 border-black font-bold text-sm">L</button>
+          <!-- LEFT: Canvas -->
+          <div class="panel">
+            <p class="font-mono text-xs mb-5" style="color:var(--text-secondary); letter-spacing:0.12em;">01 / DRAW_YOUR_ART.exe</p>
+
+            <!-- Toolbar -->
+            <div class="toolbar-row">
+              <div class="toolbar-group">
+                <button id="brush-btn" class="tool-active font-mono text-xs font-bold px-4 py-2 cut-corner-sm tool-btn"
+                  style="letter-spacing:0.08em;">BRUSH</button>
+                <button id="eraser-btn" class="font-mono text-xs font-bold px-4 py-2 cut-corner-sm tool-btn"
+                  style="letter-spacing:0.08em;">ERASER</button>
               </div>
 
-              <button id="clear-btn" class="px-4 py-2 bg-[#f40c3f] text-white font-bold border-2 border-black hover:bg-red-700">Clear</button>
+              <div class="toolbar-group" style="flex-wrap:wrap;">
+                <button class="color-btn active" data-color="#222222" style="background:#222;"></button>
+                <button class="color-btn" data-color="#FFFFFF" style="background:#FFF; box-shadow:0 0 0 1px var(--border-color);"></button>
+                <button class="color-btn" data-color="#D6FF00" style="background:#D6FF00;"></button>
+                <button class="color-btn" data-color="#00E5FF" style="background:#00E5FF;"></button>
+                <button class="color-btn" data-color="#FF0055" style="background:#FF0055;"></button>
+                <button class="color-btn" data-color="#FF6B2C" style="background:#FF6B2C;"></button>
+                <button class="color-btn" data-color="#FFD700" style="background:#FFD700;"></button>
+                <button class="color-btn" data-color="#00C853" style="background:#00C853;"></button>
+                <button class="color-btn" data-color="#2196F3" style="background:#2196F3;"></button>
+                <button class="color-btn" data-color="#9C27B0" style="background:#9C27B0;"></button>
+              </div>
+
+              <div class="toolbar-group">
+                <button id="size-s" class="size-btn font-mono text-xs font-bold px-3 py-2">S</button>
+                <button id="size-m" class="size-btn size-active font-mono text-xs font-bold px-3 py-2">M</button>
+                <button id="size-l" class="size-btn font-mono text-xs font-bold px-3 py-2">L</button>
+              </div>
+
+              <button id="clear-btn" class="clear-btn font-mono text-xs font-bold px-4 py-2 cut-corner-sm"
+                style="letter-spacing:0.08em;">CLEAR</button>
             </div>
 
-            <!-- Canvas -->
-            <canvas 
-              id="drawing-canvas" 
-              width="600" 
-              height="400" 
-              class="border-4 border-black bg-white cursor-crosshair w-full"
-            ></canvas>
+            <canvas id="drawing-canvas" width="600" height="390"
+              style="width:100%; display:block; cursor:crosshair; border:1px solid var(--border-color); box-shadow:inset 0 0 30px rgba(0,0,0,0.5);"></canvas>
+
+            <p class="font-mono text-xs mt-3" style="color:var(--text-secondary); opacity:0.35; letter-spacing:0.08em;">
+              600 x 390 — touch supported
+            </p>
           </div>
 
-          <!-- Submission Form (Embedded Google Form) -->
-          <div>
-            <h3 class="text-2xl font-black mb-4">SUBMIT YOUR ARTWORK</h3>
-            
-            <!-- Embedded Google Form -->
-            <div class="border-4 border-black bg-white" style="min-height: 500px;">
-              <iframe 
-                src="https://docs.google.com/forms/d/e/1FAIpQLSe9I_8IxIa2aOmFj87WntLS9Xp-7czR7YzxU6Ro1zLHgMaVBw/viewform?embedded=true" 
-                width="100%" 
-                height="500" 
-                frameborder="0" 
-                marginheight="0" 
-                marginwidth="0"
-                loading="lazy"
-              >
-                Loading…
-              </iframe>
+          <!-- RIGHT: Submit Form -->
+          <div class="panel">
+            <p class="font-mono text-xs mb-5" style="color:var(--text-secondary); letter-spacing:0.12em;">02 / TRANSMIT_TO_ARCHIVE.exe</p>
+
+            <!-- Success state -->
+            <div id="success-box" class="success-hidden" style="text-align:center; padding:4rem 0;">
+              <div class="transmitted-anim font-black font-mono" style="font-size:2rem; color:var(--accent); letter-spacing:0.08em;">TRANSMITTED</div>
+              <p class="font-mono text-sm mt-3" style="color:var(--text-secondary);">Your artwork is now in the archive.</p>
+              <button id="draw-another-btn" class="mt-8 font-mono text-xs font-bold px-6 py-3 cut-corner another-btn"
+                style="letter-spacing:0.1em;">DRAW ANOTHER</button>
             </div>
-          </div>
-        </div>
 
-        <!-- Gallery -->
-        <div class="mt-16">
-          <h3 class="text-3xl font-black mb-8">GALLERY</h3>
-          
-          {approvedArtworks.length === 0 ? (
-            <p class="text-lg opacity-70">No artworks yet. Be the first to submit!</p>
-          ) : (
-            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {approvedArtworks.map((artwork) => (
-                <div class="border-4 border-black bg-white p-4">
-                  <img 
-                    src={artwork.image} 
-                    alt={artwork.title}
-                    class="w-full h-auto border-2 border-black mb-3"
-                  />
-                  <h4 class="font-black text-lg">{artwork.title}</h4>
-                  <p class="font-bold text-sm opacity-70">by {artwork.name}</p>
-                  {artwork.date && (
-                    <p class="text-xs opacity-50">{new Date(artwork.date).toLocaleDateString()}</p>
-                  )}
+            <!-- Form -->
+            <form id="submit-form">
+              <div id="setup-warning" style="display:none; padding:0.75rem 1rem; margin-bottom:1.5rem; background:var(--bg-elevated); border:1px solid var(--border-color); font-family:'JetBrains Mono',monospace; font-size:0.7rem; color:var(--text-secondary); line-height:1.8;">
+                <span style="color:var(--accent);">SUPABASE NOT CONFIGURED</span><br/>
+                Add your credentials to <code style="color:var(--text-primary);">.env</code> to enable submissions.
+              </div>
+
+              <div style="margin-bottom:1.5rem;">
+                <label class="font-mono text-xs" style="display:block; margin-bottom:0.5rem; color:var(--text-secondary); letter-spacing:0.12em;">YOUR NAME</label>
+                <input id="inp-name" type="text" maxlength="60" required placeholder="e.g. Anonymous"
+                  class="gallery-input" />
+              </div>
+
+              <div style="margin-bottom:1.5rem;">
+                <label class="font-mono text-xs" style="display:block; margin-bottom:0.5rem; color:var(--text-secondary); letter-spacing:0.12em;">ARTWORK TITLE</label>
+                <input id="inp-title" type="text" maxlength="80" required placeholder="e.g. Untitled #01"
+                  class="gallery-input" />
+              </div>
+
+              <!-- Preview -->
+              <div style="margin-bottom:1.5rem;">
+                <label class="font-mono text-xs" style="display:block; margin-bottom:0.5rem; color:var(--text-secondary); letter-spacing:0.12em;">PREVIEW</label>
+                <div class="preview-box">
+                  <img id="preview-img" alt="Canvas preview" style="width:100%; height:120px; object-fit:cover; opacity:0.85; display:none;" />
+                  <span id="preview-empty" class="font-mono text-xs" style="color:var(--text-secondary); opacity:0.4;">DRAW SOMETHING FIRST</span>
                 </div>
-              ))}
-            </div>
-          )}
+              </div>
+
+              <!-- Error -->
+              <div id="err-msg" class="err-box" style="display:none;"></div>
+
+              <button id="submit-btn" type="submit" class="submit-btn font-mono text-sm font-bold py-4 cut-corner" style="width:100%; letter-spacing:0.1em;">
+                <span id="submit-text">SUBMIT TO GALLERY</span>
+                <span id="submit-spin" style="display:none;">TRANSMITTING...</span>
+              </button>
+
+              <p class="font-mono text-xs mt-4" style="color:var(--text-secondary); opacity:0.4; letter-spacing:0.06em;">
+                All submissions are public and visible to everyone.
+              </p>
+            </form>
+          </div>
         </div>
       </div>
     </section>
-  </main>
 
+    <!-- ═══ GALLERY ══════════════════════════════════════════════════════════ -->
+    <section id="gallery-section" style="padding:3rem 2rem; border-top:1px solid var(--border-color);">
+      <div class="max-w-7xl mx-auto">
+        <div class="flex items-end gap-4 mb-10">
+          <p class="font-mono text-xs" style="color:var(--text-secondary); letter-spacing:0.15em; align-self:center;">ARCHIVE /</p>
+          <h2 class="font-black kinetic-text" style="font-family:'Syne'; font-size:clamp(2rem,6vw,4.5rem); color:var(--text-primary);">ALL WORKS</h2>
+          <div class="flex-1 h-px" style="background:var(--border-color);"></div>
+        </div>
+
+        <!-- Loading -->
+        <div id="gallery-loading" class="gallery-grid">
+          <div class="skeleton-card"></div>
+          <div class="skeleton-card"></div>
+          <div class="skeleton-card"></div>
+        </div>
+
+        <!-- Gallery -->
+        <div id="gallery-grid" class="gallery-grid" style="display:none;"></div>
+
+        <!-- Empty -->
+        <div id="gallery-empty" style="display:none; text-align:center; padding:5rem 0;">
+          <p class="font-mono font-bold" style="font-size:1.5rem; color:var(--text-secondary);">
+            BE THE FIRST TO SUBMIT<span class="blink-cursor">_</span>
+          </p>
+          <p class="font-mono text-xs mt-2" style="color:var(--text-secondary); opacity:0.4; letter-spacing:0.1em;">THE ARCHIVE AWAITS ITS FIRST ENTRY</p>
+        </div>
+      </div>
+    </section>
+
+  </main>
   <Footer />
 </Layout>
 
+<!-- Inject env values for the client script -->
+<script is:inline define:vars={{ supabaseUrl, supabaseKey, seedJson }}>
+window.__SB_URL__  = supabaseUrl;
+window.__SB_KEY__  = supabaseKey;
+window.__SEEDS__   = seedJson;
+</script>
+
 <style>
-  .tool-btn.active {
-    background: black !important;
-    color: white !important;
+  /* ── Layout ──────────────────────────────────────────────────────────────── */
+  .vg-grid { display: grid; gap: 2rem; }
+  @media (min-width: 1024px) { .vg-grid { grid-template-columns: 1fr 1fr; align-items: start; } }
+
+  /* ── Toolbar ─────────────────────────────────────────────────────────────── */
+  .toolbar-row { display:flex; flex-wrap:wrap; gap:0.75rem; margin-bottom:1.25rem; align-items:center; }
+  .toolbar-group { display:flex; gap:0.5rem; align-items:center; }
+
+  .tool-btn {
+    background: transparent; color: var(--text-primary); border: 1px solid var(--border-color);
+    cursor: pointer; transition: background 0.15s, color 0.15s, border-color 0.15s;
   }
-  
-  .color-btn.active {
-    transform: scale(1.2);
-    box-shadow: 0 0 0 3px black;
-  }
-  
-  .size-btn.active {
-    background: black !important;
-    color: white !important;
+  .tool-btn:hover { border-color: var(--text-secondary); }
+  .tool-active, .tool-btn.tool-active {
+    background: var(--accent) !important; color: #000 !important; border-color: var(--accent) !important;
   }
 
-  canvas {
-    touch-action: none;
+  .color-btn {
+    width: 22px; height: 22px; border-radius: 50%; border: 2px solid transparent;
+    cursor: pointer; transition: transform 0.15s, box-shadow 0.15s;
   }
+  .color-btn:hover { transform: scale(1.2); }
+  .color-btn.active { transform: scale(1.3); box-shadow: 0 0 0 2px var(--accent), 0 0 8px rgba(214,255,0,0.4); }
+
+  .size-btn {
+    background: transparent; color: var(--text-primary); border: 1px solid var(--border-color);
+    cursor: pointer; transition: background 0.15s, color 0.15s, border-color 0.15s;
+  }
+  .size-btn:hover { border-color: var(--text-secondary); }
+  .size-active, .size-btn.size-active {
+    background: var(--accent) !important; color: #000 !important; border-color: var(--accent) !important;
+  }
+
+  .clear-btn {
+    background: transparent; color: #FF0055; border: 1px solid #FF0055;
+    cursor: pointer; transition: background 0.15s, color 0.15s;
+  }
+  .clear-btn:hover { background: #FF0055; color: #fff; }
+
+  canvas { touch-action: none; }
+
+  /* ── Form ─────────────────────────────────────────────────────────────────── */
+  .gallery-input {
+    width: 100%; font-family: 'JetBrains Mono', monospace; font-size: 0.85rem;
+    background: var(--bg-elevated); border: 1px solid var(--border-color); color: var(--text-primary);
+    padding: 0.75rem 1rem; outline: none; letter-spacing: 0.04em;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .gallery-input:focus { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
+  .gallery-input::placeholder { color: var(--text-secondary); opacity: 0.35; }
+
+  .preview-box {
+    border: 1px solid var(--border-color); background: var(--bg-elevated);
+    height: 120px; overflow: hidden; display: flex; align-items: center; justify-content: center;
+  }
+
+  .err-box {
+    font-family: 'JetBrains Mono', monospace; font-size: 0.7rem;
+    padding: 0.6rem 0.8rem; margin-bottom: 1rem;
+    background: rgba(255,0,85,0.08); border: 1px solid #FF0055; color: #FF0055;
+  }
+
+  .submit-btn {
+    background: var(--accent); color: #000; border: 1px solid var(--accent);
+    cursor: pointer; transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+  }
+  .submit-btn:hover:not(:disabled) {
+    background: transparent; color: var(--accent); box-shadow: 0 0 16px var(--accent-glow);
+  }
+  .submit-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  .another-btn {
+    background: transparent; color: var(--accent); border: 1px solid var(--accent);
+    cursor: pointer; transition: background 0.2s, color 0.2s;
+  }
+  .another-btn:hover { background: var(--accent); color: #000; }
+
+  .success-hidden { display: none; }
+
+  @keyframes transmitted-in {
+    0%   { opacity:0; transform:skewX(-5deg) scale(0.9); text-shadow: -3px 0 #00E5FF, 3px 0 #FF0055; }
+    50%  { opacity:1; transform:skewX(2deg) scale(1.03); text-shadow: 2px 0 #00E5FF, -2px 0 #FF0055; }
+    100% { opacity:1; transform:none; text-shadow: 0 0 20px rgba(214,255,0,0.3); }
+  }
+  .transmitted-anim { animation: transmitted-in 0.6s cubic-bezier(0.16,1,0.3,1) forwards; }
+
+  /* ── Gallery ─────────────────────────────────────────────────────────────── */
+  .gallery-grid {
+    display: grid; gap: 1.5rem;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  }
+
+  .gallery-card {
+    background: var(--bg-surface); border: 1px solid var(--border-color); padding: 1rem;
+    transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
+    opacity: 0; transform: translateY(20px);
+  }
+  .gallery-card.vis {
+    opacity: 1; transform: translateY(0);
+    transition: opacity 0.5s ease, transform 0.5s ease, border-color 0.2s, box-shadow 0.2s;
+  }
+  .gallery-card:hover {
+    border-color: var(--accent); box-shadow: 0 0 16px var(--accent-glow); transform: translateY(-2px);
+  }
+  .gallery-card img { width: 100%; aspect-ratio: 600/390; object-fit: cover; display: block; border: 1px solid var(--border-color); }
+
+  @keyframes skpulse { 0%,100%{opacity:0.3;} 50%{opacity:0.6;} }
+  .skeleton-card { height: 260px; background: var(--bg-surface); border: 1px solid var(--border-color); animation: skpulse 1.5s ease-in-out infinite; }
+
+  @keyframes blink { 0%,100%{opacity:1;} 50%{opacity:0;} }
+  .blink-cursor { animation: blink 1s step-end infinite; }
 </style>
 
 <script is:inline>
-  const canvas = document.getElementById('drawing-canvas');
-  const ctx = canvas.getContext('2d');
-  
-  let isDrawing = false;
-  let currentTool = 'brush';
-  let currentColor = '#000000';
-  let currentSize = 8;
-  
-  // Set up canvas
+(function(){
+  /* ── Supabase CDN import ──────────────────────────────────────────────── */
+  var sbClient = null;
+  var SB_URL = window.__SB_URL__ || '';
+  var SB_KEY = window.__SB_KEY__ || '';
+  var SEEDS  = [];
+  try { SEEDS = JSON.parse(window.__SEEDS__ || '[]'); } catch(e){}
+
+  async function getSB() {
+    if (sbClient) return sbClient;
+    if (!SB_URL || !SB_KEY || SB_URL.includes('your-project')) {
+      document.getElementById('setup-warning').style.display = 'block';
+      return null;
+    }
+    try {
+      var mod = await import('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm');
+      sbClient = mod.createClient(SB_URL, SB_KEY);
+      return sbClient;
+    } catch(e) { console.warn('Supabase load failed', e); return null; }
+  }
+
+  /* ── DOM ──────────────────────────────────────────────────────────────── */
+  var cv  = document.getElementById('drawing-canvas');
+  var ctx = cv.getContext('2d');
+
+  var brushBtn  = document.getElementById('brush-btn');
+  var eraserBtn = document.getElementById('eraser-btn');
+  var clearBtn  = document.getElementById('clear-btn');
+  var sizeS = document.getElementById('size-s');
+  var sizeM = document.getElementById('size-m');
+  var sizeL = document.getElementById('size-l');
+
+  var form       = document.getElementById('submit-form');
+  var successBox = document.getElementById('success-box');
+  var submitBtn  = document.getElementById('submit-btn');
+  var submitText = document.getElementById('submit-text');
+  var submitSpin = document.getElementById('submit-spin');
+  var errMsg     = document.getElementById('err-msg');
+  var prevImg    = document.getElementById('preview-img');
+  var prevEmpty  = document.getElementById('preview-empty');
+
+  var galleryGrid    = document.getElementById('gallery-grid');
+  var galleryLoading = document.getElementById('gallery-loading');
+  var galleryEmpty   = document.getElementById('gallery-empty');
+  var artworkCount   = document.getElementById('artwork-count');
+
+  /* ── Canvas state ────────────────────────────────────────────────────── */
+  var drawing = false, tool = 'brush', color = '#222222', size = 8, drawn = false;
+
   ctx.fillStyle = '#FFFFFF';
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
-  ctx.lineCap = 'round';
-  ctx.lineJoin = 'round';
+  ctx.fillRect(0, 0, cv.width, cv.height);
+  ctx.lineCap = 'round'; ctx.lineJoin = 'round';
 
-  // Tool buttons
-  const brushBtn = document.getElementById('brush-btn');
-  const eraserBtn = document.getElementById('eraser-btn');
-  
-  if (brushBtn) {
-    brushBtn.addEventListener('click', function() {
-      currentTool = 'brush';
-      brushBtn.classList.add('active');
-      eraserBtn.classList.remove('active');
-    });
+  /* ── Tool buttons ────────────────────────────────────────────────────── */
+  function setTool(t) {
+    tool = t;
+    brushBtn.classList.toggle('tool-active', t === 'brush');
+    eraserBtn.classList.toggle('tool-active', t === 'eraser');
   }
-  
-  if (eraserBtn) {
-    eraserBtn.addEventListener('click', function() {
-      currentTool = 'eraser';
-      eraserBtn.classList.add('active');
-      brushBtn.classList.remove('active');
-    });
-  }
+  brushBtn.onclick  = function(){ setTool('brush'); };
+  eraserBtn.onclick = function(){ setTool('eraser'); };
 
-  // Color buttons
-  const colorBtns = document.querySelectorAll('.color-btn');
-  colorBtns.forEach(function(btn) {
-    btn.addEventListener('click', function() {
-      currentColor = btn.getAttribute('data-color') || '#000000';
-      colorBtns.forEach(function(b) { b.classList.remove('active'); });
-      btn.classList.add('active');
-    });
+  /* ── Colors ──────────────────────────────────────────────────────────── */
+  document.querySelectorAll('.color-btn').forEach(function(b){
+    b.onclick = function(){
+      color = b.dataset.color;
+      setTool('brush');
+      document.querySelectorAll('.color-btn').forEach(function(x){ x.classList.remove('active'); });
+      b.classList.add('active');
+    };
   });
 
-  // Set default color
-  const defaultColorBtn = document.querySelector('.color-btn[data-default]');
-  if (defaultColorBtn) defaultColorBtn.classList.add('active');
+  /* ── Sizes ───────────────────────────────────────────────────────────── */
+  function setSize(btn, s) {
+    [sizeS, sizeM, sizeL].forEach(function(b){ b.classList.remove('size-active'); });
+    btn.classList.add('size-active');
+    size = s;
+  }
+  sizeS.onclick = function(){ setSize(sizeS, 3); };
+  sizeM.onclick = function(){ setSize(sizeM, 8); };
+  sizeL.onclick = function(){ setSize(sizeL, 16); };
 
-  // Size buttons
-  const sizeSmall = document.getElementById('size-small');
-  const sizeMedium = document.getElementById('size-medium');
-  const sizeLarge = document.getElementById('size-large');
-  
-  function updateSize() {
-    if (sizeSmall) sizeSmall.classList.remove('active');
-    if (sizeMedium) sizeMedium.classList.remove('active');
-    if (sizeLarge) sizeLarge.classList.remove('active');
-    if (currentSize === 3 && sizeSmall) sizeSmall.classList.add('active');
-    else if (currentSize === 8 && sizeMedium) sizeMedium.classList.add('active');
-    else if (currentSize === 15 && sizeLarge) sizeLarge.classList.add('active');
-  }
-  
-  if (sizeSmall) {
-    sizeSmall.addEventListener('click', function() {
-      currentSize = 3;
-      updateSize();
-    });
-  }
-  
-  if (sizeMedium) {
-    sizeMedium.addEventListener('click', function() {
-      currentSize = 8;
-      updateSize();
-    });
-  }
-  
-  if (sizeLarge) {
-    sizeLarge.addEventListener('click', function() {
-      currentSize = 15;
-      updateSize();
-    });
-  }
-  
-  // Set default
-  if (sizeMedium) sizeMedium.classList.add('active');
+  /* ── Clear ───────────────────────────────────────────────────────────── */
+  clearBtn.onclick = function(){
+    ctx.fillStyle = '#FFFFFF';
+    ctx.fillRect(0, 0, cv.width, cv.height);
+    drawn = false;
+    prevImg.style.display = 'none';
+    prevEmpty.style.display = '';
+  };
 
-  // Drawing functions
-  function getPos(e) {
-    const rect = canvas.getBoundingClientRect();
-    const scaleX = canvas.width / rect.width;
-    const scaleY = canvas.height / rect.height;
-    
-    if (e.touches && e.touches.length > 0) {
-      return {
-        x: (e.touches[0].clientX - rect.left) * scaleX,
-        y: (e.touches[0].clientY - rect.top) * scaleY
-      };
-    } else {
-      return {
-        x: (e.clientX - rect.left) * scaleX,
-        y: (e.clientY - rect.top) * scaleY
-      };
+  /* ── Drawing ─────────────────────────────────────────────────────────── */
+  function pos(e) {
+    var r = cv.getBoundingClientRect();
+    var sx = cv.width / r.width, sy = cv.height / r.height;
+    var src = e.touches ? e.touches[0] : e;
+    return { x: (src.clientX - r.left) * sx, y: (src.clientY - r.top) * sy };
+  }
+  function startD(e) { drawing = true; var p = pos(e); ctx.beginPath(); ctx.moveTo(p.x, p.y); e.preventDefault(); }
+  function doD(e) {
+    if (!drawing) return;
+    var p = pos(e);
+    ctx.lineWidth = size;
+    ctx.strokeStyle = tool === 'eraser' ? '#FFFFFF' : color;
+    ctx.lineTo(p.x, p.y); ctx.stroke(); ctx.beginPath(); ctx.moveTo(p.x, p.y);
+    drawn = true; e.preventDefault();
+  }
+  function stopD() {
+    if (!drawing) return;
+    drawing = false; ctx.beginPath();
+    if (drawn) {
+      prevImg.src = cv.toDataURL('image/jpeg', 0.5);
+      prevImg.style.display = 'block';
+      prevEmpty.style.display = 'none';
     }
   }
 
-  function startDrawing(e) {
-    isDrawing = true;
-    const pos = getPos(e);
-    ctx.beginPath();
-    ctx.moveTo(pos.x, pos.y);
-    e.preventDefault();
-  }
+  cv.addEventListener('mousedown', startD);
+  cv.addEventListener('mousemove', doD);
+  cv.addEventListener('mouseup', stopD);
+  cv.addEventListener('mouseleave', stopD);
+  cv.addEventListener('touchstart', startD, { passive: false });
+  cv.addEventListener('touchmove', doD, { passive: false });
+  cv.addEventListener('touchend', stopD);
 
-  function stopDrawing() {
-    isDrawing = false;
-    ctx.beginPath();
-  }
+  /* ── Gallery load ────────────────────────────────────────────────────── */
+  function esc(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 
-  function draw(e) {
-    if (!isDrawing) return;
-    
-    const pos = getPos(e);
-    ctx.lineWidth = currentSize;
-    ctx.strokeStyle = currentTool === 'eraser' ? '#FFFFFF' : currentColor;
-    
-    ctx.lineTo(pos.x, pos.y);
-    ctx.stroke();
-    ctx.beginPath();
-    ctx.moveTo(pos.x, pos.y);
-    e.preventDefault();
-  }
-
-  // Event listeners
-  canvas.addEventListener('mousedown', startDrawing);
-  canvas.addEventListener('mouseup', stopDrawing);
-  canvas.addEventListener('mousemove', draw);
-  canvas.addEventListener('mouseout', stopDrawing);
-  
-  canvas.addEventListener('touchstart', startDrawing, { passive: false });
-  canvas.addEventListener('touchend', stopDrawing);
-  canvas.addEventListener('touchmove', draw, { passive: false });
-
-  // Clear button
-  const clearBtn = document.getElementById('clear-btn');
-  if (clearBtn) {
-    clearBtn.addEventListener('click', function() {
-      ctx.fillStyle = '#FFFFFF';
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
+  function renderGallery(items) {
+    galleryLoading.style.display = 'none';
+    artworkCount.textContent = '/' + String(items.length).padStart(2, '0');
+    if (items.length === 0) { galleryEmpty.style.display = ''; return; }
+    galleryEmpty.style.display = 'none';
+    galleryGrid.innerHTML = '';
+    items.forEach(function(it, i){
+      var d = document.createElement('div');
+      d.className = 'gallery-card';
+      d.innerHTML =
+        '<img src="' + esc(it.image_data || it.image || '') + '" alt="' + esc(it.title) + '" loading="lazy" />' +
+        '<div style="padding-top:0.75rem;">' +
+          '<p class="font-black text-sm" style="color:var(--text-primary);font-family:Syne;">' + esc(it.title) + '</p>' +
+          '<p class="font-mono text-xs" style="color:var(--text-secondary);margin-top:0.25rem;">by ' + esc(it.name) + '</p>' +
+          (it.created_at || it.date ? '<p class="font-mono text-xs" style="color:var(--text-secondary);opacity:0.4;margin-top:0.25rem;">' + new Date(it.created_at || it.date).toLocaleDateString() + '</p>' : '') +
+        '</div>';
+      galleryGrid.appendChild(d);
+      setTimeout(function(){ d.classList.add('vis'); }, 50 * i);
     });
+    galleryGrid.style.display = '';
   }
+
+  async function loadGallery(prepend) {
+    var sb = await getSB();
+    var items = [];
+    if (sb) {
+      var res = await sb.from('gallery_submissions').select('id, name, title, image_data, created_at').order('created_at', { ascending: false });
+      if (!res.error && res.data) items = res.data;
+    }
+    // Append seed data
+    SEEDS.forEach(function(s){
+      items.push({ id: 'seed', name: s.name, title: s.title, image_data: s.image, created_at: s.date });
+    });
+    if (prepend) items.unshift(prepend);
+    renderGallery(items);
+  }
+
+  /* ── Submit ──────────────────────────────────────────────────────────── */
+  form.addEventListener('submit', async function(e){
+    e.preventDefault();
+    errMsg.style.display = 'none';
+
+    var name  = document.getElementById('inp-name').value.trim();
+    var title = document.getElementById('inp-title').value.trim();
+    if (!name || !title) { showErr('Fill in your name and artwork title.'); return; }
+    if (!drawn) { showErr('Draw something on the canvas first.'); return; }
+
+    var imageData = cv.toDataURL('image/jpeg', 0.35);
+    var sb = await getSB();
+    if (!sb) { showErr('Supabase not configured. Add credentials to .env'); return; }
+
+    submitBtn.disabled = true;
+    submitText.style.display = 'none';
+    submitSpin.style.display = '';
+
+    var res = await sb.from('gallery_submissions').insert([{ name: name, title: title, image_data: imageData }]).select().single();
+
+    submitBtn.disabled = false;
+    submitText.style.display = '';
+    submitSpin.style.display = 'none';
+
+    if (res.error) { showErr('Submission failed: ' + res.error.message); return; }
+
+    form.style.display = 'none';
+    successBox.style.display = '';
+
+    loadGallery({ id: res.data?.id, name: name, title: title, image_data: imageData, created_at: new Date().toISOString() });
+    document.getElementById('gallery-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+
+  document.getElementById('draw-another-btn').onclick = function(){
+    ctx.fillStyle = '#FFFFFF';
+    ctx.fillRect(0, 0, cv.width, cv.height);
+    drawn = false;
+    prevImg.style.display = 'none';
+    prevEmpty.style.display = '';
+    document.getElementById('inp-name').value = '';
+    document.getElementById('inp-title').value = '';
+    successBox.style.display = 'none';
+    form.style.display = '';
+    errMsg.style.display = 'none';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  function showErr(msg) { errMsg.textContent = msg; errMsg.style.display = ''; }
+
+  /* ── Init ─────────────────────────────────────────────────────────────── */
+  loadGallery(null);
+})();
 </script>

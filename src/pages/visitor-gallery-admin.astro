@@ -3,129 +3,201 @@ import Layout from '../layouts/Layout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 
-// Simple password protection - change this to your desired admin password
-const ADMIN_PASSWORD = "emir2026";
-
-const { searchParams } = Astro.url;
-const password = searchParams.get('password');
-const action = searchParams.get('action');
-const isAuthenticated = password === ADMIN_PASSWORD;
-
-// Load current submissions
-import galleryData from '../data/gallery-submissions.json';
-let submissions = galleryData || [];
-
-// Handle approve/reject actions
-if (isAuthenticated && action) {
-  const id = searchParams.get('id');
-  if (action === 'approve' && id) {
-    // Would need to add from Google Sheets - this is a placeholder
-    // In real implementation, you'd fetch from Google Sheets API
-  }
-}
+const supabaseUrl = import.meta.env.PUBLIC_SUPABASE_URL || '';
+const supabaseKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY || '';
 ---
 
 <Layout title="GALLERY ADMIN — Emir Ceylan">
   <Header />
-  
-  <main>
-    <section class="py-16 px-4">
+
+  <main style="padding-top: 80px;">
+    <section style="padding:3rem 2rem; min-height:70vh;">
       <div class="max-w-7xl mx-auto">
-        
-        {!isAuthenticated ? (
-          <!-- Login Form -->
-          <div class="max-w-md mx-auto">
-            <h2 class="text-4xl font-black mb-8">ADMIN LOGIN</h2>
-            <form method="get" class="space-y-4">
-              <div>
-                <label class="block font-bold mb-2">Password</label>
-                <input 
-                  type="password" 
-                  name="password"
-                  required
-                  class="w-full p-3 border-4 border-black font-bold"
-                  placeholder="Enter admin password"
-                />
-              </div>
-              <button 
-                type="submit" 
-                class="w-full py-4 bg-black text-white font-bold text-xl border-4 border-black hover:bg-gray-800"
-              >
-                LOGIN →
+
+        <!-- Login (shown by default, hidden after auth) -->
+        <div id="login-view" style="max-width:400px; margin:4rem auto;">
+          <p class="font-mono text-xs mb-3" style="color:var(--text-secondary); letter-spacing:0.15em;">ADMIN /</p>
+          <h1 class="font-black kinetic-text mb-8" style="font-family:'Syne'; font-size:3rem; color:var(--text-primary);">LOGIN</h1>
+          <form id="login-form" style="display:flex; flex-direction:column; gap:1rem;">
+            <input type="password" id="pw-input" required placeholder="Enter admin password"
+              class="admin-input font-mono text-sm"
+              style="background:var(--bg-elevated); border:1px solid var(--border-color); color:var(--text-primary); padding:0.85rem 1rem; outline:none;" />
+            <p id="login-error" class="font-mono text-xs" style="color:#FF0055; display:none;">Invalid password.</p>
+            <button type="submit" class="font-mono text-sm font-bold cut-corner admin-login-btn"
+              style="background:var(--accent); color:#000; border:1px solid var(--accent); letter-spacing:0.1em; cursor:pointer; padding:1rem;">
+              LOGIN
+            </button>
+          </form>
+        </div>
+
+        <!-- Dashboard (hidden by default, shown after auth) -->
+        <div id="dashboard-view" style="display:none;">
+          <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:1rem; margin-bottom:2rem;">
+            <div>
+              <p class="font-mono text-xs mb-2" style="color:var(--text-secondary); letter-spacing:0.15em;">ADMIN /</p>
+              <h1 class="font-black kinetic-text" style="font-family:'Syne'; font-size:clamp(2rem,5vw,3.5rem); color:var(--text-primary);">
+                GALLERY<span style="color:var(--accent);">_</span>ADMIN
+              </h1>
+            </div>
+            <div style="display:flex; gap:0.75rem;">
+              <button id="refresh-btn" class="font-mono text-xs font-bold cut-corner-sm admin-action-btn" style="letter-spacing:0.08em; padding:0.5rem 1rem;">
+                REFRESH
               </button>
-            </form>
-          </div>
-        ) : (
-          <!-- Admin Dashboard -->
-          <div>
-            <div class="flex items-center justify-between mb-8">
-              <h2 class="text-4xl font-black">GALLERY ADMIN</h2>
-              <a href="/visitor-gallery/admin" class="px-4 py-2 bg-gray-200 border-2 border-black font-bold hover:bg-gray-300">
-                ← Back
+              <a href="/visitor-gallery" class="font-mono text-xs font-bold cut-corner-sm admin-link-btn" style="letter-spacing:0.08em; text-decoration:none; padding:0.5rem 1rem;">
+                VIEW GALLERY
               </a>
             </div>
-
-            <div class="bg-green-100 border-4 border-green-600 p-4 mb-8">
-              <p class="font-bold">✓ Logged in as admin</p>
-              <p class="text-sm">Add approved artworks by editing: <code class="bg-white px-2">src/data/gallery-submissions.json</code></p>
-            </div>
-
-            <!-- Current Approved Artworks -->
-            <div class="mb-12">
-              <h3 class="text-2xl font-black mb-4">APPROVED ARTWORKS ({submissions.length})</h3>
-              
-              {submissions.length === 0 ? (
-                <p class="opacity-70">No approved artworks yet.</p>
-              ) : (
-                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {submissions.map((artwork, index) => (
-                    <div class="border-4 border-black bg-white p-4">
-                      <img 
-                        src={artwork.image} 
-                        alt={artwork.title}
-                        class="w-full h-auto border-2 border-black mb-3"
-                      />
-                      <h4 class="font-black text-lg">{artwork.title}</h4>
-                      <p class="font-bold text-sm opacity-70">by {artwork.name}</p>
-                      <p class="text-xs opacity-50">{artwork.email}</p>
-                      <button 
-                        onclick={`removeArtwork(${index})`}
-                        class="mt-2 px-3 py-1 bg-red-500 text-white font-bold text-sm border-2 border-red-700 hover:bg-red-600"
-                      >
-                        Remove
-                      </button>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-
-            <!-- Instructions -->
-            <div class="bg-gray-100 border-4 border-black p-6">
-              <h3 class="text-xl font-black mb-4">HOW TO ADD ARTWORKS</h3>
-              <ol class="space-y-2 list-decimal list-inside">
-                <li>Go to your Google Form responses in Google Sheets</li>
-                <li>Review new submissions</li>
-                <li>Download the artwork images</li>
-                <li>Edit <code class="bg-white px-1">src/data/gallery-submissions.json</code></li>
-                <li>Add new artwork entries in this format:</li>
-              </ol>
-              <pre class="mt-4 bg-black text-green-400 p-4 overflow-x-auto text-sm">{'{'}"name": "Artist Name", "email": "artist@email.com", "title": "Artwork Title", "image": "https://example.com/image.jpg", "date": "2026-03-11"{'}'}</pre>
-            </div>
           </div>
-        )}
+
+          <!-- Status bar -->
+          <div class="panel" style="padding:1rem 1.5rem; margin-bottom:2rem; display:flex; align-items:center; gap:1rem; flex-wrap:wrap;">
+            <span style="width:8px; height:8px; border-radius:50%; background:var(--accent); display:inline-block; box-shadow:0 0 6px var(--accent);"></span>
+            <span class="font-mono text-xs font-bold" style="color:var(--accent); letter-spacing:0.1em;">AUTHENTICATED</span>
+            <span class="font-mono text-xs" style="color:var(--text-secondary); opacity:0.5;">|</span>
+            <span id="admin-count" class="font-mono text-xs" style="color:var(--text-secondary);">Loading...</span>
+          </div>
+
+          <!-- Admin grid -->
+          <div id="admin-grid" class="admin-grid"></div>
+          <div id="admin-empty" style="display:none; text-align:center; padding:4rem 0;">
+            <p class="font-mono text-sm" style="color:var(--text-secondary); opacity:0.5;">No submissions found.</p>
+          </div>
+        </div>
+
       </div>
     </section>
   </main>
-
   <Footer />
 </Layout>
 
-<script is:inline>
-  function removeArtwork(index) {
-    if (confirm('Remove this artwork from the gallery?')) {
-      // This would need server-side handling in production
-      alert('To remove artworks, edit the JSON file directly. This is a static site!');
-    }
+<script is:inline define:vars={{ supabaseUrl, supabaseKey }}>
+  window.__ADM_URL__ = supabaseUrl;
+  window.__ADM_KEY__ = supabaseKey;
+</script>
+
+<style>
+  .admin-input:focus { border-color: var(--accent) !important; box-shadow: 0 0 0 1px var(--accent); }
+  .admin-input::placeholder { color: var(--text-secondary); opacity: 0.35; }
+  .admin-login-btn { transition: background 0.2s, color 0.2s, box-shadow 0.2s; }
+  .admin-login-btn:hover { background: transparent !important; color: var(--accent) !important; box-shadow: 0 0 16px var(--accent-glow); }
+
+  .admin-action-btn {
+    background: var(--accent); color: #000; border: 1px solid var(--accent);
+    cursor: pointer; transition: background 0.2s, color 0.2s;
   }
+  .admin-action-btn:hover { background: transparent; color: var(--accent); }
+
+  .admin-link-btn {
+    background: transparent; color: var(--text-primary); border: 1px solid var(--border-color);
+    transition: border-color 0.2s, color 0.2s;
+  }
+  .admin-link-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+  .admin-grid {
+    display: grid; gap: 1.5rem;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  }
+
+  .admin-card {
+    background: var(--bg-surface); border: 1px solid var(--border-color); padding: 1rem;
+    transition: border-color 0.2s;
+  }
+  .admin-card img { width: 100%; aspect-ratio: 600/390; object-fit: cover; display: block; border: 1px solid var(--border-color); margin-bottom: 0.75rem; }
+
+  .del-btn {
+    background: transparent; color: #FF0055; border: 1px solid #FF0055;
+    font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; font-weight: 700;
+    padding: 0.4rem 0.75rem; cursor: pointer; letter-spacing: 0.08em;
+    transition: background 0.15s, color 0.15s; margin-top: 0.5rem;
+  }
+  .del-btn:hover { background: #FF0055; color: #fff; }
+  .del-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+</style>
+
+<script is:inline>
+(function(){
+  var ADMIN_PASSWORD = "emir2026";
+  var sbClient = null;
+
+  // Check URL param first (for bookmarkable login)
+  var urlPassword = new URLSearchParams(window.location.search).get('password');
+  if (urlPassword === ADMIN_PASSWORD) {
+    authenticate();
+  }
+
+  // Login form handler
+  document.getElementById('login-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    var pw = document.getElementById('pw-input').value;
+    if (pw === ADMIN_PASSWORD) {
+      authenticate();
+    } else {
+      document.getElementById('login-error').style.display = '';
+    }
+  });
+
+  function authenticate() {
+    document.getElementById('login-view').style.display = 'none';
+    document.getElementById('dashboard-view').style.display = '';
+    loadAdmin();
+  }
+
+  async function getSB() {
+    if (sbClient) return sbClient;
+    var url = window.__ADM_URL__, key = window.__ADM_KEY__;
+    if (!url || !key) return null;
+    try {
+      var mod = await import('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm');
+      sbClient = mod.createClient(url, key);
+      return sbClient;
+    } catch(e){ return null; }
+  }
+
+  function esc(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+  async function loadAdmin() {
+    var sb = await getSB();
+    if (!sb) { document.getElementById('admin-count').textContent = 'Supabase not configured'; return; }
+
+    var res = await sb.from('gallery_submissions').select('*').order('created_at', { ascending: false });
+    var items = (res.data || []);
+    var grid  = document.getElementById('admin-grid');
+    var empty = document.getElementById('admin-empty');
+    var count = document.getElementById('admin-count');
+
+    count.textContent = items.length + ' submission' + (items.length !== 1 ? 's' : '') + ' total';
+    grid.innerHTML = '';
+
+    if (items.length === 0) { empty.style.display = ''; return; }
+    empty.style.display = 'none';
+
+    items.forEach(function(it){
+      var d = document.createElement('div');
+      d.className = 'admin-card';
+      d.innerHTML =
+        '<img src="' + esc(it.image_data) + '" alt="' + esc(it.title) + '" />' +
+        '<p class="font-black text-sm" style="color:var(--text-primary);font-family:Syne;">' + esc(it.title) + '</p>' +
+        '<p class="font-mono text-xs" style="color:var(--text-secondary);margin-top:0.25rem;">by ' + esc(it.name) + '</p>' +
+        '<p class="font-mono text-xs" style="color:var(--text-secondary);opacity:0.4;margin-top:0.25rem;">' + new Date(it.created_at).toLocaleString() + '</p>' +
+        '<p class="font-mono text-xs" style="color:var(--text-secondary);opacity:0.3;margin-top:0.25rem;">ID: ' + esc(it.id).substring(0,8) + '...</p>' +
+        '<button class="del-btn" data-id="' + esc(it.id) + '">DELETE</button>';
+      grid.appendChild(d);
+    });
+
+    grid.querySelectorAll('.del-btn').forEach(function(btn){
+      btn.onclick = async function(){
+        if (!confirm('Delete this artwork permanently?')) return;
+        btn.disabled = true; btn.textContent = 'DELETING...';
+        var delRes = await sb.from('gallery_submissions').delete().eq('id', btn.dataset.id);
+        if (delRes.error) { alert('Delete failed: ' + delRes.error.message); btn.disabled = false; btn.textContent = 'DELETE'; return; }
+        btn.closest('.admin-card').remove();
+        var remaining = grid.querySelectorAll('.admin-card').length;
+        count.textContent = remaining + ' submission' + (remaining !== 1 ? 's' : '') + ' total';
+        if (remaining === 0) empty.style.display = '';
+      };
+    });
+  }
+
+  document.getElementById('refresh-btn').addEventListener('click', loadAdmin);
+})();
 </script>
