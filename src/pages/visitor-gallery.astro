@@ -54,7 +54,7 @@ const seedJson = JSON.stringify(seedData || []);
               <div class="toolbar-group" style="flex-wrap:wrap;">
                 <button class="color-btn active" data-color="#222222" style="background:#222;"></button>
                 <button class="color-btn" data-color="#FFFFFF" style="background:#FFF; box-shadow:0 0 0 1px var(--border-color);"></button>
-                <button class="color-btn" data-color="#D6FF00" style="background:#D6FF00;"></button>
+                <button class="color-btn" data-color="#C41E3A" style="background:#C41E3A;"></button>
                 <button class="color-btn" data-color="#00E5FF" style="background:#00E5FF;"></button>
                 <button class="color-btn" data-color="#FF0055" style="background:#FF0055;"></button>
                 <button class="color-btn" data-color="#FF6B2C" style="background:#FF6B2C;"></button>
@@ -129,8 +129,15 @@ const seedJson = JSON.stringify(seedData || []);
                 </div>
               </div>
 
-              <!-- Error -->
-              <div id="err-msg" class="err-box" style="display:none;"></div>
+              <!-- Error (graceful retry UI) -->
+              <div class="err-box" id="err-box">
+                <span class="err-title">TRANSMISSION FAILED</span>
+                <div class="err-body" id="err-body">Could not reach the archive server. Check your connection and try again.</div>
+                <div class="err-actions">
+                  <button class="err-btn" id="err-retry" type="button">RETRY ↻</button>
+                  <button class="err-btn ghost" id="err-dismiss" type="button">DISMISS</button>
+                </div>
+              </div>
 
               <button id="submit-btn" type="submit" class="submit-btn font-mono text-sm font-bold py-4 cut-corner" style="width:100%; letter-spacing:0.1em;">
                 <span id="submit-text">SUBMIT TO GALLERY</span>
@@ -172,6 +179,15 @@ const seedJson = JSON.stringify(seedData || []);
           </p>
           <p class="font-mono text-xs mt-2" style="color:var(--text-secondary); opacity:0.4; letter-spacing:0.1em;">THE ARCHIVE AWAITS ITS FIRST ENTRY</p>
         </div>
+
+        <!-- Archive mosaic (Snippet 06) -->
+        <div class="archive-head">
+          <div class="file">ARCHIVE /</div>
+          <h3 class="font-black kinetic-text" style="font-family:'Space Grotesk'; text-transform:uppercase;">PAST SUBMISSIONS</h3>
+          <div class="line"></div>
+          <div class="count"><span id="archive-count" data-counter="0" data-pad="2">00</span> ENTRIES</div>
+        </div>
+        <div class="archive-grid" id="archive-grid"></div>
       </div>
     </section>
 
@@ -201,7 +217,7 @@ window.__SEEDS__   = seedJson;
   }
   .tool-btn:hover { border-color: var(--text-secondary); }
   .tool-active, .tool-btn.tool-active {
-    background: var(--accent) !important; color: #000 !important; border-color: var(--accent) !important;
+    background: var(--accent) !important; color: #fff !important; border-color: var(--accent) !important;
   }
 
   .color-btn {
@@ -209,7 +225,7 @@ window.__SEEDS__   = seedJson;
     cursor: pointer; transition: transform 0.15s, box-shadow 0.15s;
   }
   .color-btn:hover { transform: scale(1.2); }
-  .color-btn.active { transform: scale(1.3); box-shadow: 0 0 0 2px var(--accent), 0 0 8px rgba(214,255,0,0.4); }
+  .color-btn.active { transform: scale(1.3); box-shadow: 0 0 0 2px var(--accent), 0 0 8px rgba(196,30,58,0.55); }
 
   .size-btn {
     background: transparent; color: var(--text-primary); border: 1px solid var(--border-color);
@@ -217,7 +233,7 @@ window.__SEEDS__   = seedJson;
   }
   .size-btn:hover { border-color: var(--text-secondary); }
   .size-active, .size-btn.size-active {
-    background: var(--accent) !important; color: #000 !important; border-color: var(--accent) !important;
+    background: var(--accent) !important; color: #fff !important; border-color: var(--accent) !important;
   }
 
   .clear-btn {
@@ -278,13 +294,121 @@ window.__SEEDS__   = seedJson;
   }
 
   .err-box {
-    font-family: 'JetBrains Mono', monospace; font-size: 0.7rem;
-    padding: 0.6rem 0.8rem; margin-bottom: 1rem;
-    background: rgba(255,0,85,0.08); border: 1px solid #FF0055; color: #FF0055;
+    display: none;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    padding: 12px 14px;
+    margin-bottom: 14px;
+    background: rgba(255,0,85,0.07);
+    border: 1px solid #FF0055;
+    color: #FF0055;
+    line-height: 1.6;
+    position: relative;
+  }
+  .err-box.show { display: block; animation: errShake .35s ease; }
+  .err-box::before {
+    content: '!';
+    display: inline-block;
+    width: 18px; height: 18px;
+    margin-right: 10px;
+    border: 1px solid #FF0055;
+    text-align: center; font-weight: 800;
+    vertical-align: middle;
+  }
+  .err-box .err-title { font-weight: 700; letter-spacing: 0.12em; }
+  .err-box .err-body  { margin: 8px 0 12px 28px; opacity: 0.85; }
+  .err-box .err-actions { margin-left: 28px; display: flex; gap: 8px; }
+  .err-box .err-btn {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; font-weight: 700;
+    letter-spacing: 0.12em;
+    padding: 6px 12px;
+    background: #FF0055; color: #fff;
+    border: 1px solid #FF0055;
+    cursor: pointer;
+  }
+  .err-box .err-btn.ghost { background: transparent; color: #FF0055; }
+  .err-box .err-btn:hover { background: #fff; color: #FF0055; }
+
+  @keyframes errShake {
+    0%,100% { transform: translateX(0); }
+    20% { transform: translateX(-4px); }
+    40% { transform: translateX( 4px); }
+    60% { transform: translateX(-2px); }
+    80% { transform: translateX( 2px); }
+  }
+
+  /* ── Archive mosaic ──────────────────────────────────────────────────────── */
+  .archive-head {
+    margin-top: 56px;
+    display: flex; align-items: end; gap: 16px;
+  }
+  .archive-head .file {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; color: var(--text-secondary);
+    letter-spacing: 0.15em;
+  }
+  .archive-head h3   { font-size: clamp(28px, 4vw, 44px); letter-spacing: -0.01em; }
+  .archive-head .line { flex: 1; height: 1px; background: var(--border-color); }
+  .archive-head .count {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px; color: var(--accent);
+    letter-spacing: 0.1em;
+  }
+
+  .archive-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 12px;
+    margin-top: 24px;
+  }
+  .archive-tile {
+    position: relative;
+    aspect-ratio: 600/390;
+    border: 1px solid var(--border-color);
+    background: #fff;
+    overflow: hidden;
+    transition: transform .25s ease, border-color .25s, box-shadow .25s, z-index 0s .25s;
+    cursor: pointer;
+  }
+  .archive-tile:hover {
+    transform: scale(1.06);
+    border-color: var(--accent);
+    box-shadow: 0 0 24px var(--accent-glow);
+    z-index: 5;
+    transition-delay: 0s;
+  }
+  .archive-tile img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .archive-tile .ovl {
+    position: absolute; inset: 0;
+    background: linear-gradient(180deg, transparent 50%, rgba(0,0,0,0.92));
+    opacity: 0; transition: opacity .2s ease;
+    display: flex; flex-direction: column; justify-content: end;
+    padding: 10px;
+  }
+  .archive-tile:hover .ovl { opacity: 1; }
+  .archive-tile .ovl .t {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; font-weight: 800;
+    color: var(--accent);
+    letter-spacing: 0.06em;
+    line-height: 1.2;
+  }
+  .archive-tile .ovl .a {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; color: var(--text-secondary);
+    margin-top: 2px;
+  }
+  .archive-tile .date {
+    position: absolute; top: 4px; right: 6px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 8px; color: rgba(255,255,255,0.6);
+    background: rgba(0,0,0,0.6);
+    padding: 1px 5px;
   }
 
   .submit-btn {
-    background: var(--accent); color: #000; border: 1px solid var(--accent);
+    background: var(--accent); color: #fff; border: 1px solid var(--accent);
     cursor: pointer; transition: background 0.2s, color 0.2s, box-shadow 0.2s;
   }
   .submit-btn:hover:not(:disabled) {
@@ -296,14 +420,14 @@ window.__SEEDS__   = seedJson;
     background: transparent; color: var(--accent); border: 1px solid var(--accent);
     cursor: pointer; transition: background 0.2s, color 0.2s;
   }
-  .another-btn:hover { background: var(--accent); color: #000; }
+  .another-btn:hover { background: var(--accent); color: #fff; }
 
   .success-hidden { display: none; }
 
   @keyframes transmitted-in {
     0%   { opacity:0; transform:skewX(-5deg) scale(0.9); text-shadow: -3px 0 #00E5FF, 3px 0 #FF0055; }
     50%  { opacity:1; transform:skewX(2deg) scale(1.03); text-shadow: 2px 0 #00E5FF, -2px 0 #FF0055; }
-    100% { opacity:1; transform:none; text-shadow: 0 0 20px rgba(214,255,0,0.3); }
+    100% { opacity:1; transform:none; text-shadow: 0 0 20px rgba(196,30,58,0.35); }
   }
   .transmitted-anim { animation: transmitted-in 0.6s cubic-bezier(0.16,1,0.3,1) forwards; }
 
@@ -374,7 +498,6 @@ window.__SEEDS__   = seedJson;
   var submitBtn  = document.getElementById('submit-btn');
   var submitText = document.getElementById('submit-text');
   var submitSpin = document.getElementById('submit-spin');
-  var errMsg     = document.getElementById('err-msg');
   var prevImg    = document.getElementById('preview-img');
   var prevEmpty  = document.getElementById('preview-empty');
 
@@ -510,7 +633,7 @@ window.__SEEDS__   = seedJson;
   attachDrawEvents(cv, cv);
 
   /* ── Fullscreen ──────────────────────────────────────────────────────── */
-  var COLORS = ['#222222','#FFFFFF','#D6FF00','#00E5FF','#FF0055','#FF6B2C','#FFD700','#00C853','#2196F3','#9C27B0','#8B4513','#FFCD94','#FF69B4'];
+  var COLORS = ['#222222','#FFFFFF','#C41E3A','#00E5FF','#FF0055','#FF6B2C','#FFD700','#00C853','#2196F3','#9C27B0','#8B4513','#FFCD94','#FF69B4'];
   var SIZES_MAP = {S:3, M:8, L:16};
 
   function makeBtn(text, css, onclick) {
@@ -525,7 +648,7 @@ window.__SEEDS__   = seedJson;
     var b = document.createElement('button');
     b.style.cssText = 'width:20px;height:20px;border-radius:50%;border:2px solid transparent;cursor:pointer;background:' + c + ';flex-shrink:0;';
     if (c === '#FFFFFF' || c === '#FFCD94') b.style.boxShadow = '0 0 0 1px #333338';
-    if (isActive) b.style.cssText += 'transform:scale(1.3);box-shadow:0 0 0 2px #D6FF00,0 0 8px rgba(214,255,0,0.4);';
+    if (isActive) b.style.cssText += 'transform:scale(1.3);box-shadow:0 0 0 2px #C41E3A,0 0 8px rgba(196,30,58,0.55);';
     b.onclick = onclick;
     return b;
   }
@@ -617,19 +740,19 @@ window.__SEEDS__   = seedJson;
 
     function updateFsToolbar() {
       Object.keys(toolBtns).forEach(function(k) {
-        toolBtns[k].style.background = (fsTool === k) ? '#D6FF00' : 'transparent';
+        toolBtns[k].style.background = (fsTool === k) ? '#C41E3A' : 'transparent';
         toolBtns[k].style.color = (fsTool === k) ? '#000' : 'var(--text-primary)';
-        toolBtns[k].style.borderColor = (fsTool === k) ? '#D6FF00' : 'var(--border-color)';
+        toolBtns[k].style.borderColor = (fsTool === k) ? '#C41E3A' : 'var(--border-color)';
       });
       Object.keys(sizeBtns).forEach(function(k) {
         var active = fsSize === SIZES_MAP[k];
-        sizeBtns[k].style.background = active ? '#D6FF00' : 'transparent';
+        sizeBtns[k].style.background = active ? '#C41E3A' : 'transparent';
         sizeBtns[k].style.color = active ? '#000' : 'var(--text-primary)';
-        sizeBtns[k].style.borderColor = active ? '#D6FF00' : 'var(--border-color)';
+        sizeBtns[k].style.borderColor = active ? '#C41E3A' : 'var(--border-color)';
       });
       Object.keys(colorDots).forEach(function(c) {
         colorDots[c].style.transform = (c === fsColor && fsTool !== 'eraser') ? 'scale(1.3)' : 'scale(1)';
-        colorDots[c].style.boxShadow = (c === fsColor && fsTool !== 'eraser') ? '0 0 0 2px #D6FF00,0 0 8px rgba(214,255,0,0.4)' : (c === '#FFFFFF' || c === '#FFCD94' ? '0 0 0 1px #333338' : 'none');
+        colorDots[c].style.boxShadow = (c === fsColor && fsTool !== 'eraser') ? '0 0 0 2px #C41E3A,0 0 8px rgba(196,30,58,0.55)' : (c === '#FFFFFF' || c === '#FFCD94' ? '0 0 0 1px #333338' : 'none');
       });
       fsCanvas.style.cursor = fsTool === 'fill' ? 'cell' : 'crosshair';
     }
@@ -713,7 +836,11 @@ window.__SEEDS__   = seedJson;
   function renderGallery(items) {
     galleryLoading.style.display = 'none';
     artworkCount.textContent = '/' + String(items.length).padStart(2, '0');
-    if (items.length === 0) { galleryEmpty.style.display = ''; return; }
+    if (items.length === 0) {
+      galleryEmpty.style.display = '';
+      renderArchive([]);
+      return;
+    }
     galleryEmpty.style.display = 'none';
     galleryGrid.innerHTML = '';
     items.forEach(function(it, i){
@@ -722,7 +849,7 @@ window.__SEEDS__   = seedJson;
       d.innerHTML =
         '<img src="' + esc(it.image_data || it.image || '') + '" alt="' + esc(it.title) + '" loading="lazy" />' +
         '<div style="padding-top:0.75rem;">' +
-          '<p class="font-black text-sm" style="color:var(--text-primary);font-family:Syne;">' + esc(it.title) + '</p>' +
+          '<p class="font-black text-sm" style="color:var(--text-primary);font-family:Space Grotesk;">' + esc(it.title) + '</p>' +
           '<p class="font-mono text-xs" style="color:var(--text-secondary);margin-top:0.25rem;">by ' + esc(it.name) + '</p>' +
           (it.created_at || it.date ? '<p class="font-mono text-xs" style="color:var(--text-secondary);opacity:0.4;margin-top:0.25rem;">' + new Date(it.created_at || it.date).toLocaleDateString() + '</p>' : '') +
         '</div>';
@@ -730,6 +857,31 @@ window.__SEEDS__   = seedJson;
       setTimeout(function(){ d.classList.add('vis'); }, 50 * i);
     });
     galleryGrid.style.display = '';
+    renderArchive(items);
+  }
+
+  /* Archive mosaic — same items, denser view (Snippet 06b) */
+  function renderArchive(items) {
+    var grid  = document.getElementById('archive-grid');
+    var count = document.getElementById('archive-count');
+    if (!grid || !count) return;
+    grid.innerHTML = '';
+    items.forEach(function(it) {
+      var t = document.createElement('div');
+      t.className = 'archive-tile';
+      var date = it.created_at || it.date
+        ? new Date(it.created_at || it.date).toLocaleDateString(undefined, { month: 'short', day: '2-digit' }).toUpperCase()
+        : '';
+      t.innerHTML =
+        '<img src="' + esc(it.image_data || it.image || '') + '" alt="' + esc(it.title) + '" loading="lazy">' +
+        '<div class="date">' + date + '</div>' +
+        '<div class="ovl">' +
+          '<div class="t">' + esc(it.title) + '</div>' +
+          '<div class="a">— ' + esc(it.name) + '</div>' +
+        '</div>';
+      grid.appendChild(t);
+    });
+    count.textContent = String(items.length).padStart(2, '0');
   }
 
   async function loadGallery(prepend) {
@@ -739,7 +891,6 @@ window.__SEEDS__   = seedJson;
       var res = await sb.from('gallery_submissions').select('id, name, title, image_data, created_at').order('created_at', { ascending: false });
       if (!res.error && res.data) items = res.data;
     }
-    // Append seed data
     SEEDS.forEach(function(s){
       items.push({ id: 'seed', name: s.name, title: s.title, image_data: s.image, created_at: s.date });
     });
@@ -747,37 +898,71 @@ window.__SEEDS__   = seedJson;
     renderGallery(items);
   }
 
-  /* ── Submit ──────────────────────────────────────────────────────────── */
-  form.addEventListener('submit', async function(e){
-    e.preventDefault();
-    errMsg.style.display = 'none';
+  /* ── Submit (graceful errors + retry — Snippet 06a) ──────────────────── */
+  var errBox     = document.getElementById('err-box');
+  var errBody    = document.getElementById('err-body');
+  var errDismiss = document.getElementById('err-dismiss');
+  var errRetry   = document.getElementById('err-retry');
 
+  function showError(msg) {
+    if (!errBox || !errBody) return;
+    errBody.textContent = msg;
+    errBox.classList.add('show');
+  }
+  function hideError() {
+    if (errBox) errBox.classList.remove('show');
+  }
+  if (errDismiss) errDismiss.addEventListener('click', hideError);
+  if (errRetry)   errRetry.addEventListener('click', function(){ trySubmit(); });
+
+  async function trySubmit() {
+    hideError();
     var name  = document.getElementById('inp-name').value.trim();
     var title = document.getElementById('inp-title').value.trim();
-    if (!name || !title) { showErr('Fill in your name and artwork title.'); return; }
-    if (!drawn) { showErr('Draw something on the canvas first.'); return; }
-
-    var imageData = cv.toDataURL('image/jpeg', 0.35);
-    var sb = await getSB();
-    if (!sb) { showErr('Supabase not configured. Add credentials to .env'); return; }
+    if (!name)  return showError('Add your name first — even "Anonymous" works.');
+    if (!title) return showError('Give your piece a title before transmitting.');
+    if (!drawn) return showError('Draw something on the canvas first.');
 
     submitBtn.disabled = true;
     submitText.style.display = 'none';
     submitSpin.style.display = '';
 
-    var res = await sb.from('gallery_submissions').insert([{ name: name, title: title, image_data: imageData }]).select().single();
+    try {
+      var imageData = cv.toDataURL('image/jpeg', 0.45);
+      var sb = await getSB();
+      if (!sb) throw new Error('Supabase not configured — add credentials to .env');
+      var res = await sb.from('gallery_submissions')
+        .insert([{ name: name, title: title, image_data: imageData }])
+        .select().single();
+      if (res.error) throw new Error(res.error.message);
 
-    submitBtn.disabled = false;
-    submitText.style.display = '';
-    submitSpin.style.display = 'none';
+      form.style.display = 'none';
+      successBox.style.display = '';
+      loadGallery({
+        id: res.data?.id, name: name, title: title,
+        image_data: imageData, created_at: new Date().toISOString()
+      });
+      document.getElementById('gallery-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    } catch (err) {
+      var msg;
+      if (err instanceof TypeError) {
+        msg = 'Failed to reach the archive server. Check your network connection and try again.';
+      } else if (err && err.message && err.message.startsWith('HTTP')) {
+        msg = 'Server rejected the submission (' + err.message + '). Try again in a moment.';
+      } else {
+        msg = 'Submission failed: ' + (err && err.message ? err.message : 'Unknown error') + '.';
+      }
+      showError(msg);
+    } finally {
+      submitBtn.disabled = false;
+      submitText.style.display = '';
+      submitSpin.style.display = 'none';
+    }
+  }
 
-    if (res.error) { showErr('Submission failed: ' + res.error.message); return; }
-
-    form.style.display = 'none';
-    successBox.style.display = '';
-
-    loadGallery({ id: res.data?.id, name: name, title: title, image_data: imageData, created_at: new Date().toISOString() });
-    document.getElementById('gallery-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    trySubmit();
   });
 
   document.getElementById('draw-another-btn').onclick = function(){
@@ -790,11 +975,9 @@ window.__SEEDS__   = seedJson;
     document.getElementById('inp-title').value = '';
     successBox.style.display = 'none';
     form.style.display = '';
-    errMsg.style.display = 'none';
+    hideError();
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
-
-  function showErr(msg) { errMsg.textContent = msg; errMsg.style.display = ''; }
 
   /* ── Init ─────────────────────────────────────────────────────────────── */
   loadGallery(null);

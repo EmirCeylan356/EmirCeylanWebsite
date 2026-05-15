@@ -10,6 +10,11 @@ const works = [
     title: 'TEACHING ASSISTANT',
     subtitle: 'DSA 210: Data Science',
     description: 'Assisting Prof. Oznur Tastan and Ozgun Yargi. Mentoring students in ML.',
+    bullets: [
+      'Lead weekly office hours, debug Python notebooks live',
+      'EDA · K-anonymity · predictive modeling pipelines',
+      'STACK: scikit-learn · pandas · matplotlib',
+    ],
     details: `<p>Currently serving as a Teaching Assistant for DSA 210, I support students in mastering the foundational pillars of data science, including computational thinking, machine learning, and statistical inference.</p>
 <p>I lead weekly office hours to provide hands-on guidance with real-world data tools and techniques, helping students navigate complex topics such as exploratory data analysis (EDA), data privacy (K-anonymity), and predictive modeling.</p>
 <p>By bridging the gap between theoretical coursework and practical application, I assist my peers in developing the technical rigor necessary to solve diverse problems across healthcare, business, and social domains.</p>`,
@@ -21,6 +26,11 @@ const works = [
     title: 'UNDERGRADUATE RESEARCHER',
     subtitle: 'PURE - Sabancı University',
     description: 'Collaborating with Prof. Polat Göktaş on Explainable AI in Healthcare.',
+    bullets: [
+      '250+ publications analyzed via literature mining',
+      'Network analysis of XAI, clinician trust, governance',
+      'STACK: Python · NLP · bibliometric tooling',
+    ],
     details: `<p>During the Fall 2025-26 term, I conducted a comprehensive scientometric study analyzing over 250 global publications to map the evolving landscape of AI in healthcare.</p>
 <p>My research focused on the critical intersection of <strong>explainable AI (XAI)</strong>, clinician trust, and regulatory governance.</p>
 <p>By utilizing literature mining and network analysis, I identified key knowledge gaps and emerging trends necessary for developing trustworthy and clinically deployable AI systems.</p>
@@ -33,6 +43,11 @@ const works = [
     title: 'PROJECT LEAD',
     subtitle: 'Teknofest Medical AI',
     description: 'Leading multidisciplinary team to develop multimodal diagnostic tools.',
+    bullets: [
+      'DeepMyelinAI — CDS system for Multiple Sclerosis',
+      'Multimodal fusion: CSF biomarkers + genetic + clinical',
+      'STACK: Temporal Transformers · SHAP/LIME · McDonald 2024',
+    ],
     details: `<p>As the Project Lead for <strong>DeepMyelinAI</strong>, I head a multidisciplinary team developing an explainable AI-based clinical decision support system for <strong>Multiple Sclerosis (MS)</strong>.</p>
 <p>I oversee the integration of multimodal data—including CSF biomarkers, genetic risk profiles, and longitudinal clinical disability scores—into a unified machine learning framework designed for early diagnosis and disability progression prediction.</p>
 <p>My role involves managing the full development lifecycle: from engineering <strong>Temporal Transformer</strong> architectures for longitudinal tracking to implementing <strong>XAI layers (SHAP/LIME)</strong> to ensure clinical transparency.</p>
@@ -45,6 +60,11 @@ const works = [
     title: 'MACHINE LEARNING INTERN',
     subtitle: 'Amsterdam UMC',
     description: 'Developing AI models to reduce unnecessary sepsis testing in ER settings.',
+    bullets: [
+      'Optimize diagnostic triggers in emergency-room workflow',
+      'Target: reduce physician workload + healthcare costs',
+      'STACK: clinical ML · triage modeling',
+    ],
     details: `<p>Developing AI models to reduce unnecessary sepsis testing in Emergency Room settings.</p>
 <p>Focusing on clinical efficiency by optimizing diagnostic triggers to reduce physician workload and healthcare costs.</p>
 <p><em>Work In Progress...</em></p>`,
@@ -57,6 +77,11 @@ const works = [
     title: 'ML DEVELOPER',
     subtitle: 'Osteogenesis Imperfecta (OI) Pathogenicity Prediction',
     description: 'ENS 210: Bioinformatics Project. Surpassing SIFT and general-purpose diagnostic tools.',
+    bullets: [
+      'High-precision classifier for COL1A1 / COL1A2 variants',
+      'Outperformed SIFT + general-purpose predictors',
+      'STACK: ClinVar · cross-validation · feature engineering',
+    ],
     details: `<p>In this project, I developed a high-precision machine learning model to predict the pathogenicity of variants in the <strong>COL1A1</strong> and <strong>COL1A2</strong> genes, which are primary causes of Osteogenesis Imperfecta (OI) — a rare genetic disorder affecting bone fragility.</p>
 <p>Using a curated dataset from ClinVar, I engineered biologically meaningful features and trained multiple classifiers, ultimately achieving performance that surpassed established tools such as <strong>SIFT</strong> and general-purpose diagnostic predictors.</p>
 <p>The pipeline included variant filtering, feature selection, cross-validation, and interpretability analysis — resulting in a reproducible and clinically relevant bioinformatics workflow.</p>
@@ -69,6 +94,11 @@ const works = [
     title: 'RESEARCH CONTRIBUTOR',
     subtitle: 'AI-Engineered Enzymes for Polymer Digestion',
     description: 'Molecular Biology Research. Optimizing PETase enzymes for sustainable plastic degradation.',
+    bullets: [
+      'Computational mutation screening for PETase variants',
+      'Targeting thermostability + catalytic efficiency',
+      'STACK: protein structure analysis · synthetic biology',
+    ],
     details: `<p>Under the supervision of <strong>İleyna Sevde Üvak</strong>, I contributed to a molecular biology research project focused on computationally optimizing <strong>PETase enzymes</strong> for efficient degradation of PET plastics.</p>
 <p>I applied computational biology techniques — including protein structure analysis and mutation screening — to identify candidate enzyme variants with improved thermostability and catalytic efficiency.</p>
 <p>This work sits at the intersection of synthetic biology and environmental sustainability, exploring how AI-driven enzyme engineering can accelerate the development of biological solutions to plastic pollution.</p>`,
@@ -80,6 +110,11 @@ const works = [
     title: 'BOARD MEMBER & HEAD OF BIOTECH',
     subtitle: 'Sabancı University Deep Technologies Club',
     description: 'Leading the BioTech division and fostering a high-tech community through hands-on events.',
+    bullets: [
+      'Workshops on CRISPR, synthetic biology, AI drug discovery',
+      'Cross-disciplinary CS × biology × engineering projects',
+      'STACK: community-building · research mentorship',
+    ],
     details: `<p>As a Board Member and the Head of the <strong>BioTech Division</strong> at Sabancı University's Deep Technologies Club, I lead initiatives that bridge cutting-edge biology with emerging technology.</p>
 <p>My role involves organizing workshops, seminars, and hands-on projects that expose students to topics like CRISPR, synthetic biology, computational genomics, and AI-driven drug discovery.</p>
 <p>I also coordinate interdisciplinary collaborations between CS, biology, and engineering students — cultivating a community of innovators passionate about the future of life sciences and deep tech.</p>`,
@@ -101,46 +136,34 @@ const skillCategories = [
   <Header />
 
   <main>
-    <!-- ═══ HERO ══════════════════════════════════════════════════════════════ -->
-    <section class="min-h-screen flex items-center justify-center px-4 pt-20 pb-10 relative overflow-hidden">
-      <!-- Scanline sweep effect -->
-      <div class="hero-scanline"></div>
+    <!-- ═══ HERO — Crimson neural scramble ════════════════════════════════════ -->
+    <section class="hero-section" data-screen-label="01 hero">
+      <div class="hero-inner">
 
-      <div class="max-w-5xl mx-auto text-center relative z-10">
-
-        <!-- System ID tag -->
-        <div class="hero-tag inline-flex items-center gap-3 mb-8 px-4 py-2 font-mono text-xs"
-          style="background:var(--bg-surface); border:1px solid var(--border-color); color:var(--text-secondary); letter-spacing:0.14em; opacity:0;">
-          <span style="width:6px; height:6px; border-radius:50%; background:var(--accent); display:inline-block; box-shadow:0 0 6px var(--accent);"></span>
-          SYS_ID: EC_2027 — ISTANBUL / TR — ONLINE
+        <div class="status" id="hero-status-wrap">
+          <span class="pulse" aria-hidden="true"></span>
+          <span id="hero-status">SYS_ID: EC_2027 — ISTANBUL / TR — ONLINE</span>
         </div>
 
-        <div class="hero-name-frame">
-          <h1 class="kinetic-text font-black -mt-2 leading-none" style="font-size:clamp(5rem,18vw,14rem); color:var(--text-primary);">
-            <span class="hero-line-1">EMİR</span><br/>
-            <span class="hero-line-2 glitch-accent" style="color:var(--accent);">CEYLAN</span>
+        <div class="hero-name-frame" id="name-wrap">
+          <h1 class="hero-name" aria-label="EMIR CEYLAN">
+            <span class="ln ln-1" id="ln1" data-text="EMİR"></span>
+            <span class="ln ln-2" id="ln2" data-text="CEYLAN"></span>
           </h1>
         </div>
 
-        <p class="hero-subtitle text-sm md:text-base font-bold max-w-2xl mx-auto mb-10 font-mono px-5 py-3 mt-4"
-          style="background:var(--bg-surface); color:var(--text-secondary); border:1px solid var(--border-color); letter-spacing:0.1em; display:inline-block; opacity:0;">
-          CS STUDENT — AI FOR HEALTHCARE
-        </p>
-
-        <div class="hero-ctas flex flex-wrap gap-4 justify-center" style="opacity:0;">
-          <a href="#work" class="hero-btn-primary px-8 py-4 font-bold text-sm font-mono cut-corner"
-            style="background:var(--accent); color:#000; border:1px solid var(--accent); letter-spacing:0.1em;">
-            MY WORK →
-          </a>
-          <a href="#contact" class="hero-btn-outline px-8 py-4 font-bold text-sm font-mono cut-corner"
-            style="background:transparent; color:var(--text-primary); border:1px solid var(--border-color); letter-spacing:0.1em;">
-            CONTACT
-          </a>
+        <div class="hero-subtitle" id="hero-subtitle">
+          <span class="bullet"></span>
+          <span>CS STUDENT — AI FOR HEALTHCARE</span>
+          <span class="bullet"></span>
         </div>
 
-        <div class="hero-scroll-hint mt-16" style="color:var(--text-secondary); opacity:0;">
-          <span class="text-2xl animate-bounce block">↓</span>
+        <div class="hero-ctas" id="hero-ctas">
+          <a href="#work" class="btn btn-primary">MY WORK <span aria-hidden="true">→</span></a>
+          <a href="#contact" class="btn btn-secondary">CONTACT</a>
         </div>
+
+        <div class="scroll-cue" id="scroll-cue">SCROLL</div>
       </div>
     </section>
 
@@ -187,11 +210,13 @@ const skillCategories = [
             <!-- Stats inside left panel -->
             <div class="mt-8 flex flex-col gap-4" style="border-top:1px solid var(--border-color); padding-top:20px;">
               <div>
-                <div class="stat-num font-black text-2xl" style="color:var(--accent);">2027</div>
+                <div class="stat-num font-black text-2xl" style="color:var(--accent);"
+                     data-counter="2027">2027</div>
                 <div class="font-mono text-xs mt-1" style="color:var(--text-secondary); letter-spacing:0.1em;">EXPECTED GRAD</div>
               </div>
               <div>
-                <div class="stat-num font-black text-2xl" style="color:var(--accent);">07+</div>
+                <div class="stat-num font-black text-2xl" style="color:var(--accent);"
+                     data-counter="7" data-pad="2" data-suffix="+">07+</div>
                 <div class="font-mono text-xs mt-1" style="color:var(--text-secondary); letter-spacing:0.1em;">PROJECTS</div>
               </div>
               <div>
@@ -228,7 +253,8 @@ const skillCategories = [
           <p class="font-mono text-xs" style="color:var(--text-secondary); letter-spacing:0.15em; align-self:center;">02 /</p>
           <h2 class="text-5xl md:text-7xl font-black kinetic-text work-heading" style="color:var(--text-primary);">WORK</h2>
           <div class="section-line flex-1 h-px" style="background:var(--border-color);"></div>
-          <span class="text-xl font-black font-mono" style="color:var(--text-secondary);">/07</span>
+          <span class="text-xl font-black font-mono" style="color:var(--text-secondary);"
+                data-counter="7" data-prefix="/" data-pad="2">/07</span>
         </div>
 
         <div class="grid md:grid-cols-2 gap-4">
@@ -242,7 +268,18 @@ const skillCategories = [
               <p class="text-xs font-mono font-bold mb-2" style="color:var(--text-secondary); letter-spacing:0.12em;">{work.period}</p>
               <span class="work-title text-lg font-black mb-1 block" style="color:var(--text-primary);">{work.title}</span>
               <p class="font-bold mb-3 text-sm" style="color:var(--accent);">{work.subtitle}</p>
-              <p class="text-sm" style="color:var(--text-secondary); opacity:0.9;">{work.description}</p>
+              <p class="desc text-sm" style="color:var(--text-secondary); opacity:0.9;">{work.description}</p>
+
+              <!-- Hidden bullets revealed on hover -->
+              <div class="bullets" aria-hidden="true">
+                <div>
+                  <ul>
+                    {work.bullets.map((b) => <li>{b}</li>)}
+                  </ul>
+                </div>
+              </div>
+
+              <div class="hint">HOVER FOR DETAILS</div>
 
               <div class="work-details hidden">
                 <div class="work-content text-sm" set:html={work.details} />
@@ -270,7 +307,8 @@ const skillCategories = [
           <p class="font-mono text-xs" style="color:var(--text-secondary); letter-spacing:0.15em; align-self:center;">03 /</p>
           <h2 class="text-5xl md:text-7xl font-black kinetic-text skills-heading" style="color:var(--text-primary);">SKILLS</h2>
           <div class="section-line flex-1 h-px" style="background:var(--border-color);"></div>
-          <span class="text-xl font-black font-mono" style="color:var(--text-secondary);">/06</span>
+          <span class="text-xl font-black font-mono" style="color:var(--text-secondary);"
+                data-counter="6" data-prefix="/" data-pad="2">/06</span>
         </div>
 
         <div class="flex flex-col max-w-2xl" style="border:1px solid var(--border-color);">
@@ -321,52 +359,232 @@ const skillCategories = [
     100% { transform: translateX(-50%); }
   }
 
-  /* ── Hero buttons ────────────────────────────────────────────────────────── */
-  .hero-btn-primary {
-    transition: background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+  /* ─── HERO — Crimson neural variant ────────────────────────────────────── */
+  .hero-section {
+    position: relative;
+    z-index: 10;
+    min-height: 100vh;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 80px 32px 40px;
   }
-  .hero-btn-primary:hover {
-    background: transparent !important;
-    color: var(--accent) !important;
-    border-color: var(--accent) !important;
-    box-shadow: 0 0 16px var(--accent-glow);
+  .hero-inner {
+    width: 100%;
+    max-width: 1200px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    position: relative;
   }
-  .hero-btn-outline {
-    transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+
+  /* Status bar */
+  .status {
+    display: inline-flex; align-items: center; gap: 12px;
+    padding: 9px 16px 9px 14px;
+    border: 1px solid rgba(170, 170, 170, 0.18);
+    background: rgba(10, 10, 10, 0.55);
+    backdrop-filter: blur(8px);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text-secondary);
+    letter-spacing: 0.14em;
+    margin-bottom: 36px;
+    opacity: 0;
+    transition: opacity .35s ease;
   }
-  .hero-btn-outline:hover {
-    background: var(--accent) !important;
-    color: #000 !important;
-    border-color: var(--accent) !important;
-    box-shadow: 0 0 16px var(--accent-glow);
+  .status.in { opacity: 1; }
+  .status .pulse {
+    position: relative;
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 0 0 rgba(196, 30, 58, 0.7);
+    animation: heartbeat 1.5s ease-in-out infinite;
+  }
+  .status .caret {
+    display: inline-block; width: 7px; height: 12px;
+    background: var(--accent); margin-left: -2px;
+    animation: tw-blink 0.85s steps(2) infinite;
+  }
+
+  /* Name */
+  .hero-name {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: clamp(5rem, 17vw, 13.5rem);
+    line-height: 0.88;
+    letter-spacing: -0.025em;
+    text-transform: uppercase;
+    margin: 0;
+  }
+  .hero-name .ln { display: block; position: relative; }
+  .hero-name .ln-1 { color: var(--text-primary); }
+  .hero-name .ln-2 {
+    color: var(--accent);
+    text-shadow: 0 0 24px rgba(196, 30, 58, 0.35), 0 0 60px rgba(196, 30, 58, 0.15);
+  }
+  .hero-name .ch { display: inline-block; position: relative; }
+  .hero-name .ch.sp { width: 0.28em; }
+
+  /* Chromatic aberration on CEYLAN */
+  .ln-2.aberrate {
+    animation: aberrate 600ms cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+  }
+  .ln-2 .ch::before, .ln-2 .ch::after {
+    content: attr(data-ch);
+    position: absolute; left: 0; top: 0;
+    opacity: 0;
+    pointer-events: none;
+  }
+  .ln-2 .ch::before { color: var(--accent-bri); transform: translateX(0); }
+  .ln-2 .ch::after  { color: #0FB3D1;            transform: translateX(0); mix-blend-mode: screen; }
+  .ln-2.aberrate .ch::before { animation: aber-r 600ms cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards; }
+  .ln-2.aberrate .ch::after  { animation: aber-b 600ms cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards; }
+  @keyframes aberrate {
+    0%   { filter: blur(0.5px); }
+    40%  { filter: blur(0.3px); }
+    100% { filter: blur(0); }
+  }
+  @keyframes aber-r {
+    0%   { opacity: 0; transform: translateX(0); }
+    30%  { opacity: 0.85; transform: translateX(-4px); }
+    70%  { opacity: 0.7;  transform: translateX(-4px); }
+    100% { opacity: 0;    transform: translateX(0); }
+  }
+  @keyframes aber-b {
+    0%   { opacity: 0; transform: translateX(0); }
+    30%  { opacity: 0.85; transform: translateX(4px); }
+    70%  { opacity: 0.7;  transform: translateX(4px); }
+    100% { opacity: 0;    transform: translateX(0); }
+  }
+
+  /* Subtitle */
+  .hero-subtitle {
+    margin-top: 36px;
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 11px 20px;
+    border: 1px solid rgba(170, 170, 170, 0.16);
+    background: rgba(10, 10, 10, 0.45);
+    backdrop-filter: blur(6px);
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 500;
+    font-size: 12px;
+    letter-spacing: 0.18em;
+    color: var(--text-primary);
+    text-transform: uppercase;
+    opacity: 0;
+    transform: translateY(12px);
+    transition: opacity .5s ease, transform .5s ease;
+  }
+  .hero-subtitle.in { opacity: 1; transform: translateY(0); }
+  .hero-subtitle .bullet {
+    width: 5px; height: 5px; border-radius: 50%;
+    background: var(--accent);
+    flex-shrink: 0;
+  }
+
+  /* CTAs */
+  .hero-ctas {
+    margin-top: 28px;
+    display: inline-flex; gap: 18px;
+    align-items: center;
+    opacity: 0;
+    transform: translateY(12px);
+    transition: opacity .5s ease, transform .5s ease;
+  }
+  .hero-ctas.in { opacity: 1; transform: translateY(0); }
+
+  .btn {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 14px 26px;
+    cursor: pointer;
+    transition: all 300ms ease;
+    display: inline-flex; align-items: center; gap: 10px;
+    border: 1px solid transparent;
+  }
+  .btn-primary {
+    color: var(--accent);
+    border-color: var(--accent);
+    background: transparent;
+  }
+  .btn-primary:hover {
+    background: var(--accent);
+    color: #fff;
+    box-shadow: 0 0 24px rgba(196, 30, 58, 0.45);
+  }
+  .btn-secondary {
+    color: var(--text-primary);
+    padding: 14px 4px;
+    border: none;
+    background: transparent;
+    position: relative;
+  }
+  .btn-secondary::after {
+    content: '';
+    position: absolute;
+    left: 4px; right: 4px; bottom: 10px;
+    height: 1px; background: var(--text-primary);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform .3s ease;
+  }
+  .btn-secondary:hover::after { transform: scaleX(1); }
+
+  /* Scroll cue */
+  .scroll-cue {
+    position: absolute;
+    bottom: 32px; left: 50%;
+    transform: translateX(-50%);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    color: var(--text-secondary);
+    opacity: 0;
+    transition: opacity .5s ease;
+    pointer-events: none;
+  }
+  .scroll-cue.in { opacity: 0.6; }
+  .scroll-cue::after {
+    content: '';
+    display: block;
+    width: 1px; height: 24px;
+    background: linear-gradient(180deg, var(--text-secondary), transparent);
+    margin: 8px auto 0;
+    animation: drift 2.2s ease-in-out infinite;
+  }
+  @keyframes drift {
+    0%, 100% { transform: translateY(0); opacity: 0.6; }
+    50%      { transform: translateY(6px); opacity: 0.15; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .status, .hero-subtitle, .hero-ctas, .scroll-cue {
+      opacity: 1 !important; transform: none !important;
+    }
   }
 
   /* ── About section ───────────────────────────────────────────────────────── */
   .about-section { background: var(--bg-base); }
   .about-label-panel { min-height: 100%; }
 
-  /* ── Work card hover hint ────────────────────────────────────────────────── */
-  .work-card::after {
-    content: 'CLICK FOR DETAILS →';
-    position: absolute;
-    bottom: 1rem; right: 1rem;
-    font-size: 0.65rem;
-    font-family: 'JetBrains Mono', monospace;
-    color: var(--text-secondary);
-    letter-spacing: 0.1em;
-    opacity: 0;
-    transition: opacity 0.2s;
-  }
-  .work-card:hover::after { opacity: 0.6; }
-
+  /* ── Work card WIP state ────────────────────────────────────────────────── */
   .work-card.wip-hover {
     border-color: var(--accent) !important;
     box-shadow: 0 0 12px var(--accent-glow) !important;
   }
   .work-card.wip-hover .text-xs,
-  .work-card.wip-hover .text-sm,
+  .work-card.wip-hover .desc,
   .work-card.wip-hover .font-bold,
-  .work-card.wip-hover .work-title { opacity: 0; }
+  .work-card.wip-hover .work-title,
+  .work-card.wip-hover .bullets,
+  .work-card.wip-hover .hint { opacity: 0; }
   .work-card.wip-hover::before {
     content: 'WORK IN PROGRESS...';
     position: absolute;
@@ -464,14 +682,14 @@ const skillCategories = [
         position: fixed;
         width: ${size}px;
         height: ${size}px;
-        background: #D6FF00;
+        background: #C41E3A;
         border-radius: 50%;
         left: ${originX}px;
         top: ${originY}px;
         pointer-events: none;
         z-index: 9999;
         transform: translate(-50%, -50%);
-        box-shadow: 0 0 8px rgba(214,255,0,0.6);
+        box-shadow: 0 0 8px rgba(196,30,58,0.7);
       `;
       document.body.appendChild(blob);
       const tx = Math.cos(angle) * distance;
@@ -534,70 +752,126 @@ const skillCategories = [
   });
 
   // ── GSAP Entrance + Scroll Animations ──────────────────────────────────────
-  (function() {
-    // Fallback: if GSAP doesn't load, reveal everything
-    function revealAll() {
-      document.querySelectorAll('.hero-tag, .hero-subtitle, .hero-ctas, .hero-scroll-hint').forEach(el => {
-        el.style.opacity = '1';
-      });
+  /* Crimson hero name scramble + chromatic aberration */
+  (function nameReveal() {
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const SCRAMBLE = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789#@&%*+={}<>/';
+
+    function splitInto(node) {
+      const text = node.dataset.text || '';
+      node.innerHTML = '';
+      const spans = [];
+      for (const ch of text) {
+        const s = document.createElement('span');
+        s.className = 'ch' + (ch === ' ' ? ' sp' : '');
+        s.setAttribute('data-ch', ch);
+        s.textContent = ch === ' ' ? ' ' : ch;
+        node.appendChild(s);
+        spans.push({ el: s, final: ch });
+      }
+      return spans;
     }
 
-    if (typeof gsap === 'undefined') { revealAll(); return; }
+    function scramble(spans, baseDelay) {
+      const DUR = 1200, STG = 60, TICK = 45;
+      spans.forEach((s, idx) => {
+        if (s.final === ' ') return;
+        const start = baseDelay + idx * STG;
+        setTimeout(() => {
+          if (reduced) { s.el.textContent = s.final; return; }
+          const resolveAtAbs = performance.now() + DUR;
+          const interval = setInterval(() => {
+            if (performance.now() >= resolveAtAbs) {
+              clearInterval(interval);
+              s.el.textContent = s.final;
+              return;
+            }
+            s.el.textContent = SCRAMBLE[Math.floor(Math.random() * SCRAMBLE.length)];
+          }, TICK);
+        }, start);
+      });
+      return baseDelay + (spans.length - 1) * STG + DUR;
+    }
+
+    const ln1 = document.getElementById('ln1');
+    const ln2 = document.getElementById('ln2');
+    if (!ln1 || !ln2) return;
+    const ln1Spans = splitInto(ln1);
+    const ln2Spans = splitInto(ln2);
+
+    if (reduced) {
+      ln1Spans.forEach(s => s.el.textContent = s.final);
+      ln2Spans.forEach(s => s.el.textContent = s.final);
+      document.getElementById('name-wrap')?.classList.add('framed');
+    } else {
+      scramble(ln1Spans, 0);
+      const e2 = scramble(ln2Spans, 100);
+      const aberrAt = e2 + 40;
+      setTimeout(() => {
+        ln2.classList.add('aberrate');
+        setTimeout(() => ln2.classList.remove('aberrate'), 700);
+        document.getElementById('name-wrap')?.classList.add('framed');
+      }, aberrAt);
+    }
+
+    ln2.addEventListener('mouseenter', () => {
+      if (reduced || ln2.classList.contains('aberrate')) return;
+      ln2.classList.add('aberrate');
+      setTimeout(() => ln2.classList.remove('aberrate'), 650);
+    });
+  })();
+
+  /* Status typewriter */
+  (function statusTypewriter() {
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const el = document.getElementById('hero-status');
+    const TARGET = 'SYS_ID: EC_2027 — ISTANBUL / TR — ONLINE';
+    if (!el) return;
+    if (reduced) { el.textContent = TARGET; return; }
+
+    const TOTAL = 600;
+    el.textContent = '';
+    let i = 0;
+    function tick() {
+      i++;
+      el.textContent = TARGET.slice(0, i);
+      if (i < TARGET.length) {
+        const dt = TOTAL / TARGET.length + (Math.random() - 0.5) * 18;
+        setTimeout(tick, dt);
+      } else {
+        const caret = document.createElement('span');
+        caret.className = 'caret';
+        el.parentElement?.appendChild(caret);
+      }
+    }
+    setTimeout(tick, 400);
+  })();
+
+  /* Cinematic load sequence */
+  (function loadSequence() {
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const $ = (id) => document.getElementById(id);
+    const els = {
+      status: $('hero-status-wrap'),
+      sub:    $('hero-subtitle'),
+      ctas:   $('hero-ctas'),
+      cue:    $('scroll-cue'),
+    };
+    if (reduced) {
+      Object.values(els).forEach(e => e?.classList.add('in'));
+      return;
+    }
+    setTimeout(() => els.status?.classList.add('in'),  400);
+    setTimeout(() => els.sub?.classList.add('in'),    1400);
+    setTimeout(() => els.ctas?.classList.add('in'),   1600);
+    setTimeout(() => els.cue?.classList.add('in'),    1900);
+  })();
+
+  /* GSAP scroll-trigger animations */
+  (function() {
+    if (typeof gsap === 'undefined') return;
 
     // ── Character split utility ───────────────────────────────────────────
-    function splitToChars(el) {
-      if (!el) return [];
-      const text = el.textContent;
-      el.innerHTML = [...text].map(ch =>
-        `<span class="hero-char">${ch === ' ' ? '\u00A0' : ch}</span>`
-      ).join('');
-      return Array.from(el.querySelectorAll('.hero-char'));
-    }
-
-    const line1  = document.querySelector('.hero-line-1');
-    const chars1 = splitToChars(line1);
-
-    // ── Hero entrance timeline ────────────────────────────────────────────
-    const tl = gsap.timeline({ defaults: { ease: 'power4.out' } });
-
-    tl.from('.hero-tag', {
-        opacity: 0, y: -18, duration: 0.55,
-        onComplete: () => { document.querySelector('.hero-tag').style.opacity = ''; }
-      })
-      .from(chars1, {
-        opacity: 0,
-        y: 90,
-        rotationX: -70,
-        stagger: 0.055,
-        duration: 0.75,
-        transformPerspective: 500,
-        transformOrigin: 'bottom center',
-      }, '-=0.25')
-      .from('.hero-line-2', {
-        opacity: 0,
-        y: -70,
-        rotationX: 60,
-        duration: 0.75,
-        transformPerspective: 500,
-        transformOrigin: 'top center',
-        onComplete: () => {
-          // Activate corner brackets after name is revealed
-          document.querySelector('.hero-name-frame')?.classList.add('framed');
-        }
-      }, '-=0.5')
-      .from('.hero-subtitle', {
-        opacity: 0, scaleX: 0.5, duration: 0.45,
-        transformOrigin: 'center',
-        onComplete: () => { document.querySelector('.hero-subtitle').style.opacity = ''; }
-      }, '-=0.2')
-      .from('.hero-ctas', {
-        opacity: 0, y: 22, duration: 0.45,
-        onComplete: () => { document.querySelector('.hero-ctas').style.opacity = ''; }
-      }, '-=0.15')
-      .from('.hero-scroll-hint', {
-        opacity: 0, duration: 0.35,
-        onComplete: () => { document.querySelector('.hero-scroll-hint').style.opacity = ''; }
-      });
 
     // ── Section line grow ─────────────────────────────────────────────────
     gsap.utils.toArray('.section-line').forEach(line => {
@@ -616,11 +890,6 @@ const skillCategories = [
     gsap.from('#about .panel', {
       opacity: 0, y: 45, stagger: 0.15, duration: 0.7, ease: 'power3.out',
       scrollTrigger: { trigger: '#about', start: 'top 72%' }
-    });
-
-    gsap.from('.stat-num', {
-      opacity: 0, scale: 0.4, duration: 0.55, stagger: 0.12, ease: 'back.out(1.7)',
-      scrollTrigger: { trigger: '#about', start: 'top 65%' }
     });
 
     // ── Work section ──────────────────────────────────────────────────────

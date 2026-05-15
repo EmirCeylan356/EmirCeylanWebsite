@@ -18,13 +18,17 @@ const { title } = Astro.props;
     <title>{title}</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=Inter:wght@400;500;600;800&family=JetBrains+Mono:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500;700&family=Caveat:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Syne:wght@400;700;800&family=Inter:wght@400;500;600;800&family=JetBrains+Mono:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500;700&family=Caveat:wght@400;600&display=swap" rel="stylesheet">
   </head>
   <body class="min-h-screen" style="background:var(--bg-base); color:var(--text-primary);">
+    <!-- Medical-chart grid (static, faint) -->
     <div class="fixed inset-0 grid-bg pointer-events-none z-0"></div>
 
-    <!-- DNA Helix canvas — sits behind all solid panels -->
-    <canvas id="dna-canvas" class="fixed inset-0 pointer-events-none z-[1]" style="mix-blend-mode: screen; opacity: 0.22;"></canvas>
+    <!-- Neural particle network — sits behind all solid panels -->
+    <canvas id="dna-canvas" class="fixed inset-0 pointer-events-none z-[1]"></canvas>
+
+    <!-- Soft vignette: dims edges so content panels read crisp -->
+    <div class="fixed inset-0 pointer-events-none z-[2]" style="background:radial-gradient(ellipse at center, transparent 55%, rgba(0,0,0,0.55) 100%);"></div>
 
     <div id="main-content" class="relative z-10 min-h-screen flex flex-col">
       <slot />
@@ -38,200 +42,290 @@ const { title } = Astro.props;
         gsap.registerPlugin(ScrollTrigger);
       }
 
-      // ── DNA Helix → Code Rain canvas background ──────────────────────────
-      (function() {
+      // ── Neural particle field — replaces the old DNA helix ─────────────
+      (function neuralField() {
         const cv = document.getElementById('dna-canvas');
         if (!cv) return;
         const ctx = cv.getContext('2d');
+        const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        const isMobile = window.matchMedia('(max-width: 800px), (pointer: coarse)').matches;
 
-        let W, H;
+        const N_PARTICLES = isMobile ? 280 : 720;
+        const N_HUBS      = isMobile ? 8  : 20;
+        const LINK_DIST     = 110;
+        const HUB_LINK_DIST = 220;
+        const SYNAPSE_DIST  = 460;
+        const MOUSE_RADIUS  = 150;
+        const MOUSE_FORCE   = 1.6;
+        const SPRING        = 0.014;
+        const FRICTION      = 0.92;
+        const DRIFT         = 0.18;
+
+        let W = 0, H = 0;
+        const DPR = Math.max(1, Math.min(window.devicePixelRatio || 1, 2));
         function resize() {
-          W = cv.width  = window.innerWidth;
-          H = cv.height = window.innerHeight;
-          initRain();
+          W = cv.clientWidth  = window.innerWidth;
+          H = cv.clientHeight = window.innerHeight;
+          cv.width  = Math.floor(W * DPR);
+          cv.height = Math.floor(H * DPR);
+          ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
         }
+        resize();
         window.addEventListener('resize', resize);
 
-        // ── scroll progress (0→1) ─────────────────────────────────────────
+        const mouse = { x: -9999, y: -9999, active: false };
+        if (!isMobile) {
+          window.addEventListener('pointermove', (e) => {
+            mouse.x = e.clientX; mouse.y = e.clientY; mouse.active = true;
+          }, { passive: true });
+          window.addEventListener('pointerleave', () => {
+            mouse.active = false; mouse.x = -9999; mouse.y = -9999;
+          });
+        }
+
+        // Scroll progress 0→1 for global alpha fade
         let scrollP = 0;
         window.addEventListener('scroll', () => {
           const max = document.documentElement.scrollHeight - window.innerHeight;
           scrollP = max > 0 ? Math.min(window.scrollY / max, 1) : 0;
         }, { passive: true });
 
-        // ── Code rain columns ─────────────────────────────────────────────
-        const CHARS = 'ATCGATCG01010101{}[]();=></>const let fn'.split('');
-        let cols = [];
-        function initRain() {
-          cols = [];
-          const spacing = 28;
-          const n = Math.floor(W / spacing);
-          for (let i = 0; i < n; i++) {
-            cols.push({
-              x: i * spacing + spacing / 2,
-              y: Math.random() * H,
-              speed: 0.8 + Math.random() * 1.4,
-              trail: Math.floor(10 + Math.random() * 14),
-              chars: Array.from({ length: 24 }, () => CHARS[Math.floor(Math.random() * CHARS.length)]),
-              tick: 0,
-            });
-          }
-        }
-
-        function drawRain(alpha) {
-          if (alpha <= 0) return;
-          cols.forEach(col => {
-            col.y += col.speed;
-            if (col.y > H + col.trail * 22) col.y = -col.trail * 22;
-            col.tick++;
-            if (col.tick % 6 === 0) {
-              const idx = Math.floor(Math.random() * col.chars.length);
-              col.chars[idx] = CHARS[Math.floor(Math.random() * CHARS.length)];
-            }
-            col.chars.forEach((ch, i) => {
-              const y = col.y - i * 22;
-              if (y < 0 || y > H) return;
-              const fade = 1 - i / col.trail;
-              const bright = i === 0 ? 1 : fade * 0.85;
-              ctx.globalAlpha = alpha * bright;
-              // Lead char: bright white-green; trail: dim green
-              ctx.fillStyle = i === 0 ? '#c8d0d8' : '#6a7a8a';
-              if (i === 0) {
-                ctx.shadowColor = '#00E5FF';
-                ctx.shadowBlur  = 6;
-              } else {
-                ctx.shadowBlur = 0;
-              }
-              ctx.font = `bold ${i === 0 ? 17 : 14}px monospace`;
-              ctx.fillText(ch, col.x, y);
-            });
+        const particles = [];
+        for (let i = 0; i < N_PARTICLES; i++) {
+          const x = -40 + Math.random() * (W + 80);
+          const y = -40 + Math.random() * (H + 80);
+          particles.push({
+            hx: x, hy: y, x, y,
+            vx: (Math.random() - 0.5) * DRIFT,
+            vy: (Math.random() - 0.5) * DRIFT,
+            r: 1.1 + Math.random() * 0.9,
+            hub: false,
+            phase: Math.random() * Math.PI * 2,
           });
-          ctx.shadowBlur = 0;
         }
 
-        // ── DNA Helix ─────────────────────────────────────────────────────
-        let time = 0;
-
-        function drawHelix(alpha) {
-          if (alpha <= 0) return;
-          const cx   = W / 2;
-          const amp  = Math.min(W * 0.14, 145);
-          const freq = 2.8;
-          const segs = 200;
-          const rot  = time * 0.55;
-
-          const s1 = [], s2 = [];
-          for (let i = 0; i <= segs; i++) {
-            const t     = i / segs;
-            const y     = -10 + t * (H + 20);
-            const angle = t * Math.PI * 2 * freq + rot;
-            const cosA  = Math.cos(angle);
-            const depth = (cosA + 1) / 2; // 0 = back, 1 = front
-            s1.push({ x: cx + amp * cosA, y, depth });
-            s2.push({ x: cx - amp * cosA, y, depth: 1 - depth });
+        const hubsList = [];
+        {
+          const cols = Math.max(3, Math.round(Math.sqrt(N_HUBS * (W / Math.max(1, H)))));
+          const rows = Math.max(2, Math.ceil(N_HUBS / cols));
+          const cellW = W / cols, cellH = H / rows;
+          let placed = 0;
+          outer: for (let r = 0; r < rows; r++) {
+            for (let c = 0; c < cols; c++) {
+              if (placed >= N_HUBS) break outer;
+              const cx = (c + 0.5) * cellW + (Math.random() - 0.5) * cellW * 0.55;
+              const cy = (r + 0.5) * cellH + (Math.random() - 0.5) * cellH * 0.55;
+              let best = -1, bestD = Infinity;
+              for (let i = 0; i < particles.length; i++) {
+                const p = particles[i]; if (p.hub) continue;
+                const dx = p.hx - cx, dy = p.hy - cy;
+                const d2 = dx*dx + dy*dy;
+                if (d2 < bestD) { bestD = d2; best = i; }
+              }
+              if (best >= 0) {
+                const p = particles[best];
+                p.hub = true;
+                p.r = 2.4 + Math.random() * 1.6;
+                hubsList.push(p);
+                placed++;
+              }
+            }
           }
+        }
 
-          ctx.lineCap  = 'round';
-          ctx.shadowBlur = 0;
-
-          // Collect all micro-segments from both strands, sort back→front
-          const allSegs = [];
-          for (let i = 0; i < segs; i++) {
-            const d1 = (s1[i].depth + s1[i+1].depth) / 2;
-            const d2 = (s2[i].depth + s2[i+1].depth) / 2;
-            allSegs.push({ p: s1[i], q: s1[i+1], d: d1 });
-            allSegs.push({ p: s2[i], q: s2[i+1], d: d2 });
+        const BIN = Math.max(LINK_DIST, HUB_LINK_DIST);
+        let bins = new Map();
+        function binKey(x, y) { return ((x / BIN) | 0) + ',' + ((y / BIN) | 0); }
+        function rebuildBins() {
+          bins = new Map();
+          for (let i = 0; i < particles.length; i++) {
+            const p = particles[i];
+            const k = binKey(p.x, p.y);
+            let b = bins.get(k);
+            if (!b) { b = []; bins.set(k, b); }
+            b.push(i);
           }
-          allSegs.sort((a, b) => a.d - b.d); // painter's algorithm
+        }
 
-          // ── Rungs ─────────────────────────────────────────────────────────
-          const BASES = ['A','T','G','C','A','T','G','C'];
-          for (let i = 0; i <= segs; i += 5) {
-            const a = s1[i], b = s2[i];
-            const d = (a.depth + b.depth) / 2;
-            ctx.globalAlpha = alpha * (0.08 + d * 0.28);
-            ctx.strokeStyle = '#4A6080';
-            ctx.lineWidth   = 1 + d * 2.5;
-            ctx.shadowColor = 'rgba(0,229,255,0.2)';
-            ctx.shadowBlur  = d > 0.5 ? 3 : 0;
-            ctx.beginPath();
-            ctx.moveTo(a.x, a.y);
-            ctx.lineTo(b.x, b.y);
-            ctx.stroke();
-            if (i % 10 === 0) {
-              ctx.globalAlpha = alpha * d * 0.35;
-              ctx.fillStyle   = '#6A8AA0';
-              ctx.shadowBlur  = 0;
-              ctx.font        = 'bold 9px monospace';
-              ctx.textAlign   = 'center';
-              ctx.fillText(BASES[(i / 5) % BASES.length], (a.x + b.x) / 2, a.y - 1);
-              ctx.textAlign   = 'left';
+        let t = 0;
+        function frame() {
+          requestAnimationFrame(frame);
+          t += 1;
+
+          ctx.clearRect(0, 0, W, H);
+
+          // Fade the whole field as the user scrolls past the hero so
+          // section content reads cleanly without canvas noise.
+          const globalA = scrollP < 0.18 ? 1 :
+                          scrollP < 0.55 ? 1 - (scrollP - 0.18) / 0.37 * 0.65 :
+                          0.35;
+          ctx.globalAlpha = globalA;
+
+          for (let i = 0; i < particles.length; i++) {
+            const p = particles[i];
+            if (!reduced) {
+              p.vx += (Math.random() - 0.5) * 0.02;
+              p.vy += (Math.random() - 0.5) * 0.02;
+              p.vx += (p.hx - p.x) * SPRING;
+              p.vy += (p.hy - p.y) * SPRING;
+              if (mouse.active) {
+                const dx = p.x - mouse.x, dy = p.y - mouse.y;
+                const d2 = dx * dx + dy * dy;
+                if (d2 < MOUSE_RADIUS * MOUSE_RADIUS && d2 > 0.01) {
+                  const d = Math.sqrt(d2);
+                  const f = (1 - d / MOUSE_RADIUS) * MOUSE_FORCE;
+                  p.vx += (dx / d) * f;
+                  p.vy += (dy / d) * f;
+                }
+              }
+              p.vx *= FRICTION;
+              p.vy *= FRICTION;
+              p.x  += p.vx;
+              p.y  += p.vy;
+              if (p.x < -40)    p.x = W + 40;
+              if (p.x > W + 40) p.x = -40;
+              if (p.y < -40)    p.y = H + 40;
+              if (p.y > H + 40) p.y = -40;
             }
           }
 
-          // ── Strands: per-segment depth-scaled lineWidth + Matrix green neon ──
-          for (const seg of allSegs) {
-            const lw = 3 + seg.d * 15;
-            const a  = 0.18 + seg.d * 0.72;
+          rebuildBins();
 
-            // Neon glow on front-facing segments
-            ctx.shadowColor = '#00E5FF';
-            ctx.shadowBlur  = seg.d > 0.65 ? 8 : (seg.d > 0.4 ? 3 : 0);
-            ctx.globalAlpha = alpha * a;
-            ctx.lineWidth   = lw;
-            ctx.strokeStyle = seg.d > 0.55 ? '#5A7A95' : '#3A4E60';
-            ctx.beginPath();
-            ctx.moveTo(seg.p.x, seg.p.y);
-            ctx.lineTo(seg.q.x, seg.q.y);
-            ctx.stroke();
-
-            // Bright specular highlight on front-facing segments
-            if (seg.d > 0.5) {
-              ctx.shadowBlur  = 0;
-              ctx.globalAlpha = alpha * (seg.d - 0.5) * 0.5;
-              ctx.lineWidth   = Math.max(1, lw * 0.18);
-              ctx.strokeStyle = 'rgba(160,210,230,0.7)';
+          // Hub-to-hub long-range "axon" lines first
+          ctx.lineWidth = 0.7;
+          for (let i = 0; i < hubsList.length; i++) {
+            for (let j = i + 1; j < hubsList.length; j++) {
+              const a = hubsList[i], b = hubsList[j];
+              const dx = b.x - a.x, dy = b.y - a.y;
+              const d2 = dx*dx + dy*dy;
+              if (d2 > SYNAPSE_DIST * SYNAPSE_DIST) continue;
+              const d = Math.sqrt(d2);
+              const fade = 1 - d / SYNAPSE_DIST;
+              ctx.strokeStyle = `rgba(40, 170, 195, ${(0.11 * fade).toFixed(3)})`;
               ctx.beginPath();
-              ctx.moveTo(seg.p.x - 2.5, seg.p.y);
-              ctx.lineTo(seg.q.x - 2.5, seg.q.y);
+              ctx.moveTo(a.x, a.y);
+              ctx.lineTo(b.x, b.y);
               ctx.stroke();
             }
           }
-          ctx.shadowBlur = 0;
+
+          ctx.lineWidth = 1;
+          const dim    = 1 / LINK_DIST;
+          const dimHub = 1 / HUB_LINK_DIST;
+          const checked = new Set();
+          const neighborOffs = [[0,0],[1,0],[-1,0],[0,1],[0,-1],[1,1],[1,-1],[-1,1],[-1,-1]];
+          bins.forEach((arr, key) => {
+            const [bx, by] = key.split(',').map(Number);
+            for (const [ox, oy] of neighborOffs) {
+              const other = bins.get((bx + ox) + ',' + (by + oy));
+              if (!other) continue;
+              for (let a = 0; a < arr.length; a++) {
+                const i = arr[a];
+                for (let b = 0; b < other.length; b++) {
+                  const j = other[b];
+                  if (i >= j) continue;
+                  const pk = i * 100000 + j;
+                  if (checked.has(pk)) continue;
+                  checked.add(pk);
+                  const p1 = particles[i], p2 = particles[j];
+                  const dx = p2.x - p1.x, dy = p2.y - p1.y;
+                  const d2 = dx * dx + dy * dy;
+                  const eitherHub = p1.hub || p2.hub;
+                  const maxD = eitherHub ? HUB_LINK_DIST : LINK_DIST;
+                  if (d2 > maxD * maxD) continue;
+                  const d = Math.sqrt(d2);
+                  const fade = 1 - d * (eitherHub ? dimHub : dim);
+                  const baseA = eitherHub ? 0.28 : 0.20;
+                  ctx.strokeStyle = `rgba(40, 130, 150, ${(baseA * fade).toFixed(3)})`;
+                  ctx.beginPath();
+                  ctx.moveTo(p1.x, p1.y);
+                  ctx.lineTo(p2.x, p2.y);
+                  ctx.stroke();
+                }
+              }
+            }
+          });
+
+          for (let i = 0; i < particles.length; i++) {
+            const p = particles[i];
+            if (p.hub) {
+              const pulse = 0.22 + 0.32 * (0.5 + 0.5 * Math.sin((t / 60) * (2 * Math.PI / 3) + p.phase));
+              ctx.fillStyle = `rgba(15, 179, 209, ${pulse.toFixed(3)})`;
+              ctx.shadowColor = '#0FB3D1';
+              ctx.shadowBlur  = 5;
+              ctx.beginPath();
+              ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+              ctx.fill();
+              ctx.shadowBlur = 0;
+            } else {
+              ctx.fillStyle = '#1a1d35';
+              ctx.beginPath();
+              ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+              ctx.fill();
+            }
+          }
+          ctx.globalAlpha = 1;
+        }
+        requestAnimationFrame(frame);
+      })();
+
+      // ── Count-up section counters (Snippet 05) ─────────────────────────
+      (function counters() {
+        const REDUCED = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        const easeOut = t => 1 - Math.pow(1 - t, 3);
+
+        function init() {
+          const targets = document.querySelectorAll('[data-counter]');
+          if (!targets.length) return;
+
+          const animate = el => {
+            if (el.dataset.done) return;
+            el.dataset.done = '1';
+            const end    = parseInt(el.dataset.counter, 10);
+            const prefix = el.dataset.prefix || '';
+            const suffix = el.dataset.suffix || '';
+            const pad    = parseInt(el.dataset.pad || '0', 10);
+            if (isNaN(end)) return;
+
+            if (REDUCED) {
+              el.textContent = prefix + String(end).padStart(pad, '0') + suffix;
+              return;
+            }
+
+            const dur = 820, start = performance.now();
+            (function step(now) {
+              const t = Math.min(1, (now - start) / dur);
+              const v = Math.round(end * easeOut(t));
+              el.textContent = prefix + String(v).padStart(pad, '0') + suffix;
+              if (t < 1) requestAnimationFrame(step);
+            })(start);
+          };
+
+          const io = new IntersectionObserver(entries => {
+            entries.forEach(e => { if (e.isIntersecting) animate(e.target); });
+          }, { threshold: 0.4 });
+
+          targets.forEach(el => {
+            const pad = parseInt(el.dataset.pad || '0', 10);
+            el.textContent = (el.dataset.prefix || '') +
+                             '0'.padStart(pad, '0') +
+                             (el.dataset.suffix || '');
+            io.observe(el);
+          });
         }
 
-        // ── Animation loop ────────────────────────────────────────────────
-        function animate() {
-          requestAnimationFrame(animate);
-          time += 0.016;
-
-          ctx.clearRect(0, 0, W, H);
-          ctx.globalAlpha = 1;
-
-          // Helix fades out between scroll 0.25 → 0.6
-          const helixA = scrollP < 0.25 ? 1
-                       : scrollP < 0.6  ? 1 - (scrollP - 0.25) / 0.35
-                       : 0;
-
-          // Code rain fades in between scroll 0.35 → 0.7
-          const rainA  = scrollP < 0.35 ? 0
-                       : scrollP < 0.7  ? (scrollP - 0.35) / 0.35
-                       : 1;
-
-          drawHelix(helixA);
-          drawRain(rainA);
-          ctx.globalAlpha = 1;
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', init);
+        } else {
+          init();
         }
-
-        resize();
-        animate();
       })();
 
       // Reveal animations
       document.addEventListener('DOMContentLoaded', () => {
         if (typeof gsap !== 'undefined') {
           gsap.utils.toArray('.reveal').forEach((el) => {
-            gsap.fromTo(el, 
+            gsap.fromTo(el,
               { opacity: 0, y: 50 },
               {
                 opacity: 1,
