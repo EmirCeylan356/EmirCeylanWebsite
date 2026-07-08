@@ -219,25 +219,6 @@ pre,
   .work-card, .work-card .bullets { transition: none; }
 }
 
-/* ── Skill Boxes ─────────────────────────────────────────────────── */
-.skill-box {
-  border-color: var(--border-color) !important;
-  background: var(--bg-surface) !important;
-  color: var(--text-primary) !important;
-}
-.skill-box .skill-header {
-  color: var(--text-primary) !important;
-}
-.skill-box .skill-header:hover {
-  background: var(--accent) !important;
-  color: #fff !important;
-}
-.skill-box .skill-body span {
-  background: transparent !important;
-  color: var(--text-secondary) !important;
-  border-color: var(--border-color) !important;
-}
-
 /* ── Reveal Animation ────────────────────────────────────────────── */
 .reveal {
   opacity: 0;

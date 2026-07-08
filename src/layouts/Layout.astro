@@ -3,9 +3,12 @@ import '../styles/global.css';
 
 interface Props {
   title: string;
+  // Set on private/unlisted pages (e.g. the recruiter work page) to keep
+  // them out of search engines. Link-based privacy only — not authentication.
+  noindex?: boolean;
 }
 
-const { title } = Astro.props;
+const { title, noindex = false } = Astro.props;
 ---
 
 <!doctype html>
@@ -15,17 +18,18 @@ const { title } = Astro.props;
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
     <title>{title}</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Syne:wght@400;700;800&family=Inter:wght@400;500;600;800&family=JetBrains+Mono:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500;700&family=Caveat:wght@400;600&display=swap" rel="stylesheet">
   </head>
   <body class="min-h-screen" style="background:var(--bg-base); color:var(--text-primary);">
-    <!-- Medical-chart grid (static, faint) -->
-    <div class="fixed inset-0 grid-bg pointer-events-none z-0"></div>
+    <!-- Static grid fallback: shown on mobile / reduced-motion / no-JS -->
+    <div id="grid-bg-static" class="fixed inset-0 grid-bg pointer-events-none z-0"></div>
 
-    <!-- Neural particle network — sits behind all solid panels -->
-    <canvas id="dna-canvas" class="fixed inset-0 pointer-events-none z-[1]"></canvas>
+    <!-- Interactive cursor grid — desktop fine-pointer only, replaces the static grid -->
+    <canvas id="grid-canvas" class="fixed inset-0 pointer-events-none z-[1]"></canvas>
 
     <!-- Soft vignette: dims edges so content panels read crisp -->
     <div class="fixed inset-0 pointer-events-none z-[2]" style="background:radial-gradient(ellipse at center, transparent 55%, rgba(0,0,0,0.55) 100%);"></div>
@@ -42,231 +46,118 @@ const { title } = Astro.props;
         gsap.registerPlugin(ScrollTrigger);
       }
 
-      // ── Neural particle field — replaces the old DNA helix ─────────────
-      (function neuralField() {
-        const cv = document.getElementById('dna-canvas');
+      // ── Interactive cursor grid — replaces the neural particle field ────
+      // Subtle dark grid lines that brighten (red accent) and displace near
+      // the cursor. Desktop fine-pointer only; mobile and reduced-motion get
+      // the static CSS grid instead (zero runtime cost). The rAF loop stops
+      // completely once the cursor settles.
+      (function cursorGrid() {
+        const cv = document.getElementById('grid-canvas');
         if (!cv) return;
-        const ctx = cv.getContext('2d');
         const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        const isMobile = window.matchMedia('(max-width: 800px), (pointer: coarse)').matches;
+        const coarse  = window.matchMedia('(max-width: 800px), (pointer: coarse)').matches;
+        if (reduced || coarse) { cv.remove(); return; }
 
-        const N_PARTICLES = isMobile ? 280 : 720;
-        const N_HUBS      = isMobile ? 8  : 20;
-        const LINK_DIST     = 110;
-        const HUB_LINK_DIST = 220;
-        const SYNAPSE_DIST  = 460;
-        const MOUSE_RADIUS  = 150;
-        const MOUSE_FORCE   = 1.6;
-        const SPRING        = 0.014;
-        const FRICTION      = 0.92;
-        const DRIFT         = 0.18;
+        const staticGrid = document.getElementById('grid-bg-static');
+        if (staticGrid) staticGrid.style.display = 'none';
 
-        let W = 0, H = 0;
+        const ctx = cv.getContext('2d');
+        const CELL   = 64;    // grid spacing — matches the .grid-bg fallback
+        const STEP   = 24;    // sampling step along each line (for displacement)
+        const RADIUS = 240;   // cursor influence radius
+        const PUSH   = 16;    // max displacement in px
+        const BASE   = 'rgba(138,138,147,0.10)';
+
         const DPR = Math.max(1, Math.min(window.devicePixelRatio || 1, 2));
+        let W = 0, H = 0;
+
+        const mouse = { x: -9999, y: -9999, tx: -9999, ty: -9999, a: 0, ta: 0 };
+
+        function warp(x, y) {
+          const dx = x - mouse.x, dy = y - mouse.y;
+          const d2 = dx * dx + dy * dy;
+          if (d2 > RADIUS * RADIUS || d2 < 0.01) return [x, y];
+          const d = Math.sqrt(d2);
+          const f = 1 - d / RADIUS;
+          const k = f * f * PUSH * mouse.a / d;
+          return [x + dx * k, y + dy * k];
+        }
+
+        function buildPath() {
+          const path = new Path2D();
+          for (let gx = 0.5; gx <= W + CELL; gx += CELL) {
+            for (let y = 0; y <= H + STEP; y += STEP) {
+              const [px, py] = warp(gx, Math.min(y, H));
+              y === 0 ? path.moveTo(px, py) : path.lineTo(px, py);
+            }
+          }
+          for (let gy = 0.5; gy <= H + CELL; gy += CELL) {
+            for (let x = 0; x <= W + STEP; x += STEP) {
+              const [px, py] = warp(Math.min(x, W), gy);
+              x === 0 ? path.moveTo(px, py) : path.lineTo(px, py);
+            }
+          }
+          return path;
+        }
+
+        function draw() {
+          ctx.clearRect(0, 0, W, H);
+          const path = buildPath();
+          ctx.lineWidth = 1;
+          ctx.strokeStyle = BASE;
+          ctx.stroke(path);
+
+          // Red accent glow around the cursor
+          if (mouse.a > 0.01 && mouse.x > -999) {
+            const g = ctx.createRadialGradient(mouse.x, mouse.y, 0, mouse.x, mouse.y, RADIUS);
+            g.addColorStop(0,    'rgba(196,30,58,' + (0.50 * mouse.a).toFixed(3) + ')');
+            g.addColorStop(0.55, 'rgba(196,30,58,' + (0.16 * mouse.a).toFixed(3) + ')');
+            g.addColorStop(1,    'rgba(196,30,58,0)');
+            ctx.strokeStyle = g;
+            ctx.stroke(path);
+          }
+        }
+
         function resize() {
-          W = cv.clientWidth  = window.innerWidth;
-          H = cv.clientHeight = window.innerHeight;
+          W = window.innerWidth;
+          H = window.innerHeight;
           cv.width  = Math.floor(W * DPR);
           cv.height = Math.floor(H * DPR);
+          cv.style.width  = W + 'px';
+          cv.style.height = H + 'px';
           ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
-        }
-        resize();
-        window.addEventListener('resize', resize);
-
-        const mouse = { x: -9999, y: -9999, active: false };
-        if (!isMobile) {
-          window.addEventListener('pointermove', (e) => {
-            mouse.x = e.clientX; mouse.y = e.clientY; mouse.active = true;
-          }, { passive: true });
-          window.addEventListener('pointerleave', () => {
-            mouse.active = false; mouse.x = -9999; mouse.y = -9999;
-          });
+          draw();
         }
 
-        // Scroll progress 0→1 for global alpha fade
-        let scrollP = 0;
-        window.addEventListener('scroll', () => {
-          const max = document.documentElement.scrollHeight - window.innerHeight;
-          scrollP = max > 0 ? Math.min(window.scrollY / max, 1) : 0;
-        }, { passive: true });
-
-        const particles = [];
-        for (let i = 0; i < N_PARTICLES; i++) {
-          const x = -40 + Math.random() * (W + 80);
-          const y = -40 + Math.random() * (H + 80);
-          particles.push({
-            hx: x, hy: y, x, y,
-            vx: (Math.random() - 0.5) * DRIFT,
-            vy: (Math.random() - 0.5) * DRIFT,
-            r: 1.1 + Math.random() * 0.9,
-            hub: false,
-            phase: Math.random() * Math.PI * 2,
-          });
-        }
-
-        const hubsList = [];
-        {
-          const cols = Math.max(3, Math.round(Math.sqrt(N_HUBS * (W / Math.max(1, H)))));
-          const rows = Math.max(2, Math.ceil(N_HUBS / cols));
-          const cellW = W / cols, cellH = H / rows;
-          let placed = 0;
-          outer: for (let r = 0; r < rows; r++) {
-            for (let c = 0; c < cols; c++) {
-              if (placed >= N_HUBS) break outer;
-              const cx = (c + 0.5) * cellW + (Math.random() - 0.5) * cellW * 0.55;
-              const cy = (r + 0.5) * cellH + (Math.random() - 0.5) * cellH * 0.55;
-              let best = -1, bestD = Infinity;
-              for (let i = 0; i < particles.length; i++) {
-                const p = particles[i]; if (p.hub) continue;
-                const dx = p.hx - cx, dy = p.hy - cy;
-                const d2 = dx*dx + dy*dy;
-                if (d2 < bestD) { bestD = d2; best = i; }
-              }
-              if (best >= 0) {
-                const p = particles[best];
-                p.hub = true;
-                p.r = 2.4 + Math.random() * 1.6;
-                hubsList.push(p);
-                placed++;
-              }
-            }
-          }
-        }
-
-        const BIN = Math.max(LINK_DIST, HUB_LINK_DIST);
-        let bins = new Map();
-        function binKey(x, y) { return ((x / BIN) | 0) + ',' + ((y / BIN) | 0); }
-        function rebuildBins() {
-          bins = new Map();
-          for (let i = 0; i < particles.length; i++) {
-            const p = particles[i];
-            const k = binKey(p.x, p.y);
-            let b = bins.get(k);
-            if (!b) { b = []; bins.set(k, b); }
-            b.push(i);
-          }
-        }
-
-        let t = 0;
+        let running = false;
         function frame() {
+          mouse.x += (mouse.tx - mouse.x) * 0.18;
+          mouse.y += (mouse.ty - mouse.y) * 0.18;
+          mouse.a += (mouse.ta - mouse.a) * 0.10;
+          draw();
+          const settled =
+            Math.abs(mouse.tx - mouse.x) < 0.4 &&
+            Math.abs(mouse.ty - mouse.y) < 0.4 &&
+            Math.abs(mouse.ta - mouse.a) < 0.005;
+          if (settled) {
+            running = false;
+            if (mouse.ta === 0) { mouse.a = 0; draw(); }
+            return;
+          }
           requestAnimationFrame(frame);
-          t += 1;
-
-          ctx.clearRect(0, 0, W, H);
-
-          // Fade the whole field as the user scrolls past the hero so
-          // section content reads cleanly without canvas noise.
-          const globalA = scrollP < 0.18 ? 1 :
-                          scrollP < 0.55 ? 1 - (scrollP - 0.18) / 0.37 * 0.65 :
-                          0.35;
-          ctx.globalAlpha = globalA;
-
-          for (let i = 0; i < particles.length; i++) {
-            const p = particles[i];
-            if (!reduced) {
-              p.vx += (Math.random() - 0.5) * 0.02;
-              p.vy += (Math.random() - 0.5) * 0.02;
-              p.vx += (p.hx - p.x) * SPRING;
-              p.vy += (p.hy - p.y) * SPRING;
-              if (mouse.active) {
-                const dx = p.x - mouse.x, dy = p.y - mouse.y;
-                const d2 = dx * dx + dy * dy;
-                if (d2 < MOUSE_RADIUS * MOUSE_RADIUS && d2 > 0.01) {
-                  const d = Math.sqrt(d2);
-                  const f = (1 - d / MOUSE_RADIUS) * MOUSE_FORCE;
-                  p.vx += (dx / d) * f;
-                  p.vy += (dy / d) * f;
-                }
-              }
-              p.vx *= FRICTION;
-              p.vy *= FRICTION;
-              p.x  += p.vx;
-              p.y  += p.vy;
-              if (p.x < -40)    p.x = W + 40;
-              if (p.x > W + 40) p.x = -40;
-              if (p.y < -40)    p.y = H + 40;
-              if (p.y > H + 40) p.y = -40;
-            }
-          }
-
-          rebuildBins();
-
-          // Hub-to-hub long-range "axon" lines first
-          ctx.lineWidth = 0.7;
-          for (let i = 0; i < hubsList.length; i++) {
-            for (let j = i + 1; j < hubsList.length; j++) {
-              const a = hubsList[i], b = hubsList[j];
-              const dx = b.x - a.x, dy = b.y - a.y;
-              const d2 = dx*dx + dy*dy;
-              if (d2 > SYNAPSE_DIST * SYNAPSE_DIST) continue;
-              const d = Math.sqrt(d2);
-              const fade = 1 - d / SYNAPSE_DIST;
-              ctx.strokeStyle = `rgba(40, 170, 195, ${(0.11 * fade).toFixed(3)})`;
-              ctx.beginPath();
-              ctx.moveTo(a.x, a.y);
-              ctx.lineTo(b.x, b.y);
-              ctx.stroke();
-            }
-          }
-
-          ctx.lineWidth = 1;
-          const dim    = 1 / LINK_DIST;
-          const dimHub = 1 / HUB_LINK_DIST;
-          const checked = new Set();
-          const neighborOffs = [[0,0],[1,0],[-1,0],[0,1],[0,-1],[1,1],[1,-1],[-1,1],[-1,-1]];
-          bins.forEach((arr, key) => {
-            const [bx, by] = key.split(',').map(Number);
-            for (const [ox, oy] of neighborOffs) {
-              const other = bins.get((bx + ox) + ',' + (by + oy));
-              if (!other) continue;
-              for (let a = 0; a < arr.length; a++) {
-                const i = arr[a];
-                for (let b = 0; b < other.length; b++) {
-                  const j = other[b];
-                  if (i >= j) continue;
-                  const pk = i * 100000 + j;
-                  if (checked.has(pk)) continue;
-                  checked.add(pk);
-                  const p1 = particles[i], p2 = particles[j];
-                  const dx = p2.x - p1.x, dy = p2.y - p1.y;
-                  const d2 = dx * dx + dy * dy;
-                  const eitherHub = p1.hub || p2.hub;
-                  const maxD = eitherHub ? HUB_LINK_DIST : LINK_DIST;
-                  if (d2 > maxD * maxD) continue;
-                  const d = Math.sqrt(d2);
-                  const fade = 1 - d * (eitherHub ? dimHub : dim);
-                  const baseA = eitherHub ? 0.28 : 0.20;
-                  ctx.strokeStyle = `rgba(40, 130, 150, ${(baseA * fade).toFixed(3)})`;
-                  ctx.beginPath();
-                  ctx.moveTo(p1.x, p1.y);
-                  ctx.lineTo(p2.x, p2.y);
-                  ctx.stroke();
-                }
-              }
-            }
-          });
-
-          for (let i = 0; i < particles.length; i++) {
-            const p = particles[i];
-            if (p.hub) {
-              const pulse = 0.22 + 0.32 * (0.5 + 0.5 * Math.sin((t / 60) * (2 * Math.PI / 3) + p.phase));
-              ctx.fillStyle = `rgba(15, 179, 209, ${pulse.toFixed(3)})`;
-              ctx.shadowColor = '#0FB3D1';
-              ctx.shadowBlur  = 5;
-              ctx.beginPath();
-              ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-              ctx.fill();
-              ctx.shadowBlur = 0;
-            } else {
-              ctx.fillStyle = '#1a1d35';
-              ctx.beginPath();
-              ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-              ctx.fill();
-            }
-          }
-          ctx.globalAlpha = 1;
         }
-        requestAnimationFrame(frame);
+        function wake() {
+          if (!running) { running = true; requestAnimationFrame(frame); }
+        }
+
+        window.addEventListener('pointermove', (e) => {
+          mouse.tx = e.clientX; mouse.ty = e.clientY; mouse.ta = 1;
+          if (mouse.x < -999) { mouse.x = e.clientX; mouse.y = e.clientY; }
+          wake();
+        }, { passive: true });
+        document.documentElement.addEventListener('mouseleave', () => { mouse.ta = 0; wake(); });
+        window.addEventListener('resize', resize);
+        resize();
       })();
 
       // ── Count-up section counters (Snippet 05) ─────────────────────────
