@@ -73,3 +73,48 @@ Running log, one entry per phase. Times are local (TST, UTC+3).
 - `src/data/profile.ts` created as the single source of truth, split into PUBLIC_* and
   PRIVATE_* tiers with a `PRIVATE_TERMS` list for the build-time privacy grep.
 - Verified: screenshots reviewed at 1280 and 390; no overflow; no console errors.
+
+## Phase 5 — SEO, social, structured data (07:08–07:14)
+- `src/lib/og.ts`: satori + resvg renderer for 1200×630 cards in the site's identity
+  (grid, crimson glow, EC_ mark, mono labels). `src/pages/og/[page].png.ts` emits
+  default/hobbies/now/uses/blog/404 cards at build time; blog posts get their own
+  endpoint (Phase 9). Debugged a satori quirk: childless nodes must not carry
+  `children: []`.
+- New `favicon.svg` (EC_ mark; the old one was Astro's rocket), `apple-touch-icon.png`,
+  `icon-192/512.png`, `favicon.ico` via `scripts/make-icons.mjs` (sharp).
+- Per-page titles/descriptions/canonical/OG/Twitter/JSON-LD come from Layout (Phase 2).
+  `robots.txt` disallows the four unlisted routes and points at `sitemap-index.xml`.
+- Verified: looked at the rendered default.png and icon-192.png.
+
+## Phase 12 — Repo hygiene (07:15–07:25, done early because it was independent)
+- README rewritten (stack, run, architecture, routes + unlisted policy, content
+  workflow, deploy, conventions). `.editorconfig`, `.gitattributes` (LF), Prettier +
+  astro plugin, `.env.example`.
+- `npm run check` = `astro check` + build + `scripts/link-check.mjs` +
+  `scripts/privacy-check.mjs` (fails on private terms, phone numbers, unlisted slugs in
+  public HTML, unlisted routes in the sitemap). `.github/workflows/ci.yml` runs it and
+  Lighthouse CI (`lighthouserc.json`) on PRs.
+- `handoff/` → `archive/handoff/`, `ECWebsite_Upgrade Proposal/` → `archive/upgrade-proposal/`
+  (9.4 MB, now tracked). Nothing deleted.
+- Removed the two unused videos (`public/videos/dna-helix.mp4`, `src/styles/kling-*.mp4`,
+  3.5 MB each; nothing referenced them).
+- Stale worktree `.claude/worktrees/reverent-wiles`: the branch is fully merged into
+  main (0 commits ahead). `git worktree remove --force` was blocked by the tool
+  permission layer (the worktree has a modified local settings file), so it is left in
+  place and gitignored. One-liner for Emir in the report.
+
+## Phase 10 — Analytics and contact (07:25–07:30)
+- Analytics: Vercel Web Analytics (cookieless, no consent banner needed), injected by
+  Layout only when `PUBLIC_ANALYTICS=vercel` and never on unlisted pages. Needs one
+  toggle in the Vercel dashboard + the env var. No Google Analytics.
+- Contact: the mailto now prefills subject + body. Added an optional Web3Forms form in
+  the footer, rendered only when `PUBLIC_WEB3FORMS_KEY` is set: honeypot, 3-second
+  minimum fill time, fetch submit with inline status, native POST + redirect without JS.
+  Mailto fallback is always present.
+
+## Phase 13 (early items) — Layout-level polish (07:30)
+- Cross-document view transitions via `@view-transition { navigation: auto }` (pure CSS,
+  no client router, so page scripts keep their simple run-once lifecycle). 140/220 ms fades.
+- Scroll-progress line under the header using CSS scroll-driven animation
+  (`animation-timeline: scroll(root)`): zero JS, hidden where unsupported and under
+  reduced motion.

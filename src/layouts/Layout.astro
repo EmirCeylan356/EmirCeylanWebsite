@@ -125,6 +125,10 @@ const analytics = import.meta.env.PUBLIC_ANALYTICS === 'vercel' && !noindex;
   <body class={`min-h-screen ${bodyClass}`.trim()}>
     <a href="#main-content" class="skip-link">Skip to content</a>
 
+    <!-- Scroll progress: 2px crimson line under the header. CSS scroll-driven
+         animation where supported (no JS); hidden under reduced motion. -->
+    <div class="scroll-progress" aria-hidden="true"></div>
+
     <!-- Static grid fallback: shown on mobile / reduced-motion / no-JS -->
     <div id="grid-bg-static" class="fixed inset-0 grid-bg pointer-events-none z-0" aria-hidden="true"></div>
 

@@ -15,6 +15,11 @@ const mailto = contactMailto(
   'Hi Emir,\n\nI found your site and wanted to get in touch about ...\n\n',
 );
 const year = new Date().getFullYear();
+
+// Optional static-friendly contact form (Web3Forms). Enabled only when
+// PUBLIC_WEB3FORMS_KEY is set; the mailto button above it always works.
+// Spam protection: honeypot field (`botcheck`) + a minimum fill time check.
+const formKey = import.meta.env.PUBLIC_WEB3FORMS_KEY as string | undefined;
 ---
 
 <footer id="contact" class="site-footer" aria-labelledby="contact-heading">
@@ -37,6 +42,25 @@ const year = new Date().getFullYear();
         <a href={mailto} class="footer-cta cut-corner font-mono">
           Email me <span aria-hidden="true">→</span>
         </a>
+
+        {formKey && (
+          <form class="contact-form" id="contact-form" action="https://api.web3forms.com/submit" method="POST" aria-label="Contact form">
+            <input type="hidden" name="access_key" value={formKey} />
+            <input type="hidden" name="subject" value="New message from emirceylan.com" />
+            <input type="hidden" name="from_name" value="emirceylan.com" />
+            <input type="hidden" name="redirect" value={`${SITE.url}/?sent=1#contact`} />
+            <input type="checkbox" name="botcheck" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true" />
+            <div class="cf-row">
+              <label class="cf-field"><span class="cf-label font-mono">Name</span><input type="text" name="name" required autocomplete="name" maxlength="80" /></label>
+              <label class="cf-field"><span class="cf-label font-mono">Email</span><input type="email" name="email" required autocomplete="email" maxlength="120" /></label>
+            </div>
+            <label class="cf-field"><span class="cf-label font-mono">Message</span><textarea name="message" required rows="4" maxlength="4000"></textarea></label>
+            <div class="cf-actions">
+              <button type="submit" class="cf-submit cut-corner-sm font-mono">Send <span aria-hidden="true">→</span></button>
+              <p class="cf-status font-mono" id="contact-status" aria-live="polite"></p>
+            </div>
+          </form>
+        )}
 
         <ul class="social-list">
           {socials.map((s) => (
@@ -117,6 +141,33 @@ const year = new Date().getFullYear();
   .social-link:hover { border-color: var(--accent); color: #fff; background: var(--accent); box-shadow: 0 0 8px var(--accent-glow); }
   .social-short { font-size: 0.75rem; color: var(--text-tertiary); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
+  /* Contact form (only rendered when PUBLIC_WEB3FORMS_KEY is set) */
+  .contact-form { display: flex; flex-direction: column; gap: var(--space-3); padding: var(--space-4); border: 1px solid var(--border-color); background: var(--bg-base); }
+  .contact-form .hp { position: absolute; left: -9999px; opacity: 0; }
+  .cf-row { display: grid; gap: var(--space-3); }
+  @media (min-width: 560px) { .cf-row { grid-template-columns: 1fr 1fr; } }
+  .cf-field { display: flex; flex-direction: column; gap: 6px; }
+  .cf-label { font-size: 0.65rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-secondary); }
+  .contact-form input:not(.hp), .contact-form textarea {
+    font-family: 'JetBrains Mono', monospace; font-size: 0.85rem;
+    background: var(--bg-elevated); border: 1px solid var(--border-color); color: var(--text-primary);
+    padding: 0.7rem 0.85rem; min-height: 44px; outline: none; resize: vertical;
+    transition: border-color var(--dur-fast) var(--ease-out), box-shadow var(--dur-fast) var(--ease-out);
+  }
+  .contact-form input:focus, .contact-form textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
+  .cf-actions { display: flex; align-items: center; gap: var(--space-4); flex-wrap: wrap; }
+  .cf-submit {
+    min-height: 44px; padding: 0 1.25rem; cursor: pointer;
+    background: transparent; color: var(--accent); border: 1px solid var(--accent);
+    font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
+    transition: background var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out);
+  }
+  .cf-submit:hover { background: var(--accent); color: #fff; }
+  .cf-submit:disabled { opacity: 0.6; cursor: wait; }
+  .cf-status { font-size: 0.72rem; color: var(--text-secondary); margin: 0; }
+  .cf-status.ok { color: #6fdc8c; }
+  .cf-status.err { color: #FF5C7A; }
+
   .footer-rule { margin-top: var(--space-12); height: 1px; background: var(--border-color); }
   .footer-meta {
     margin-top: var(--space-6);
@@ -129,3 +180,44 @@ const year = new Date().getFullYear();
   .footer-meta a { color: inherit; text-decoration: underline; text-underline-offset: 3px; }
   .footer-meta a:hover { color: var(--text-primary); }
 </style>
+
+<script>
+  // Progressive enhancement for the contact form: submit via fetch, show
+  // inline status, keep the native POST + redirect as the no-JS path.
+  const form = document.getElementById('contact-form') as HTMLFormElement | null;
+  const status = document.getElementById('contact-status');
+  const openedAt = Date.now();
+  if (form && status) {
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const hp = form.querySelector<HTMLInputElement>('input[name="botcheck"]');
+      if ((hp && hp.checked) || Date.now() - openedAt < 3000) { status.textContent = 'Please try again.'; return; }
+      const btn = form.querySelector<HTMLButtonElement>('button[type="submit"]');
+      if (btn) btn.disabled = true;
+      status.className = 'cf-status font-mono';
+      status.textContent = 'Sending…';
+      try {
+        const data = new FormData(form);
+        data.delete('redirect');
+        const res = await fetch(form.action, { method: 'POST', body: data, headers: { Accept: 'application/json' } });
+        const json = await res.json().catch(() => ({}));
+        if (res.ok && json.success !== false) {
+          status.classList.add('ok');
+          status.textContent = 'Sent. I will reply by email.';
+          form.reset();
+        } else {
+          throw new Error(json.message || 'Request failed');
+        }
+      } catch {
+        status.classList.add('err');
+        status.textContent = 'Could not send. Use the email button instead.';
+      } finally {
+        if (btn) btn.disabled = false;
+      }
+    });
+  }
+  if (new URLSearchParams(location.search).get('sent') === '1' && status) {
+    status.classList.add('ok');
+    status.textContent = 'Sent. I will reply by email.';
+  }
+</script>
