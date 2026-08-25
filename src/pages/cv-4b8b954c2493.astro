@@ -1,0 +1,256 @@
+---
+// ════════════════════════════════════════════════════════════════════════════
+//  PRIVATE CV PAGE  —  /cv-4b8b954c2493/
+//
+//  LINK-BASED PRIVACY, NOT AUTHENTICATION. noindex, unlisted, never linked
+//  from a public page. Rendered from src/data/profile.ts (PRIVATE_*) so it
+//  cannot drift from the recruiter work page. The committed PDF at
+//  public/cv-4b8b954c2493/Emir_Ceylan_CV.pdf is printed from THIS page by
+//  scripts/build-cv-pdf.mjs — re-run it after editing profile.ts.
+//
+//  No phone number anywhere on this page. Ever.
+// ════════════════════════════════════════════════════════════════════════════
+import '../styles/print.css';
+import Layout from '../layouts/Layout.astro';
+import { SITE } from '../lib/site';
+import {
+  CV_TITLE,
+  CV_SUMMARY,
+  CV_PDF_PATH,
+  PRIVATE_EDUCATION,
+  PRIVATE_EXPERIENCE,
+  PRIVATE_PROJECTS,
+  PRIVATE_LEADERSHIP,
+  PRIVATE_CERTIFICATIONS,
+  PUBLIC_SKILLS,
+} from '../data/profile';
+
+const short = (url: string) => url.replace(/^https?:\/\/(www\.)?/, '');
+
+const contact = [
+  { label: SITE.email, href: `mailto:${SITE.email}` },
+  { label: short(SITE.github), href: SITE.github, external: true },
+  { label: short(SITE.linkedin), href: SITE.linkedin, external: true },
+  { label: short(SITE.url), href: SITE.url, external: true },
+  { label: SITE.location },
+];
+
+const skillRows = PUBLIC_SKILLS.primary
+  .filter((g) => g.title !== 'Learning now')
+  .concat(PUBLIC_SKILLS.secondary.filter((g) => g.title === 'Spoken'));
+---
+
+<Layout title="CV — Emir Ceylan (Private)" noindex={true} description="Curriculum vitae of Emir Ceylan. Unlisted." bodyClass="cv-page">
+  <main class="cv-main">
+    <div class="doc-wrap">
+
+      <div class="toolbar no-print">
+        <p class="private-note font-mono">
+          <span class="dot" aria-hidden="true"></span>
+          <span>PRIVATE / UNLISTED — shared by link only.</span>
+        </p>
+        <div class="toolbar-actions">
+          <a href="/work-4b8b954c2493/" class="tb-btn font-mono">← Work page</a>
+          <a href={CV_PDF_PATH} class="tb-btn font-mono" download="Emir_Ceylan_CV.pdf">Download PDF</a>
+          <button type="button" id="print-btn" class="tb-btn primary font-mono">Print / Save as PDF</button>
+        </div>
+      </div>
+
+      <article class="doc" aria-labelledby="cv-name">
+        <header class="doc-header">
+          <h1 id="cv-name" class="doc-name">Emir Ceylan</h1>
+          <p class="doc-title">{CV_TITLE}</p>
+          <ul class="doc-contact" aria-label="Contact">
+            {contact.map((c) => (
+              <li>
+                {c.href
+                  ? <a href={c.href} target={c.external ? '_blank' : undefined} rel={c.external ? 'noopener noreferrer' : undefined}>{c.label}</a>
+                  : <span>{c.label}</span>}
+              </li>
+            ))}
+          </ul>
+        </header>
+
+        <section class="doc-section" aria-labelledby="s-summary">
+          <h2 id="s-summary" class="doc-section-title">Summary</h2>
+          <p class="doc-summary">{CV_SUMMARY}</p>
+        </section>
+
+        <section class="doc-section" aria-labelledby="s-edu">
+          <h2 id="s-edu" class="doc-section-title">Education</h2>
+          <div class="doc-item">
+            <div class="doc-item-head">
+              <h3 class="doc-item-title">{PRIVATE_EDUCATION.school}</h3>
+              <span class="doc-item-period">{PRIVATE_EDUCATION.period}</span>
+            </div>
+            <p class="doc-item-org">{PRIVATE_EDUCATION.degree} · {PRIVATE_EDUCATION.location}</p>
+            <ul class="doc-bullets">
+              {PRIVATE_EDUCATION.notes.map((n) => <li>{n}</li>)}
+            </ul>
+          </div>
+        </section>
+
+        <section class="doc-section" aria-labelledby="s-exp">
+          <h2 id="s-exp" class="doc-section-title">Experience</h2>
+          {PRIVATE_EXPERIENCE.map((e) => (
+            <div class="doc-item">
+              <div class="doc-item-head">
+                <h3 class="doc-item-title">{e.title}</h3>
+                <span class="doc-item-period">{e.period}</span>
+              </div>
+              <p class="doc-item-org">{e.org}{e.location ? ` · ${e.location}` : ''}</p>
+              <ul class="doc-bullets">
+                {e.bullets.map((b) => <li>{b}</li>)}
+              </ul>
+              {e.stack && (
+                <p class="doc-stack"><span class="sr-only">Stack: </span>{e.stack.map((s) => <span class="chip">{s}</span>)}</p>
+              )}
+            </div>
+          ))}
+        </section>
+
+        <section class="doc-section" aria-labelledby="s-proj">
+          <h2 id="s-proj" class="doc-section-title">Projects</h2>
+          {PRIVATE_PROJECTS.map((p) => (
+            <div class="doc-item">
+              <div class="doc-item-head">
+                <h3 class="doc-item-title">{p.title}</h3>
+                <span class="doc-item-period">{p.period}</span>
+              </div>
+              <p class="doc-item-org">
+                {p.role}{p.context ? ` · ${p.context}` : ''}{p.status ? ` · ${p.status}` : ''}
+                {p.award && <> · <span class="doc-award">{p.award}</span></>}
+                {p.link && <> · <a href={p.link} target="_blank" rel="noopener noreferrer">{short(p.link)}</a></>}
+              </p>
+              <ul class="doc-bullets">
+                {p.bullets.map((b) => <li>{b}</li>)}
+              </ul>
+              <p class="doc-stack"><span class="sr-only">Stack: </span>{p.stack.filter((s) => !s.startsWith('TODO')).map((s) => <span class="chip">{s}</span>)}</p>
+            </div>
+          ))}
+        </section>
+
+        <section class="doc-section" aria-labelledby="s-skills">
+          <h2 id="s-skills" class="doc-section-title">Skills</h2>
+          <dl class="doc-skills">
+            {skillRows.map((g) => (
+              <div class="doc-skill-row">
+                <dt>{g.title}</dt>
+                <dd>{g.items.map((s) => <span class="chip">{s}</span>)}</dd>
+              </div>
+            ))}
+          </dl>
+        </section>
+
+        <div class="doc-two-col">
+          <section class="doc-section" aria-labelledby="s-cert">
+            <h2 id="s-cert" class="doc-section-title">Certifications</h2>
+            <ul class="doc-plain-list">
+              {PRIVATE_CERTIFICATIONS.map((c) => <li>{c}</li>)}
+            </ul>
+          </section>
+          <section class="doc-section" aria-labelledby="s-lead">
+            <h2 id="s-lead" class="doc-section-title">Leadership</h2>
+            <ul class="doc-plain-list">
+              {PRIVATE_LEADERSHIP.map((l) => <li>{l}</li>)}
+            </ul>
+          </section>
+        </div>
+      </article>
+
+      <p class="doc-foot no-print font-mono">
+        <a href="/">← emirceylan.com</a>
+      </p>
+    </div>
+  </main>
+</Layout>
+
+<style>
+  /* ── Screen: a restrained document on the dark site ───────────────────── */
+  /* Small crimson text needs a lighter tint to clear 4.5:1 on the dark surfaces. */
+  .doc-wrap { --accent-text: #EE5A72; }
+  .cv-main { padding-block: clamp(var(--space-8), 6vw, var(--space-16)); }
+  .doc-wrap { max-width: 52rem; margin-inline: auto; padding-inline: var(--gutter); }
+
+  .toolbar {
+    display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
+    gap: var(--space-4); margin-bottom: var(--space-6);
+  }
+  .toolbar-actions { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+  .private-note {
+    display: inline-flex; align-items: center; gap: 12px;
+    padding: 10px 16px; min-height: 44px;
+    border: 1px solid var(--border-color);
+    background: rgba(196,30,58,0.06);
+    font-size: 11px; letter-spacing: 0.08em; color: var(--text-secondary);
+  }
+  .private-note .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 8px rgba(196,30,58,0.8); flex-shrink: 0; }
+
+  .tb-btn {
+    display: inline-flex; align-items: center; min-height: 44px; padding: 10px 18px;
+    font-size: 12px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--text-primary); background: transparent; border: 1px solid var(--border-color);
+    text-decoration: none; cursor: pointer;
+    transition: border-color var(--dur-base) var(--ease-out), background var(--dur-base) var(--ease-out), color var(--dur-base) var(--ease-out);
+  }
+  .tb-btn:hover { border-color: var(--accent); color: #fff; }
+  .tb-btn.primary { color: var(--accent-text); border-color: var(--accent); }
+  .tb-btn.primary:hover { background: var(--accent); color: #fff; box-shadow: 0 0 20px var(--accent-glow); }
+
+  .doc {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    padding: clamp(var(--space-6), 5vw, var(--space-12));
+  }
+  .doc-header { border-bottom: 2px solid var(--accent); padding-bottom: var(--space-4); margin-bottom: var(--space-8); }
+  .doc-name { font-size: clamp(2rem, 5vw, 3rem); font-weight: 900; line-height: 1; letter-spacing: -0.01em; text-transform: uppercase; }
+  .doc-title { color: var(--text-secondary); margin-top: var(--space-2); font-size: 1.05rem; }
+  .doc-contact { list-style: none; display: flex; flex-wrap: wrap; gap: 0 var(--space-4); margin-top: var(--space-3); font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; color: var(--text-secondary); }
+  .doc-contact a { color: var(--text-primary); text-decoration: none; display: inline-block; padding-block: 10px; border-bottom: 1px solid transparent; }
+  .doc-contact a:hover { border-bottom-color: var(--accent); }
+  .doc-contact span { display: inline-block; padding-block: 10px; }
+
+  .doc-section { margin-bottom: var(--space-8); }
+  .doc-section-title {
+    font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--accent-text); border-bottom: 1px solid var(--border-color); padding-bottom: var(--space-2); margin-bottom: var(--space-4);
+  }
+  .doc-summary { color: var(--text-secondary); max-width: 68ch; }
+
+  .doc-item { margin-bottom: var(--space-6); }
+  .doc-item:last-child { margin-bottom: 0; }
+  .doc-item-head { display: flex; justify-content: space-between; gap: var(--space-4); align-items: baseline; flex-wrap: wrap; }
+  .doc-item-title { font-size: 1.05rem; font-weight: 700; }
+  .doc-item-org { color: var(--text-secondary); font-size: 0.95rem; }
+  .doc-item-org a { color: var(--text-primary); text-decoration: underline; text-underline-offset: 3px; overflow-wrap: anywhere; }
+  .doc-item-org, .doc-contact { overflow-wrap: anywhere; }
+  .doc-item-period { font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; letter-spacing: 0.08em; color: var(--text-tertiary); white-space: nowrap; }
+  .doc-award { color: var(--accent-text); font-weight: 700; }
+  .doc-bullets { list-style: none; margin-top: var(--space-2); }
+  .doc-bullets li { position: relative; padding-left: 1.1rem; color: var(--text-secondary); line-height: 1.6; margin-bottom: 0.25rem; }
+  .doc-bullets li::before { content: '▸'; position: absolute; left: 0; color: var(--accent); }
+  .doc-stack { display: flex; flex-wrap: wrap; gap: 6px; margin-top: var(--space-3); }
+  .chip {
+    font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; letter-spacing: 0.04em;
+    color: var(--text-secondary); border: 1px solid var(--border-color); padding: 3px 8px; line-height: 1.4;
+  }
+  .doc-skills { display: grid; gap: var(--space-3); }
+  .doc-skill-row { display: grid; grid-template-columns: 8rem 1fr; gap: var(--space-3); align-items: start; }
+  .doc-skill-row dt { font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-tertiary); padding-top: 4px; }
+  .doc-skill-row dd { display: flex; flex-wrap: wrap; gap: 6px; }
+  @media (max-width: 560px) { .doc-skill-row { grid-template-columns: 1fr; gap: var(--space-1); } }
+
+  .doc-two-col { display: grid; gap: var(--space-6); }
+  @media (min-width: 640px) { .doc-two-col { grid-template-columns: 1fr 1fr; } }
+  .doc-plain-list { list-style: none; }
+  .doc-plain-list li { position: relative; padding-left: 1.1rem; color: var(--text-secondary); line-height: 1.6; margin-bottom: 0.25rem; }
+  .doc-plain-list li::before { content: '▸'; position: absolute; left: 0; color: var(--accent); }
+
+  .doc-foot { margin-top: var(--space-8); font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; }
+  .doc-foot a { color: var(--text-secondary); text-decoration: none; display: inline-block; padding-block: 12px; }
+  .doc-foot a:hover { color: var(--text-primary); }
+</style>
+
+<script>
+  document.getElementById('print-btn')?.addEventListener('click', () => window.print());
+</script>
