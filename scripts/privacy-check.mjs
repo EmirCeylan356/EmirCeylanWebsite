@@ -11,6 +11,7 @@ import { join, relative } from 'node:path';
 
 const dist = process.argv[2] || 'dist';
 const UNLISTED = ['work-4b8b954c2493', 'cv-4b8b954c2493', 'visitor-gallery-admin', 'gallery-088c0fbff746'];
+// /admin/ (the CMS) is noindex + robots-disallowed but deliberately linked from the footer, so it is not in the list above.
 
 const profile = readFileSync('src/data/profile.ts', 'utf8');
 const m = profile.match(/PRIVATE_TERMS\s*=\s*\[([\s\S]*?)\];/);

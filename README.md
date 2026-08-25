@@ -61,6 +61,7 @@ Public: `/`, `/hobbies/`, `/blog/`, `/blog/<slug>/`, `/now/`, `/uses/`, `/404`, 
 | `/cv-4b8b954c2493/` | CV as HTML + printable; PDF at `/cv-4b8b954c2493/Emir_Ceylan_CV.pdf` |
 | `/gallery-088c0fbff746/` | Visitor drawing gallery (linked only from `/hobbies/`) |
 | `/visitor-gallery-admin/` | Moderation UI (Supabase Auth sign-in) |
+| `/admin/` | Decap CMS (GitHub login) — edits commit to `main` |
 
 Every unlisted route is `noindex`, excluded from the sitemap (`astro.config.mjs`), `Disallow`ed in `public/robots.txt`, and never linked from a public page or the nav. `scripts/privacy-check.mjs` fails the build if a public page mentions an employer, dataset, project, course code or professor name (list: `PRIVATE_TERMS` in `src/data/profile.ts`), links an unlisted slug, or contains a phone number.
 
@@ -68,10 +69,14 @@ Every unlisted route is `noindex`, excluded from the sitemap (`astro.config.mjs`
 
 ## Editing content
 
-- **Facts** (roles, projects, skills, /now): `src/data/profile.ts`. Public pages may only import `PUBLIC_*`.
+**Without code:** sign in at `/admin/` (GitHub login) — blog posts, paintings, and site texts. See [docs/CMS.md](docs/CMS.md) for the one-time OAuth setup.
+
+
+- **Public texts** (hero, about, work tiles, skills, contact, /now): `src/data/content.json` (or the CMS).
+- **Private facts** (roles, projects for the recruiter hub/CV): `PRIVATE_*` in `src/data/profile.ts`. Public pages may only import `PUBLIC_*`.
 - **Blog posts**: copy `src/content/blog/_TEMPLATE.mdx`. See [CONTENT.md](CONTENT.md).
 - **CV**: edit `src/data/profile.ts`, then `npm run cv:pdf` and commit the regenerated PDF.
-- **Paintings**: drop the image in `src/assets/paintings/` and add an entry (with real alt text) to the array in `src/pages/hobbies.astro`.
+- **Paintings**: `src/data/artworks.json` + the image in `src/assets/paintings/` (or the CMS).
 - **Icons**: edit `public/favicon.svg`, run `npm run icons`.
 
 ## Deploying

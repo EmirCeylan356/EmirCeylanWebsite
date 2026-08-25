@@ -3,22 +3,24 @@ import Layout from '../layouts/Layout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import { SITE } from '../lib/site';
-import { PUBLIC_CAPABILITIES, PUBLIC_DOMAINS, PUBLIC_SKILLS, roleCount, contactMailto } from '../data/profile';
+import { CONTENT, PUBLIC_CAPABILITIES, PUBLIC_DOMAINS, PUBLIC_SKILLS, roleCount, contactMailto } from '../data/profile';
 
 // PRIVACY: this page is public. Everything below is anonymised capability
 // language — no employer, dataset, project, course, or professor names. The
 // full history lives on the unlisted recruiter page (link-based privacy, not
 // authentication) and is shared on request. See src/data/profile.ts.
 
-const marquee = [
-  'Clinical risk models',
-  'Explainable AI',
-  'Bioinformatics',
-  'Full-stack web',
-  `Sabancı University '${String(SITE.gradYear).slice(2)}`,
-  'LLM & RAG systems',
-  'Painter',
-];
+// Editable copy comes from src/data/content.json (see content.schema.md).
+const { hero, marquee, about, work } = CONTENT;
+const marqueeAccent = marquee[marquee.length - 1];
+
+// About lede: "{university}" is rendered in the accent colour, "{gradYear}" is
+// replaced with SITE.gradYear.
+const [ledeBefore, ledeAfter = ''] = about.lede.replace('{gradYear}', String(SITE.gradYear)).split('{university}');
+
+// The roles stat is computed from code (roleCount) and slotted in as the 2nd stat.
+const roleStat = { value: `${String(roleCount).padStart(2, '0')}+`, label: 'ROLES & RESEARCH PROJECTS', counter: roleCount, pad: '2', suffix: '+' };
+const stats = [about.stats[0], roleStat, ...about.stats.slice(1)];
 ---
 
 <Layout
@@ -36,7 +38,7 @@ const marquee = [
 
         <div class="status" id="hero-status-wrap" aria-hidden="true">
           <span class="pulse"></span>
-          <span id="hero-status">SYS_ID: EC_2027 — ISTANBUL / TR — ONLINE</span>
+          <span id="hero-status">{hero.status}</span>
         </div>
 
         <div class="hero-name-frame" id="name-wrap">
@@ -49,13 +51,13 @@ const marquee = [
 
         <p class="hero-subtitle" id="hero-subtitle">
           <span class="bullet" aria-hidden="true"></span>
-          <span>Machine learning — Medical AI — CS '27</span>
+          <span>{hero.subtitle}</span>
           <span class="bullet" aria-hidden="true"></span>
         </p>
 
         <div class="hero-ctas" id="hero-ctas">
-          <a href="#work" class="btn btn-primary">What I do <span aria-hidden="true">→</span></a>
-          <a href="#contact" class="btn btn-secondary">Contact</a>
+          <a href="#work" class="btn btn-primary">{hero.ctaPrimary} <span aria-hidden="true">→</span></a>
+          <a href="#contact" class="btn btn-secondary">{hero.ctaSecondary}</a>
         </div>
 
         <div class="scroll-cue" id="scroll-cue" aria-hidden="true">SCROLL</div>
@@ -67,7 +69,7 @@ const marquee = [
       <div class="marquee-container">
         <ul class="marquee-content font-mono" aria-hidden="true">
           {[...marquee, ...marquee].map((item) => (
-            <li class={item === 'Painter' ? 'is-accent' : ''}><span aria-hidden="true">◆</span> {item}</li>
+            <li class={item === marqueeAccent ? 'is-accent' : ''}><span aria-hidden="true">◆</span> {item}</li>
           ))}
         </ul>
         <p class="sr-only">{marquee.join(' · ')}</p>
@@ -90,18 +92,12 @@ const marquee = [
             </div>
 
             <dl class="mt-8 pt-5 divider-top flex flex-col gap-4 stats">
-              <div>
-                <dd class="stat-num" data-counter={SITE.gradYear}>{SITE.gradYear}</dd>
-                <dt class="stat-label">EXPECTED GRAD</dt>
-              </div>
-              <div>
-                <dd class="stat-num" data-counter={roleCount} data-pad="2" data-suffix="+">{String(roleCount).padStart(2, '0')}+</dd>
-                <dt class="stat-label">ROLES &amp; RESEARCH PROJECTS</dt>
-              </div>
-              <div>
-                <dd class="stat-num">ML</dd>
-                <dt class="stat-label">FOR HEALTHCARE</dt>
-              </div>
+              {stats.map((s) => (
+                <div>
+                  <dd class="stat-num" data-counter={s.counter} data-pad={'pad' in s ? s.pad : undefined} data-suffix={'suffix' in s ? s.suffix : undefined}>{s.value}</dd>
+                  <dt class="stat-label">{s.label}</dt>
+                </div>
+              ))}
             </dl>
           </div>
 
@@ -109,26 +105,9 @@ const marquee = [
           <div class="md:col-span-2 panel narrative">
             <p class="eyebrow mb-6">PROFILE_NARRATIVE.txt</p>
             <p class="lede">
-              I'm a Computer Science student at
-              <span class="accent-text">{SITE.university}</span>, class of {SITE.gradYear},
-              and I build machine learning models for medicine.
+              {ledeBefore}<span class="accent-text">{SITE.university}</span>{ledeAfter}
             </p>
-            <p>
-              Most of my work so far is clinical risk prediction: take a large electronic health
-              record dataset, engineer features a clinician would recognise, train a calibrated
-              gradient-boosted model, and prove it beats the scores hospitals already use. I care
-              about calibration and explainability as much as AUROC, because a model nobody trusts
-              doesn't get used.
-            </p>
-            <p>
-              Around that: undergraduate research on explainable deep learning for healthcare and
-              on machine learning for biomedical alloys, a teaching assistantship in data science,
-              and a couple of full-stack products built in teams. Right now I'm moving toward LLM
-              and RAG systems, and building one to learn it properly.
-            </p>
-            <p>
-              I also paint. It isn't a metaphor for anything. I just like it.
-            </p>
+            {about.paragraphs.map((text) => <p>{text}</p>)}
           </div>
 
         </div>
@@ -147,17 +126,9 @@ const marquee = [
 
         <!-- What I actually do -->
         <div class="work-intro" data-reveal>
-          <p class="eyebrow mb-4">WHAT I ACTUALLY DO</p>
-          <p class="lede">
-            Machine learning for healthcare: calibrated risk models on real clinical data,
-            explainability that a physician can read, and the data engineering underneath.
-          </p>
-          <p class="work-intro-body">
-            Concretely: I turn raw hospital and genomic data into features, train and validate
-            models with leakage-safe cross-validation, calibrate them, explain them with SHAP, and
-            report them to clinical standards. I've also shipped full-stack products with a team,
-            and I'm now building retrieval-augmented LLM systems.
-          </p>
+          <p class="eyebrow mb-4">{work.eyebrow}</p>
+          <p class="lede">{work.lede}</p>
+          <p class="work-intro-body">{work.body}</p>
           <ul class="domain-tags" aria-label="Domains">
             {PUBLIC_DOMAINS.map((d) => <li>{d}</li>)}
           </ul>
@@ -178,17 +149,14 @@ const marquee = [
         <!-- CTA -->
         <div class="work-cta panel" data-reveal>
           <div>
-            <p class="eyebrow mb-3">FULL HISTORY ON REQUEST</p>
-            <p class="work-cta-text">
-              I keep the detailed list of roles, projects and metrics off the public site on
-              purpose. If you're hiring or supervising, ask and I'll send the full page plus a CV.
-            </p>
+            <p class="eyebrow mb-3">{work.ctaEyebrow}</p>
+            <p class="work-cta-text">{work.ctaText}</p>
           </div>
           <div class="work-cta-actions">
-            <a href={contactMailto('Full work history request')} class="btn-cta primary font-mono">
-              Request full history <span aria-hidden="true">→</span>
+            <a href={contactMailto(work.ctaSubject)} class="btn-cta primary font-mono">
+              {work.ctaPrimary} <span aria-hidden="true">→</span>
             </a>
-            <a href="#contact" class="btn-cta font-mono">Contact</a>
+            <a href="#contact" class="btn-cta font-mono">{work.ctaSecondary}</a>
           </div>
         </div>
       </div>
@@ -710,8 +678,8 @@ const marquee = [
   (function statusTypewriter() {
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const el = document.getElementById('hero-status');
-    const TARGET = 'SYS_ID: EC_2027 — ISTANBUL / TR — ONLINE';
     if (!el) return;
+    const TARGET = (el.textContent || '').trim(); // rendered from content.json → hero.status
     if (reduced) { el.textContent = TARGET; return; }
 
     const TOTAL = 600;

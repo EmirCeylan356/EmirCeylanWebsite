@@ -20,6 +20,7 @@
  * ─────────────────────────────────────────────────────────────────────────
  */
 import { SITE } from '../lib/site';
+import content from './content.json';
 
 export const contactMailto = (subject: string, body?: string) =>
   `mailto:${SITE.email}?subject=${encodeURIComponent(`${subject} — Emir Ceylan`)}` +
@@ -32,7 +33,9 @@ export const contactMailto = (subject: string, body?: string) =>
 /** Aggregate count shown on the home page ("07+ roles & research projects"). */
 export const roleCount = 7; // = PRIVATE_EXPERIENCE.length + hackathon win + OI tool; see below
 
-export const PUBLIC_DOMAINS = ['Clinical ML', 'Explainable AI', 'Bioinformatics', 'Full-stack', 'LLM / RAG'] as const;
+// All PUBLIC copy lives in src/data/content.json (edited through the CMS at
+// /admin). The constants below re-export it so existing imports keep working.
+// Field-by-field docs: src/data/content.schema.md.
 
 export interface Capability {
   label: string;
@@ -42,73 +45,54 @@ export interface Capability {
   stack: string;
 }
 
-/** Anonymised, real numbers. Institution / dataset / project names omitted on purpose. */
-export const PUBLIC_CAPABILITIES: Capability[] = [
-  {
-    label: 'Clinical risk model',
-    metric: '0.898',
-    unit: 'AUROC',
-    description:
-      'Calibrated 30-day post-discharge mortality model for patients over 70, trained on 172k hospital admissions. Beat the standard clinical scores by +0.15 and +0.07 AUROC under grouped cross-validation.',
-    stack: 'XGBoost · GroupKFold · SHAP · TRIPOD+AI',
-  },
-  {
-    label: 'EHR feature pipeline',
-    metric: '77',
-    unit: 'clinical features',
-    description:
-      'Engineered from a 28 GB raw electronic-health-record release. Every feature has a clinical justification, and the whole pipeline runs on a laptop.',
-    stack: 'DuckDB · polars · pandas',
-  },
-  {
-    label: 'Genetic variant classifier',
-    metric: '98.8',
-    unit: '% peak accuracy',
-    description:
-      'Diagnosis support for a rare inherited bone disorder from 3,000+ sequences. Four algorithms compared; a novel feature representation based on collagen amino-acid structure did the heavy lifting.',
-    stack: 'scikit-learn · Biopython · cross-validation',
-  },
-  {
-    label: 'Legal-tech hackathon',
-    metric: '2nd',
-    unit: 'place · ₺20k seed',
-    description:
-      'B2B product that scores litigation outcomes and cites relevant precedent for uploaded case documents. Built in a weekend with a team of five.',
-    stack: 'Python · NLP · product pitch',
-  },
-];
-
 export interface SkillGroup { title: string; items: string[]; note?: string }
 
-export const PUBLIC_SKILLS: { primary: SkillGroup[]; secondary: SkillGroup[] } = {
-  primary: [
-    {
-      title: 'ML & data',
-      items: ['XGBoost', 'scikit-learn', 'SHAP', 'pandas', 'polars', 'NumPy', 'DuckDB', 'SQL', 'Matplotlib', 'Biopython', 'Jupyter'],
-    },
-    {
-      title: 'Languages',
-      items: ['Python', 'C++', 'JavaScript', 'SQL'],
-    },
-    {
-      title: 'Web & infra',
-      items: ['React', 'Vite', 'Django REST Framework', 'PostgreSQL', 'Docker', 'Firebase / Supabase', 'Astro', 'Git / GitHub', 'Jira', 'Ubuntu / Linux'],
-    },
-    {
-      title: 'Concepts',
-      items: ['Machine learning', 'Deep learning', 'Explainable AI', 'Model calibration', 'Full-stack web', 'REST APIs', 'Statistics', 'Data visualisation'],
-    },
-    {
-      title: 'Learning now',
-      note: 'Deliberately moving from classical ML into LLM engineering. Building a RAG project to prove it.',
-      items: ['LLM systems', 'Retrieval-augmented generation', 'Agents'],
-    },
-  ],
-  secondary: [
-    { title: 'Creative', items: ['Oil painting', 'Watercolour', 'Drawing', 'Digital illustration', 'Photoshop', 'Premiere Pro'] },
-    { title: 'Spoken', items: ['English (C1, fluent)', 'Turkish (native)'] },
-  ],
-};
+export interface Stat {
+  value: string;
+  label: string;
+  /** When set, the number counts up on scroll (data-counter). */
+  counter?: number;
+}
+
+/** Shape of src/data/content.json. Keep in sync with public/admin/config.yml. */
+export interface SiteContent {
+  hero: { status: string; subtitle: string; ctaPrimary: string; ctaSecondary: string };
+  /** Marquee bar items; the last one is rendered in the accent colour. */
+  marquee: string[];
+  about: { lede: string; paragraphs: string[]; stats: Stat[] };
+  work: {
+    eyebrow: string;
+    lede: string;
+    body: string;
+    domains: string[];
+    capabilities: Capability[];
+    ctaEyebrow: string;
+    ctaText: string;
+    ctaPrimary: string;
+    ctaSubject: string;
+    ctaSecondary: string;
+  };
+  skills: { primary: SkillGroup[]; secondary: SkillGroup[] };
+  contact: { eyebrow: string; title: string; copy: string; cta: string; mailSubject: string; mailBody: string };
+  now: {
+    updated: string;
+    location: string;
+    intro: string;
+    /** status[0] = Where, [1] = Work, [2] = Learning, rest = Research. */
+    status: string[];
+    offScreen: string[];
+    outro: string;
+  };
+}
+
+export const CONTENT: SiteContent = content;
+
+export const PUBLIC_DOMAINS: string[] = CONTENT.work.domains;
+
+/** Anonymised, real numbers. Institution / dataset / project names omitted on purpose. */
+export const PUBLIC_CAPABILITIES: Capability[] = CONTENT.work.capabilities;
+
+export const PUBLIC_SKILLS: { primary: SkillGroup[]; secondary: SkillGroup[] } = CONTENT.skills;
 
 /** Credentials that are fine to show publicly (no course codes tied to projects). */
 export const PUBLIC_CREDENTIALS = [
@@ -118,19 +102,9 @@ export const PUBLIC_CREDENTIALS = [
   '50% merit scholarship (ranked 7,004th nationally in the YKS)',
 ];
 
-/** /now page facts. Update `NOW_UPDATED` whenever these change. */
-export const NOW_UPDATED = '2026-08-25';
-export const NOW = {
-  location: 'Istanbul',
-  status: [
-    'Senior year (2026–27) at Sabancı University. A planned Spring exchange was cancelled, so I am in Istanbul through 2027.',
-    'Actively looking for paid ML / AI / software work, Istanbul or remote, that I can hold alongside senior year.',
-    'Moving on purpose from classical ML into AI and LLM engineering: RAG, agents, LLM systems. Building a RAG project to prove it.',
-    'Two undergraduate research projects running: explainable deep learning for healthcare decision support, and ML for biomedical alloys.',
-    'Manuscript in preparation from a summer clinical-ML internship abroad.',
-  ],
-  offScreen: ['Painting', 'Archery', 'Jiu-jitsu', 'Fitness', 'Chess'],
-};
+/** /now page facts (from content.json → now). `updated` is bumped by the editor. */
+export const NOW_UPDATED: string = CONTENT.now.updated;
+export const NOW: SiteContent['now'] = CONTENT.now;
 
 // ══════════════════════════════════════════════════════════════════════════
 //  PRIVATE — unlisted routes only. Do not import from a public page.

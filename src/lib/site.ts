@@ -34,6 +34,7 @@ export const UNLISTED_PATHS = [
   '/work-4b8b954c2493/',
   '/cv-4b8b954c2493/',
   '/visitor-gallery-admin/',
+  '/admin/',
 ] as const;
 
 export const isUnlisted = (pathname: string) =>

@@ -7,5 +7,7 @@ Disallow: /cv-4b8b954c2493/
 Disallow: /gallery-088c0fbff746/
 Disallow: /visitor-gallery-admin/
 Disallow: /og/
+Disallow: /admin/
+Disallow: /api/
 
 Sitemap: https://www.emirceylan.com/sitemap-index.xml

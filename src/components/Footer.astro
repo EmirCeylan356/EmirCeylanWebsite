@@ -1,6 +1,12 @@
 ---
 import { SITE } from '../lib/site';
-import { contactMailto } from '../data/profile';
+import { CONTENT, contactMailto } from '../data/profile';
+
+// Editable copy comes from src/data/content.json → contact (see content.schema.md).
+const { contact } = CONTENT;
+// Title is written as "LET'S_TALK"; the underscore is rendered in the accent colour.
+const [titleHead, ...titleRest] = contact.title.split('_');
+const titleTail = titleRest.join('_');
 
 // Public contact block. No phone number here or anywhere on the site.
 const socials = [
@@ -10,10 +16,7 @@ const socials = [
   { name: 'RSS',      url: '/rss.xml',    short: '/rss.xml',        external: false },
 ];
 
-const mailto = contactMailto(
-  'Hello from your website',
-  'Hi Emir,\n\nI found your site and wanted to get in touch about ...\n\n',
-);
+const mailto = contactMailto(contact.mailSubject, contact.mailBody);
 const year = new Date().getFullYear();
 
 // Optional static-friendly contact form (Web3Forms). Enabled only when
@@ -27,20 +30,16 @@ const formKey = import.meta.env.PUBLIC_WEB3FORMS_KEY as string | undefined;
     <div class="footer-grid">
 
       <div>
-        <p class="eyebrow">04 / CONTACT</p>
+        <p class="eyebrow">{contact.eyebrow}</p>
         <h2 id="contact-heading" class="footer-title kinetic-text">
-          LET'S<span class="accent-text">_</span>TALK
+          {titleHead}{titleRest.length > 0 && <span class="accent-text">_</span>}{titleTail}
         </h2>
-        <p class="footer-copy">
-          I'm looking for ML, AI or software roles I can hold alongside my senior year,
-          in Istanbul or remote. If you're hiring, supervising research, or want the full
-          work history, email me. I reply to everything that isn't spam.
-        </p>
+        <p class="footer-copy">{contact.copy}</p>
       </div>
 
       <div class="footer-actions">
         <a href={mailto} class="footer-cta cut-corner font-mono">
-          Email me <span aria-hidden="true">→</span>
+          {contact.cta} <span aria-hidden="true">→</span>
         </a>
 
         {formKey && (
@@ -87,7 +86,7 @@ const formKey = import.meta.env.PUBLIC_WEB3FORMS_KEY as string | undefined;
       <p class="font-mono binary" aria-hidden="true">
         01000011 01010011 00100000 01010011 01010100 01010101 01000100 01000101 01001110 01010100
       </p>
-      <p class="font-mono">© {year} EMİR CEYLAN · <a href="/uses/">/uses</a> · <a href="/humans.txt">humans.txt</a></p>
+      <p class="font-mono">© {year} EMİR CEYLAN · <a href="/uses/">/uses</a> · <a href="/humans.txt">humans.txt</a> · <a href="/admin/" rel="nofollow" title="Site editor (owner sign-in)">admin</a></p>
     </div>
   </div>
 </footer>

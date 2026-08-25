@@ -1,7 +1,8 @@
 ---
 // /now — what I am doing at the moment (nownownow.com convention).
-// Facts come from NOW / NOW_UPDATED in src/data/profile.ts. To update: edit
-// that object and bump NOW_UPDATED. Nothing here is hard-coded on purpose.
+// Facts come from src/data/content.json → now (re-exported as NOW / NOW_UPDATED
+// from src/data/profile.ts). To update: edit content.json (or use the CMS at
+// /admin) and bump `now.updated`. Nothing here is hard-coded on purpose.
 // PRIVACY: public page. Anonymised status only; no employer / project names.
 import Layout from '../layouts/Layout.astro';
 import Header from '../components/Header.astro';
@@ -12,11 +13,17 @@ import { SITE } from '../lib/site';
 const updated = new Date(NOW_UPDATED);
 const updatedLabel = new Intl.DateTimeFormat('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }).format(updated);
 
-// The status list in profile.ts is one flat array; split it into the sections
-// the page shows. Index 0 = where I am, 1..2 = work / search, 3..4 = learning /
-// research. If the list changes shape, adjust these picks.
+// The status list in content.json is one flat array; split it into the sections
+// the page shows. status[0] = Where, [1] = Work, [2] = Learning, rest = Research
+// (documented in content.schema.md).
 const [where, work, learning, ...rest] = NOW.status;
 const research = rest;
+
+// Outro: the trailing "email me" becomes the mailto link.
+const outroLinkText = 'email me';
+const outroIdx = NOW.outro.lastIndexOf(outroLinkText);
+const outroBefore = outroIdx >= 0 ? NOW.outro.slice(0, outroIdx) : NOW.outro + ' ';
+const outroAfter = outroIdx >= 0 ? NOW.outro.slice(outroIdx + outroLinkText.length) : '.';
 
 const sections: { id: string; title: string; items: string[] }[] = [
   { id: 'where', title: 'Where', items: [`${NOW.location}, Türkiye.`, where] },
@@ -45,9 +52,7 @@ const description = `What Emir Ceylan is doing now: senior year at ${SITE.univer
         LAST UPDATED <time datetime={NOW_UPDATED}>{NOW_UPDATED}</time>
       </p>
 
-      <p class="intro" data-reveal>
-        What I am doing at the moment, in one place. Not a résumé, not a bio. It changes when my situation does.
-      </p>
+      <p class="intro" data-reveal>{NOW.intro}</p>
 
       <div class="now-grid" data-reveal-stagger>
         {sections.map((s, i) => (
@@ -62,8 +67,7 @@ const description = `What Emir Ceylan is doing now: senior year at ${SITE.univer
       </div>
 
       <p class="cta" data-reveal>
-        If the Work line matches something you have,
-        <a href={`mailto:${SITE.email}?subject=${encodeURIComponent('Work — Emir Ceylan')}`}>email me</a>.
+        {outroBefore}<a href={`mailto:${SITE.email}?subject=${encodeURIComponent('Work — Emir Ceylan')}`}>{outroLinkText}</a>{outroAfter}
       </p>
 
       <footer class="footnote" data-reveal>
