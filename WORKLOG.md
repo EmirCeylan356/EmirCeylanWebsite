@@ -154,3 +154,38 @@ Running log, one entry per phase. Times are local (TST, UTC+3).
   fullscreen states at 390 and 1280; `scripts/gallery-check.mjs` kept as a regression
   test. Note: this machine's Chromium can't reach supabase.co (local TLS interception),
   so live-data captures show the error state; grid captures use mocked rows.
+
+## Phase 9 (part) — Blog, /now, /uses, /404 (07:12–07:45, subagent)
+- Content collection `blog` (Astro 5 glob loader, `_*` ignored) with `draft`; one shared
+  filter (`src/components/blog/posts.ts`) governs index, post pages, tag pages, RSS and
+  per-post OG so drafts can never leak in production. Drafts show in `npm run dev` and
+  with `SHOW_DRAFTS=1`.
+- Two draft posts written from approved facts only (calibration vs AUROC in a clinical
+  risk model; moving from classical ML to LLM systems). `_TEMPLATE.mdx` + `CONTENT.md`.
+- `/blog/` ships with an on-brand empty state (both posts are drafts), tag nav, RSS at
+  `/rss.xml`. `BlogPost.astro`: reading time, dates, tags, prev/next, BlogPosting JSON-LD.
+- `/now/` renders from `NOW` + `NOW_UPDATED` (2026-08-25) in profile.ts; `/uses/` only
+  lists what the repo or §3 verifies (hardware left as TODO(emir) comments); `/404/`
+  is a terminal panel listing the real routes, `H` goes home.
+- Verified: build passes with drafts absent from HTML/RSS/OG; axe 0 violations on all
+  four pages at 390/1280; screenshots reviewed.
+
+## Phases 6 + 7 + 8 + 11 (hobbies) — Images, a11y, responsive (07:12–07:50, subagent)
+- 48 painting sources moved `public/images/` → `src/assets/paintings/` and rendered
+  with `<Picture>` (AVIF/WebP, 320–900w, q70, explicit dimensions, lazy + async).
+  Page image bytes: **1,103,036 → 119,886** with the ART tab open (0 before opening,
+  because inactive tab panels are now `hidden`). Worst case (whole wall + lightbox) 1.14 MB
+  vs 1.10 MB baseline for a partial scroll.
+- Native `<dialog>` lightbox with focus trap/restore, prev/next, arrow keys, n/48 counter.
+  Cards are buttons. Data passed once as JSON; duplicated array removed.
+- `ACTIVITIES` is the h1; tabs are a real `tablist` (arrow keys, roving tabindex);
+  gallery viewport keyboard-scrollable; drag uses native `scrollLeft`; rAF loop idles;
+  everything gated under reduced motion. Contrast fixes (`--text-tertiary`, white-on-
+  crimson chips, `.glow-text` shadows dropped on this page). 0 overflow at 360→1920.
+- Visitor gallery link panel under the ART tab: the deliberate single public entry point.
+- Found for Emir (not changed — "don't add facts"): painting titles/mediums are
+  placeholders that don't match the images; 12 duplicate pairs among the 48; the
+  "oil painting" copy doesn't match the visible media; one 16.8 MB source photo.
+- Verified: astro check 0 errors; axe 0 violations per tab + lightbox, normal and
+  reduced motion; screenshots at 360/390/768/1280 reviewed. Removed 7 unreferenced
+  photos and `travel-map.jpg` from `public/images/`.
