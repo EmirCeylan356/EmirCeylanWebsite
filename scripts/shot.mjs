@@ -9,7 +9,7 @@ const page = await ctx.newPage();
 const errors = [];
 page.on('pageerror', e => errors.push(e.message));
 page.on('console', m => { if (m.type() === 'error') errors.push(m.text()); });
-await page.goto('http://localhost:4321' + p, { waitUntil: 'networkidle' });
+await page.goto((process.env.BASE || 'http://localhost:4321') + p, { waitUntil: 'networkidle' });
 await page.waitForTimeout(2500);
 await page.evaluate(async () => { const H = document.body.scrollHeight; for (let y = 0; y < H; y += 400) { window.scrollTo(0, y); await new Promise(r => setTimeout(r, 160)); } window.scrollTo(0, 0); await new Promise(r => setTimeout(r, 700)); });
 await page.screenshot({ path: out, fullPage: full });
