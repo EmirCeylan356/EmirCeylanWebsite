@@ -83,7 +83,7 @@ const routes = [
     font-family: inherit; font-size: 0.9rem; line-height: 1.8;
     white-space: pre-wrap; overflow-wrap: anywhere; color: var(--text-secondary);
   }
-  .prompt { color: var(--accent); font-weight: 700; }
+  .prompt { color: var(--accent-text); font-weight: 700; }
   .cmd { color: var(--text-primary); }
   .path { color: var(--text-primary); text-decoration: underline; text-decoration-color: var(--accent); text-underline-offset: 3px; }
   .err { color: var(--accent-bri); font-weight: 700; font-size: clamp(1.1rem, 1rem + 1vw, 1.6rem); }
@@ -100,7 +100,7 @@ const routes = [
   .ls-name { color: var(--text-primary); font-weight: 700; font-size: 0.95rem; min-width: 7ch; }
   .ls-name::before { content: '▸ '; color: var(--accent); }
   .ls-note { color: var(--text-tertiary); font-size: 0.8rem; }
-  .ls a:hover .ls-name, .ls a:focus-visible .ls-name { color: var(--accent); }
+  .ls a:hover .ls-name, .ls a:focus-visible .ls-name { color: var(--accent-text); }
 
   .hint { padding: var(--space-4) var(--space-6) var(--space-6); font-size: 0.8rem; letter-spacing: 0.06em; color: var(--text-secondary); border-top: 1px solid var(--border-color); }
   kbd { font-family: inherit; font-size: 0.75rem; color: var(--text-primary); border: 1px solid var(--border-color); border-bottom-width: 2px; padding: 0.1rem 0.45rem; background: var(--bg-elevated); }
