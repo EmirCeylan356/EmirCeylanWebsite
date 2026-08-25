@@ -22,15 +22,30 @@
       "I also paint. It isn't a metaphor for anything. I just like it."
     ],
     "stats": [
-      { "value": "2027", "label": "EXPECTED GRAD", "counter": 2027 },
-      { "value": "ML", "label": "FOR HEALTHCARE" }
+      {
+        "value": "2027",
+        "label": "EXPECTED GRAD",
+        "counter": 2027
+      },
+      {
+        "value": "ML",
+        "label": "FOR HEALTHCARE",
+        "counter": 5
+      }
     ]
   },
   "work": {
-    "eyebrow": "WHAT I ACTUALLY DO",
-    "lede": "Machine learning for healthcare: calibrated risk models on real clinical data, explainability that a physician can read, and the data engineering underneath.",
     "body": "Concretely: I turn raw hospital and genomic data into features, train and validate models with leakage-safe cross-validation, calibrate them, explain them with SHAP, and report them to clinical standards. I've also shipped full-stack products with a team, and I'm now building retrieval-augmented LLM systems.",
-    "domains": ["Clinical ML", "Explainable AI", "Bioinformatics", "Full-stack", "LLM / RAG"],
+    "ctaSecondary": "Contact",
+    "eyebrow": "WHAT I ACTUALLY DO",
+    "domains": [
+      "Clinical ML",
+      "Explainable AI",
+      "Bioinformatics",
+      "Full-stack",
+      "LLM / RAG"
+    ],
+    "ctaPrimary": "Request full history",
     "capabilities": [
       {
         "label": "Clinical risk model",
@@ -62,42 +77,100 @@
       }
     ],
     "ctaEyebrow": "FULL HISTORY ON REQUEST",
-    "ctaText": "I keep the detailed list of roles, projects and metrics off the public site on purpose. If you're hiring or supervising, ask and I'll send the full page plus a CV.",
-    "ctaPrimary": "Request full history",
+    "lede": "Machine learning for healthcare: calibrated risk models on real clinical data, explainability that a physician can read, and the data engineering underneath.",
     "ctaSubject": "Full work history request",
-    "ctaSecondary": "Contact"
+    "ctaText": "I keep the detailed list of roles, projects and metrics off the public site on purpose. If you're hiring or supervising, ask and I'll send the full page plus a CV."
   },
   "skills": {
     "primary": [
       {
         "title": "ML & data",
         "note": "",
-        "items": ["XGBoost", "scikit-learn", "SHAP", "pandas", "polars", "NumPy", "DuckDB", "SQL", "Matplotlib", "Biopython", "Jupyter"]
+        "items": [
+          "XGBoost",
+          "scikit-learn",
+          "SHAP",
+          "pandas",
+          "polars",
+          "NumPy",
+          "DuckDB",
+          "SQL",
+          "Matplotlib",
+          "Biopython",
+          "Jupyter"
+        ]
       },
       {
         "title": "Languages",
         "note": "",
-        "items": ["Python", "C++", "JavaScript", "SQL"]
+        "items": [
+          "Python",
+          "C++",
+          "JavaScript",
+          "SQL"
+        ]
       },
       {
         "title": "Web & infra",
         "note": "",
-        "items": ["React", "Vite", "Django REST Framework", "PostgreSQL", "Docker", "Firebase / Supabase", "Astro", "Git / GitHub", "Jira", "Ubuntu / Linux"]
+        "items": [
+          "React",
+          "Vite",
+          "Django REST Framework",
+          "PostgreSQL",
+          "Docker",
+          "Firebase / Supabase",
+          "Astro",
+          "Git / GitHub",
+          "Jira",
+          "Ubuntu / Linux"
+        ]
       },
       {
         "title": "Concepts",
         "note": "",
-        "items": ["Machine learning", "Deep learning", "Explainable AI", "Model calibration", "Full-stack web", "REST APIs", "Statistics", "Data visualisation"]
+        "items": [
+          "Machine learning",
+          "Deep learning",
+          "Explainable AI",
+          "Model calibration",
+          "Full-stack web",
+          "REST APIs",
+          "Statistics",
+          "Data visualisation"
+        ]
       },
       {
         "title": "Learning now",
         "note": "Deliberately moving from classical ML into LLM engineering. Building a RAG project to prove it.",
-        "items": ["LLM systems", "Retrieval-augmented generation", "Agents"]
+        "items": [
+          "LLM systems",
+          "Retrieval-augmented generation",
+          "Agents"
+        ]
       }
     ],
     "secondary": [
-      { "title": "Creative", "note": "", "items": ["Oil painting", "Watercolour", "Drawing", "Digital illustration", "Photoshop", "Premiere Pro"] },
-      { "title": "Spoken", "note": "", "items": ["English (C1, fluent)", "Turkish (native)"] }
+      {
+        "title": "Creative",
+        "note": "",
+        "items": [
+          "Oil painting",
+          "Watercolour",
+          "Drawing",
+          "Digital illustration",
+          "Photoshop",
+          "Premiere Pro"
+        ]
+      },
+      {
+        "title": "Spoken",
+        "note": "",
+        "items": [
+          "English (C1, fluent)",
+          "Turkish (native)"
+        ]
+      }
     ]
   },
   "contact": {
@@ -119,7 +192,12 @@
       "Two undergraduate research projects running: explainable deep learning for healthcare decision support, and ML for biomedical alloys.",
       "Manuscript in preparation from a summer clinical-ML internship abroad."
     ],
-    "offScreen": ["Painting", "Archery", "Jiu-jitsu", "Fitness", "Chess"],
+    "offScreen": [
+      "Painting",
+      "Jiu-jitsu",
+      "Fitness",
+      "Chess"
+    ],
     "outro": "If the Work line matches something you have, email me."
   }
 }
