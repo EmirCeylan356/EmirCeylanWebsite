@@ -25,3 +25,4 @@ pnpm-debug.log*
 .tmp-build-*/
 audit/work/
 .claude/worktrees/
+OVERNIGHT_PROMPT.md

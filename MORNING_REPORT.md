@@ -199,6 +199,13 @@ footer and /now (`src/data/content.json`). Each save is a commit to `main` → V
 deploys in ~2 min; `git revert` undoes any edit. Only GitHub accounts with write access to
 the repo can save. `npm run cms:local` lets you edit the working tree without GitHub.
 
+**One slip to know about:** the CMS commit (`1c1832c`) accidentally included
+`OVERNIGHT_PROMPT.md` (your brief). I untracked and gitignored it in the next commit, but
+it remains in git history on GitHub. If the repo is public and you'd rather it not be
+readable there, the clean fix is to rewrite that commit — which you told me never to do on
+`main` — so it's your call: `git filter-repo --path OVERNIGHT_PROMPT.md --invert-paths`
+then a force-push, or leave it.
+
 ## Suggested next session
 
 1. Run the Supabase SQL, then add a moderation flag (`approved boolean default false`) so
