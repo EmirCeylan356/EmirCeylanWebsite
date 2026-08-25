@@ -19,8 +19,9 @@ present, fonts immutable-cached, robots.txt correct, RSS valid with no draft ite
 Lighthouse **against the live URL** at 08:02: `/` and `/hobbies` both **100 / 100 / 100 /
 100** on mobile and desktop (LCP 1.5 s mobile / 0.4 s desktop, CLS ≤ 0.009). Nothing reverted.
 
-One follow-up push (`321449f`, docs + a CI fix) is on `main` after this report: the first CI
-run on `main` failed only on my own over-broad secrets grep (it matched the `*.supabase.co`
+Two follow-up merges landed after this report (`dc1d6c8`: CI grep fix + this report;
+`eca17ba`: the 16.8 MB source photo re-encoded to 1 MB, font packages moved to
+devDependencies). The first CI run on `main` failed only on my own over-broad secrets grep (it matched the `*.supabase.co`
 CSP wildcard); typecheck, build, link and privacy checks all passed. Rollback if ever
 needed: `git revert -m 1 825287b && git push`.
 
@@ -49,7 +50,7 @@ preview of the production build. Raw JSON + every screenshot: `audit/baseline/` 
 | robots.txt / sitemap / RSS / 404 / manifest / icons | none | all present |
 | Security headers | HSTS only (Vercel default) | CSP, nosniff, Referrer-Policy, Permissions-Policy, HSTS preload, X-Frame-Options, COOP |
 | `astro check` | not set up (67 errors when first run) | 0 errors, 0 warnings |
-| Build output | 64 MB (raw phone photos duplicated) | 38 MB (455 AVIF/WebP variants generated; the 16.8 MB source photo is the outlier) |
+| Build output | 64 MB (raw phone photos duplicated) | 38 MB (455 AVIF/WebP variants generated) |
 
 ## What I changed, by phase
 
@@ -168,8 +169,6 @@ Commits are on `overnight-polish` (merged to `main` — see Live status). Full l
 8. **Stale worktree** `.claude/worktrees/reverent-wiles` (branch fully merged): the tool
    permission layer blocked `--force` removal. One-liner:
    `git worktree remove --force .claude/worktrees/reverent-wiles`.
-9. The **16.8 MB source photo** `src/assets/paintings/IMG-20260210-WA0003.jpeg` slows
-   cold builds; export a ≤3000 px version and overwrite it.
 
 ## What I deliberately did not do
 
