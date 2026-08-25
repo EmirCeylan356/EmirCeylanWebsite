@@ -7,7 +7,7 @@ backend:
   repo: EmirCeylan356/EmirCeylanWebsite
   branch: main
   base_url: https://www.emirceylan.com
-  auth_endpoint: api/oauth
+  auth_endpoint: api/oauth/
   commit_messages:
     create: "content: create {{collection}} “{{slug}}”"
     update: "content: update {{collection}} “{{slug}}”"

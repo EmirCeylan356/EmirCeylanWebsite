@@ -189,7 +189,7 @@ You asked for a hidden login to edit texts, add posts and manage paintings; you 
 git-backed option. It's live at **https://www.emirceylan.com/admin/** (also the tiny
 "admin" link at the bottom of every page). One-time setup, ~3 minutes, in
 [docs/CMS.md](docs/CMS.md): create a GitHub OAuth App (callback
-`https://www.emirceylan.com/api/oauth/callback`), put `OAUTH_GITHUB_CLIENT_ID` and
+`https://www.emirceylan.com/api/oauth/callback/` (note the trailing slash)), put `OAUTH_GITHUB_CLIENT_ID` and
 `OAUTH_GITHUB_CLIENT_SECRET` in Vercel, redeploy. Until then the login button will show a
 "not set" message.
 
