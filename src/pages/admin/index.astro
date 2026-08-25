@@ -1,0 +1,38 @@
+---
+// ════════════════════════════════════════════════════════════════════════════
+//  CMS ADMIN — /admin/
+//
+//  Decap CMS, git-backed. Login is GitHub OAuth (see api/oauth.js); only
+//  people with write access to the repo can save. Every save is a commit to
+//  `main` → Vercel deploys → live in ~2 minutes.
+//  noindex, disallowed in robots.txt, excluded from the sitemap, and only
+//  linked from the tiny "admin" link in the footer.
+//  Config lives in public/admin/config.yml (Decap loads it relative to this page).
+// ════════════════════════════════════════════════════════════════════════════
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <meta name="color-scheme" content="dark light" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>Admin — Emir Ceylan</title>
+    <style>
+      html { background: #0a0a0a; }
+      #boot { font: 13px/1.6 ui-monospace, 'JetBrains Mono', monospace; color: #aaa; padding: 2rem; }
+      #boot b { color: #C41E3A; }
+    </style>
+  </head>
+  <body>
+    <p id="boot"><b>EC_</b> loading admin…</p>
+    <script>
+      import CMS from 'decap-cms-app';
+      // Config is fetched from /admin/config.yml (default). init() mounts the app.
+      CMS.init();
+      document.getElementById('boot')?.remove();
+    </script>
+  </body>
+</html>

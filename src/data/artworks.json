@@ -1,0 +1,400 @@
+{
+  "artworks": [
+    {
+      "id": 1,
+      "title": "FORM STUDY I",
+      "medium": "Oil on Canvas",
+      "year": 2024,
+      "file": "file_8---39151805-7313-4bb7-b8c8-1365aef884a3.jpg",
+      "alt": "Blue ballpoint pen sketch on brown cardboard of a cartoon bald figure with a cigarette and a bag, surrounded by posters, a skateboard and a boombox."
+    },
+    {
+      "id": 2,
+      "title": "COMPOSITION II",
+      "medium": "Mixed Media",
+      "year": 2024,
+      "file": "file_9---c5cd81b7-8140-4595-8297-af32f0e2edba.jpg",
+      "alt": "Graphite pencil study of a classical marble bust of a woman with braided hair, seen in three-quarter profile on white paper."
+    },
+    {
+      "id": 3,
+      "title": "LANDSCAPE III",
+      "medium": "Oil on Canvas",
+      "year": 2024,
+      "file": "file_10---714a56fd-d4fb-4316-8629-c6f06a4db7a8.jpg",
+      "alt": "Ink and watercolor illustration of a blue-haired woman crouching inside a wooden frame, her arms and legs covered in floral tattoos, in browns, blues and greens."
+    },
+    {
+      "id": 4,
+      "title": "FIGURE IV",
+      "medium": "Acrylic",
+      "year": 2024,
+      "file": "file_11---e6cf7245-cda7-4ca8-884c-55c891575493.jpg",
+      "alt": "Black ink drawing of a girl in a tutu holding scissors and a spray can behind a seated boy, with bottles scattered on the floor."
+    },
+    {
+      "id": 5,
+      "title": "ABSTRACTION V",
+      "medium": "Oil on Canvas",
+      "year": 2024,
+      "file": "file_12---09cd522a-d5e5-433a-ac0f-d9c0c710c79a.jpg",
+      "alt": "Bold black ink portrait of a young woman with curly hair, wide eyes, a choker and a patterned collar."
+    },
+    {
+      "id": 6,
+      "title": "TEXTURE VI",
+      "medium": "Mixed Media",
+      "year": 2024,
+      "file": "file_13---f94eea51-a229-4b42-bcf4-f489c8824e9b.jpg",
+      "alt": "Faint graphite sketch of cherubs and infant figures tumbling among clouds on white paper."
+    },
+    {
+      "id": 7,
+      "title": "STILLNESS VII",
+      "medium": "Oil on Canvas",
+      "year": 2023,
+      "file": "file_14---d6d37114-4da7-4cdf-896d-5b361bf9ac99.jpg",
+      "alt": "Graphite anatomy study of a seated nude woman next to a full skeleton, with a skeletal hand and an eye drawn around them."
+    },
+    {
+      "id": 8,
+      "title": "MOTION VIII",
+      "medium": "Acrylic",
+      "year": 2023,
+      "file": "file_15---cfdd2a00-8c9e-4367-8b88-c149ce15db2a.jpg",
+      "alt": "Watercolor and ink bouquet of roses, hydrangeas, lilies and greenery in pinks, blues and mauves on a small white sheet."
+    },
+    {
+      "id": 9,
+      "title": "DEPTH IX",
+      "medium": "Oil on Canvas",
+      "year": 2023,
+      "file": "file_16---a29e17b8-1972-4c3d-af3c-e4f65981a95f.jpg",
+      "alt": "Graphite drawing of a bald, bearded man leaning forward on a ledge with a large bat-like wing rising behind him."
+    },
+    {
+      "id": 10,
+      "title": "PATTERN X",
+      "medium": "Mixed Media",
+      "year": 2023,
+      "file": "file_17---f463b1dd-1139-4fad-81a9-b4b5bddd0ef0.jpg",
+      "alt": "Graphite portrait of a smiling older man with a monocle, moustache and tie, holding a bag marked with a dollar sign."
+    },
+    {
+      "id": 11,
+      "title": "TENSION XI",
+      "medium": "Charcoal",
+      "year": 2023,
+      "file": "file_19---7fd47930-b43e-4e33-a1d0-ce5384175a40.jpg",
+      "alt": "Watercolor and ink poster titled Sabanci Kaplani showing a gaunt tiger-headed creature from the front and back with handwritten labels, in pinks and yellows."
+    },
+    {
+      "id": 12,
+      "title": "SIGNAL XII",
+      "medium": "Oil on Canvas",
+      "year": 2023,
+      "file": "file_20---4fa92226-8c06-4344-836a-2745c8ec1072.jpg",
+      "alt": "Ink sketch sheet of six heads: bearded men, a man in a cap and a woman in profile, on white paper."
+    },
+    {
+      "id": 13,
+      "title": "THRESHOLD XIII",
+      "medium": "Mixed Media",
+      "year": 2023,
+      "file": "file_21---7f73c515-6959-4117-bc6b-a178b7e1f1fa.jpg",
+      "alt": "Watercolor portrait of a person with dark hair and glasses crouching in a blue floral shirt, on white paper."
+    },
+    {
+      "id": 14,
+      "title": "MONSTER",
+      "medium": "Marker",
+      "year": 2026,
+      "status": "PHYSICAL",
+      "file": "file_26---176ca328-7aa6-47ac-8678-3147590dfd1e.jpg",
+      "alt": "Ink drawing with white highlights of a shaggy horned beast on brown paper in a spiral sketchbook."
+    },
+    {
+      "id": 15,
+      "title": "HOUSE AND TREE",
+      "medium": "Marker",
+      "year": 2026,
+      "status": "PHYSICAL",
+      "file": "file_28---42038613-cd61-482c-96be-7f5090d24bb4.jpg",
+      "alt": "Watercolor and ink scene of a white horned goat with a bell standing on a chalk circle in front of a village skyline, in warm yellows and blues."
+    },
+    {
+      "id": 16,
+      "title": "CLOWN PORTRAIT",
+      "medium": "Watercolor",
+      "year": 2026,
+      "status": "PHYSICAL",
+      "file": "file_27---5cc231a4-9e3e-4c3e-8804-8c95a0e0000e.jpg",
+      "alt": "Ink and watercolor cityscape of baroque church facades in sandy browns against a blue sky, in a spiral sketchbook."
+    },
+    {
+      "id": 17,
+      "title": "FRUIT STILL LIFE",
+      "medium": "Watercolor",
+      "year": 2026,
+      "status": "PHYSICAL",
+      "file": "file_29---436fe3f3-a255-4e3a-aaed-3b9b2a4c14a4.jpg",
+      "alt": "Charcoal portrait of a short-haired woman with a bare shoulder, her eyes covered by red stripes crossing the page."
+    },
+    {
+      "id": 18,
+      "title": "COLOR STUDY",
+      "medium": "Watercolor",
+      "year": 2026,
+      "status": "PHYSICAL",
+      "file": "file_30---d7b1cafb-40a7-4744-9160-c20abb329311.jpg",
+      "alt": "Graphite portrait of a young woman with her hair tied up, wearing a turtleneck and looking at the viewer, on a spiral pad."
+    },
+    {
+      "id": 19,
+      "title": "FLORAL STUDY",
+      "medium": "Watercolor",
+      "year": 2026,
+      "status": "PHYSICAL",
+      "file": "file_31---47b3bd96-ae79-438e-a21b-8a39940d7025.jpg",
+      "alt": "Graphite still life of a glass jar filled with eyeballs beside a pear and a drinking glass, on a spiral pad."
+    },
+    {
+      "id": 20,
+      "title": "DOG PORTRAIT",
+      "medium": "Watercolor",
+      "year": 2026,
+      "status": "PHYSICAL",
+      "file": "file_32---22a1e60c-02cf-4dc7-bea6-e5f54059a36d.jpg",
+      "alt": "Graphite portrait of a young man with braided hair and a chain necklace on a magenta marker background."
+    },
+    {
+      "id": 21,
+      "title": "WATERCOLOR LANDSCAPE",
+      "medium": "Watercolor",
+      "year": 2026,
+      "status": "PHYSICAL",
+      "file": "file_33---e872272a-94bc-4b74-abab-fa2bfe270037.jpg",
+      "alt": "Painting of a large white-crested blue wave against a pink sky on an envelope, with Japanese characters and a small stamp."
+    },
+    {
+      "id": 22,
+      "title": "TIGER MURAL",
+      "medium": "Mural",
+      "year": 2026,
+      "status": "PHYSICAL",
+      "file": "file_35---32e01751-1807-42c5-ab2f-348082093d0b.jpg",
+      "alt": "Graphite sketch of a bearded philosopher in robes beside a column topped by a statue holding a spear, in a spiral sketchbook."
+    },
+    {
+      "id": 23,
+      "title": "MAN WITH GLASSES",
+      "medium": "Watercolor",
+      "year": 2026,
+      "status": "PHYSICAL",
+      "file": "file_45---63d5078b-35ae-446d-be59-28d59f1fa149.jpg",
+      "alt": "Pencil portrait of a bearded man with round glasses in a small sketchbook held open in one hand."
+    },
+    {
+      "id": 24,
+      "title": "BEARDED MAN",
+      "medium": "Watercolor",
+      "year": 2026,
+      "status": "PHYSICAL",
+      "file": "file_46---efd60167-05c3-4394-ae97-47632daded2d.jpg",
+      "alt": "Illustration of a purple skull on a desk among coffee cups, paint tubes and brushes, in vivid purples and magentas."
+    },
+    {
+      "id": 25,
+      "title": "ARCHITECTURAL SKETCH",
+      "medium": "Pencil",
+      "year": 2026,
+      "status": "PHYSICAL",
+      "file": "file_36---fef23c14-9e17-42a9-a3b4-a10b4a435db1.jpg",
+      "alt": "Watercolor portrait of a person with long auburn hair against a dark red patterned background."
+    },
+    {
+      "id": 26,
+      "title": "KURUKAFA",
+      "medium": "Pencil",
+      "year": 2022,
+      "file": "Kurukafa.png",
+      "alt": "Illustration of a purple skull on a desk among coffee cups, paint tubes and brushes, in vivid purples and pinks."
+    },
+    {
+      "id": 27,
+      "title": "EARLY WORK I",
+      "medium": "Mixed Media",
+      "year": 2020,
+      "file": "IMG_20200314_205556.jpg",
+      "alt": "Charcoal portrait of a short-haired woman with a bare shoulder, her eyes covered by red stripes crossing the page."
+    },
+    {
+      "id": 28,
+      "title": "SESSION STUDY I",
+      "medium": "Mixed Media",
+      "year": 2020,
+      "file": "IMG_20200829_131256.jpg",
+      "alt": "Graphite portrait of a young woman with her hair tied up, wearing a turtleneck, on a spiral pad in front of a keyboard."
+    },
+    {
+      "id": 29,
+      "title": "SESSION STUDY II",
+      "medium": "Mixed Media",
+      "year": 2020,
+      "file": "IMG_20200829_132851.jpg",
+      "alt": "Graphite still life of a glass jar filled with eyeballs beside a pear and a drinking glass, on a spiral pad."
+    },
+    {
+      "id": 30,
+      "title": "SESSION STUDY III",
+      "medium": "Mixed Media",
+      "year": 2020,
+      "file": "IMG_20200829_134200.jpg",
+      "alt": "Graphite portrait of a young man with braided hair and a chain necklace on a magenta marker background."
+    },
+    {
+      "id": 31,
+      "title": "SESSION STUDY IV",
+      "medium": "Mixed Media",
+      "year": 2020,
+      "file": "IMG_20200829_134409.jpg",
+      "alt": "Painting of a large white-crested blue wave against a pink sky on an envelope, with Japanese characters and a small stamp."
+    },
+    {
+      "id": 32,
+      "title": "SESSION STUDY V",
+      "medium": "Mixed Media",
+      "year": 2020,
+      "file": "IMG_20200829_140438.jpg",
+      "alt": "Wall mural of a roaring tiger head wearing a small gold crown, painted in orange, black and white above a desk of art supplies."
+    },
+    {
+      "id": 33,
+      "title": "NOCTURNE",
+      "medium": "Mixed Media",
+      "year": 2021,
+      "file": "IMG_20211118_235908.jpg",
+      "alt": "Graphite sketch of a bearded philosopher in robes beside a column topped by a statue holding a spear, in a spiral sketchbook."
+    },
+    {
+      "id": 34,
+      "title": "FIGURE STUDY I",
+      "medium": "Mixed Media",
+      "year": 2022,
+      "file": "IMG_20220508_213610.jpg",
+      "alt": "Watercolor portrait of a person with long auburn hair against a dark red patterned background."
+    },
+    {
+      "id": 35,
+      "title": "FIGURE STUDY II",
+      "medium": "Mixed Media",
+      "year": 2022,
+      "file": "IMG-20220515-WA0005.jpeg",
+      "alt": "Watercolor and ink portrait of a bearded man with glasses wearing a feathered headdress and a patterned green sweater, on a purple background covered in handwriting."
+    },
+    {
+      "id": 36,
+      "title": "MAY STUDY I",
+      "medium": "Mixed Media",
+      "year": 2022,
+      "file": "IMG_20220525_092620.jpg",
+      "alt": "Ink and watercolor sketchbook spread of a meal with a bowl of soup, bread, tea and salad, beside a small drawing of a church tower."
+    },
+    {
+      "id": 37,
+      "title": "MAY STUDY II",
+      "medium": "Mixed Media",
+      "year": 2022,
+      "file": "IMG_20220526_210349.jpg",
+      "alt": "Ink and watercolor profile of a bald man with a long white beard against a black background filled with white doodles, on a small spiral pad."
+    },
+    {
+      "id": 38,
+      "title": "MAY STUDY III",
+      "medium": "Mixed Media",
+      "year": 2022,
+      "file": "IMG_20220526_210412.jpg",
+      "alt": "Watercolor of a blue bird perched among pink blossoms on a small spiral pad."
+    },
+    {
+      "id": 39,
+      "title": "SUMMER STUDY",
+      "medium": "Mixed Media",
+      "year": 2022,
+      "file": "IMG_20220718_220804.jpg",
+      "alt": "Graphite drawing of a bald head with dark liquid dripping onto it from a ring above, on white paper."
+    },
+    {
+      "id": 40,
+      "title": "AUTUMN STUDY",
+      "medium": "Mixed Media",
+      "year": 2022,
+      "file": "IMG_20220925_151943.jpg",
+      "alt": "Ink and watercolor of a woman with large curly hair in a green crop top, yellow jacket and red trousers, on a spiral sketchbook."
+    },
+    {
+      "id": 41,
+      "title": "SPRING WORK",
+      "medium": "Mixed Media",
+      "year": 2023,
+      "file": "IMG_20230406_020218.jpg",
+      "alt": "Watercolor portrait of a man with dark curly hair, a moustache and a red jacket on a spiral pad, photographed on a dark desk."
+    },
+    {
+      "id": 42,
+      "title": "LATE SUMMER",
+      "medium": "Mixed Media",
+      "year": 2025,
+      "file": "IMG_20250831_194420_970.jpg",
+      "alt": "Photo of a young boy in a classroom holding up an acrylic landscape painting of green trees, a lake and a brown hillside."
+    },
+    {
+      "id": 43,
+      "title": "SEPTEMBER I",
+      "medium": "Mixed Media",
+      "year": 2025,
+      "file": "20250903_115020.jpg",
+      "alt": "Sketchbook page of loose red, blue and yellow ballpoint scribbles forming a running figure with a spray of colored lines."
+    },
+    {
+      "id": 44,
+      "title": "SEPTEMBER II",
+      "medium": "Mixed Media",
+      "year": 2025,
+      "file": "20250903_125338.jpg",
+      "alt": "Ink drawing with white highlights of a shaggy horned beast on brown paper in a spiral sketchbook."
+    },
+    {
+      "id": 45,
+      "title": "SEPTEMBER III",
+      "medium": "Mixed Media",
+      "year": 2025,
+      "file": "20250903_125348.jpg",
+      "alt": "Watercolor and ink scene of a white horned goat with a bell standing on a chalk circle in front of a village skyline, in warm yellows and blues."
+    },
+    {
+      "id": 46,
+      "title": "SEPTEMBER IV",
+      "medium": "Mixed Media",
+      "year": 2025,
+      "file": "20250903_125354.jpg",
+      "alt": "Watercolor portrait of a clown with orange curly hair, a red nose, painted cheeks and a ruffled collar on a blue background."
+    },
+    {
+      "id": 47,
+      "title": "SEPTEMBER V",
+      "medium": "Mixed Media",
+      "year": 2025,
+      "file": "20250903_125403.jpg",
+      "alt": "Ink and watercolor cityscape of baroque church facades in sandy browns against a blue sky, in a spiral sketchbook."
+    },
+    {
+      "id": 48,
+      "title": "FEBRUARY",
+      "medium": "Mixed Media",
+      "year": 2026,
+      "file": "IMG-20260210-WA0003.jpeg",
+      "alt": "Pencil portrait of a bearded man with round glasses in a small sketchbook held open in one hand."
+    }
+  ]
+}

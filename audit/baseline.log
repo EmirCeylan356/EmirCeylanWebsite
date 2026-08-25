@@ -1,0 +1,211 @@
+{
+  "lighthouse": {
+    "/@mobile": {
+      "performance": 74,
+      "accessibility": 95,
+      "bestPractices": 100,
+      "seo": 90,
+      "lcpMs": 2981,
+      "cls": 0.29,
+      "tbtMs": 0,
+      "fcpMs": 2981,
+      "totalBytes": 182195,
+      "failing": [
+        "first-contentful-paint (0.5)",
+        "largest-contentful-paint (0.78)",
+        "cumulative-layout-shift (0.41)",
+        "layout-shifts (0)",
+        "color-contrast (0)",
+        "meta-description (0)",
+        "cls-culprits-insight (0)",
+        "network-dependency-tree-insight (0)",
+        "render-blocking-insight (0)"
+      ]
+    },
+    "/@desktop": {
+      "performance": 76,
+      "accessibility": 95,
+      "bestPractices": 100,
+      "seo": 90,
+      "lcpMs": 811,
+      "cls": 0.697,
+      "tbtMs": 0,
+      "fcpMs": 811,
+      "totalBytes": 182195,
+      "failing": [
+        "cumulative-layout-shift (0.07)",
+        "layout-shifts (0)",
+        "color-contrast (0)",
+        "meta-description (0)",
+        "cls-culprits-insight (0)",
+        "forced-reflow-insight (0)",
+        "network-dependency-tree-insight (0)",
+        "render-blocking-insight (0)"
+      ]
+    },
+    "/hobbies@mobile": {
+      "performance": 89,
+      "accessibility": 96,
+      "bestPractices": 100,
+      "seo": 91,
+      "lcpMs": 3193,
+      "cls": 0.013,
+      "tbtMs": 0,
+      "fcpMs": 2668,
+      "totalBytes": 895843,
+      "failing": [
+        "first-contentful-paint (0.61)",
+        "largest-contentful-paint (0.73)",
+        "color-contrast (0)",
+        "meta-description (0)",
+        "image-delivery-insight (0.5)",
+        "network-dependency-tree-insight (0)",
+        "render-blocking-insight (0)"
+      ]
+    },
+    "/hobbies@desktop": {
+      "performance": 79,
+      "accessibility": 96,
+      "bestPractices": 100,
+      "seo": 91,
+      "lcpMs": 1267,
+      "cls": 0.376,
+      "tbtMs": 0,
+      "fcpMs": 738,
+      "totalBytes": 1242114,
+      "failing": [
+        "largest-contentful-paint (0.88)",
+        "cumulative-layout-shift (0.28)",
+        "layout-shifts (0)",
+        "color-contrast (0)",
+        "meta-description (0)",
+        "cls-culprits-insight (0)",
+        "image-delivery-insight (0)",
+        "network-dependency-tree-insight (0)",
+        "render-blocking-insight (0)"
+      ]
+    }
+  },
+  "axe": {
+    "/@390": [
+      "color-contrast×5"
+    ],
+    "/@1280": [
+      "color-contrast×7",
+      "region×1"
+    ],
+    "/hobbies@390": [
+      "color-contrast×13",
+      "page-has-heading-one×1"
+    ],
+    "/hobbies@1280": [
+      "color-contrast×13",
+      "page-has-heading-one×1",
+      "region×1"
+    ],
+    "/work-4b8b954c2493@390": [
+      "color-contrast×15",
+      "page-has-heading-one×1"
+    ],
+    "/work-4b8b954c2493@1280": [
+      "color-contrast×15",
+      "page-has-heading-one×1",
+      "region×1"
+    ],
+    "/gallery-088c0fbff746@390": [
+      "button-name×13",
+      "color-contrast×10"
+    ],
+    "/gallery-088c0fbff746@1280": [
+      "button-name×13",
+      "color-contrast×11",
+      "region×1"
+    ],
+    "/visitor-gallery-admin@390": [
+      "color-contrast×6"
+    ],
+    "/visitor-gallery-admin@1280": [
+      "color-contrast×7",
+      "region×1"
+    ]
+  },
+  "weights": {
+    "/": {
+      "requests": 11,
+      "totalBytes": 338657,
+      "byType": {
+        "document": 33426,
+        "stylesheet": 70745,
+        "script": 115594,
+        "font": 118892
+      },
+      "largest": [
+        {
+          "url": "https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js",
+          "bytes": 72214
+        },
+        {
+          "url": "https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js",
+          "bytes": 43380
+        },
+        {
+          "url": "https://fonts.gstatic.com/s/syne/v24/8vIH7w4qzmVxm2BL9A.woff2",
+          "bytes": 34608
+        },
+        {
+          "url": "/",
+          "bytes": 33426
+        },
+        {
+          "url": "https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Syne:wght@400;700;800&family=Inter:wght@400;500;600;800&family=JetBrains+Mono:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500;700&family=Caveat:wght@400;600&display=swap",
+          "bytes": 33234
+        },
+        {
+          "url": "https://fonts.gstatic.com/s/jetbrainsmono/v24/tDbv2o-flEEny0FZhsfKu5WU4zr3E_BX0PnT8RD8yKwBNntkaToggR7BYRbKPxDcwg.woff2",
+          "bytes": 31432
+        }
+      ]
+    },
+    "/hobbies": {
+      "requests": 19,
+      "totalBytes": 1485396,
+      "byType": {
+        "document": 121086,
+        "stylesheet": 68871,
+        "script": 127059,
+        "image": 1103036,
+        "font": 65344
+      },
+      "largest": [
+        {
+          "url": "/images/file_10---714a56fd-d4fb-4316-8629-c6f06a4db7a8.jpg",
+          "bytes": 200916
+        },
+        {
+          "url": "/images/file_12---09cd522a-d5e5-433a-ac0f-d9c0c710c79a.jpg",
+          "bytes": 139889
+        },
+        {
+          "url": "/images/file_8---39151805-7313-4bb7-b8c8-1365aef884a3.jpg",
+          "bytes": 134272
+        },
+        {
+          "url": "/images/file_15---cfdd2a00-8c9e-4367-8b88-c149ce15db2a.jpg",
+          "bytes": 126549
+        },
+        {
+          "url": "/hobbies",
+          "bytes": 121086
+        },
+        {
+          "url": "/images/file_14---d6d37114-4da7-4cdf-896d-5b361bf9ac99.jpg",
+          "bytes": 114300
+        }
+      ]
+    }
+  },
+  "overflow": {
+    "/gallery-088c0fbff746@360": 21
+  },
+  "distBytes": 64062249
+}

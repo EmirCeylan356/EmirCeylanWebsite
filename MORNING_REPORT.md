@@ -183,6 +183,22 @@ Commits are on `overnight-polish` (merged to `main` — see Live status). Full l
 - **Did not invent painting titles, hardware, or a fitness-app stack.**
 - **ESLint** — skipped as overkill for an Astro static site; Prettier + `astro check` cover it.
 
+## Addendum (17:20–17:40) — the `/admin/` editor you asked for
+
+You asked for a hidden login to edit texts, add posts and manage paintings; you chose the
+git-backed option. It's live at **https://www.emirceylan.com/admin/** (also the tiny
+"admin" link at the bottom of every page). One-time setup, ~3 minutes, in
+[docs/CMS.md](docs/CMS.md): create a GitHub OAuth App (callback
+`https://www.emirceylan.com/api/oauth/callback`), put `OAUTH_GITHUB_CLIENT_ID` and
+`OAUTH_GITHUB_CLIENT_SECRET` in Vercel, redeploy. Until then the login button will show a
+"not set" message.
+
+What it edits: blog posts (`src/content/blog/*.mdx`, with the draft switch), the paintings
+gallery (`src/data/artworks.json` + image upload), and every public text on the home page,
+footer and /now (`src/data/content.json`). Each save is a commit to `main` → Vercel
+deploys in ~2 min; `git revert` undoes any edit. Only GitHub accounts with write access to
+the repo can save. `npm run cms:local` lets you edit the working tree without GitHub.
+
 ## Suggested next session
 
 1. Run the Supabase SQL, then add a moderation flag (`approved boolean default false`) so

@@ -6,7 +6,7 @@ import mdx from '@astrojs/mdx';
 
 // Unlisted routes (link-based privacy). They must never appear in the sitemap.
 // Keep in sync with UNLISTED_PATHS in src/lib/site.ts and public/robots.txt.
-const UNLISTED = ['/work-4b8b954c2493/', '/cv-4b8b954c2493/', '/visitor-gallery-admin/', '/gallery-088c0fbff746/'];
+const UNLISTED = ['/work-4b8b954c2493/', '/cv-4b8b954c2493/', '/visitor-gallery-admin/', '/gallery-088c0fbff746/', '/admin/'];
 
 // https://astro.build/config
 export default defineConfig({

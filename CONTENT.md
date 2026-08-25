@@ -1,3 +1,5 @@
+> **No-code option:** everything below can also be done in the browser at `/admin/` (GitHub login). See [docs/CMS.md](docs/CMS.md).
+
 # Content guide
 
 How to write a blog post, update `/now`, and update `/uses`. Everything here is

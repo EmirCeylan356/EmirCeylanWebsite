@@ -1,0 +1,166 @@
+# Decap CMS configuration — https://decapcms.org/docs/configuration-options/
+# Login: GitHub OAuth (only the repo owner / collaborators can save). Every save
+# is a commit to `main`, which Vercel deploys automatically (~2 min).
+# Local editing without GitHub: `npm run cms:local` then open http://localhost:4321/admin/
+backend:
+  name: github
+  repo: EmirCeylan356/EmirCeylanWebsite
+  branch: main
+  base_url: https://www.emirceylan.com
+  auth_endpoint: api/oauth
+  commit_messages:
+    create: "content: create {{collection}} “{{slug}}”"
+    update: "content: update {{collection}} “{{slug}}”"
+    delete: "content: delete {{collection}} “{{slug}}”"
+    uploadMedia: "content: upload {{path}}"
+    deleteMedia: "content: delete {{path}}"
+
+local_backend: true
+site_url: https://www.emirceylan.com
+display_url: https://www.emirceylan.com
+logo_url: /icon-192.png
+locale: en
+
+# Default media location (overridden per collection where needed)
+media_folder: "public/uploads"
+public_folder: "/uploads"
+
+collections:
+  # ── Blog ──────────────────────────────────────────────────────────────────
+  - name: blog
+    label: Blog posts
+    label_singular: Post
+    folder: src/content/blog
+    extension: mdx
+    format: frontmatter
+    create: true
+    delete: true
+    slug: "{{slug}}"
+    filter: { field: "_template", value: false }
+    summary: "{{title}} — {{pubDate | date('YYYY-MM-DD')}}{{draft ? ' · DRAFT' : ''}}"
+    sortable_fields: [pubDate, title, draft]
+    editor: { preview: false }
+    fields:
+      - { name: title, label: Title, widget: string }
+      - { name: description, label: Description (≤ 200 chars, shows in lists, RSS and social cards), widget: text, pattern: ["^.{20,200}$", "20–200 characters"] }
+      - { name: pubDate, label: Published, widget: datetime, format: "YYYY-MM-DD", date_format: "YYYY-MM-DD", time_format: false }
+      - { name: updatedDate, label: Updated, widget: datetime, format: "YYYY-MM-DD", date_format: "YYYY-MM-DD", time_format: false, required: false }
+      - { name: tags, label: Tags, widget: list, default: ["ml"], hint: "Lower-case, short. Existing: ml, healthcare, calibration, evaluation, llm, rag, learning" }
+      - { name: draft, label: Draft (unchecked = published on next deploy), widget: boolean, default: true }
+      - { name: body, label: Body, widget: markdown, hint: "Plain markdown. Code fences get highlighted. Headings start at ##." }
+
+  # ── Paintings on /hobbies ─────────────────────────────────────────────────
+  - name: artworks
+    label: Hobbies · paintings
+    files:
+      - name: artworks
+        label: Paintings gallery (order = display order)
+        file: src/data/artworks.json
+        media_folder: "/src/assets/paintings"
+        public_folder: "/src/assets/paintings"
+        fields:
+          - name: artworks
+            label: Paintings
+            label_singular: Painting
+            widget: list
+            summary: "{{fields.id}} · {{fields.title}} ({{fields.year}})"
+            fields:
+              - { name: id, label: ID (unique number), widget: number, value_type: int }
+              - { name: title, label: Title, widget: string }
+              - { name: medium, label: Medium, widget: string, hint: "e.g. Oil on canvas, Watercolour, Pencil" }
+              - { name: year, label: Year, widget: number, value_type: int }
+              - { name: status, label: Status tag (optional), widget: string, required: false, hint: "e.g. PHYSICAL, SOLD" }
+              - { name: file, label: Image, widget: image, allow_multiple: false, hint: "Upload a JPG/PNG (≤ 3000 px on the long side keeps builds fast). The site generates AVIF/WebP sizes automatically." }
+              - { name: alt, label: Alt text (describe what is visible, one sentence), widget: text }
+
+  # ── Site texts ────────────────────────────────────────────────────────────
+  - name: content
+    label: Site texts
+    editor: { preview: false }
+    files:
+      - name: content
+        label: Home · Now · Footer texts
+        file: src/data/content.json
+        fields:
+          - name: hero
+            label: Hero
+            widget: object
+            fields:
+              - { name: status, label: Status line, widget: string }
+              - { name: subtitle, label: Subtitle pill, widget: string }
+              - { name: ctaPrimary, label: Primary button, widget: string }
+              - { name: ctaSecondary, label: Secondary button, widget: string }
+          - { name: marquee, label: Marquee items (last one is highlighted), widget: list }
+          - name: about
+            label: About
+            widget: object
+            fields:
+              - { name: lede, label: Lede (bold first sentence), widget: text }
+              - { name: paragraphs, label: Paragraphs, widget: list, field: { name: p, label: Paragraph, widget: text } }
+              - name: stats
+                label: Stats (left panel)
+                widget: list
+                fields:
+                  - { name: value, label: Value shown, widget: string }
+                  - { name: label, label: Label, widget: string }
+                  - { name: counter, label: Count-up number (optional), widget: number, required: false, value_type: int }
+          - name: work
+            label: Work section
+            widget: object
+            fields:
+              - { name: eyebrow, label: Eyebrow, widget: string }
+              - { name: lede, label: Lede, widget: text }
+              - { name: body, label: Body paragraph, widget: text }
+              - { name: domains, label: Domain tags, widget: list }
+              - name: capabilities
+                label: Capability tiles
+                widget: list
+                fields:
+                  - { name: label, label: Label, widget: string }
+                  - { name: metric, label: Big number, widget: string }
+                  - { name: unit, label: Unit / suffix, widget: string }
+                  - { name: description, label: Description, widget: text }
+                  - { name: stack, label: Stack line, widget: string }
+              - { name: ctaEyebrow, label: CTA eyebrow, widget: string }
+              - { name: ctaText, label: CTA text, widget: text }
+              - { name: ctaPrimary, label: CTA primary button, widget: string }
+              - { name: ctaSubject, label: CTA email subject, widget: string }
+              - { name: ctaSecondary, label: CTA secondary button, widget: string }
+          - name: skills
+            label: Skills
+            widget: object
+            fields:
+              - name: primary
+                label: Primary groups
+                widget: list
+                fields:
+                  - { name: title, label: Group title, widget: string }
+                  - { name: note, label: Note (optional), widget: string, required: false }
+                  - { name: items, label: Items, widget: list }
+              - name: secondary
+                label: Secondary groups ("Also")
+                widget: list
+                fields:
+                  - { name: title, label: Group title, widget: string }
+                  - { name: note, label: Note (optional), widget: string, required: false }
+                  - { name: items, label: Items, widget: list }
+          - name: contact
+            label: Footer / contact
+            widget: object
+            fields:
+              - { name: eyebrow, label: Eyebrow, widget: string }
+              - { name: title, label: Title (use _ for the accent underscore), widget: string }
+              - { name: copy, label: Copy, widget: text }
+              - { name: cta, label: Button, widget: string }
+              - { name: mailSubject, label: Prefilled email subject, widget: string }
+              - { name: mailBody, label: Prefilled email body, widget: text }
+          - name: now
+            label: "/now page"
+            widget: object
+            fields:
+              - { name: updated, label: Last updated (YYYY-MM-DD — bump this whenever you edit below), widget: string, pattern: ["^\\d{4}-\\d{2}-\\d{2}$", "YYYY-MM-DD"] }
+              - { name: location, label: Location, widget: string }
+              - { name: intro, label: Intro, widget: text }
+              - { name: status, label: "Status lines (1 = Where, 2 = Work, 3 = Learning, rest = Research)", widget: list, field: { name: s, label: Line, widget: text } }
+              - { name: offScreen, label: Off-screen, widget: list }
+              - { name: outro, label: Outro line, widget: string }

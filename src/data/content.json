@@ -1,0 +1,125 @@
+{
+  "hero": {
+    "status": "SYS_ID: EC_2027 — ISTANBUL / TR — ONLINE",
+    "subtitle": "Machine learning — Medical AI — CS '27",
+    "ctaPrimary": "What I do",
+    "ctaSecondary": "Contact"
+  },
+  "marquee": [
+    "Clinical risk models",
+    "Explainable AI",
+    "Bioinformatics",
+    "Full-stack web",
+    "Sabancı University '27",
+    "LLM & RAG systems",
+    "Painter"
+  ],
+  "about": {
+    "lede": "I'm a Computer Science student at {university}, class of {gradYear}, and I build machine learning models for medicine.",
+    "paragraphs": [
+      "Most of my work so far is clinical risk prediction: take a large electronic health record dataset, engineer features a clinician would recognise, train a calibrated gradient-boosted model, and prove it beats the scores hospitals already use. I care about calibration and explainability as much as AUROC, because a model nobody trusts doesn't get used.",
+      "Around that: undergraduate research on explainable deep learning for healthcare and on machine learning for biomedical alloys, a teaching assistantship in data science, and a couple of full-stack products built in teams. Right now I'm moving toward LLM and RAG systems, and building one to learn it properly.",
+      "I also paint. It isn't a metaphor for anything. I just like it."
+    ],
+    "stats": [
+      { "value": "2027", "label": "EXPECTED GRAD", "counter": 2027 },
+      { "value": "ML", "label": "FOR HEALTHCARE" }
+    ]
+  },
+  "work": {
+    "eyebrow": "WHAT I ACTUALLY DO",
+    "lede": "Machine learning for healthcare: calibrated risk models on real clinical data, explainability that a physician can read, and the data engineering underneath.",
+    "body": "Concretely: I turn raw hospital and genomic data into features, train and validate models with leakage-safe cross-validation, calibrate them, explain them with SHAP, and report them to clinical standards. I've also shipped full-stack products with a team, and I'm now building retrieval-augmented LLM systems.",
+    "domains": ["Clinical ML", "Explainable AI", "Bioinformatics", "Full-stack", "LLM / RAG"],
+    "capabilities": [
+      {
+        "label": "Clinical risk model",
+        "metric": "0.898",
+        "unit": "AUROC",
+        "description": "Calibrated 30-day post-discharge mortality model for patients over 70, trained on 172k hospital admissions. Beat the standard clinical scores by +0.15 and +0.07 AUROC under grouped cross-validation.",
+        "stack": "XGBoost · GroupKFold · SHAP · TRIPOD+AI"
+      },
+      {
+        "label": "EHR feature pipeline",
+        "metric": "77",
+        "unit": "clinical features",
+        "description": "Engineered from a 28 GB raw electronic-health-record release. Every feature has a clinical justification, and the whole pipeline runs on a laptop.",
+        "stack": "DuckDB · polars · pandas"
+      },
+      {
+        "label": "Genetic variant classifier",
+        "metric": "98.8",
+        "unit": "% peak accuracy",
+        "description": "Diagnosis support for a rare inherited bone disorder from 3,000+ sequences. Four algorithms compared; a novel feature representation based on collagen amino-acid structure did the heavy lifting.",
+        "stack": "scikit-learn · Biopython · cross-validation"
+      },
+      {
+        "label": "Legal-tech hackathon",
+        "metric": "2nd",
+        "unit": "place · ₺20k seed",
+        "description": "B2B product that scores litigation outcomes and cites relevant precedent for uploaded case documents. Built in a weekend with a team of five.",
+        "stack": "Python · NLP · product pitch"
+      }
+    ],
+    "ctaEyebrow": "FULL HISTORY ON REQUEST",
+    "ctaText": "I keep the detailed list of roles, projects and metrics off the public site on purpose. If you're hiring or supervising, ask and I'll send the full page plus a CV.",
+    "ctaPrimary": "Request full history",
+    "ctaSubject": "Full work history request",
+    "ctaSecondary": "Contact"
+  },
+  "skills": {
+    "primary": [
+      {
+        "title": "ML & data",
+        "note": "",
+        "items": ["XGBoost", "scikit-learn", "SHAP", "pandas", "polars", "NumPy", "DuckDB", "SQL", "Matplotlib", "Biopython", "Jupyter"]
+      },
+      {
+        "title": "Languages",
+        "note": "",
+        "items": ["Python", "C++", "JavaScript", "SQL"]
+      },
+      {
+        "title": "Web & infra",
+        "note": "",
+        "items": ["React", "Vite", "Django REST Framework", "PostgreSQL", "Docker", "Firebase / Supabase", "Astro", "Git / GitHub", "Jira", "Ubuntu / Linux"]
+      },
+      {
+        "title": "Concepts",
+        "note": "",
+        "items": ["Machine learning", "Deep learning", "Explainable AI", "Model calibration", "Full-stack web", "REST APIs", "Statistics", "Data visualisation"]
+      },
+      {
+        "title": "Learning now",
+        "note": "Deliberately moving from classical ML into LLM engineering. Building a RAG project to prove it.",
+        "items": ["LLM systems", "Retrieval-augmented generation", "Agents"]
+      }
+    ],
+    "secondary": [
+      { "title": "Creative", "note": "", "items": ["Oil painting", "Watercolour", "Drawing", "Digital illustration", "Photoshop", "Premiere Pro"] },
+      { "title": "Spoken", "note": "", "items": ["English (C1, fluent)", "Turkish (native)"] }
+    ]
+  },
+  "contact": {
+    "eyebrow": "04 / CONTACT",
+    "title": "LET'S_TALK",
+    "copy": "I'm looking for ML, AI or software roles I can hold alongside my senior year, in Istanbul or remote. If you're hiring, supervising research, or want the full work history, email me. I reply to everything that isn't spam.",
+    "cta": "Email me",
+    "mailSubject": "Hello from your website",
+    "mailBody": "Hi Emir,\n\nI found your site and wanted to get in touch about ...\n\n"
+  },
+  "now": {
+    "updated": "2026-08-25",
+    "location": "Istanbul",
+    "intro": "What I am doing at the moment, in one place. Not a résumé, not a bio. It changes when my situation does.",
+    "status": [
+      "Senior year (2026–27) at Sabancı University. A planned Spring exchange was cancelled, so I am in Istanbul through 2027.",
+      "Actively looking for paid ML / AI / software work, Istanbul or remote, that I can hold alongside senior year.",
+      "Moving on purpose from classical ML into AI and LLM engineering: RAG, agents, LLM systems. Building a RAG project to prove it.",
+      "Two undergraduate research projects running: explainable deep learning for healthcare decision support, and ML for biomedical alloys.",
+      "Manuscript in preparation from a summer clinical-ML internship abroad."
+    ],
+    "offScreen": ["Painting", "Archery", "Jiu-jitsu", "Fitness", "Chess"],
+    "outro": "If the Work line matches something you have, email me."
+  }
+}

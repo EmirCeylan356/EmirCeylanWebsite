@@ -222,3 +222,28 @@ Running log, one entry per phase. Times are local (TST, UTC+3).
 - Vercel "Deployment has completed" ~07:58. `scripts/verify-live.mjs`: 47/47 checks pass at 07:59.
 - Lighthouse against https://www.emirceylan.com: `/` and `/hobbies` 100/100/100/100 mobile and desktop (`audit/live/`).
 - First CI run on main failed only on the over-broad secrets grep (matched the CSP `*.supabase.co` wildcard); fixed in 321449f. Typecheck/build/links/privacy passed.
+
+## Phase 15 (requested after the run) — No-code editing: git-backed CMS at /admin/ (17:20–)
+- Emir asked for a hidden login to edit texts, add blog posts, and add/remove paintings.
+  Proposed and got approval for a git-backed CMS (Decap CMS, GitHub OAuth login) instead
+  of an email/password + custom backend: no database, every save is a commit to `main`,
+  Vercel deploys it, full history in git.
+- `src/pages/admin/index.astro` mounts `decap-cms-app` (bundled by Vite, 5.8 MB, loaded
+  only on that route). `public/admin/config.yml` defines three collections: blog posts
+  (MDX, draft flag), paintings (`src/data/artworks.json` + image upload into
+  `src/assets/paintings/`), site texts (`src/data/content.json`).
+- GitHub OAuth handshake as two Vercel functions: `api/oauth.js` (redirect, CSRF state
+  cookie) and `api/oauth/callback.js` (code → token → postMessage to the CMS window).
+  Needs `OAUTH_GITHUB_CLIENT_ID` / `OAUTH_GITHUB_CLIENT_SECRET` on Vercel.
+- The 48 paintings moved out of `hobbies.astro` into `src/data/artworks.json`; the page
+  resolves `file` to the astro:assets glob by basename (works with CMS-saved paths).
+- Public texts (hero, marquee, about, work tiles, skills, contact, /now) moved into
+  `src/data/content.json` by a subagent; `profile.ts` re-exports them so nothing else
+  changed. Built HTML diffed before/after: identical visible text.
+- `/admin/` and `/api/`: noindex, robots-disallowed, out of the sitemap, `no-store`, and a
+  separate slightly looser CSP (editor needs inline styles + api.github.com). Footer got a
+  tiny "admin" link.
+- `npm run cms:local` runs the Decap proxy for editing the working tree without GitHub.
+- Docs: `docs/CMS.md` (setup + how-to), README and CONTENT.md link to it.
+- Verified: `/admin/` renders the "Login with GitHub" screen from the production build;
+  build/check/privacy/links/CSP pass; hobbies page unchanged.
