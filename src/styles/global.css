@@ -11,6 +11,8 @@
   --text-tertiary: #8A8A93;   /* lowest-contrast text allowed: 5.3:1 on --bg-base, 4.6:1 on --bg-surface */
   --accent:        #C41E3A;
   --accent-bri:    #E03050;
+  --accent-text:   #F0405E;   /* crimson for SMALL text: 5.3:1 on --bg-base, 4.9:1 on --bg-surface.
+                                 #C41E3A is only 3.4:1 — keep it for large type (≥24px), borders, fills. */
   --accent-dim:    rgba(196,30,58,0.7);
   --accent-glow:   rgba(196,30,58,0.28);
   --border-color:  #2A2A30;
@@ -138,7 +140,7 @@ pre,
     0 0 22px rgba(196,30,58,0.22);
 }
 
-.accent-text { color: var(--accent); }
+.accent-text { color: var(--accent-text); }
 .secondary-text { color: var(--text-secondary); }
 
 /* ── Grid Background ─────────────────────────────────────────────── */

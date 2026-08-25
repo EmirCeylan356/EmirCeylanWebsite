@@ -20,7 +20,7 @@ const BASE = opt('--url', 'http://localhost:4321').replace(/\/$/, '');
 const NO_LH = args.includes('--no-lh');
 const REDUCED = args.includes('--reduced');
 const LH_ONLY = args.includes('--lh-only');
-const PAGES = opt('--pages', '/,/hobbies,/work-4b8b954c2493,/gallery-088c0fbff746,/visitor-gallery-admin').split(',');
+const PAGES = opt('--pages', '/,/hobbies,/blog,/now,/uses,/404,/work-4b8b954c2493,/cv-4b8b954c2493,/gallery-088c0fbff746,/visitor-gallery-admin').split(',');
 const LH_PAGES = opt('--lh-pages', '/,/hobbies').split(',');
 const BREAKPOINTS = [[360, 640], [390, 844], [414, 896], [768, 1024], [1280, 800], [1920, 1080]];
 

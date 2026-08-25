@@ -40,9 +40,10 @@ const marquee = [
         </div>
 
         <div class="hero-name-frame" id="name-wrap">
-          <h1 class="hero-name" id="hero-heading" aria-label="Emir Ceylan">
-            <span class="ln ln-1" id="ln1" data-text="EMİR" aria-hidden="true">EMİR</span>
-            <span class="ln ln-2" id="ln2" data-text="CEYLAN" aria-hidden="true">CEYLAN</span>
+          <h1 class="hero-name" id="hero-heading">
+            <span class="sr-only">Emir Ceylan</span>
+            <span class="ln ln-1" id="ln1" aria-hidden="true">{[...'EMİR'].map((ch) => <span class="ch" data-ch={ch}>{ch}</span>)}</span>
+            <span class="ln ln-2" id="ln2" aria-hidden="true">{[...'CEYLAN'].map((ch) => <span class="ch" data-ch={ch}>{ch}</span>)}</span>
           </h1>
         </div>
 
@@ -312,8 +313,8 @@ const marquee = [
     padding-inline: var(--space-8);
   }
   .marquee-content li span { color: var(--border-color); margin-right: 0.35em; }
-  .marquee-content li.is-accent { color: var(--accent); }
-  .marquee-content li.is-accent span { color: var(--accent); }
+  .marquee-content li.is-accent { color: var(--accent-text); }
+  .marquee-content li.is-accent span { color: var(--accent-text); }
   @keyframes marquee { to { transform: translateX(-50%); } }
   @media (prefers-reduced-motion: reduce) {
     .marquee-content { animation: none; flex-wrap: wrap; white-space: normal; justify-content: center; row-gap: 0.25rem; }
@@ -387,7 +388,7 @@ const marquee = [
     color: var(--accent);
     text-shadow: 0 0 24px rgba(196, 30, 58, 0.35), 0 0 60px rgba(196, 30, 58, 0.15);
   }
-  .hero-name .ch { display: inline-block; position: relative; }
+  .hero-name .ch { display: inline-block; position: relative; vertical-align: top; line-height: inherit; text-align: left; }
   .hero-name .ch.sp { width: 0.28em; }
 
   /* Chromatic aberration on CEYLAN */
@@ -473,7 +474,7 @@ const marquee = [
     border: 1px solid transparent;
   }
   .btn-primary {
-    color: var(--accent);
+    color: var(--accent-text);
     border-color: var(--accent);
     background: transparent;
   }
@@ -550,7 +551,7 @@ const marquee = [
   .domain-tags li {
     font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; font-weight: 700;
     letter-spacing: 0.12em; text-transform: uppercase;
-    color: var(--accent); border: 1px solid var(--accent-dim);
+    color: var(--accent-text); border: 1px solid var(--accent-dim);
     padding: 6px 10px;
   }
 
@@ -603,7 +604,7 @@ const marquee = [
     transition: border-color var(--dur-base) var(--ease-out), color var(--dur-base) var(--ease-out), background var(--dur-base) var(--ease-out), box-shadow var(--dur-base) var(--ease-out);
   }
   .btn-cta:hover { border-color: var(--accent); color: #fff; background: var(--accent); box-shadow: 0 0 14px var(--accent-glow); }
-  .btn-cta.primary { border-color: var(--accent); color: var(--accent); }
+  .btn-cta.primary { border-color: var(--accent); color: var(--accent-text); }
   .btn-cta.primary:hover { color: #fff; }
 
   /* ── Skills ──────────────────────────────────────────────────────────────── */
@@ -623,7 +624,7 @@ const marquee = [
   .skill-group-head { display: flex; align-items: baseline; gap: 14px; margin-bottom: 1rem; }
   .skill-group-head::after { content: ''; flex: 1; height: 1px; background: var(--border-color); opacity: 0.6; align-self: center; }
   .skill-group-title { font-size: 0.8rem; font-weight: 900; letter-spacing: 0.16em; color: var(--text-primary); text-transform: uppercase; }
-  .skill-group-count { font-size: 0.75rem; color: var(--accent); letter-spacing: 0.08em; }
+  .skill-group-count { font-size: 0.75rem; color: var(--accent-text); letter-spacing: 0.08em; }
   .skill-group-note { font-size: 0.8rem; color: var(--text-secondary); margin: -0.25rem 0 0.9rem; line-height: 1.6; }
   .skill-chips { display: flex; flex-wrap: wrap; gap: 8px; list-style: none; padding: 0; margin: 0; }
   .skill-chip {
@@ -647,19 +648,10 @@ const marquee = [
 
     type Span = { el: HTMLSpanElement; final: string };
 
+    // Glyph spans are server-rendered (see the h1 markup) so the DOM never
+    // restructures on load — that restructuring was a measurable layout shift.
     function splitInto(node: HTMLElement): Span[] {
-      const text = node.dataset.text || '';
-      node.innerHTML = '';
-      const spans: Span[] = [];
-      for (const ch of text) {
-        const s = document.createElement('span');
-        s.className = 'ch' + (ch === ' ' ? ' sp' : '');
-        s.setAttribute('data-ch', ch);
-        s.textContent = ch === ' ' ? ' ' : ch;
-        node.appendChild(s);
-        spans.push({ el: s, final: ch });
-      }
-      return spans;
+      return Array.from(node.querySelectorAll<HTMLSpanElement>('.ch')).map((el) => ({ el, final: el.dataset.ch || '' }));
     }
 
     function scramble(spans: Span[], baseDelay: number) {
@@ -692,6 +684,12 @@ const marquee = [
     }
     const ln1Spans = splitInto(ln1);
     const ln2Spans = splitInto(ln2);
+    // Lock every glyph box to its final width (measured once, before any
+    // scrambling) so the random characters cannot cause layout shift.
+    for (const s of [...ln1Spans, ...ln2Spans]) {
+      if (s.final === ' ') continue;
+      s.el.style.width = s.el.getBoundingClientRect().width + 'px';
+    }
 
     scramble(ln1Spans, 0);
     const e2 = scramble(ln2Spans, 100);
@@ -717,6 +715,10 @@ const marquee = [
     if (reduced) { el.textContent = TARGET; return; }
 
     const TOTAL = 600;
+    // Reserve the final width (+ caret) so the pill doesn't grow while typing.
+    el.style.display = 'inline-block';
+    el.style.minWidth = Math.ceil(el.getBoundingClientRect().width + 9) + 'px';
+    el.style.textAlign = 'left';
     el.textContent = '';
     let i = 0;
     function tick() {
