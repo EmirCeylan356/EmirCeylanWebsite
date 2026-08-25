@@ -1,6 +1,12 @@
 // Vercel serverless function: GitHub OAuth for Decap CMS (step 2 of 2).
 // Exchanges the `code` for a token and hands it to the CMS window via the
 // postMessage handshake Decap expects ("authorizing:github" → token message).
+//
+// Robustness: if the popup lost its link to the editor window (window.opener
+// is null — happens when a browser opens the auth flow in a tab, or when a
+// Cross-Origin-Opener-Policy severs it), the token is also stored the way
+// Decap's own auth store does (localStorage "decap-cms-user", same origin), so
+// the "Continue to editor" link logs the user in anyway.
 export default async function handler(req, res) {
   const { code, state } = req.query || {};
   const cookieState = (req.headers.cookie || '').split(';').map((c) => c.trim()).find((c) => c.startsWith('oauth_state='))?.slice('oauth_state='.length);
@@ -11,23 +17,45 @@ export default async function handler(req, res) {
   res.setHeader('Cache-Control', 'no-store');
   res.setHeader('Set-Cookie', 'oauth_state=; Path=/api/oauth; HttpOnly; Secure; SameSite=Lax; Max-Age=0');
 
-  const respond = (status, payload) => {
+  const page = (status, payload) => {
     const message = `authorization:github:${status}:${JSON.stringify(payload)}`;
-    res.status(200).send(`<!doctype html><html><body><script>
-      (function () {
-        function receiveMessage(e) {
-          window.opener.postMessage(${JSON.stringify(message)}, e.origin);
-          window.removeEventListener('message', receiveMessage, false);
-        }
-        window.addEventListener('message', receiveMessage, false);
-        window.opener.postMessage('authorizing:github', '*');
-      })();
-    </script><p style="font:14px system-ui;padding:2rem">${status === 'success' ? 'Signed in. You can close this window.' : 'Sign-in failed: ' + String(payload.error || '')}</p></body></html>`);
+    const ok = status === 'success';
+    return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="robots" content="noindex"><title>Admin sign-in</title>
+<style>body{margin:0;background:#0a0a0a;color:#eee;font:15px/1.6 system-ui,sans-serif}main{max-width:32rem;margin:12vh auto;padding:2rem}b{color:#F0405E}a{color:#fff}code{color:#aaa}
+.btn{display:inline-block;margin-top:1rem;padding:.8rem 1.2rem;background:#C41E3A;color:#fff;text-decoration:none;font-weight:700}</style></head><body><main>
+<p><b>EC_</b> ${ok ? 'Signed in with GitHub.' : 'Sign-in failed: ' + String(payload.error || '')}</p>
+<p id="hint">${ok ? 'Handing the session to the editor…' : ''}</p>
+${ok ? '<a class="btn" id="go" href="/admin/">Continue to editor →</a>' : '<a class="btn" href="/admin/">Back to editor</a>'}
+<script>
+(function () {
+  var message = ${JSON.stringify(message)};
+  var ok = ${ok ? 'true' : 'false'};
+  var payload = ${JSON.stringify(payload)};
+  var hint = document.getElementById('hint');
+  // Fallback session store (same key/shape as Decap's LocalStorageAuthStore).
+  if (ok) { try { localStorage.setItem('decap-cms-user', JSON.stringify({ token: payload.token, backendName: 'github' })); } catch (e) {} }
+  if (window.opener && !window.opener.closed) {
+    function receiveMessage(e) {
+      window.opener.postMessage(message, e.origin);
+      window.removeEventListener('message', receiveMessage, false);
+      if (hint) hint.textContent = ok ? 'Done. This window will close.' : '';
+      setTimeout(function () { window.close(); }, 400);
+    }
+    window.addEventListener('message', receiveMessage, false);
+    window.opener.postMessage('authorizing:github', '*');
+    setTimeout(function () { if (hint && ok) hint.textContent = 'If the editor did not update, click Continue.'; }, 2500);
+  } else if (hint && ok) {
+    hint.textContent = 'This window has no link to the editor tab. Click Continue — you are signed in.';
+  }
+})();
+</script></main></body></html>`;
   };
 
-  if (!clientId || !clientSecret) return respond('error', { error: 'OAuth env vars not set on Vercel' });
-  if (!code) return respond('error', { error: 'Missing code' });
-  if (!state || state !== cookieState) return respond('error', { error: 'State mismatch — try again' });
+  const send = (status, payload) => res.status(200).send(page(status, payload));
+
+  if (!clientId || !clientSecret) return send('error', { error: 'OAuth env vars not set on Vercel' });
+  if (!code) return send('error', { error: 'Missing code' });
+  if (!state || state !== cookieState) return send('error', { error: 'State mismatch — go back to /admin/ and try again' });
 
   try {
     const r = await fetch('https://github.com/login/oauth/access_token', {
@@ -36,9 +64,9 @@ export default async function handler(req, res) {
       body: JSON.stringify({ client_id: clientId, client_secret: clientSecret, code, state }),
     });
     const data = await r.json();
-    if (!data.access_token) return respond('error', { error: data.error_description || data.error || 'No token returned' });
-    return respond('success', { token: data.access_token, provider: 'github' });
+    if (!data.access_token) return send('error', { error: data.error_description || data.error || 'No token returned' });
+    return send('success', { token: data.access_token, provider: 'github' });
   } catch (e) {
-    return respond('error', { error: e.message });
+    return send('error', { error: e.message });
   }
 }
