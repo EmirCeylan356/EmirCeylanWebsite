@@ -189,3 +189,36 @@ Running log, one entry per phase. Times are local (TST, UTC+3).
 - Verified: astro check 0 errors; axe 0 violations per tab + lightbox, normal and
   reduced motion; screenshots at 360/390/768/1280 reviewed. Removed 7 unreferenced
   photos and `travel-map.jpg` from `public/images/`.
+
+## Phase 13 — Hardening pass 1 (07:20–07:45)
+- Motion tokens (`--dur-*`, `--ease-out`) replace every ad-hoc `0.2s ease` in the files I
+  rewrote (index, header, footer, layout); spacing tokens (`--space-*`, `--gutter`,
+  `--section-y`) drive section rhythm on the home page and the new pages.
+- `--accent-text` (#F0405E) for any crimson text under ~24 px: #C41E3A is only 3.4:1 on
+  the base background. Applied to home, footer, /now, /404, blog links; `#C41E3A` stays
+  for large type, borders and fills so the identity is unchanged.
+- Zero-CLS hero: glyph spans server-rendered, widths locked before scrambling, text
+  left-aligned in fixed boxes; typewriter reserves its final width. CLS 0.70 → 0.002.
+- Cross-document view transitions + CSS scroll-progress line; contact form; footer
+  tap targets. Strict CSP with hashed bootstrap; `assetsInlineLimit: 0`.
+
+## Phase 14 — Verification gate (07:37–07:50)
+- `npm run build` clean, `astro check` 0 errors / 0 warnings.
+- Lighthouse (local production build): `/` 99/100/100/100 mobile, 100/100/100/100
+  desktop; `/hobbies` 99/100/100/100 mobile, 100/100/100/100 desktop. CLS 0.009 / 0.002 /
+  0 / 0. `audit/after/`.
+- axe: 0 violations on all 10 routes at 390 + 1280 (one `/now` link contrast fixed
+  before merge); reduced-motion pass screenshotted for /, /hobbies, /blog, /now.
+- `scripts/link-check.mjs --external`: 0 broken internal, all 6 external reachable.
+- `scripts/privacy-check.mjs`: clean (26 terms, 4 unlisted routes, phone pattern).
+- Sitemap lists only /, /blog/, /hobbies/, /now/, /uses/; all four unlisted pages carry
+  `noindex, nofollow`; robots.txt disallows them.
+- `git grep` for Supabase URL / key patterns in tracked files: none; `.env` ignored.
+- Screenshots of every page at 360/390/414/768/1280/1920 in `audit/after/`, reviewed.
+- CSP tested clean on all routes with `scripts/csp-check.mjs`.
+- Merged `overnight-polish` → `main` (825287b), pushed 07:50. Branch also pushed.
+
+## Phase 14 — Live verification (07:58–08:05)
+- Vercel "Deployment has completed" ~07:58. `scripts/verify-live.mjs`: 47/47 checks pass at 07:59.
+- Lighthouse against https://www.emirceylan.com: `/` and `/hobbies` 100/100/100/100 mobile and desktop (`audit/live/`).
+- First CI run on main failed only on the over-broad secrets grep (matched the CSP `*.supabase.co` wildcard); fixed in 321449f. Typecheck/build/links/privacy passed.
