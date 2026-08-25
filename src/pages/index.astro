@@ -189,9 +189,9 @@ const skillCategories = [
     </section>
 
     <!-- ═══ SKILLS ════════════════════════════════════════════════════════════ -->
-    <section id="skills" class="py-16 px-6 md:px-12" style="padding-left:2rem; padding-right:2rem;">
+    <section id="skills" class="py-20 md:py-28 px-6 md:px-12" style="padding-left:2rem; padding-right:2rem;">
       <div class="max-w-7xl mx-auto">
-        <div class="flex items-end gap-4 mb-10">
+        <div class="flex items-end gap-4 mb-14 md:mb-16">
           <p class="font-mono text-xs" style="color:var(--text-secondary); letter-spacing:0.15em; align-self:center;">03 /</p>
           <h2 class="text-5xl md:text-7xl font-black kinetic-text skills-heading" style="color:var(--text-primary);">SKILLS</h2>
           <div class="section-line flex-1 h-px" style="background:var(--border-color);"></div>
@@ -484,20 +484,23 @@ const skillCategories = [
   .skills-grid {
     display: grid;
     grid-template-columns: 1fr;
-    gap: clamp(1.5rem, 3vw, 2.5rem);
+    gap: clamp(2.5rem, 5vw, 3.5rem);
   }
   @media (min-width: 768px) {
-    .skills-grid { grid-template-columns: repeat(2, 1fr); gap: 2.5rem 3rem; }
+    .skills-grid { grid-template-columns: repeat(2, 1fr); gap: 4rem 5rem; }
   }
 
-  .skill-group {
-    padding-bottom: 1.75rem;
-    border-bottom: 1px solid var(--border-color);
-  }
   .skill-group-head {
-    display: flex; align-items: baseline; justify-content: space-between;
-    gap: 12px;
-    margin-bottom: 1.1rem;
+    display: flex; align-items: baseline; gap: 14px;
+    margin-bottom: 1.25rem;
+  }
+  .skill-group-head::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border-color);
+    opacity: 0.6;
+    align-self: center;
   }
   .skill-group-title {
     font-size: 13px;

@@ -7,7 +7,7 @@ const supabaseUrl = import.meta.env.PUBLIC_SUPABASE_URL || '';
 const supabaseKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY || '';
 ---
 
-<Layout title="GALLERY ADMIN — Emir Ceylan">
+<Layout title="GALLERY ADMIN — Emir Ceylan" noindex={true}>
   <Header />
 
   <main style="padding-top: 80px;">
@@ -43,9 +43,9 @@ const supabaseKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY || '';
               <button id="refresh-btn" class="font-mono text-xs font-bold cut-corner-sm admin-action-btn" style="letter-spacing:0.08em; padding:0.5rem 1rem;">
                 REFRESH
               </button>
-              <a href="/visitor-gallery" class="font-mono text-xs font-bold cut-corner-sm admin-link-btn" style="letter-spacing:0.08em; text-decoration:none; padding:0.5rem 1rem;">
-                VIEW GALLERY
-              </a>
+              <!-- No link to the unlisted gallery here: this page's login gate is
+                   client-side, so anything in this markup is publicly readable.
+                   The gallery lives at the unguessable /gallery-<slug>/ route. -->
             </div>
           </div>
 

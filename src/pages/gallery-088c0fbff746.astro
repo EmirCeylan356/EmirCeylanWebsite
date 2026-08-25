@@ -1,4 +1,13 @@
 ---
+// ════════════════════════════════════════════════════════════════════════════
+//  UNLISTED VISITOR GALLERY
+//
+//  Unguessable static route: /gallery-088c0fbff746/
+//  Link-based privacy, NOT authentication — anyone with the URL can view and
+//  submit. Kept out of search engines via Layout's `noindex` prop, excluded
+//  from any sitemap, and not linked from any public page (the header nav link
+//  was removed). Share the URL directly with people you want drawing here.
+// ════════════════════════════════════════════════════════════════════════════
 import Layout from '../layouts/Layout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
@@ -9,7 +18,7 @@ const supabaseKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY || '';
 const seedJson = JSON.stringify(seedData || []);
 ---
 
-<Layout title="VISITOR GALLERY — Emir Ceylan">
+<Layout title="VISITOR GALLERY — Emir Ceylan" noindex={true}>
   <Header />
 
   <main style="padding-top: 80px;">
