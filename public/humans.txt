@@ -1,0 +1,9 @@
+/* TEAM */
+  Emir Ceylan — everything
+  Istanbul, Türkiye
+  https://www.emirceylan.com
+
+/* SITE */
+  Built with Astro + Tailwind CSS, self-hosted Space Grotesk and JetBrains Mono.
+  Visitor gallery on Supabase. Hosted on Vercel.
+  Source: https://github.com/EmirCeylan356/EmirCeylanWebsite

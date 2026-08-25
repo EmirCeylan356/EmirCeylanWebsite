@@ -544,7 +544,7 @@ const countryCount = countries.length;
         </div>
 
         <!-- Passport grid -->
-        <div class="passport-grid">
+        <div class="passport-grid" data-reveal-stagger>
           {countries.map((c) => (
             <div class={`passport-card${c.home ? ' home' : ''}`}>
               <div class="pc-top">
@@ -1123,14 +1123,4 @@ const countryCount = countries.length;
     document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeLightbox(); });
   })();
 
-  // ── Travels — passport grid reveal ─────────────────────────────────────────
-  (function() {
-    if (typeof gsap === 'undefined') return;
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    gsap.from('.passport-card', {
-      opacity: 0, y: 24, stagger: { amount: 0.6, from: 'start' },
-      duration: 0.5, ease: 'power3.out',
-      scrollTrigger: { trigger: '.passport-grid', start: 'top 85%' }
-    });
-  })();
 </script>

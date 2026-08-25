@@ -9,9 +9,25 @@
     "astro": "astro"
   },
   "dependencies": {
+    "@astrojs/mdx": "^4.3.14",
+    "@astrojs/rss": "^4.0.19",
+    "@astrojs/sitemap": "^3.7.3",
+    "@fontsource-variable/jetbrains-mono": "^5.3.0",
+    "@fontsource-variable/space-grotesk": "^5.3.0",
     "@supabase/supabase-js": "^2.99.3",
     "@tailwindcss/vite": "^4.2.1",
     "astro": "^5.17.1",
+    "sharp": "^0.35.3",
     "tailwindcss": "^4.2.1"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.10",
+    "@axe-core/playwright": "^4.13.0",
+    "@resvg/resvg-js": "^2.6.2",
+    "chrome-launcher": "^1.2.1",
+    "lighthouse": "^13.4.1",
+    "playwright": "^1.62.1",
+    "satori": "^0.33.4",
+    "typescript": "^5.9.3"
   }
 }

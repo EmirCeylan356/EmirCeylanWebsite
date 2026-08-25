@@ -155,13 +155,13 @@ const works = [
       <div class="max-w-7xl mx-auto">
         <div class="flex items-end gap-4 mb-10">
           <p class="font-mono text-xs" style="color:var(--text-secondary); letter-spacing:0.15em; align-self:center;">01 /</p>
-          <h2 class="text-5xl md:text-7xl font-black kinetic-text work-heading" style="color:var(--text-primary);">WORK</h2>
-          <div class="section-line flex-1 h-px" style="background:var(--border-color);"></div>
+          <h2 class="text-5xl md:text-7xl font-black kinetic-text work-heading" style="color:var(--text-primary);" data-reveal="left">WORK</h2>
+          <div class="section-line flex-1 h-px" style="background:var(--border-color);" data-reveal="line"></div>
           <span class="text-xl font-black font-mono" style="color:var(--text-secondary);"
                 data-counter="7" data-prefix="/" data-pad="2">/07</span>
         </div>
 
-        <div class="grid md:grid-cols-2 gap-4">
+        <div class="grid md:grid-cols-2 gap-4" data-reveal-stagger>
           {works.map((work) => (
             <div
               class="work-card relative p-6 cursor-pointer"
@@ -360,27 +360,4 @@ const works = [
   popupOverlay.addEventListener('click', closePopup);
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closePopup(); });
 
-  // ── Scroll-trigger reveal (matches index.astro) ────────────────────────────
-  (function() {
-    if (typeof gsap === 'undefined') return;
-
-    gsap.utils.toArray('.section-line').forEach(line => {
-      gsap.fromTo(line,
-        { scaleX: 0, transformOrigin: 'left center' },
-        { scaleX: 1, duration: 1, ease: 'power3.inOut',
-          scrollTrigger: { trigger: line, start: 'top 85%' } }
-      );
-    });
-
-    gsap.from('.work-heading', {
-      opacity: 0, x: -50, duration: 0.7, ease: 'power3.out',
-      scrollTrigger: { trigger: '#work', start: 'top 78%' }
-    });
-
-    gsap.from('.work-card', {
-      opacity: 0, y: 55, stagger: { amount: 0.7, from: 'start' },
-      duration: 0.65, ease: 'power3.out',
-      scrollTrigger: { trigger: '#work .grid', start: 'top 82%' }
-    });
-  })();
 </script>

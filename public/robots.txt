@@ -1,0 +1,11 @@
+# emirceylan.com
+User-agent: *
+Allow: /
+# Unlisted routes (link-based privacy). Keep in sync with src/lib/site.ts.
+Disallow: /work-4b8b954c2493/
+Disallow: /cv-4b8b954c2493/
+Disallow: /gallery-088c0fbff746/
+Disallow: /visitor-gallery-admin/
+Disallow: /og/
+
+Sitemap: https://www.emirceylan.com/sitemap-index.xml
