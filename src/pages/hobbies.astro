@@ -2,250 +2,145 @@
 import Layout from '../layouts/Layout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import { Picture, getImage } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
 
-// ── Artworks (paintings only — clean descriptions, no AI metaphors) ───────────
-const artworks = [
-  {
-    id: 1,  title: 'FORM STUDY I',       medium: 'Oil on Canvas',  year: 2024,
-    src: '/images/file_8---39151805-7313-4bb7-b8c8-1365aef884a3.jpg',
-    desc: '',
-  },
-  {
-    id: 2,  title: 'COMPOSITION II',     medium: 'Mixed Media',    year: 2024,
-    src: '/images/file_9---c5cd81b7-8140-4595-8297-af32f0e2edba.jpg',
-    desc: '',
-  },
-  {
-    id: 3,  title: 'LANDSCAPE III',      medium: 'Oil on Canvas',  year: 2024,
-    src: '/images/file_10---714a56fd-d4fb-4316-8629-c6f06a4db7a8.jpg',
-    desc: '',
-  },
-  {
-    id: 4,  title: 'FIGURE IV',          medium: 'Acrylic',        year: 2024,
-    src: '/images/file_11---e6cf7245-cda7-4ca8-884c-55c891575493.jpg',
-    desc: '',
-  },
-  {
-    id: 5,  title: 'ABSTRACTION V',      medium: 'Oil on Canvas',  year: 2024,
-    src: '/images/file_12---09cd522a-d5e5-433a-ac0f-d9c0c710c79a.jpg',
-    desc: '',
-  },
-  {
-    id: 6,  title: 'TEXTURE VI',         medium: 'Mixed Media',    year: 2024,
-    src: '/images/file_13---f94eea51-a229-4b42-bcf4-f489c8824e9b.jpg',
-    desc: '',
-  },
-  {
-    id: 7,  title: 'STILLNESS VII',      medium: 'Oil on Canvas',  year: 2023,
-    src: '/images/file_14---d6d37114-4da7-4cdf-896d-5b361bf9ac99.jpg',
-    desc: '',
-  },
-  {
-    id: 8,  title: 'MOTION VIII',        medium: 'Acrylic',        year: 2023,
-    src: '/images/file_15---cfdd2a00-8c9e-4367-8b88-c149ce15db2a.jpg',
-    desc: '',
-  },
-  {
-    id: 9,  title: 'DEPTH IX',           medium: 'Oil on Canvas',  year: 2023,
-    src: '/images/file_16---a29e17b8-1972-4c3d-af3c-e4f65981a95f.jpg',
-    desc: '',
-  },
-  {
-    id: 10, title: 'PATTERN X',          medium: 'Mixed Media',    year: 2023,
-    src: '/images/file_17---f463b1dd-1139-4fad-81a9-b4b5bddd0ef0.jpg',
-    desc: '',
-  },
-  {
-    id: 11, title: 'TENSION XI',         medium: 'Charcoal',       year: 2023,
-    src: '/images/file_19---7fd47930-b43e-4e33-a1d0-ce5384175a40.jpg',
-    desc: '',
-  },
-  {
-    id: 12, title: 'SIGNAL XII',         medium: 'Oil on Canvas',  year: 2023,
-    src: '/images/file_20---4fa92226-8c06-4344-836a-2745c8ec1072.jpg',
-    desc: '',
-  },
-  {
-    id: 13, title: 'THRESHOLD XIII',     medium: 'Mixed Media',    year: 2023,
-    src: '/images/file_21---7f73c515-6959-4117-bc6b-a178b7e1f1fa.jpg',
-    desc: '',
-  },
-  {
-    id: 14, title: 'MONSTER',            medium: 'Marker',         year: 2026, status: 'PHYSICAL',
-    src: '/images/file_26---176ca328-7aa6-47ac-8678-3147590dfd1e.jpg',
-    desc: '',
-  },
-  {
-    id: 15, title: 'HOUSE AND TREE',     medium: 'Marker',         year: 2026, status: 'PHYSICAL',
-    src: '/images/file_28---42038613-cd61-482c-96be-7f5090d24bb4.jpg',
-    desc: '',
-  },
-  {
-    id: 16, title: 'CLOWN PORTRAIT',      medium: 'Watercolor',     year: 2026, status: 'PHYSICAL',
-    src: '/images/file_27---5cc231a4-9e3e-4c3e-8804-8c95a0e0000e.jpg',
-    desc: '',
-  },
-  {
-    id: 17, title: 'FRUIT STILL LIFE',    medium: 'Watercolor',     year: 2026, status: 'PHYSICAL',
-    src: '/images/file_29---436fe3f3-a255-4e3a-aaed-3b9b2a4c14a4.jpg',
-    desc: '',
-  },
-  {
-    id: 18, title: 'COLOR STUDY',         medium: 'Watercolor',     year: 2026, status: 'PHYSICAL',
-    src: '/images/file_30---d7b1cafb-40a7-4744-9160-c20abb329311.jpg',
-    desc: '',
-  },
-  {
-    id: 19, title: 'FLORAL STUDY',        medium: 'Watercolor',     year: 2026, status: 'PHYSICAL',
-    src: '/images/file_31---47b3bd96-ae79-438e-a21b-8a39940d7025.jpg',
-    desc: '',
-  },
-  {
-    id: 20, title: 'DOG PORTRAIT',        medium: 'Watercolor',     year: 2026, status: 'PHYSICAL',
-    src: '/images/file_32---22a1e60c-02cf-4dc7-bea6-e5f54059a36d.jpg',
-    desc: '',
-  },
-  {
-    id: 21, title: 'WATERCOLOR LANDSCAPE', medium: 'Watercolor',     year: 2026, status: 'PHYSICAL',
-    src: '/images/file_33---e872272a-94bc-4b74-abab-fa2bfe270037.jpg',
-    desc: '',
-  },
-  {
-    id: 22, title: 'TIGER MURAL',         medium: 'Mural',          year: 2026, status: 'PHYSICAL',
-    src: '/images/file_35---32e01751-1807-42c5-ab2f-348082093d0b.jpg',
-    desc: '',
-  },
-  {
-    id: 23, title: 'MAN WITH GLASSES',    medium: 'Watercolor',     year: 2026, status: 'PHYSICAL',
-    src: '/images/file_45---63d5078b-35ae-446d-be59-28d59f1fa149.jpg',
-    desc: '',
-  },
-  {
-    id: 24, title: 'BEARDED MAN',          medium: 'Watercolor',     year: 2026, status: 'PHYSICAL',
-    src: '/images/file_46---efd60167-05c3-4394-ae97-47632daded2d.jpg',
-    desc: '',
-  },
-  {
-    id: 25, title: 'ARCHITECTURAL SKETCH', medium: 'Pencil',         year: 2026, status: 'PHYSICAL',
-    src: '/images/file_36---fef23c14-9e17-42a9-a3b4-a10b4a435db1.jpg',
-    desc: '',
-  },
-  {
-    id: 26, title: 'KURUKAFA',            medium: 'Pencil',        year: 2022,
-    src: '/images/Kurukafa.png',
-    desc: '',
-  },
-  {
-    id: 27, title: 'EARLY WORK I',        medium: 'Mixed Media',   year: 2020,
-    src: '/images/IMG_20200314_205556.jpg',
-    desc: '',
-  },
-  {
-    id: 28, title: 'SESSION STUDY I',     medium: 'Mixed Media',   year: 2020,
-    src: '/images/IMG_20200829_131256.jpg',
-    desc: '',
-  },
-  {
-    id: 29, title: 'SESSION STUDY II',    medium: 'Mixed Media',   year: 2020,
-    src: '/images/IMG_20200829_132851.jpg',
-    desc: '',
-  },
-  {
-    id: 30, title: 'SESSION STUDY III',   medium: 'Mixed Media',   year: 2020,
-    src: '/images/IMG_20200829_134200.jpg',
-    desc: '',
-  },
-  {
-    id: 31, title: 'SESSION STUDY IV',    medium: 'Mixed Media',   year: 2020,
-    src: '/images/IMG_20200829_134409.jpg',
-    desc: '',
-  },
-  {
-    id: 32, title: 'SESSION STUDY V',     medium: 'Mixed Media',   year: 2020,
-    src: '/images/IMG_20200829_140438.jpg',
-    desc: '',
-  },
-  {
-    id: 33, title: 'NOCTURNE',            medium: 'Mixed Media',   year: 2021,
-    src: '/images/IMG_20211118_235908.jpg',
-    desc: '',
-  },
-  {
-    id: 34, title: 'FIGURE STUDY I',      medium: 'Mixed Media',   year: 2022,
-    src: '/images/IMG_20220508_213610.jpg',
-    desc: '',
-  },
-  {
-    id: 35, title: 'FIGURE STUDY II',     medium: 'Mixed Media',   year: 2022,
-    src: '/images/IMG-20220515-WA0005.jpeg',
-    desc: '',
-  },
-  {
-    id: 36, title: 'MAY STUDY I',         medium: 'Mixed Media',   year: 2022,
-    src: '/images/IMG_20220525_092620.jpg',
-    desc: '',
-  },
-  {
-    id: 37, title: 'MAY STUDY II',        medium: 'Mixed Media',   year: 2022,
-    src: '/images/IMG_20220526_210349.jpg',
-    desc: '',
-  },
-  {
-    id: 38, title: 'MAY STUDY III',       medium: 'Mixed Media',   year: 2022,
-    src: '/images/IMG_20220526_210412.jpg',
-    desc: '',
-  },
-  {
-    id: 39, title: 'SUMMER STUDY',        medium: 'Mixed Media',   year: 2022,
-    src: '/images/IMG_20220718_220804.jpg',
-    desc: '',
-  },
-  {
-    id: 40, title: 'AUTUMN STUDY',        medium: 'Mixed Media',   year: 2022,
-    src: '/images/IMG_20220925_151943.jpg',
-    desc: '',
-  },
-  {
-    id: 41, title: 'SPRING WORK',         medium: 'Mixed Media',   year: 2023,
-    src: '/images/IMG_20230406_020218.jpg',
-    desc: '',
-  },
-  {
-    id: 42, title: 'LATE SUMMER',         medium: 'Mixed Media',   year: 2025,
-    src: '/images/IMG_20250831_194420_970.jpg',
-    desc: '',
-  },
-  {
-    id: 43, title: 'SEPTEMBER I',         medium: 'Mixed Media',   year: 2025,
-    src: '/images/20250903_115020.jpg',
-    desc: '',
-  },
-  {
-    id: 44, title: 'SEPTEMBER II',        medium: 'Mixed Media',   year: 2025,
-    src: '/images/20250903_125338.jpg',
-    desc: '',
-  },
-  {
-    id: 45, title: 'SEPTEMBER III',       medium: 'Mixed Media',   year: 2025,
-    src: '/images/20250903_125348.jpg',
-    desc: '',
-  },
-  {
-    id: 46, title: 'SEPTEMBER IV',        medium: 'Mixed Media',   year: 2025,
-    src: '/images/20250903_125354.jpg',
-    desc: '',
-  },
-  {
-    id: 47, title: 'SEPTEMBER V',         medium: 'Mixed Media',   year: 2025,
-    src: '/images/20250903_125403.jpg',
-    desc: '',
-  },
-  {
-    id: 48, title: 'FEBRUARY',            medium: 'Mixed Media',   year: 2026,
-    src: '/images/IMG-20260210-WA0003.jpeg',
-    desc: '',
-  },
+// ── Paintings live in src/assets/paintings and go through astro:assets ───────
+const imageModules = import.meta.glob<{ default: ImageMetadata }>('../assets/paintings/*.{jpg,jpeg,png}', { eager: true });
+const imageByName: Record<string, ImageMetadata> = {};
+for (const [path, mod] of Object.entries(imageModules)) {
+  imageByName[path.split('/').pop() ?? path] = mod.default;
+}
+
+// ── Artworks — single source of truth (titles are Emir's; alt = what is visible)
+interface Artwork {
+  id: number;
+  title: string;
+  medium: string;
+  year: number;
+  status?: string;
+  file: string;
+  alt: string;
+}
+
+const artworks: Artwork[] = [
+  { id: 1,  title: 'FORM STUDY I',       medium: 'Oil on Canvas', year: 2024, file: 'file_8---39151805-7313-4bb7-b8c8-1365aef884a3.jpg',
+    alt: 'Blue ballpoint pen sketch on brown cardboard of a cartoon bald figure with a cigarette and a bag, surrounded by posters, a skateboard and a boombox.' },
+  { id: 2,  title: 'COMPOSITION II',     medium: 'Mixed Media',   year: 2024, file: 'file_9---c5cd81b7-8140-4595-8297-af32f0e2edba.jpg',
+    alt: 'Graphite pencil study of a classical marble bust of a woman with braided hair, seen in three-quarter profile on white paper.' },
+  { id: 3,  title: 'LANDSCAPE III',      medium: 'Oil on Canvas', year: 2024, file: 'file_10---714a56fd-d4fb-4316-8629-c6f06a4db7a8.jpg',
+    alt: 'Ink and watercolor illustration of a blue-haired woman crouching inside a wooden frame, her arms and legs covered in floral tattoos, in browns, blues and greens.' },
+  { id: 4,  title: 'FIGURE IV',          medium: 'Acrylic',       year: 2024, file: 'file_11---e6cf7245-cda7-4ca8-884c-55c891575493.jpg',
+    alt: 'Black ink drawing of a girl in a tutu holding scissors and a spray can behind a seated boy, with bottles scattered on the floor.' },
+  { id: 5,  title: 'ABSTRACTION V',      medium: 'Oil on Canvas', year: 2024, file: 'file_12---09cd522a-d5e5-433a-ac0f-d9c0c710c79a.jpg',
+    alt: 'Bold black ink portrait of a young woman with curly hair, wide eyes, a choker and a patterned collar.' },
+  { id: 6,  title: 'TEXTURE VI',         medium: 'Mixed Media',   year: 2024, file: 'file_13---f94eea51-a229-4b42-bcf4-f489c8824e9b.jpg',
+    alt: 'Faint graphite sketch of cherubs and infant figures tumbling among clouds on white paper.' },
+  { id: 7,  title: 'STILLNESS VII',      medium: 'Oil on Canvas', year: 2023, file: 'file_14---d6d37114-4da7-4cdf-896d-5b361bf9ac99.jpg',
+    alt: 'Graphite anatomy study of a seated nude woman next to a full skeleton, with a skeletal hand and an eye drawn around them.' },
+  { id: 8,  title: 'MOTION VIII',        medium: 'Acrylic',       year: 2023, file: 'file_15---cfdd2a00-8c9e-4367-8b88-c149ce15db2a.jpg',
+    alt: 'Watercolor and ink bouquet of roses, hydrangeas, lilies and greenery in pinks, blues and mauves on a small white sheet.' },
+  { id: 9,  title: 'DEPTH IX',           medium: 'Oil on Canvas', year: 2023, file: 'file_16---a29e17b8-1972-4c3d-af3c-e4f65981a95f.jpg',
+    alt: 'Graphite drawing of a bald, bearded man leaning forward on a ledge with a large bat-like wing rising behind him.' },
+  { id: 10, title: 'PATTERN X',          medium: 'Mixed Media',   year: 2023, file: 'file_17---f463b1dd-1139-4fad-81a9-b4b5bddd0ef0.jpg',
+    alt: 'Graphite portrait of a smiling older man with a monocle, moustache and tie, holding a bag marked with a dollar sign.' },
+  { id: 11, title: 'TENSION XI',         medium: 'Charcoal',      year: 2023, file: 'file_19---7fd47930-b43e-4e33-a1d0-ce5384175a40.jpg',
+    alt: 'Watercolor and ink poster titled Sabanci Kaplani showing a gaunt tiger-headed creature from the front and back with handwritten labels, in pinks and yellows.' },
+  { id: 12, title: 'SIGNAL XII',         medium: 'Oil on Canvas', year: 2023, file: 'file_20---4fa92226-8c06-4344-836a-2745c8ec1072.jpg',
+    alt: 'Ink sketch sheet of six heads: bearded men, a man in a cap and a woman in profile, on white paper.' },
+  { id: 13, title: 'THRESHOLD XIII',     medium: 'Mixed Media',   year: 2023, file: 'file_21---7f73c515-6959-4117-bc6b-a178b7e1f1fa.jpg',
+    alt: 'Watercolor portrait of a person with dark hair and glasses crouching in a blue floral shirt, on white paper.' },
+  { id: 14, title: 'MONSTER',            medium: 'Marker',        year: 2026, status: 'PHYSICAL', file: 'file_26---176ca328-7aa6-47ac-8678-3147590dfd1e.jpg',
+    alt: 'Ink drawing with white highlights of a shaggy horned beast on brown paper in a spiral sketchbook.' },
+  { id: 15, title: 'HOUSE AND TREE',     medium: 'Marker',        year: 2026, status: 'PHYSICAL', file: 'file_28---42038613-cd61-482c-96be-7f5090d24bb4.jpg',
+    alt: 'Watercolor and ink scene of a white horned goat with a bell standing on a chalk circle in front of a village skyline, in warm yellows and blues.' },
+  { id: 16, title: 'CLOWN PORTRAIT',     medium: 'Watercolor',    year: 2026, status: 'PHYSICAL', file: 'file_27---5cc231a4-9e3e-4c3e-8804-8c95a0e0000e.jpg',
+    alt: 'Ink and watercolor cityscape of baroque church facades in sandy browns against a blue sky, in a spiral sketchbook.' },
+  { id: 17, title: 'FRUIT STILL LIFE',   medium: 'Watercolor',    year: 2026, status: 'PHYSICAL', file: 'file_29---436fe3f3-a255-4e3a-aaed-3b9b2a4c14a4.jpg',
+    alt: 'Charcoal portrait of a short-haired woman with a bare shoulder, her eyes covered by red stripes crossing the page.' },
+  { id: 18, title: 'COLOR STUDY',        medium: 'Watercolor',    year: 2026, status: 'PHYSICAL', file: 'file_30---d7b1cafb-40a7-4744-9160-c20abb329311.jpg',
+    alt: 'Graphite portrait of a young woman with her hair tied up, wearing a turtleneck and looking at the viewer, on a spiral pad.' },
+  { id: 19, title: 'FLORAL STUDY',       medium: 'Watercolor',    year: 2026, status: 'PHYSICAL', file: 'file_31---47b3bd96-ae79-438e-a21b-8a39940d7025.jpg',
+    alt: 'Graphite still life of a glass jar filled with eyeballs beside a pear and a drinking glass, on a spiral pad.' },
+  { id: 20, title: 'DOG PORTRAIT',       medium: 'Watercolor',    year: 2026, status: 'PHYSICAL', file: 'file_32---22a1e60c-02cf-4dc7-bea6-e5f54059a36d.jpg',
+    alt: 'Graphite portrait of a young man with braided hair and a chain necklace on a magenta marker background.' },
+  { id: 21, title: 'WATERCOLOR LANDSCAPE', medium: 'Watercolor',  year: 2026, status: 'PHYSICAL', file: 'file_33---e872272a-94bc-4b74-abab-fa2bfe270037.jpg',
+    alt: 'Painting of a large white-crested blue wave against a pink sky on an envelope, with Japanese characters and a small stamp.' },
+  { id: 22, title: 'TIGER MURAL',        medium: 'Mural',         year: 2026, status: 'PHYSICAL', file: 'file_35---32e01751-1807-42c5-ab2f-348082093d0b.jpg',
+    alt: 'Graphite sketch of a bearded philosopher in robes beside a column topped by a statue holding a spear, in a spiral sketchbook.' },
+  { id: 23, title: 'MAN WITH GLASSES',   medium: 'Watercolor',    year: 2026, status: 'PHYSICAL', file: 'file_45---63d5078b-35ae-446d-be59-28d59f1fa149.jpg',
+    alt: 'Pencil portrait of a bearded man with round glasses in a small sketchbook held open in one hand.' },
+  { id: 24, title: 'BEARDED MAN',        medium: 'Watercolor',    year: 2026, status: 'PHYSICAL', file: 'file_46---efd60167-05c3-4394-ae97-47632daded2d.jpg',
+    alt: 'Illustration of a purple skull on a desk among coffee cups, paint tubes and brushes, in vivid purples and magentas.' },
+  { id: 25, title: 'ARCHITECTURAL SKETCH', medium: 'Pencil',      year: 2026, status: 'PHYSICAL', file: 'file_36---fef23c14-9e17-42a9-a3b4-a10b4a435db1.jpg',
+    alt: 'Watercolor portrait of a person with long auburn hair against a dark red patterned background.' },
+  { id: 26, title: 'KURUKAFA',           medium: 'Pencil',        year: 2022, file: 'Kurukafa.png',
+    alt: 'Illustration of a purple skull on a desk among coffee cups, paint tubes and brushes, in vivid purples and pinks.' },
+  { id: 27, title: 'EARLY WORK I',       medium: 'Mixed Media',   year: 2020, file: 'IMG_20200314_205556.jpg',
+    alt: 'Charcoal portrait of a short-haired woman with a bare shoulder, her eyes covered by red stripes crossing the page.' },
+  { id: 28, title: 'SESSION STUDY I',    medium: 'Mixed Media',   year: 2020, file: 'IMG_20200829_131256.jpg',
+    alt: 'Graphite portrait of a young woman with her hair tied up, wearing a turtleneck, on a spiral pad in front of a keyboard.' },
+  { id: 29, title: 'SESSION STUDY II',   medium: 'Mixed Media',   year: 2020, file: 'IMG_20200829_132851.jpg',
+    alt: 'Graphite still life of a glass jar filled with eyeballs beside a pear and a drinking glass, on a spiral pad.' },
+  { id: 30, title: 'SESSION STUDY III',  medium: 'Mixed Media',   year: 2020, file: 'IMG_20200829_134200.jpg',
+    alt: 'Graphite portrait of a young man with braided hair and a chain necklace on a magenta marker background.' },
+  { id: 31, title: 'SESSION STUDY IV',   medium: 'Mixed Media',   year: 2020, file: 'IMG_20200829_134409.jpg',
+    alt: 'Painting of a large white-crested blue wave against a pink sky on an envelope, with Japanese characters and a small stamp.' },
+  { id: 32, title: 'SESSION STUDY V',    medium: 'Mixed Media',   year: 2020, file: 'IMG_20200829_140438.jpg',
+    alt: 'Wall mural of a roaring tiger head wearing a small gold crown, painted in orange, black and white above a desk of art supplies.' },
+  { id: 33, title: 'NOCTURNE',           medium: 'Mixed Media',   year: 2021, file: 'IMG_20211118_235908.jpg',
+    alt: 'Graphite sketch of a bearded philosopher in robes beside a column topped by a statue holding a spear, in a spiral sketchbook.' },
+  { id: 34, title: 'FIGURE STUDY I',     medium: 'Mixed Media',   year: 2022, file: 'IMG_20220508_213610.jpg',
+    alt: 'Watercolor portrait of a person with long auburn hair against a dark red patterned background.' },
+  { id: 35, title: 'FIGURE STUDY II',    medium: 'Mixed Media',   year: 2022, file: 'IMG-20220515-WA0005.jpeg',
+    alt: 'Watercolor and ink portrait of a bearded man with glasses wearing a feathered headdress and a patterned green sweater, on a purple background covered in handwriting.' },
+  { id: 36, title: 'MAY STUDY I',        medium: 'Mixed Media',   year: 2022, file: 'IMG_20220525_092620.jpg',
+    alt: 'Ink and watercolor sketchbook spread of a meal with a bowl of soup, bread, tea and salad, beside a small drawing of a church tower.' },
+  { id: 37, title: 'MAY STUDY II',       medium: 'Mixed Media',   year: 2022, file: 'IMG_20220526_210349.jpg',
+    alt: 'Ink and watercolor profile of a bald man with a long white beard against a black background filled with white doodles, on a small spiral pad.' },
+  { id: 38, title: 'MAY STUDY III',      medium: 'Mixed Media',   year: 2022, file: 'IMG_20220526_210412.jpg',
+    alt: 'Watercolor of a blue bird perched among pink blossoms on a small spiral pad.' },
+  { id: 39, title: 'SUMMER STUDY',       medium: 'Mixed Media',   year: 2022, file: 'IMG_20220718_220804.jpg',
+    alt: 'Graphite drawing of a bald head with dark liquid dripping onto it from a ring above, on white paper.' },
+  { id: 40, title: 'AUTUMN STUDY',       medium: 'Mixed Media',   year: 2022, file: 'IMG_20220925_151943.jpg',
+    alt: 'Ink and watercolor of a woman with large curly hair in a green crop top, yellow jacket and red trousers, on a spiral sketchbook.' },
+  { id: 41, title: 'SPRING WORK',        medium: 'Mixed Media',   year: 2023, file: 'IMG_20230406_020218.jpg',
+    alt: 'Watercolor portrait of a man with dark curly hair, a moustache and a red jacket on a spiral pad, photographed on a dark desk.' },
+  { id: 42, title: 'LATE SUMMER',        medium: 'Mixed Media',   year: 2025, file: 'IMG_20250831_194420_970.jpg',
+    alt: 'Photo of a young boy in a classroom holding up an acrylic landscape painting of green trees, a lake and a brown hillside.' },
+  { id: 43, title: 'SEPTEMBER I',        medium: 'Mixed Media',   year: 2025, file: '20250903_115020.jpg',
+    alt: 'Sketchbook page of loose red, blue and yellow ballpoint scribbles forming a running figure with a spray of colored lines.' },
+  { id: 44, title: 'SEPTEMBER II',       medium: 'Mixed Media',   year: 2025, file: '20250903_125338.jpg',
+    alt: 'Ink drawing with white highlights of a shaggy horned beast on brown paper in a spiral sketchbook.' },
+  { id: 45, title: 'SEPTEMBER III',      medium: 'Mixed Media',   year: 2025, file: '20250903_125348.jpg',
+    alt: 'Watercolor and ink scene of a white horned goat with a bell standing on a chalk circle in front of a village skyline, in warm yellows and blues.' },
+  { id: 46, title: 'SEPTEMBER IV',       medium: 'Mixed Media',   year: 2025, file: '20250903_125354.jpg',
+    alt: 'Watercolor portrait of a clown with orange curly hair, a red nose, painted cheeks and a ruffled collar on a blue background.' },
+  { id: 47, title: 'SEPTEMBER V',        medium: 'Mixed Media',   year: 2025, file: '20250903_125403.jpg',
+    alt: 'Ink and watercolor cityscape of baroque church facades in sandy browns against a blue sky, in a spiral sketchbook.' },
+  { id: 48, title: 'FEBRUARY',           medium: 'Mixed Media',   year: 2026, file: 'IMG-20260210-WA0003.jpeg',
+    alt: 'Pencil portrait of a bearded man with round glasses in a small sketchbook held open in one hand.' },
 ];
+
+const paintings = artworks.map((a) => {
+  const img = imageByName[a.file];
+  if (!img) throw new Error(`hobbies.astro: missing painting src/assets/paintings/${a.file}`);
+  return { ...a, img };
+});
+const total = paintings.length;
+
+// Large variants for the lightbox (webp, up to 1200w). Serialised once, below.
+const lightboxData = await Promise.all(
+  paintings.map(async (p) => {
+    const big = await getImage({ src: p.img, widths: [640, 900, 1200], width: 1200, format: 'webp', quality: 70 });
+    return {
+      id: p.id, title: p.title, medium: p.medium, year: p.year, alt: p.alt,
+      src: big.src, srcset: big.srcSet.attribute,
+      width: Number(big.attributes.width), height: Number(big.attributes.height),
+    };
+  }),
+);
+const lightboxJson = JSON.stringify(lightboxData).replace(/</g, '\\u003c');
 
 // ── TRAVELS — passport grid ───────────────────────────────────────────────────
 // Country list confirmed by Emir (31 countries; Turkey = home base).
@@ -284,239 +179,256 @@ const countries = [
   { flag: '🇻🇳', iso: 'VN', name: 'Vietnam',                 year: '', note: '' },
 ];
 const countryCount = countries.length;
+const countryPadded = countryCount.toString().padStart(2, '0');
+
+const tabs = [
+  { id: 'sport', label: '[ SPORT ]' },
+  { id: 'art',   label: '[ ART ]' },
+  { id: 'think', label: '[ THINK ]' },
+];
 ---
 
-<Layout title="HOBBIES — Emir Ceylan">
+<Layout
+  title="Hobbies"
+  description={`What Emir Ceylan does off the clock: jiu-jitsu, archery and conditioning, a gallery of ${total} drawings and paintings, chess and books, and ${countryCount} countries visited.`}
+  ogImage="/og/hobbies.png"
+>
   <Header />
 
-  <main class="flex-1" style="padding-top:80px;">
+  <main class="flex-1 hobbies-main">
 
-    <!-- ═══ ACTIVITIES — 3-Tab Interface ═════════════════════════════════════ -->
-    <section id="activities" style="background:var(--bg-base); padding:48px 0 0;">
-      <div class="max-w-7xl mx-auto px-8">
-        <div class="flex items-end gap-4 mb-10">
-          <p class="font-mono text-xs" style="color:var(--text-secondary); letter-spacing:0.15em; align-self:center;">01 /</p>
-          <h2 class="text-5xl md:text-7xl font-black kinetic-text" style="color:var(--text-primary);">ACTIVITIES</h2>
-          <div class="flex-1" style="background:var(--border-color); height:1px;"></div>
-          <span class="text-xl font-black font-mono" style="color:var(--text-secondary);"
-                data-counter="3" data-prefix="/" data-pad="2">/03</span>
+    <!-- ═══ ACTIVITIES — 3-tab interface ═════════════════════════════════════ -->
+    <section id="activities" class="activities">
+      <div class="wrap">
+        <div class="section-head" data-reveal>
+          <p class="eyebrow font-mono">01 /</p>
+          <h1 class="section-title kinetic-text">ACTIVITIES</h1>
+          <div class="rule" aria-hidden="true"></div>
+          <span class="section-count font-mono" data-counter="3" data-prefix="/" data-pad="2">/03</span>
         </div>
 
-        <!-- Tab Navigation -->
-        <div class="tab-nav flex gap-0 mb-0" style="position:relative; border-bottom:1px solid var(--border-color);">
-          <button class="tab-btn active" data-tab="sport">
-            [ SPORT ]
-          </button>
-          <button class="tab-btn" data-tab="art">
-            [ ART ]
-          </button>
-          <button class="tab-btn" data-tab="think">
-            [ THINK ]
-          </button>
-          <div class="tab-indicator" id="tab-indicator"></div>
+        <!-- Tab navigation -->
+        <div class="tab-nav" role="tablist" aria-label="Activities">
+          {tabs.map((t, i) => (
+            <button
+              class="tab-btn"
+              type="button"
+              role="tab"
+              id={`tab-${t.id}-btn`}
+              aria-selected={i === 0 ? 'true' : 'false'}
+              aria-controls={`tab-${t.id}`}
+              tabindex={i === 0 ? 0 : -1}
+              data-tab={t.id}
+            >{t.label}</button>
+          ))}
+          <div class="tab-indicator" id="tab-indicator" aria-hidden="true"></div>
         </div>
       </div>
 
       <div class="tab-content" id="tab-content">
-      <!-- SPORT Tab -->
-      <div id="tab-sport" class="tab-panel active" data-panel="sport" style="background:var(--bg-base);">
-        <div class="max-w-7xl mx-auto px-6 md:px-12 py-14">
+
+      <!-- ── SPORT ────────────────────────────────────────────────────────── -->
+      <div id="tab-sport" class="tab-panel" role="tabpanel" aria-labelledby="tab-sport-btn" data-panel="sport" tabindex="0">
+        <div class="wrap panel-pad">
           <div class="grid md:grid-cols-2 gap-10 items-start">
 
-            <!-- Left: intro -->
-            <div style="background:var(--bg-surface); border:1px solid var(--border-color); padding:2rem;">
-              <p class="font-mono text-xs mb-4" style="color:var(--text-secondary); letter-spacing:0.15em;">PHYSICAL PRACTICE</p>
-              <h3 class="text-4xl md:text-5xl font-black glow-text mb-6" style="line-height:1;">SPORT</h3>
-              <p class="text-base mb-5" style="color:var(--text-secondary); line-height:1.7;">
+            <div class="intro-card" data-reveal>
+              <p class="eyebrow font-mono mb-4">PHYSICAL PRACTICE</p>
+              <h2 class="panel-title accent">SPORT</h2>
+              <p class="body-copy mb-5">
                 None of this is professional — it's the physical stuff I've picked up along the way and kept around in some form.
               </p>
-              <p class="text-base" style="color:var(--text-secondary); line-height:1.7;">
+              <p class="body-copy">
                 I trained Brazilian Jiu-Jitsu formally for a short stretch and still roll with friends now and then. Archery goes back further, to middle school. Conditioning is the daily baseline that keeps everything else moving.
               </p>
             </div>
 
-            <!-- Right: discipline cards -->
-            <div class="flex flex-col gap-4">
-
-              <div class="sport-card p-6" style="border:1px solid var(--border-color); background:var(--bg-surface);">
+            <div class="flex flex-col gap-4" data-reveal-stagger>
+              <div class="hobby-card">
                 <div class="flex items-center gap-4 mb-3">
-                  <span class="font-mono text-2xl font-black glow-text">BJJ</span>
-                  <span class="font-mono text-xs px-2 py-1" style="border:1px solid var(--border-color); color:var(--accent-dim);">CASUAL</span>
+                  <span class="font-mono text-2xl font-black accent">BJJ</span>
+                  <span class="chip font-mono">CASUAL</span>
                 </div>
-                <p class="text-sm font-mono" style="color:var(--text-secondary); line-height:1.6;">Trained formally for about a month and a half. These days I mostly roll casually with friends when it comes up.</p>
+                <p class="text-sm font-mono card-copy">Trained formally for about a month and a half. These days I mostly roll casually with friends when it comes up.</p>
               </div>
 
-              <div class="sport-card p-6" style="border:1px solid var(--border-color); background:var(--bg-surface);">
+              <div class="hobby-card">
                 <div class="flex items-center gap-4 mb-3">
-                  <span class="font-mono text-2xl font-black glow-text">ARCHERY</span>
-                  <span class="font-mono text-xs px-2 py-1" style="border:1px solid var(--border-color); color:var(--accent-dim);">CERTIFIED</span>
+                  <span class="font-mono text-2xl font-black accent">ARCHERY</span>
+                  <span class="chip font-mono">CERTIFIED</span>
                 </div>
-                <p class="text-sm font-mono" style="color:var(--text-secondary); line-height:1.6;">Earned a certificate and competed in a few tournaments back in middle school.</p>
+                <p class="text-sm font-mono card-copy">Earned a certificate and competed in a few tournaments back in middle school.</p>
               </div>
 
-              <div class="sport-card p-6" style="border:1px solid var(--border-color); background:var(--bg-surface);">
+              <div class="hobby-card">
                 <div class="flex items-center gap-4 mb-3">
-                  <span class="font-mono text-2xl font-black glow-text">CONDITIONING</span>
-                  <span class="font-mono text-xs px-2 py-1" style="border:1px solid var(--border-color); color:var(--accent-dim);">DAILY</span>
+                  <span class="font-mono text-2xl font-black accent">CONDITIONING</span>
+                  <span class="chip font-mono">DAILY</span>
                 </div>
-                <p class="text-sm font-mono" style="color:var(--text-secondary); line-height:1.6;">Strength and endurance work that supports everything else. Consistency over intensity. The goal is showing up tomorrow.</p>
+                <p class="text-sm font-mono card-copy">Strength and endurance work that supports everything else. Consistency over intensity. The goal is showing up tomorrow.</p>
               </div>
-
             </div>
+
           </div>
         </div>
       </div>
 
-      <!-- ── ART Tab ─────────────────────────────────────────────────────── -->
-      <div id="tab-art" class="tab-panel" data-panel="art" style="background:var(--bg-surface);">
-        <div class="max-w-7xl mx-auto px-6 md:px-12 py-14">
-          <div class="grid md:grid-cols-2 gap-10 items-start mb-14">
+      <!-- ── ART ──────────────────────────────────────────────────────────── -->
+      <div id="tab-art" class="tab-panel is-surface" role="tabpanel" aria-labelledby="tab-art-btn" data-panel="art" tabindex="0" hidden>
+        <div class="wrap panel-pad">
+          <div class="grid md:grid-cols-2 gap-10 items-start art-intro">
 
-            <!-- Left: intro -->
-            <div style="background:var(--bg-base); border:1px solid var(--border-color); padding:2rem;">
-              <p class="font-mono text-xs mb-4" style="color:var(--text-secondary); letter-spacing:0.15em;">THE STUDIO</p>
-              <h3 class="text-4xl md:text-5xl font-black glow-text mb-6" style="line-height:1;">OIL<br>PAINTING</h3>
-              <p class="text-base mb-5" style="color:var(--text-secondary); line-height:1.7;">
+            <div class="intro-card on-base" data-reveal>
+              <p class="eyebrow font-mono mb-4">THE STUDIO</p>
+              <h2 class="panel-title accent">OIL<br>PAINTING</h2>
+              <p class="body-copy mb-5">
                 I've been painting with oils since I was a teenager. There's something about a medium that dries slowly and demands commitment — you can't undo a stroke, you can only paint over it, and you carry every previous decision forward.
               </p>
-              <p class="text-base mb-5" style="color:var(--text-secondary); line-height:1.7;">
+              <p class="body-copy mb-5">
                 Most of my work starts without a clear plan. I mix a color that feels right, make a mark, and respond to it. The discipline is in resisting the urge to over-explain — in painting, too much intention usually kills the thing you were trying to make.
               </p>
-              <p class="text-base" style="color:var(--text-secondary); line-height:1.7;">
+              <p class="body-copy">
                 I work across oil, acrylic, charcoal, and mixed media. The gallery below is the work that made it past my own editing.
               </p>
             </div>
 
-            <!-- Right: stats -->
-            <div class="flex flex-col gap-6">
-              <div style="border-left:2px solid var(--accent); padding-left:20px;">
-                <div class="font-black text-5xl glow-text">{artworks.length}</div>
-                <div class="font-mono text-xs mt-1" style="color:var(--text-secondary); letter-spacing:0.12em;">PIECES IN GALLERY</div>
+            <div class="flex flex-col gap-6" data-reveal-stagger>
+              <div class="stat stat-accent">
+                <div class="stat-num accent">{total}</div>
+                <div class="stat-lbl font-mono">PIECES IN GALLERY</div>
               </div>
-              <div style="border-left:2px solid var(--border-color); padding-left:20px;">
-                <div class="font-black text-5xl" style="color:var(--accent-dim);">OIL</div>
-                <div class="font-mono text-xs mt-1" style="color:var(--text-secondary); letter-spacing:0.12em;">PRIMARY MEDIUM</div>
+              <div class="stat">
+                <div class="stat-num accent">OIL</div>
+                <div class="stat-lbl font-mono">PRIMARY MEDIUM</div>
               </div>
-              <div style="border-left:2px solid var(--border-color); padding-left:20px;">
-                <div class="font-black text-5xl" style="color:var(--text-secondary);">2020–</div>
-                <div class="font-mono text-xs mt-1" style="color:var(--text-secondary); letter-spacing:0.12em;">ACTIVE PERIOD</div>
+              <div class="stat">
+                <div class="stat-num muted">2020–</div>
+                <div class="stat-lbl font-mono">ACTIVE PERIOD</div>
               </div>
             </div>
 
           </div>
 
           <!-- Gallery -->
-          <div class="mb-2">
-            <p class="text-xs font-mono" style="color:var(--text-secondary); letter-spacing:0.12em;">← SCROLL TO EXPLORE · CLICK IMAGE TO OPEN →</p>
-          </div>
+          <p class="gallery-hint font-mono" id="art-hint">← DRAG OR SCROLL TO EXPLORE · OPEN A PIECE TO VIEW IT →</p>
 
-          <div id="art-viewport" class="relative overflow-hidden" style="height:68vh;">
-            <div id="art-bg" class="absolute inset-0 pointer-events-none art-bg-grid"></div>
+          <div id="art-viewport" class="art-viewport" tabindex="0" role="region" aria-label="Painting gallery, scrolls horizontally" aria-describedby="art-hint">
+            <div id="art-bg" class="art-bg-grid" aria-hidden="true"></div>
 
-            <div id="art-track" class="absolute top-0 left-0 flex items-center gap-10 px-10" style="height:100%; width:max-content; will-change:transform;">
-              {artworks.map((d) => (
-                <div class="art-item group flex-shrink-0 relative cursor-pointer" data-id={d.id}
-                  style="width:300px; height:400px;">
-                  <div class="art-frame relative w-full h-full overflow-hidden" style="border:1px solid var(--border-color);">
-                    <img src={d.src} alt={d.title} class="art-img w-full h-full object-cover" loading="lazy"
-                      style="filter:brightness(0.82) contrast(1.1) grayscale(0.3); transition:filter 0.45s ease;" />
-                    <div class="art-grain absolute inset-0 pointer-events-none" style="opacity:0.25;"></div>
-                    <div class="glare"></div>
-                    <!-- Title tag -->
-                    <div class="absolute top-0 left-0 right-0 translate-y-[-100%] group-hover:translate-y-0 transition-transform duration-300 z-20 px-3 py-2" style="background:var(--accent);">
-                      <span class="text-white text-[10px] font-black font-mono tracking-widest">{d.title}</span>
+            <ul id="art-track" class="art-track" role="list">
+              {paintings.map((p, i) => (
+                <li class="art-item">
+                  <button
+                    type="button"
+                    class="art-btn"
+                    data-index={i}
+                    aria-haspopup="dialog"
+                    aria-label={`Open ${p.title}, ${i + 1} of ${total}`}
+                  >
+                    <div class="art-frame">
+                      <Picture
+                        src={p.img}
+                        alt={p.alt}
+                        formats={['avif', 'webp']}
+                        fallbackFormat="jpg"
+                        widths={[320, 480, 640, 900]}
+                        sizes="300px"
+                        width={640}
+                        quality={70}
+                        loading="lazy"
+                        decoding="async"
+                        draggable="false"
+                        class="art-img"
+                        pictureAttributes={{ class: 'art-pic' }}
+                      />
+                      <div class="art-grain" aria-hidden="true"></div>
+                      <div class="glare" aria-hidden="true"></div>
+                      <div class="art-tag" aria-hidden="true">{p.title}</div>
+                      <div class="art-info" aria-hidden="true">
+                        <p class="font-mono">MEDIUM: {p.medium} | {p.year}</p>
+                        <p class="font-mono muted">OPEN →</p>
+                      </div>
                     </div>
-                    <!-- Info panel -->
-                    <div class="absolute bottom-0 left-0 right-0 translate-y-full group-hover:translate-y-0 transition-transform duration-300 z-20 p-3" style="background:rgba(0,0,0,0.92); border-top:1px solid var(--border-color);">
-                      <p class="text-[10px] font-mono mb-1" style="color:var(--accent);">MEDIUM: {d.medium} | {d.year}</p>
-                      <p class="text-[10px] font-mono" style="color:var(--text-secondary);">CLICK TO VIEW →</p>
-                    </div>
-                  </div>
-                </div>
+                  </button>
+                </li>
               ))}
-            </div>
+            </ul>
           </div>
 
-          <!-- Directional cursor for art gallery (Snippet 04) -->
-          <div class="art-cursor" id="art-cursor">
+          <!-- Directional cursor for the gallery (fine pointer only) -->
+          <div class="art-cursor" id="art-cursor" aria-hidden="true">
             <span class="arr">→</span>
             <span class="lbl">SCROLL</span>
           </div>
 
-          <div style="height:1px; background:rgba(0,255,65,0.08);">
-            <div id="art-progress" style="height:100%; width:0%; background:var(--primary-green); transition:none;"></div>
+          <div class="art-progress-rail" aria-hidden="true">
+            <div id="art-progress" class="art-progress"></div>
           </div>
+
+          <!-- Visitor gallery — deliberately linked from this page only -->
+          <aside class="vg-panel" data-reveal aria-labelledby="vg-title">
+            <p class="eyebrow font-mono" id="vg-title">VISITOR GALLERY /</p>
+            <p class="body-copy">A drawing canvas for visitors. Leave something on the wall.</p>
+            <a class="vg-link font-mono" href="/gallery-088c0fbff746/">OPEN THE CANVAS →</a>
+          </aside>
         </div>
       </div>
 
-      <!-- ── THINK Tab ───────────────────────────────────────────────────── -->
-      <div id="tab-think" class="tab-panel" data-panel="think" style="background:var(--bg-base);">
-        <div class="max-w-7xl mx-auto px-6 md:px-12 py-14">
+      <!-- ── THINK ────────────────────────────────────────────────────────── -->
+      <div id="tab-think" class="tab-panel" role="tabpanel" aria-labelledby="tab-think-btn" data-panel="think" tabindex="0" hidden>
+        <div class="wrap panel-pad">
           <div class="grid md:grid-cols-2 gap-10 items-start">
 
-            <!-- Chess -->
-            <div style="background:var(--bg-surface); border:1px solid var(--border-color); padding:2rem;">
-              <p class="font-mono text-xs mb-4" style="color:var(--text-secondary); letter-spacing:0.15em;">CURIOSITY & STRATEGY</p>
-              <h3 class="text-4xl md:text-5xl font-black glow-text mb-6" style="line-height:1;">CHESS<br>& BOOKS</h3>
+            <div class="intro-card" data-reveal>
+              <p class="eyebrow font-mono mb-4">CURIOSITY &amp; STRATEGY</p>
+              <h2 class="panel-title accent">CHESS<br>&amp; BOOKS</h2>
 
-              <div class="mb-10 p-6" style="border:1px solid var(--border-color); background:transparent;">
+              <div class="chess-card">
                 <div class="flex items-center gap-4 mb-4">
-                  <span class="font-mono text-3xl font-black glow-text">♟</span>
+                  <span class="font-mono text-3xl font-black accent" aria-hidden="true">♟</span>
                   <div>
-                    <div class="font-black text-xl glow-text">CHESS</div>
-                    <div class="font-mono text-xs" style="color:var(--text-secondary); letter-spacing:0.1em;">1700 ELO — RAPID</div>
+                    <h3 class="font-black text-xl accent">CHESS</h3>
+                    <p class="font-mono text-xs label-copy">1700 ELO — RAPID</p>
                   </div>
                 </div>
-                <p class="text-sm font-mono mb-3" style="color:var(--text-secondary); line-height:1.7;">
+                <p class="text-sm font-mono card-copy mb-3">
                   I've been playing chess seriously for a few years. At 1700 I'm comfortable with most tactical patterns — the gap now is not calculation, it's judgment about when to exchange pieces and when to keep the tension.
                 </p>
-                <p class="text-sm font-mono" style="color:var(--text-secondary); line-height:1.7;">
+                <p class="text-sm font-mono card-copy">
                   I study endgames more than openings. Openings are memorized — endgames are understood. That distinction matters.
                 </p>
               </div>
-
             </div>
 
-            <!-- Books -->
-            <div style="background:var(--bg-surface); border:1px solid var(--border-color); padding:2rem;">
-              <p class="font-mono text-xs mb-6" style="color:var(--text-secondary); letter-spacing:0.15em;">CURRENTLY READING / HAVE READ</p>
+            <div class="intro-card" data-reveal>
+              <p class="eyebrow font-mono mb-6">CURRENTLY READING / HAVE READ</p>
 
-              <div class="flex flex-col gap-4">
-
-                <div class="book-card p-5" style="border:1px solid var(--border-color); background:var(--bg-base);">
-                  <div class="flex items-start gap-4">
-                    <span class="font-mono font-black text-lg glow-text mt-1">I.</span>
-                    <div>
-                      <div class="font-black text-base" style="color:var(--accent);">Crime and Punishment</div>
-                      <div class="font-mono text-xs mb-2" style="color:var(--text-secondary);">Fyodor Dostoevsky</div>
-                      <p class="text-xs font-mono" style="color:var(--text-secondary); opacity:0.8; line-height:1.6;">A man who convinces himself his own logic is airtight, then watches it collapse under the weight of what he can't reason away. The most honest book about arrogance I've read.</p>
-                    </div>
+              <ol class="flex flex-col gap-4 book-list" data-reveal-stagger>
+                <li class="book-card">
+                  <span class="font-mono font-black book-num accent" aria-hidden="true">I.</span>
+                  <div>
+                    <h3 class="book-title">Crime and Punishment</h3>
+                    <p class="font-mono text-xs mb-2 label-copy">Fyodor Dostoevsky</p>
+                    <p class="text-xs font-mono book-note">A man who convinces himself his own logic is airtight, then watches it collapse under the weight of what he can't reason away. The most honest book about arrogance I've read.</p>
                   </div>
-                </div>
-
-                <div class="book-card p-5" style="border:1px solid var(--border-color); background:var(--bg-base);">
-                  <div class="flex items-start gap-4">
-                    <span class="font-mono font-black text-lg glow-text mt-1">II.</span>
-                    <div>
-                      <div class="font-black text-base" style="color:var(--accent);">Sapiens</div>
-                      <div class="font-mono text-xs mb-2" style="color:var(--text-secondary);">Yuval Noah Harari</div>
-                      <p class="text-xs font-mono" style="color:var(--text-secondary); opacity:0.8; line-height:1.6;">Useful for putting everything in context. The agricultural revolution as the greatest con in human history is a framing I think about more than I expected when I first read it.</p>
-                    </div>
+                </li>
+                <li class="book-card">
+                  <span class="font-mono font-black book-num accent" aria-hidden="true">II.</span>
+                  <div>
+                    <h3 class="book-title">Sapiens</h3>
+                    <p class="font-mono text-xs mb-2 label-copy">Yuval Noah Harari</p>
+                    <p class="text-xs font-mono book-note">Useful for putting everything in context. The agricultural revolution as the greatest con in human history is a framing I think about more than I expected when I first read it.</p>
                   </div>
-                </div>
-
-                <div class="book-card p-5" style="border:1px solid var(--border-color); background:var(--bg-base);">
-                  <div class="flex items-start gap-4">
-                    <span class="font-mono font-black text-lg glow-text mt-1">III.</span>
-                    <div>
-                      <div class="font-black text-base" style="color:var(--accent);">The Origin of Species</div>
-                      <div class="font-mono text-xs mb-2" style="color:var(--text-secondary);">Charles Darwin</div>
-                      <p class="text-xs font-mono" style="color:var(--text-secondary); opacity:0.8; line-height:1.6;">Still astonishing that one person observed this much and made it cohere. The argument builds so carefully that by the time you reach the conclusion, it already feels inevitable.</p>
-                    </div>
+                </li>
+                <li class="book-card">
+                  <span class="font-mono font-black book-num accent" aria-hidden="true">III.</span>
+                  <div>
+                    <h3 class="book-title">The Origin of Species</h3>
+                    <p class="font-mono text-xs mb-2 label-copy">Charles Darwin</p>
+                    <p class="text-xs font-mono book-note">Still astonishing that one person observed this much and made it cohere. The argument builds so carefully that by the time you reach the conclusion, it already feels inevitable.</p>
                   </div>
-                </div>
-
-              </div>
+                </li>
+              </ol>
             </div>
 
           </div>
@@ -527,82 +439,112 @@ const countryCount = countries.length;
     </section>
 
     <!-- ═══ TRAVELS — Passport grid ════════════════════════════════════════════ -->
-    <section id="travels" style="background:var(--bg-base); padding:80px 0; border-top:1px solid var(--border-color);">
-      <div class="max-w-7xl mx-auto px-6 md:px-12">
-        <div class="flex items-end gap-4 mb-3">
-          <p class="font-mono text-xs" style="color:var(--text-secondary); letter-spacing:0.15em; align-self:center;">02 /</p>
-          <h2 class="text-5xl md:text-7xl font-black kinetic-text" style="color:var(--text-primary);">TRAVELS</h2>
-          <div class="flex-1" style="background:var(--border-color); height:1px;"></div>
-          <span class="text-xl font-black font-mono" style="color:var(--text-secondary);"
-                data-counter={countryCount} data-prefix="/" data-pad="2">/{countryCount.toString().padStart(2,'0')}</span>
+    <section id="travels" class="travels">
+      <div class="wrap">
+        <div class="section-head" data-reveal>
+          <p class="eyebrow font-mono">02 /</p>
+          <h2 class="section-title kinetic-text">TRAVELS</h2>
+          <div class="rule" aria-hidden="true"></div>
+          <span class="section-count font-mono" data-counter={countryCount} data-prefix="/" data-pad="2">/{countryPadded}</span>
         </div>
 
-        <!-- Counter -->
-        <div class="travels-counter">
-          <span class="num font-black" data-counter={countryCount} data-pad="2">{countryCount.toString().padStart(2, '0')}</span>
+        <div class="travels-counter" data-reveal>
+          <span class="num font-black" data-counter={countryCount} data-pad="2">{countryPadded}</span>
           <span class="lbl font-mono">COUNTRIES VISITED</span>
         </div>
 
-        <!-- Passport grid -->
-        <div class="passport-grid" data-reveal-stagger>
+        <ul class="passport-grid" data-reveal-stagger role="list">
           {countries.map((c) => (
-            <div class={`passport-card${c.home ? ' home' : ''}`}>
+            <li class={`passport-card${c.home ? ' home' : ''}`}>
               <div class="pc-top">
-                <span class="pc-flag" role="img" aria-label={c.name}>{c.flag}</span>
+                <span class="pc-flag" role="img" aria-label={`Flag of ${c.name}`}>{c.flag}</span>
                 <span class="pc-iso font-mono">{c.iso}</span>
               </div>
               <div class="pc-name font-black">{c.name}</div>
-              <div class="pc-meta font-mono">
-                {c.home && <span class="pc-home-tag">HOME</span>}
-                {c.year && <span>{c.year}</span>}
-                {c.note && <span class="pc-note">{c.note}</span>}
-              </div>
+              {(c.home || c.year || c.note) && (
+                <div class="pc-meta font-mono">
+                  {c.home && <span class="pc-home-tag">HOME</span>}
+                  {c.year && <span>{c.year}</span>}
+                  {c.note && <span class="pc-note">{c.note}</span>}
+                </div>
+              )}
               <span class="pc-stamp font-mono" aria-hidden="true">✓ VISITED</span>
-            </div>
+            </li>
           ))}
-        </div>
+        </ul>
       </div>
     </section>
 
   </main>
 
-  <!-- ═══ ART LIGHTBOX MODAL ═══════════════════════════════════════════════════ -->
-  <div id="art-lightbox" class="fixed inset-0 z-[400] flex items-center justify-center p-4 md:p-8" style="background:rgba(0,0,0,0.95); display:none;">
-    <div id="art-lightbox-content" class="relative w-full max-w-5xl max-h-[90vh] flex flex-col md:flex-row overflow-hidden"
-      style="border:1px solid var(--border-color);">
-      <!-- Image panel -->
-      <div class="art-lb-img-wrap flex-shrink-0" style="width:100%; max-width:480px; background:#0a0a0a;">
-        <img id="art-lb-img" src="" alt="" style="width:100%; height:100%; object-fit:cover; display:block; min-height:300px; max-height:70vh;" loading="lazy" />
-      </div>
-      <!-- Info panel -->
-      <div class="art-lb-info flex-1 flex flex-col overflow-y-auto" style="background:var(--bg-base); padding:40px; border-left:1px solid var(--border-color);">
-        <div id="art-lb-id" class="font-mono text-xs mb-4" style="color:var(--text-secondary); letter-spacing:0.15em;"></div>
-        <h3 id="art-lb-title" class="font-black text-3xl mb-2 glow-text" style="font-family:'Space Grotesk'; line-height:1;"></h3>
-        <div class="flex gap-4 mb-6">
-          <span id="art-lb-medium" class="font-mono text-xs" style="color:var(--text-secondary);"></span>
-          <span id="art-lb-year" class="font-mono text-xs" style="color:var(--text-secondary);"></span>
-        </div>
-        <div style="height:1px; background:var(--border-color); margin-bottom:24px;"></div>
-        <p id="art-lb-desc" class="text-sm leading-relaxed flex-1" style="color:var(--text-secondary); line-height:1.75;"></p>
-        <!-- Handwritten caption -->
-        <div class="mt-8 pt-6" style="border-top:1px solid var(--border-color);">
-          <p id="art-lb-caption" class="font-handwritten text-xl" style="color:var(--text-secondary);"></p>
+  <!-- ═══ ART LIGHTBOX ═════════════════════════════════════════════════════════ -->
+  <dialog id="art-lightbox" class="art-lb" aria-labelledby="art-lb-title">
+    <div class="art-lb-content">
+      <figure class="art-lb-img-wrap">
+        <img id="art-lb-img" alt="" decoding="async" />
+      </figure>
+      <div class="art-lb-info">
+        <p id="art-lb-id" class="eyebrow font-mono mb-4">ARTWORK / 01</p>
+        <h2 id="art-lb-title" class="art-lb-title accent">—</h2>
+        <p class="font-mono text-xs label-copy art-lb-meta"><span id="art-lb-medium"></span> <span aria-hidden="true">·</span> <span id="art-lb-year"></span></p>
+        <div class="art-lb-rule" aria-hidden="true"></div>
+        <p id="art-lb-desc" class="art-lb-desc"></p>
+        <div class="art-lb-nav">
+          <button type="button" id="art-lb-prev" class="art-lb-btn font-mono" aria-label="Previous artwork">← PREV</button>
+          <span id="art-lb-counter" class="art-lb-counter font-mono" aria-live="polite">1 / {total}</span>
+          <button type="button" id="art-lb-next" class="art-lb-btn font-mono" aria-label="Next artwork">NEXT →</button>
         </div>
       </div>
-      <!-- Close -->
-      <button id="art-lb-close" class="absolute top-4 right-4 font-mono text-sm font-bold"
-        style="color:var(--text-secondary); background:none; border:none; cursor:pointer; letter-spacing:0.1em; z-index:10;">
-        × CLOSE
-      </button>
+      <button type="button" id="art-lb-close" class="art-lb-close font-mono" aria-label="Close artwork viewer">× CLOSE</button>
     </div>
-  </div>
+  </dialog>
+  <script is:inline type="application/json" id="art-data" set:html={lightboxJson}></script>
 
   <Footer />
 </Layout>
 
 <style>
+  .hobbies-main { padding-top: 80px; }
+  .wrap { max-width: 80rem; margin-inline: auto; padding-inline: var(--gutter); }
+  .panel-pad { padding-block: var(--space-12) var(--space-16); }
+  .accent { color: var(--accent); }
+  .muted  { color: var(--text-secondary); }
+
+  /* ── Section headers ─────────────────────────────────────────────────────── */
+  .activities { background: var(--bg-base); padding-top: var(--space-12); }
+  .section-head {
+    display: flex; align-items: flex-end; gap: var(--space-4);
+    margin-bottom: var(--space-8);
+    min-width: 0;
+  }
+  .eyebrow { white-space: nowrap; font-size: 12px; letter-spacing: 0.15em; color: var(--text-secondary); }
+  .section-head .eyebrow { align-self: center; }
+  .section-title {
+    font-size: clamp(2.5rem, 9vw, 4.5rem);
+    font-weight: 900;
+    color: var(--text-primary);
+    flex-shrink: 0;
+  }
+  .rule { flex: 1 1 auto; min-width: 12px; height: 1px; background: var(--border-color); }
+  .section-count { font-size: 1.25rem; font-weight: 900; color: var(--text-secondary); }
+
+  .intro-card { background: var(--bg-surface); border: 1px solid var(--border-color); padding: clamp(1.25rem, 5vw, 2rem); }
+  .art-intro { margin-bottom: var(--space-12); }
+  .intro-card.on-base { background: var(--bg-base); }
+  .panel-title { font-size: clamp(2.25rem, 5vw, 3rem); font-weight: 900; line-height: 1; margin-bottom: var(--space-6); }
+  .body-copy { color: var(--text-secondary); line-height: 1.7; font-size: 1rem; }
+  .card-copy { color: var(--text-secondary); line-height: 1.6; }
+  .label-copy { color: var(--text-secondary); letter-spacing: 0.1em; }
+
   /* ── Tab navigation ──────────────────────────────────────────────────────── */
+  .tab-nav {
+    position: relative;
+    display: flex;
+    border-bottom: 1px solid var(--border-color);
+  }
   .tab-btn {
+    flex: 0 1 auto;
+    min-height: 48px;
     font-family: 'JetBrains Mono', monospace;
     font-size: 12px;
     font-weight: 700;
@@ -611,124 +553,205 @@ const countryCount = countries.length;
     background: transparent;
     border: none;
     border-bottom: 2px solid transparent;
-    padding: 14px 28px;
+    padding: 14px clamp(12px, 2.6vw, 28px);
     cursor: pointer;
-    transition: color 0.2s ease, border-color 0.2s ease;
+    transition: color var(--dur-fast) var(--ease-out), border-color var(--dur-fast) var(--ease-out);
     margin-bottom: -1px;
+    white-space: nowrap;
   }
   .tab-btn:hover { color: var(--text-primary); }
-  .tab-btn.active {
-    color: var(--accent);
-    border-bottom-color: var(--accent);
+  .tab-btn[aria-selected="true"] { color: var(--text-primary); border-bottom-color: var(--accent); }
+  .tab-btn:focus-visible { outline-offset: -2px; }
+  @media (max-width: 480px) {
+    .tab-btn { flex: 1 1 0; text-align: center; padding-inline: 4px; }
   }
 
-  /* ── Tab panels (animated fade transitions) ─────────────────────────────── */
-  .tab-content { position: relative; }
-  .tab-panel {
-    position: absolute; inset: 0;
-    opacity: 0;
-    transform: translateY(-8px);
-    pointer-events: none;
-    transition: opacity .15s ease, transform .15s ease;
+  /* ── Tab panels: inactive panels are `hidden`; the entering one fades in ─── */
+  .tab-panel { background: var(--bg-base); }
+  .tab-panel.is-surface { background: var(--bg-surface); }
+  .tab-panel:focus-visible { outline-offset: -3px; }
+  .tab-panel.entering { animation: panelIn var(--dur-base) var(--ease-out); }
+  @keyframes panelIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: none; }
   }
-  .tab-panel.active   {
+
+  /* ── Sport / book cards ──────────────────────────────────────────────────── */
+  .hobby-card, .book-card, .chess-card {
+    border: 1px solid var(--border-color);
+    background: var(--bg-surface);
+    padding: var(--space-6);
+    transition: border-color var(--dur-fast) var(--ease-out), box-shadow var(--dur-fast) var(--ease-out);
+  }
+  .chess-card { background: transparent; margin-bottom: var(--space-8); }
+  .hobby-card:hover, .book-card:hover {
+    border-color: var(--accent);
+    box-shadow: 0 0 10px var(--accent-glow);
+  }
+  .chip {
+    font-size: 11px; letter-spacing: 0.12em; font-weight: 700;
+    padding: 3px 8px;
+    color: #fff; background: var(--accent);
+  }
+  .book-list { list-style: none; }
+  .book-card { display: flex; align-items: flex-start; gap: var(--space-4); background: var(--bg-base); padding: var(--space-4) clamp(0.875rem, 4vw, 1.5rem); }
+  .book-num { font-size: 1.25rem; font-weight: 900; line-height: 1.2; margin-top: 2px; } /* 20px bold = "large" text: 3:1 rule */
+  .book-title { font-size: 1rem; font-weight: 900; color: var(--text-primary); }
+  .book-note { color: var(--text-tertiary); line-height: 1.6; }
+
+  /* ── Stats ───────────────────────────────────────────────────────────────── */
+  .stat { border-left: 2px solid var(--border-color); padding-left: 20px; }
+  .stat-accent { border-left-color: var(--accent); }
+  .stat-num { font-size: 3rem; font-weight: 900; line-height: 1; }
+  .stat-lbl { font-size: 12px; margin-top: 6px; color: var(--text-secondary); letter-spacing: 0.12em; }
+
+  /* ── Art gallery ─────────────────────────────────────────────────────────── */
+  .gallery-hint { font-size: 12px; letter-spacing: 0.12em; color: var(--text-secondary); margin-bottom: var(--space-2); text-wrap: balance; }
+
+  .art-viewport {
     position: relative;
-    opacity: 1;
-    transform: translateY(0);
-    pointer-events: auto;
+    height: clamp(440px, 58dvh, 560px);
+    overflow-x: auto;
+    overflow-y: hidden;
+    scrollbar-width: none;
+    overscroll-behavior-x: contain;
+    touch-action: pan-x pan-y;
+    user-select: none;
+    -webkit-user-select: none;
+    cursor: grab;
   }
-  .tab-panel.entering {
-    opacity: 1; transform: translateY(0); pointer-events: auto;
-    transition: opacity .2s ease .05s, transform .2s ease .05s;
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .tab-panel, .tab-indicator { transition: none; }
-  }
+  .art-viewport::-webkit-scrollbar { display: none; }
+  .art-viewport.grabbing { cursor: grabbing; }
+  .art-viewport:focus-visible { outline-offset: -2px; }
 
-  /* ── Sport cards ─────────────────────────────────────────────────────────── */
-  .sport-card {
-    transition: border-color 0.2s ease, box-shadow 0.2s ease;
-  }
-  .sport-card:hover {
-    border-color: var(--accent) !important;
-    box-shadow: 0 0 10px var(--accent-glow) !important;
-  }
-
-  /* ── Book cards ──────────────────────────────────────────────────────────── */
-  .book-card {
-    transition: border-color 0.2s ease, box-shadow 0.2s ease;
-  }
-  .book-card:hover {
-    border-color: var(--accent) !important;
-    box-shadow: 0 0 10px var(--accent-glow) !important;
-  }
-
-  /* ── Art Gallery ─────────────────────────────────────────────────────────── */
   .art-bg-grid {
+    position: absolute; inset: 0; width: 300%;
+    pointer-events: none;
     background-image:
       linear-gradient(rgba(13,79,92,0.06) 1px, transparent 1px),
       linear-gradient(90deg, rgba(13,79,92,0.06) 1px, transparent 1px);
     background-size: 48px 48px;
   }
 
+  .art-track {
+    position: relative;
+    display: flex; align-items: center; gap: 40px;
+    height: 100%;
+    width: max-content;
+    padding-inline: 40px;
+    list-style: none;
+  }
+  .art-item { flex: 0 0 auto; }
+  .art-btn {
+    display: block;
+    width: 300px; height: 400px;
+    padding: 0; border: 0; background: none;
+    cursor: inherit;
+    color: inherit; font: inherit; text-align: left;
+  }
+  .art-btn:focus-visible { outline-offset: 4px; }
+
+  .art-frame {
+    position: relative; width: 100%; height: 100%;
+    overflow: hidden;
+    border: 1px solid var(--border-color);
+    transform-style: preserve-3d;
+    perspective: 1000px;
+    transition: transform var(--dur-base) var(--ease-out),
+                border-color var(--dur-base) var(--ease-out),
+                box-shadow var(--dur-base) var(--ease-out);
+  }
+  .art-frame :global(picture) { display: block; width: 100%; height: 100%; }
+  .art-frame :global(img) {
+    display: block; width: 100%; height: 100%;
+    object-fit: cover;
+    filter: brightness(0.82) contrast(1.1) grayscale(0.3);
+    transition: filter var(--dur-slow) var(--ease-out);
+    -webkit-user-drag: none;
+  }
   .art-grain {
+    position: absolute; inset: 0; pointer-events: none; opacity: 0.25;
     background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.4'/%3E%3C/svg%3E");
     background-size: 180px 180px;
     mix-blend-mode: overlay;
+    transition: opacity var(--dur-base) var(--ease-out);
   }
-
-  /* 3D tilt-ready frame */
-  .art-item .art-frame {
-    transform-style: preserve-3d;
-    perspective: 1000px;
-    transition: transform .25s cubic-bezier(0.16, 1, 0.3, 1),
-                border-color .25s, box-shadow .25s, filter .35s;
-  }
-  /* Cursor-tracking glare overlay */
-  .art-frame .glare {
-    position: absolute; inset: 0;
-    background: radial-gradient(
-      260px circle at var(--gx, 50%) var(--gy, 50%),
-      rgba(255, 255, 255, 0.22),
-      transparent 60%
-    );
-    pointer-events: none;
+  .glare {
+    position: absolute; inset: 0; pointer-events: none;
+    background: radial-gradient(260px circle at var(--gx, 50%) var(--gy, 50%), rgba(255,255,255,0.22), transparent 60%);
     mix-blend-mode: screen;
     opacity: 0;
-    transition: opacity .25s ease;
+    transition: opacity var(--dur-base) var(--ease-out);
   }
+  .art-tag {
+    position: absolute; top: 0; left: 0; right: 0; z-index: 2;
+    padding: 8px 12px;
+    background: var(--accent); color: #fff;
+    font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 900; letter-spacing: 0.2em;
+    transform: translateY(-100%);
+    transition: transform var(--dur-base) var(--ease-out);
+  }
+  .art-info {
+    position: absolute; bottom: 0; left: 0; right: 0; z-index: 2;
+    padding: 12px;
+    background: rgba(0,0,0,0.92); border-top: 1px solid var(--border-color);
+    font-size: 10px;
+    transform: translateY(100%);
+    transition: transform var(--dur-base) var(--ease-out);
+  }
+  .art-info p { color: var(--accent); margin-bottom: 4px; }
+  .art-info p.muted { color: var(--text-secondary); margin: 0; }
+
+  .art-item:hover .art-frame, .art-item:focus-within .art-frame {
+    border-color: var(--accent); box-shadow: 0 0 12px var(--accent-glow);
+  }
+  .art-item:hover :global(img), .art-item:focus-within :global(img) { filter: brightness(1) contrast(1.05) grayscale(0); }
+  .art-item:hover .art-grain, .art-item:focus-within .art-grain { opacity: 0; }
   .art-item:hover .glare { opacity: 1; }
+  .art-item:hover .art-tag, .art-item:focus-within .art-tag,
+  .art-item:hover .art-info, .art-item:focus-within .art-info { transform: none; }
 
-  .art-item:hover .art-img   { filter: brightness(1) contrast(1.05) grayscale(0) !important; }
-  .art-item:hover .art-grain { opacity: 0 !important; }
-  .art-item:hover .art-frame { border-color: var(--accent) !important; box-shadow: 0 0 12px var(--accent-glow); }
-
-  /* Hide native cursor while inside the viewport (custom cursor takes over) */
-  #art-viewport { cursor: none; }
-  #art-viewport.grabbing { cursor: grabbing; }
-
-  @media (prefers-reduced-motion: reduce), (pointer: coarse) {
-    .art-item .art-frame { transition: none; }
-    #art-viewport { cursor: grab; }
+  /* Custom cursor replaces the native one — fine pointers, motion allowed, only */
+  @media (pointer: fine) and (prefers-reduced-motion: no-preference) {
+    .art-viewport { cursor: none; }
+    .art-viewport.grabbing { cursor: none; }
   }
-
   @media (pointer: coarse) {
-    #art-viewport {
-      overflow-x: scroll;
-      overflow-y: hidden;
-      scroll-snap-type: x mandatory;
-      -webkit-overflow-scrolling: touch;
-      height: 75vw;
-      touch-action: pan-x;
-    }
-    #art-track { position:relative !important; transform:none !important; }
-    .art-item  { scroll-snap-align: center; }
-    #art-bg, #art-progress { display: none; }
+    .art-viewport { height: 460px; scroll-snap-type: x proximity; }
+    .art-item { scroll-snap-align: center; }
+    .art-bg-grid, .art-progress-rail { display: none; }
   }
+
+  .art-progress-rail { height: 1px; background: var(--border-color); }
+  .art-progress { height: 100%; width: 0%; background: var(--accent); }
+
+  /* ── Visitor gallery panel ───────────────────────────────────────────────── */
+  .vg-panel {
+    margin-top: var(--space-12);
+    padding: var(--space-6) var(--space-8);
+    border: 1px solid var(--border-color);
+    border-left: 2px solid var(--accent);
+    background: var(--bg-base);
+    display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-3) var(--space-8);
+  }
+  .vg-panel .eyebrow { flex: 0 0 100%; }
+  .vg-panel .body-copy { flex: 1 1 18rem; }
+  .vg-link {
+    display: inline-block;
+    padding: 12px 18px;
+    border: 1px solid var(--accent);
+    color: #fff; background: var(--accent);
+    font-size: 12px; font-weight: 700; letter-spacing: 0.14em;
+    text-decoration: none;
+    transition: background var(--dur-fast) var(--ease-out), border-color var(--dur-fast) var(--ease-out);
+  }
+  .vg-link:hover { background: var(--accent-bri); border-color: var(--accent-bri); }
 
   /* ── Travels — passport grid ─────────────────────────────────────────────── */
+  .travels { background: var(--bg-base); padding: var(--section-y) 0; border-top: 1px solid var(--border-color); }
+  .travels .section-head { margin-bottom: var(--space-3); }
   .travels-counter {
-    display: flex; align-items: baseline; gap: 14px;
+    display: flex; align-items: baseline; flex-wrap: wrap; gap: 14px;
     margin: 8px 0 36px;
   }
   .travels-counter .num {
@@ -736,391 +759,397 @@ const countryCount = countries.length;
     font-size: clamp(40px, 7vw, 72px);
     line-height: 1;
     color: var(--accent);
-    text-shadow: 0 0 22px rgba(196,30,58,0.35);
   }
   .travels-counter .lbl {
-    font-size: 12px;
-    letter-spacing: 0.16em;
-    color: var(--text-secondary);
-    text-transform: uppercase;
+    font-size: 12px; letter-spacing: 0.16em;
+    color: var(--text-secondary); text-transform: uppercase;
   }
 
   .passport-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 150px), 1fr));
     gap: 14px;
+    list-style: none;
   }
-
   .passport-card {
     position: relative;
     padding: 18px 18px 20px;
     background: var(--bg-surface);
     border: 1px solid var(--border-color);
     overflow: hidden;
-    transition: border-color .2s ease, box-shadow .2s ease, transform .2s ease;
+    transition: border-color var(--dur-fast) var(--ease-out), box-shadow var(--dur-fast) var(--ease-out), transform var(--dur-fast) var(--ease-out);
   }
   .passport-card:hover {
     border-color: var(--accent);
     box-shadow: 0 0 18px var(--accent-glow);
     transform: translateY(-2px);
   }
-  .passport-card.home {
-    border-color: var(--accent-dim);
-    background: rgba(196,30,58,0.05);
-  }
+  .passport-card.home { border-color: var(--accent-dim); background: rgba(196,30,58,0.05); }
 
-  .pc-top {
-    display: flex; align-items: center; justify-content: space-between;
-    margin-bottom: 14px;
-  }
+  .pc-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
   .pc-flag { font-size: 30px; line-height: 1; }
-  .pc-iso {
-    font-size: 11px; letter-spacing: 0.12em;
-    color: var(--text-secondary);
-    border: 1px solid var(--border-color);
-    padding: 2px 7px;
-  }
+  .pc-iso { font-size: 11px; letter-spacing: 0.12em; color: var(--text-secondary); border: 1px solid var(--border-color); padding: 2px 7px; }
   .pc-name {
     font-family: 'Space Grotesk', sans-serif;
-    font-size: 17px;
-    line-height: 1.15;
-    color: var(--text-primary);
-    letter-spacing: 0.01em;
+    font-size: 17px; line-height: 1.15;
+    color: var(--text-primary); letter-spacing: 0.01em;
+    text-wrap: balance;
   }
   .pc-meta {
     display: flex; flex-wrap: wrap; align-items: center; gap: 8px;
     margin-top: 10px;
-    font-size: 10.5px;
-    letter-spacing: 0.08em;
-    color: var(--text-secondary);
-    opacity: 0.85;
+    font-size: 11px; letter-spacing: 0.08em;
+    color: var(--text-tertiary);
   }
-  .pc-home-tag {
-    color: var(--accent);
-    border: 1px solid var(--accent-dim);
-    padding: 1px 6px;
-    letter-spacing: 0.14em;
-  }
-  .pc-note { opacity: 0.7; }
-
-  /* Faint "stamp" that reveals on hover */
+  .pc-home-tag { color: #fff; background: var(--accent); padding: 1px 6px; letter-spacing: 0.14em; font-weight: 700; }
   .pc-stamp {
-    position: absolute;
-    right: 12px; bottom: 12px;
+    position: absolute; right: 12px; bottom: 12px;
     font-size: 9px; letter-spacing: 0.14em;
-    color: var(--accent);
+    color: #fff; background: var(--accent); padding: 1px 6px;
     opacity: 0;
     transform: rotate(-8deg);
-    transition: opacity .2s ease;
+    transition: opacity var(--dur-fast) var(--ease-out);
     pointer-events: none;
   }
-  .passport-card:hover .pc-stamp { opacity: 0.7; }
+  .passport-card:hover .pc-stamp { opacity: 1; }
 
-  @media (prefers-reduced-motion: reduce) {
-    .passport-card { transition: none; }
-    .passport-card:hover { transform: none; }
+  /* ── Lightbox (native <dialog>) ──────────────────────────────────────────── */
+  .art-lb {
+    padding: 0; border: 0; margin: auto;
+    background: transparent; color: var(--text-primary);
+    width: min(100% - 2rem, 64rem);
+    max-width: none; max-height: calc(100dvh - 2rem);
+    overflow: visible;
+  }
+  .art-lb::backdrop { background: rgba(0,0,0,0.92); }
+  .art-lb[open] .art-lb-content { animation: lbSlide var(--dur-slow) var(--ease-out); }
+  .art-lb-content {
+    position: relative;
+    display: flex; flex-direction: column;
+    max-height: calc(100dvh - 2rem);
+    border: 1px solid var(--border-color);
+    background: var(--bg-base);
+    overflow: hidden;
+  }
+  .art-lb-img-wrap {
+    flex: 0 0 auto; margin: 0;
+    background: #050505;
+    display: grid; place-items: center;
+    min-height: 240px; max-height: 52dvh;
+  }
+  .art-lb-img-wrap img { display: block; width: 100%; height: 100%; max-height: 52dvh; object-fit: contain; }
+  .art-lb-info {
+    flex: 1 1 auto; min-height: 0; overflow-y: auto;
+    padding: var(--space-6) var(--space-6) var(--space-6);
+    border-top: 1px solid var(--border-color);
+    display: flex; flex-direction: column;
+  }
+  .art-lb-title { font-size: clamp(1.5rem, 3.5vw, 2rem); font-weight: 900; line-height: 1; margin-bottom: 8px; padding-right: 96px; }
+  .art-lb-meta { margin-bottom: var(--space-4); }
+  .art-lb-rule { height: 1px; background: var(--border-color); margin-bottom: var(--space-4); }
+  .art-lb-desc { color: var(--text-secondary); font-size: 0.9rem; line-height: 1.7; flex: 1 1 auto; }
+  .art-lb-nav {
+    display: flex; align-items: center; justify-content: space-between; gap: var(--space-3);
+    margin-top: var(--space-6); padding-top: var(--space-4);
+    border-top: 1px solid var(--border-color);
+  }
+  .art-lb-btn, .art-lb-close {
+    min-height: 44px;
+    padding: 10px 14px;
+    background: none; border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    font-size: 12px; font-weight: 700; letter-spacing: 0.12em;
+    cursor: pointer;
+    transition: border-color var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out);
+  }
+  .art-lb-btn:hover, .art-lb-close:hover { border-color: var(--accent); }
+  .art-lb-counter { font-size: 12px; letter-spacing: 0.14em; color: var(--text-secondary); }
+  .art-lb-close { position: absolute; top: 12px; right: 12px; z-index: 3; background: rgba(0,0,0,0.75); }
+
+  @media (min-width: 768px) {
+    .art-lb-content { flex-direction: row; }
+    .art-lb-img-wrap { width: 56%; max-width: 620px; max-height: calc(100dvh - 2rem); }
+    .art-lb-img-wrap img { max-height: calc(100dvh - 2rem); }
+    .art-lb-info { border-top: 0; border-left: 1px solid var(--border-color); padding: var(--space-8); }
   }
 
-  /* ── Art Lightbox ────────────────────────────────────────────────────────── */
-  #art-lightbox.active { display: flex !important; }
-  #art-lightbox-content { animation: lbSlide 0.4s cubic-bezier(0.16,1,0.3,1); }
-
   @keyframes lbSlide {
-    from { transform: scale(0.94) translateY(20px); opacity: 0; }
-    to   { transform: scale(1) translateY(0); opacity: 1; }
+    from { transform: scale(0.96) translateY(16px); opacity: 0; }
+    to   { transform: none; opacity: 1; }
   }
 </style>
 
 <script>
-  // ── Tab switching (animated indicator + fade transition) ──────────────────
-  (function() {
-    const nav     = document.querySelector('#activities .tab-nav');
+  const REDUCED = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const FINE    = window.matchMedia('(pointer: fine)').matches;
+
+  // ── Tabs (real tablist: arrow keys, aria-selected, hidden panels) ─────────
+  (() => {
+    const nav     = document.querySelector<HTMLElement>('#activities .tab-nav');
     const ind     = document.getElementById('tab-indicator');
     const content = document.getElementById('tab-content');
     if (!nav || !ind || !content) return;
-    const btns    = Array.from(nav.querySelectorAll('.tab-btn'));
-    const panels  = Array.from(content.querySelectorAll('.tab-panel'));
+    const tabs   = Array.from(nav.querySelectorAll<HTMLButtonElement>('[role="tab"]'));
+    const panels = Array.from(content.querySelectorAll<HTMLElement>('[role="tabpanel"]'));
 
-    function lockHeights() {
-      let max = 0;
-      panels.forEach(p => {
-        const prev = { d: p.style.display, p: p.style.position, o: p.style.opacity };
-        p.style.display = 'block'; p.style.position = 'static'; p.style.opacity = '0';
-        max = Math.max(max, p.offsetHeight);
-        p.style.display = prev.d; p.style.position = prev.p; p.style.opacity = prev.o;
-      });
-      content.style.minHeight = max + 'px';
-    }
-
-    function moveIndicator(btn) {
+    const moveIndicator = (btn: HTMLElement) => {
       const r = btn.getBoundingClientRect();
       const navR = nav.getBoundingClientRect();
-      ind.style.width = r.width + 'px';
-      ind.style.transform = `translateX(${r.left - navR.left}px)`;
-    }
+      ind.style.width = `${r.width}px`;
+      ind.style.transform = `translateX(${r.left - navR.left + nav.scrollLeft}px)`;
+    };
 
-    function activate(name) {
-      const btn = btns.find(b => b.dataset.tab === name);
+    const activate = (name: string, focus = false) => {
+      const btn = tabs.find((b) => b.dataset.tab === name);
       if (!btn) return;
-      btns.forEach(b => b.classList.toggle('active', b === btn));
+      tabs.forEach((b) => {
+        const on = b === btn;
+        b.setAttribute('aria-selected', on ? 'true' : 'false');
+        b.tabIndex = on ? 0 : -1;
+      });
+      if (focus) btn.focus();
       moveIndicator(btn);
 
-      const current = panels.find(p => p.classList.contains('active') || p.classList.contains('entering'));
-      const next    = panels.find(p => p.dataset.panel === name);
-      if (!next || next === current) return;
+      panels.forEach((p) => {
+        const on = p.dataset.panel === name;
+        const wasHidden = p.hidden;
+        p.hidden = !on;
+        p.classList.remove('entering');
+        if (on && wasHidden && !REDUCED) {
+          void p.offsetHeight;
+          p.classList.add('entering');
+          p.addEventListener('animationend', () => p.classList.remove('entering'), { once: true });
+        }
+      });
+      if (name === 'art') window.dispatchEvent(new Event('art:shown'));
+    };
 
-      if (current) {
-        current.style.transition = 'opacity .15s ease, transform .15s ease';
-        current.style.opacity = '0';
-        current.style.transform = 'translateY(-8px)';
-        setTimeout(() => {
-          current.classList.remove('active', 'entering');
-          current.style.cssText = '';
-        }, 160);
-      }
-
-      setTimeout(() => {
-        next.classList.add('entering');
-        next.style.opacity = '0';
-        next.style.transform = 'translateY(8px)';
-        void next.offsetHeight; // reflow
-        next.style.transition = 'opacity .2s ease, transform .2s ease';
-        next.style.opacity = '1';
-        next.style.transform = 'translateY(0)';
-        setTimeout(() => {
-          next.classList.remove('entering');
-          next.classList.add('active');
-          next.style.cssText = '';
-          if (name === 'art') window.dispatchEvent(new Event('resize'));
-        }, 220);
-      }, 160);
-    }
-
-    btns.forEach(b => b.addEventListener('click', () => activate(b.dataset.tab)));
-
-    requestAnimationFrame(() => {
-      lockHeights();
-      moveIndicator(btns.find(b => b.classList.contains('active')) || btns[0]);
+    tabs.forEach((b) => b.addEventListener('click', () => activate(b.dataset.tab ?? '')));
+    nav.addEventListener('keydown', (e: KeyboardEvent) => {
+      const i = tabs.findIndex((b) => b === document.activeElement);
+      if (i < 0) return;
+      let next = -1;
+      if (e.key === 'ArrowRight') next = (i + 1) % tabs.length;
+      else if (e.key === 'ArrowLeft') next = (i - 1 + tabs.length) % tabs.length;
+      else if (e.key === 'Home') next = 0;
+      else if (e.key === 'End') next = tabs.length - 1;
+      if (next < 0) return;
+      e.preventDefault();
+      activate(tabs[next].dataset.tab ?? '', true);
     });
-    window.addEventListener('resize', () => {
-      lockHeights();
-      moveIndicator(btns.find(b => b.classList.contains('active')) || btns[0]);
-    });
+
+    const current = () => tabs.find((b) => b.getAttribute('aria-selected') === 'true') ?? tabs[0];
+    requestAnimationFrame(() => moveIndicator(current()));
+    window.addEventListener('resize', () => moveIndicator(current()));
+    if (document.fonts?.ready) document.fonts.ready.then(() => moveIndicator(current()));
   })();
 
-  // ── Art Gallery horizontal drag/scroll ────────────────────────────────────
-  (function() {
-    if (window.matchMedia('(pointer: coarse)').matches) return;
-
+  // ── Gallery: native horizontal scroll + wheel/drag/keys, eased via rAF ────
+  (() => {
     const viewport = document.getElementById('art-viewport');
     const track    = document.getElementById('art-track');
     const bgLayer  = document.getElementById('art-bg');
     const progress = document.getElementById('art-progress');
     if (!viewport || !track) return;
 
-    let targetX = 0, currentX = 0, maxX = 0;
-    let isOver = false, isDragging = false, dragStartX = 0, dragStartCurrent = 0;
+    const maxX = () => Math.max(0, viewport.scrollWidth - viewport.clientWidth);
+    const clamp = (x: number) => Math.max(0, Math.min(maxX(), x));
 
-    function calcMax() {
-      const w = track.scrollWidth - viewport.offsetWidth;
-      maxX = Math.max(0, w);
-    }
-    // Also recalc on first mouse-enter in case tab was hidden at load
-    viewport.addEventListener('mouseenter', calcMax, { once: false });
-    setTimeout(calcMax, 300);
-    window.addEventListener('resize', calcMax);
+    let targetX = 0;
+    let rafId = 0;
 
-    viewport.addEventListener('wheel', (e) => {
-      if (!isOver) return;
+    const paint = () => {
+      const x = viewport.scrollLeft;
+      const m = maxX();
+      if (progress) progress.style.width = `${m > 0 ? (x / m) * 100 : 0}%`;
+      if (bgLayer && !REDUCED) bgLayer.style.transform = `translateX(${x * 0.2 - x}px)`;
+      else if (bgLayer) bgLayer.style.transform = `translateX(${-x}px)`;
+    };
+
+    // The rAF loop only runs while there is distance left to cover.
+    const step = () => {
+      const cur = viewport.scrollLeft;
+      const diff = targetX - cur;
+      if (Math.abs(diff) <= 0.1) { viewport.scrollLeft = targetX; rafId = 0; return; }
+      viewport.scrollLeft = cur + diff * 0.14;
+      rafId = requestAnimationFrame(step);
+    };
+    const scrollTo = (x: number) => {
+      targetX = clamp(x);
+      if (REDUCED) { viewport.scrollLeft = targetX; return; }
+      if (!rafId) rafId = requestAnimationFrame(step);
+    };
+    const stopEase = () => { if (rafId) cancelAnimationFrame(rafId); rafId = 0; targetX = viewport.scrollLeft; };
+
+    viewport.addEventListener('scroll', paint, { passive: true });
+    window.addEventListener('resize', () => { targetX = clamp(targetX); paint(); });
+    window.addEventListener('art:shown', paint);
+
+    // Vertical wheel → horizontal travel, but let the page scroll once we hit an edge.
+    viewport.addEventListener('wheel', (e: WheelEvent) => {
+      const delta = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY;
+      const base = rafId ? targetX : viewport.scrollLeft;
+      const atEdge = (delta > 0 && base >= maxX() - 1) || (delta < 0 && base <= 1);
+      if (atEdge) return;
       e.preventDefault();
-      targetX -= e.deltaY * 1.3;
-      targetX  = Math.max(-maxX, Math.min(0, targetX));
+      scrollTo(base + delta * 1.3);
     }, { passive: false });
 
-    viewport.addEventListener('mouseenter', () => { isOver = true; });
-    viewport.addEventListener('mouseleave', () => { isOver = false; });
+    // Keyboard: the viewport itself is focusable; arrows page through the wall.
+    viewport.addEventListener('keydown', (e: KeyboardEvent) => {
+      if (e.target !== viewport) return;
+      const stepPx = 340;
+      if (e.key === 'ArrowRight') { e.preventDefault(); scrollTo((rafId ? targetX : viewport.scrollLeft) + stepPx); }
+      else if (e.key === 'ArrowLeft') { e.preventDefault(); scrollTo((rafId ? targetX : viewport.scrollLeft) - stepPx); }
+      else if (e.key === 'Home') { e.preventDefault(); scrollTo(0); }
+      else if (e.key === 'End') { e.preventDefault(); scrollTo(maxX()); }
+    });
 
-    viewport.addEventListener('mousedown', (e) => {
-      isDragging = true; dragStartX = e.clientX; dragStartCurrent = targetX;
+    // Mouse drag (touch uses native scrolling).
+    let dragging = false, dragged = false, startX = 0, startScroll = 0;
+    viewport.addEventListener('pointerdown', (e: PointerEvent) => {
+      if (e.pointerType !== 'mouse' || e.button !== 0) return;
+      stopEase();
+      dragging = true; dragged = false;
+      startX = e.clientX; startScroll = viewport.scrollLeft;
       viewport.classList.add('grabbing');
+      viewport.setPointerCapture(e.pointerId);
     });
-    window.addEventListener('mousemove', (e) => {
-      if (!isDragging) return;
-      targetX = Math.max(-maxX, Math.min(0, dragStartCurrent + (e.clientX - dragStartX)));
+    viewport.addEventListener('pointermove', (e: PointerEvent) => {
+      if (!dragging) return;
+      const dx = e.clientX - startX;
+      if (Math.abs(dx) > 5) dragged = true;
+      viewport.scrollLeft = startScroll - dx;
     });
-    window.addEventListener('mouseup', () => { isDragging = false; viewport.classList.remove('grabbing'); });
+    const endDrag = () => {
+      if (!dragging) return;
+      dragging = false;
+      viewport.classList.remove('grabbing');
+      targetX = viewport.scrollLeft;
+    };
+    viewport.addEventListener('pointerup', endDrag);
+    viewport.addEventListener('pointercancel', endDrag);
+    // A drag must not open the lightbox when it ends over a card.
+    viewport.addEventListener('click', (e: MouseEvent) => {
+      if (dragged) { e.stopPropagation(); e.preventDefault(); dragged = false; }
+    }, true);
 
-    function raf() {
-      requestAnimationFrame(raf);
-      currentX += (targetX - currentX) * 0.08;
-      const x = Math.round(currentX * 100) / 100;
-      track.style.transform = `translateX(${x}px)`;
-      if (bgLayer) bgLayer.style.transform = `translateX(${x * 0.2}px)`;
-      if (progress) progress.style.width = (maxX > 0 ? (Math.abs(x) / maxX) * 100 : 0) + '%';
-    }
-    raf();
+    paint();
   })();
 
-  // ── Art Gallery — directional cursor + 3D tilt + glare (Snippet 04) ───────
-  (function() {
+  // ── Gallery: directional cursor + 3D tilt + glare (fine pointer, motion ok)
+  (() => {
     const vport  = document.getElementById('art-viewport');
     const cursor = document.getElementById('art-cursor');
-    const cards  = document.querySelectorAll('.art-item');
-    if (!vport || !cursor) return;
-    const REDUCED = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const COARSE  = window.matchMedia('(pointer: coarse)').matches;
-    if (COARSE) return;
+    if (!vport || !cursor || !FINE || REDUCED) return;
 
-    // Directional cursor
-    vport.addEventListener('pointerenter', () => { if (!REDUCED) cursor.classList.add('active'); });
+    const lbl = cursor.querySelector<HTMLElement>('.lbl');
+    vport.addEventListener('pointerenter', () => cursor.classList.add('active'));
     vport.addEventListener('pointerleave', () => cursor.classList.remove('active'));
-    vport.addEventListener('pointermove', (e) => {
-      cursor.style.left = e.clientX + 'px';
-      cursor.style.top  = e.clientY + 'px';
+    vport.addEventListener('pointermove', (e: PointerEvent) => {
+      cursor.style.left = `${e.clientX}px`;
+      cursor.style.top  = `${e.clientY}px`;
       const r = vport.getBoundingClientRect();
       const xrel = (e.clientX - r.left) / r.width;
       cursor.classList.toggle('flip', xrel < 0.5);
-      const lbl = cursor.querySelector('.lbl');
       if (lbl) lbl.textContent = xrel < 0.5 ? '← PREV' : 'NEXT →';
     });
 
-    // 3D tilt + glare
-    cards.forEach((card) => {
-      const frame = card.querySelector('.art-frame');
-      const glare = card.querySelector('.glare');
+    document.querySelectorAll<HTMLElement>('.art-item').forEach((card) => {
+      const frame = card.querySelector<HTMLElement>('.art-frame');
+      const glare = card.querySelector<HTMLElement>('.glare');
       if (!frame) return;
-      card.addEventListener('pointermove', (e) => {
-        if (REDUCED) return;
+      card.addEventListener('pointermove', (e: PointerEvent) => {
         const r = frame.getBoundingClientRect();
         const px = (e.clientX - r.left) / r.width;
         const py = (e.clientY - r.top)  / r.height;
-        const ry = (px - 0.5) *  16;
-        const rx = (py - 0.5) * -16;
-        frame.style.transform = `rotateX(${rx}deg) rotateY(${ry}deg) translateZ(0)`;
+        frame.style.transform = `rotateX(${(py - 0.5) * -16}deg) rotateY(${(px - 0.5) * 16}deg) translateZ(0)`;
         if (glare) {
-          glare.style.setProperty('--gx', (px * 100) + '%');
-          glare.style.setProperty('--gy', (py * 100) + '%');
+          glare.style.setProperty('--gx', `${px * 100}%`);
+          glare.style.setProperty('--gy', `${py * 100}%`);
         }
       });
       card.addEventListener('pointerleave', () => { frame.style.transform = ''; });
     });
   })();
 
-  // ── Art Lightbox ───────────────────────────────────────────────────────────
-  (function() {
-    const artworksData = [
-      { id: 1,  title: 'FORM STUDY I',          medium: 'Oil on Canvas', year: 2024, src: '/images/file_8---39151805-7313-4bb7-b8c8-1365aef884a3.jpg',         desc: '' },
-      { id: 2,  title: 'COMPOSITION II',         medium: 'Mixed Media',   year: 2024, src: '/images/file_9---c5cd81b7-8140-4595-8297-af32f0e2edba.jpg',          desc: '' },
-      { id: 3,  title: 'LANDSCAPE III',          medium: 'Oil on Canvas', year: 2024, src: '/images/file_10---714a56fd-d4fb-4316-8629-c6f06a4db7a8.jpg',        desc: '' },
-      { id: 4,  title: 'FIGURE IV',              medium: 'Acrylic',       year: 2024, src: '/images/file_11---e6cf7245-cda7-4ca8-884c-55c891575493.jpg',        desc: '' },
-      { id: 5,  title: 'ABSTRACTION V',          medium: 'Oil on Canvas', year: 2024, src: '/images/file_12---09cd522a-d5e5-433a-ac0f-d9c0c710c79a.jpg',        desc: '' },
-      { id: 6,  title: 'TEXTURE VI',             medium: 'Mixed Media',   year: 2024, src: '/images/file_13---f94eea51-a229-4b42-bcf4-f489c8824e9b.jpg',        desc: '' },
-      { id: 7,  title: 'STILLNESS VII',          medium: 'Oil on Canvas', year: 2023, src: '/images/file_14---d6d37114-4da7-4cdf-896d-5b361bf9ac99.jpg',        desc: '' },
-      { id: 8,  title: 'MOTION VIII',            medium: 'Acrylic',       year: 2023, src: '/images/file_15---cfdd2a00-8c9e-4367-8b88-c149ce15db2a.jpg',        desc: '' },
-      { id: 9,  title: 'DEPTH IX',               medium: 'Oil on Canvas', year: 2023, src: '/images/file_16---a29e17b8-1972-4c3d-af3c-e4f65981a95f.jpg',        desc: '' },
-      { id: 10, title: 'PATTERN X',              medium: 'Mixed Media',   year: 2023, src: '/images/file_17---f463b1dd-1139-4fad-81a9-b4b5bddd0ef0.jpg',        desc: '' },
-      { id: 11, title: 'TENSION XI',             medium: 'Charcoal',      year: 2023, src: '/images/file_19---7fd47930-b43e-4e33-a1d0-ce5384175a40.jpg',        desc: '' },
-      { id: 12, title: 'SIGNAL XII',             medium: 'Oil on Canvas', year: 2023, src: '/images/file_20---4fa92226-8c06-4344-836a-2745c8ec1072.jpg',        desc: '' },
-      { id: 13, title: 'THRESHOLD XIII',         medium: 'Mixed Media',   year: 2023, src: '/images/file_21---7f73c515-6959-4117-bc6b-a178b7e1f1fa.jpg',        desc: '' },
-      { id: 14, title: 'MONSTER',                medium: 'Marker',        year: 2026, src: '/images/file_26---176ca328-7aa6-47ac-8678-3147590dfd1e.jpg',        desc: '' },
-      { id: 15, title: 'HOUSE AND TREE',         medium: 'Marker',        year: 2026, src: '/images/file_28---42038613-cd61-482c-96be-7f5090d24bb4.jpg',        desc: '' },
-      { id: 16, title: 'CLOWN PORTRAIT',         medium: 'Watercolor',    year: 2026, src: '/images/file_27---5cc231a4-9e3e-4c3e-8804-8c95a0e0000e.jpg',        desc: '' },
-      { id: 17, title: 'FRUIT STILL LIFE',       medium: 'Watercolor',    year: 2026, src: '/images/file_29---436fe3f3-a255-4e3a-aaed-3b9b2a4c14a4.jpg',        desc: '' },
-      { id: 18, title: 'COLOR STUDY',            medium: 'Watercolor',    year: 2026, src: '/images/file_30---d7b1cafb-40a7-4744-9160-c20abb329311.jpg',        desc: '' },
-      { id: 19, title: 'FLORAL STUDY',           medium: 'Watercolor',    year: 2026, src: '/images/file_31---47b3bd96-ae79-438e-a21b-8a39940d7025.jpg',        desc: '' },
-      { id: 20, title: 'DOG PORTRAIT',           medium: 'Watercolor',    year: 2026, src: '/images/file_32---22a1e60c-02cf-4dc7-bea6-e5f54059a36d.jpg',        desc: '' },
-      { id: 21, title: 'WATERCOLOR LANDSCAPE',   medium: 'Watercolor',    year: 2026, src: '/images/file_33---e872272a-94bc-4b74-abab-fa2bfe270037.jpg',        desc: '' },
-      { id: 22, title: 'TIGER MURAL',            medium: 'Mural',         year: 2026, src: '/images/file_35---32e01751-1807-42c5-ab2f-348082093d0b.jpg',        desc: '' },
-      { id: 23, title: 'MAN WITH GLASSES',       medium: 'Watercolor',    year: 2026, src: '/images/file_45---63d5078b-35ae-446d-be59-28d59f1fa149.jpg',        desc: '' },
-      { id: 24, title: 'BEARDED MAN',            medium: 'Watercolor',    year: 2026, src: '/images/file_46---efd60167-05c3-4394-ae97-47632daded2d.jpg',        desc: '' },
-      { id: 25, title: 'ARCHITECTURAL SKETCH',   medium: 'Pencil',        year: 2026, src: '/images/file_36---fef23c14-9e17-42a9-a3b4-a10b4a435db1.jpg',        desc: '' },
-      { id: 26, title: 'KURUKAFA',               medium: 'Pencil',        year: 2022, src: '/images/Kurukafa.png',                                               desc: '' },
-      { id: 27, title: 'EARLY WORK I',           medium: 'Mixed Media',   year: 2020, src: '/images/IMG_20200314_205556.jpg',                                    desc: '' },
-      { id: 28, title: 'SESSION STUDY I',        medium: 'Mixed Media',   year: 2020, src: '/images/IMG_20200829_131256.jpg',                                    desc: '' },
-      { id: 29, title: 'SESSION STUDY II',       medium: 'Mixed Media',   year: 2020, src: '/images/IMG_20200829_132851.jpg',                                    desc: '' },
-      { id: 30, title: 'SESSION STUDY III',      medium: 'Mixed Media',   year: 2020, src: '/images/IMG_20200829_134200.jpg',                                    desc: '' },
-      { id: 31, title: 'SESSION STUDY IV',       medium: 'Mixed Media',   year: 2020, src: '/images/IMG_20200829_134409.jpg',                                    desc: '' },
-      { id: 32, title: 'SESSION STUDY V',        medium: 'Mixed Media',   year: 2020, src: '/images/IMG_20200829_140438.jpg',                                    desc: '' },
-      { id: 33, title: 'NOCTURNE',               medium: 'Mixed Media',   year: 2021, src: '/images/IMG_20211118_235908.jpg',                                    desc: '' },
-      { id: 34, title: 'FIGURE STUDY I',         medium: 'Mixed Media',   year: 2022, src: '/images/IMG_20220508_213610.jpg',                                    desc: '' },
-      { id: 35, title: 'FIGURE STUDY II',        medium: 'Mixed Media',   year: 2022, src: '/images/IMG-20220515-WA0005.jpeg',                                   desc: '' },
-      { id: 36, title: 'MAY STUDY I',            medium: 'Mixed Media',   year: 2022, src: '/images/IMG_20220525_092620.jpg',                                    desc: '' },
-      { id: 37, title: 'MAY STUDY II',           medium: 'Mixed Media',   year: 2022, src: '/images/IMG_20220526_210349.jpg',                                    desc: '' },
-      { id: 38, title: 'MAY STUDY III',          medium: 'Mixed Media',   year: 2022, src: '/images/IMG_20220526_210412.jpg',                                    desc: '' },
-      { id: 39, title: 'SUMMER STUDY',           medium: 'Mixed Media',   year: 2022, src: '/images/IMG_20220718_220804.jpg',                                    desc: '' },
-      { id: 40, title: 'AUTUMN STUDY',           medium: 'Mixed Media',   year: 2022, src: '/images/IMG_20220925_151943.jpg',                                    desc: '' },
-      { id: 41, title: 'SPRING WORK',            medium: 'Mixed Media',   year: 2023, src: '/images/IMG_20230406_020218.jpg',                                    desc: '' },
-      { id: 42, title: 'LATE SUMMER',            medium: 'Mixed Media',   year: 2025, src: '/images/IMG_20250831_194420_970.jpg',                                desc: '' },
-      { id: 43, title: 'SEPTEMBER I',            medium: 'Mixed Media',   year: 2025, src: '/images/20250903_115020.jpg',                                        desc: '' },
-      { id: 44, title: 'SEPTEMBER II',           medium: 'Mixed Media',   year: 2025, src: '/images/20250903_125338.jpg',                                        desc: '' },
-      { id: 45, title: 'SEPTEMBER III',          medium: 'Mixed Media',   year: 2025, src: '/images/20250903_125348.jpg',                                        desc: '' },
-      { id: 46, title: 'SEPTEMBER IV',           medium: 'Mixed Media',   year: 2025, src: '/images/20250903_125354.jpg',                                        desc: '' },
-      { id: 47, title: 'SEPTEMBER V',            medium: 'Mixed Media',   year: 2025, src: '/images/20250903_125403.jpg',                                        desc: '' },
-      { id: 48, title: 'FEBRUARY',               medium: 'Mixed Media',   year: 2026, src: '/images/IMG-20260210-WA0003.jpeg',                                   desc: '' },
-    ];
+  // ── Lightbox (<dialog>: focus trap, Esc, backdrop, prev/next, counter) ────
+  (() => {
+    interface LbItem { id: number; title: string; medium: string; year: number; alt: string; src: string; srcset: string; width: number; height: number; }
+    const dataEl = document.getElementById('art-data');
+    const lb = document.getElementById('art-lightbox') as HTMLDialogElement | null;
+    const img     = document.getElementById('art-lb-img') as HTMLImageElement | null;
+    const idEl    = document.getElementById('art-lb-id');
+    const titleEl = document.getElementById('art-lb-title');
+    const medEl   = document.getElementById('art-lb-medium');
+    const yearEl  = document.getElementById('art-lb-year');
+    const descEl  = document.getElementById('art-lb-desc');
+    const counter = document.getElementById('art-lb-counter');
+    const prevBtn = document.getElementById('art-lb-prev');
+    const nextBtn = document.getElementById('art-lb-next');
+    const closeBtn = document.getElementById('art-lb-close');
+    if (!dataEl || !lb || !img || !idEl || !titleEl || !medEl || !yearEl || !descEl || !counter || !prevBtn || !nextBtn || !closeBtn) return;
+    if (typeof lb.showModal !== 'function') return; // very old browsers: cards stay plain buttons
 
-    // Gallery captions/descriptions were AI-written and have been stripped.
-    const captions = [];
+    let items: LbItem[] = [];
+    try { items = JSON.parse(dataEl.textContent || '[]') as LbItem[]; } catch { return; }
+    if (!items.length) return;
 
-    const lb      = document.getElementById('art-lightbox');
-    const lbImg   = document.getElementById('art-lb-img');
-    const lbId    = document.getElementById('art-lb-id');
-    const lbTitle = document.getElementById('art-lb-title');
-    const lbMed   = document.getElementById('art-lb-medium');
-    const lbYear  = document.getElementById('art-lb-year');
-    const lbDesc  = document.getElementById('art-lb-desc');
-    const lbCaption = document.getElementById('art-lb-caption');
-    const lbClose = document.getElementById('art-lb-close');
+    const buttons = Array.from(document.querySelectorAll<HTMLButtonElement>('.art-btn'));
+    let index = 0;
+    let opener: HTMLElement | null = null;
 
-    function openLightbox(artwork) {
-      lbImg.src           = artwork.src;
-      lbId.textContent    = `ARTWORK / ${String(artwork.id).padStart(2,'0')}`;
-      lbTitle.textContent = artwork.title;
-      lbMed.textContent   = artwork.medium;
-      lbYear.textContent  = String(artwork.year);
-
-      // Descriptions/captions were stripped — hide those blocks when empty.
-      const desc = (artwork.desc || '').trim();
-      lbDesc.textContent = desc;
-      lbDesc.style.display = desc ? '' : 'none';
-      const divider = lbDesc.previousElementSibling; // the rule above the desc
-      if (divider) divider.style.display = desc ? '' : 'none';
-
-      const caption = (captions[artwork.id - 1] || '').trim();
-      if (lbCaption) {
-        lbCaption.textContent = caption;
-        if (lbCaption.parentElement) lbCaption.parentElement.style.display = caption ? '' : 'none';
-      }
-
-      lb.classList.add('active');
-      document.body.style.overflow = 'hidden';
-    }
-
-    function closeLightbox() {
-      lb.classList.remove('active');
-      document.body.style.overflow = '';
-      lbImg.src = '';
-    }
-
-    let dragThreshold = false;
-    const viewport = document.getElementById('art-viewport');
-    if (viewport) {
-      viewport.addEventListener('mousedown', () => { dragThreshold = false; });
-      viewport.addEventListener('mousemove', () => { dragThreshold = true; });
-    }
-
-    document.querySelectorAll('.art-item').forEach(item => {
-      item.addEventListener('click', () => {
-        if (dragThreshold) return;
-        const id = parseInt(item.dataset.id);
-        const artwork = artworksData.find(a => a.id === id);
-        if (artwork) openLightbox(artwork);
+    const render = (i: number) => {
+      index = (i + items.length) % items.length;
+      const a = items[index];
+      img.src = a.src;
+      img.srcset = a.srcset;
+      img.sizes = '(min-width: 768px) 620px, 100vw';
+      img.width = a.width;
+      img.height = a.height;
+      img.alt = a.alt;
+      idEl.textContent = `ARTWORK / ${String(a.id).padStart(2, '0')}`;
+      titleEl.textContent = a.title;
+      medEl.textContent = a.medium;
+      yearEl.textContent = String(a.year);
+      descEl.textContent = a.alt;
+      counter.textContent = `${index + 1} / ${items.length}`;
+      // Warm the neighbours so prev/next feel instant.
+      [index + 1, index - 1].forEach((n) => {
+        const nb = items[(n + items.length) % items.length];
+        const pre = new Image(); pre.srcset = nb.srcset; pre.sizes = img.sizes; pre.src = nb.src;
       });
+    };
+
+    const open = (i: number, from: HTMLElement | null) => {
+      opener = from;
+      render(i);
+      lb.showModal();
+      document.body.style.overflow = 'hidden';
+      closeBtn.focus();
+    };
+
+    lb.addEventListener('close', () => {
+      document.body.style.overflow = '';
+      img.removeAttribute('srcset'); img.removeAttribute('src');
+      const target = opener ?? buttons[index] ?? null;
+      opener = null;
+      target?.focus({ preventScroll: false });
     });
 
-    lbClose?.addEventListener('click', closeLightbox);
-    lb?.addEventListener('click', (e) => { if (e.target === lb) closeLightbox(); });
-    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeLightbox(); });
-  })();
+    buttons.forEach((btn) => {
+      btn.addEventListener('click', () => open(Number(btn.dataset.index ?? 0), btn));
+    });
 
+    closeBtn.addEventListener('click', () => lb.close());
+    prevBtn.addEventListener('click', () => render(index - 1));
+    nextBtn.addEventListener('click', () => render(index + 1));
+    lb.addEventListener('click', (e: MouseEvent) => { if (e.target === lb) lb.close(); });
+    lb.addEventListener('keydown', (e: KeyboardEvent) => {
+      if (e.key === 'ArrowRight') { e.preventDefault(); render(index + 1); }
+      else if (e.key === 'ArrowLeft') { e.preventDefault(); render(index - 1); }
+    });
+    // Keep the opener in sync when the user paged inside the dialog.
+    lb.addEventListener('close', () => { opener = null; });
+  })();
 </script>
