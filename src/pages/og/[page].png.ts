@@ -17,5 +17,6 @@ export const getStaticPaths: GetStaticPaths = () => Object.keys(PAGES).map((page
 
 export const GET: APIRoute = async ({ params }) => {
   const opts = PAGES[params.page as string];
-  return new Response(await renderOg(opts), { headers: OG_HEADERS });
+  const png = await renderOg(opts);
+  return new Response(png.slice().buffer as ArrayBuffer, { headers: OG_HEADERS });
 };

@@ -1,0 +1,100 @@
+---
+// Blog index. Newest first; drafts only in dev / SHOW_DRAFTS builds. With zero
+// published posts the empty-state panel ships instead of a bare list.
+import Layout from '../../layouts/Layout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import PostCard from '../../components/blog/PostCard.astro';
+import { getPosts, getTags, tagSlug } from '../../components/blog/posts';
+
+const posts = await getPosts();
+const tags = await getTags();
+const description = 'Notes on machine learning for healthcare, model calibration, explainable AI, and moving into LLM and RAG systems. Written by Emir Ceylan in a plain first-person engineering voice.';
+---
+
+<Layout title="Blog" description={description} ogImage="/og/blog.png">
+  <Header />
+
+  <main id="main" class="page">
+    <section class="container section" aria-labelledby="blog-heading">
+      <div class="section-head" data-reveal>
+        <p class="eyebrow">BLOG /</p>
+        <h1 id="blog-heading" class="section-title">Notes</h1>
+        <div class="section-line" data-reveal="line"></div>
+        <a class="rss-link" href="/rss.xml">RSS</a>
+      </div>
+
+      <p class="intro" data-reveal>
+        Short write-ups on the parts of ML that decide whether a model gets used: calibration,
+        leakage, explanation, reporting. Plus what I am learning as I move into LLM systems.
+      </p>
+
+      {tags.length > 0 && (
+        <nav class="tag-nav" aria-label="Browse by tag" data-reveal>
+          <span class="tag-nav-label">Tags</span>
+          {tags.map((t) => <a href={`/blog/tag/${tagSlug(t)}/`}>#{t}</a>)}
+        </nav>
+      )}
+
+      {posts.length > 0 ? (
+        <ul class="post-list" data-reveal-stagger>
+          {posts.map((post, i) => <PostCard post={post} index={i} />)}
+        </ul>
+      ) : (
+        <div class="panel empty" data-reveal>
+          <p class="empty-label">// status</p>
+          <h2 class="empty-title">The first posts are being written.</h2>
+          <p class="empty-body">
+            Two are drafted: one on calibration in clinical risk models, one on moving from
+            classical ML into LLM systems. They go up once they are reviewed.
+          </p>
+          <p class="empty-links">
+            <a href="/now/">See what I am doing now →</a>
+            <a href="/rss.xml">Subscribe via RSS →</a>
+          </p>
+        </div>
+      )}
+    </section>
+  </main>
+
+  <Footer />
+</Layout>
+
+<style>
+  .page { padding-top: 80px; flex: 1; }
+  .container { max-width: 80rem; margin-inline: auto; padding-inline: var(--gutter); }
+  .section { padding-block: var(--section-y); }
+  .section-head { display: flex; align-items: flex-end; gap: var(--space-4); margin-bottom: var(--space-6); }
+  .section-head .eyebrow { align-self: center; margin: 0; }
+  .section-title { font-size: clamp(2.75rem, 7vw, 4.5rem); font-weight: 900; line-height: 1; }
+  .section-line { flex: 1; height: 1px; background: var(--border-color); align-self: center; }
+  .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-secondary); }
+  .rss-link {
+    align-self: center;
+    font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; letter-spacing: 0.15em;
+    color: var(--text-secondary); text-decoration: none; border: 1px solid var(--border-color); padding: 0.4rem 0.7rem;
+    transition: color var(--dur-fast) var(--ease-out), border-color var(--dur-fast) var(--ease-out);
+  }
+  .rss-link:hover { color: var(--accent); border-color: var(--accent); }
+
+  .intro { color: var(--text-secondary); max-width: 62ch; margin-bottom: clamp(var(--space-8), 5vw, var(--space-12)); }
+
+  .tag-nav { display: flex; flex-wrap: wrap; gap: var(--space-2); align-items: center; margin-bottom: var(--space-8); }
+  .tag-nav-label { font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-tertiary); margin-right: var(--space-2); }
+  .tag-nav a {
+    font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; letter-spacing: 0.08em;
+    color: var(--text-secondary); border: 1px solid var(--border-color); background: var(--bg-elevated);
+    padding: 0.3rem 0.6rem; text-decoration: none;
+  }
+  .tag-nav a:hover { color: var(--accent); border-color: var(--accent); }
+
+  .post-list { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--space-4); max-width: 52rem; }
+
+  .empty { max-width: 46rem; padding: clamp(var(--space-6), 4vw, var(--space-12)); }
+  .empty-label { font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; letter-spacing: 0.15em; color: var(--text-secondary); margin-bottom: var(--space-3); }
+  .empty-title { font-size: clamp(1.5rem, 1.2rem + 1.5vw, 2.25rem); line-height: 1.15; letter-spacing: -0.01em; margin-bottom: var(--space-4); }
+  .empty-body { color: var(--text-secondary); max-width: 58ch; margin-bottom: var(--space-6); }
+  .empty-links { display: flex; flex-wrap: wrap; gap: var(--space-6); font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; letter-spacing: 0.06em; }
+  .empty-links a { color: var(--text-primary); text-decoration: underline; text-decoration-color: var(--accent); text-underline-offset: 3px; }
+  .empty-links a:hover { color: var(--accent); }
+</style>

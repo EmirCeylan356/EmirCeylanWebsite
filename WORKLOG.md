@@ -118,3 +118,39 @@ Running log, one entry per phase. Times are local (TST, UTC+3).
 - Scroll-progress line under the header using CSS scroll-driven animation
   (`animation-timeline: scroll(root)`): zero JS, hidden where unsupported and under
   reduced motion.
+
+## Phase 9 (part) — Unlisted recruiter hub + CV (07:12–07:35, subagent)
+- `/work-4b8b954c2493/` rebuilt from `src/data/profile.ts` (PRIVATE_* tier): intro +
+  contact row, timeline of experience, project cards, education, credentials, skills.
+  No hover-to-reveal, no popup; everything scannable. `noindex`, not in sitemap.
+- `/cv-4b8b954c2493/` new: one-column CV from the same data (cannot drift), print
+  stylesheet (`src/styles/print.css`, A4, 2 pages), Print/Save button, PDF download.
+- `scripts/build-cv-pdf.mjs` prints the page with Playwright →
+  `public/cv-4b8b954c2493/Emir_Ceylan_CV.pdf` (committed; Vercel has no Chromium).
+- Removed content that is NOT in the approved facts and contradicts the CV — listed in
+  the morning report for Emir to confirm or restore: the "sepsis testing" internship
+  description, Teknofest/DeepMyelinAI project lead, PETase enzyme research, the
+  "250+ publications scientometric study", the DSA 210 "Teaching Assistant" wording.
+- Verified: astro check 0 errors in these files, axe 0 violations at 390/1280, built
+  HTML has `noindex`, no phone number, no `Riwex`. Screenshots in audit/work/.
+
+## Phase 11 (part) — Visitor gallery + admin security and quality (07:12–07:40, subagent)
+- Security: the admin page's hardcoded password (`emir2026`, also accepted via
+  `?password=`) was a decoration — the delete ran with the public anon key. Replaced
+  with Supabase Auth email/password sign-in; delete only with a live session. Wrote
+  `docs/SUPABASE.md` with the RLS policies + CHECK constraints Emir must run. Until
+  he does, the anon key still permits delete — top of the morning report.
+- Client hardening: length limits enforced in JS, blank-canvas rejection, 400 KB image
+  cap with quality step-down, 30 s rate limit, honeypot, `data:image/(jpeg|png);base64,`
+  validation before any `<img src>` (a `javascript:` row is dropped in the test), no
+  `innerHTML` left; supabase-js from npm instead of the jsdelivr CDN.
+- Quality: Pointer Events, roles/labels/`aria-pressed` on every tool, roving focus on the
+  toolbar, UNDO (20 snapshots), one mosaic gallery with a native `<dialog>` lightbox,
+  on-brand empty/error states, fullscreen reuses the same toolbar (fixed a z-index bug
+  where the scroll-progress line drew over it), 0 horizontal overflow at 360.
+- Decision: the gallery gets a public link from `/hobbies/` (ART tab) only — argued in
+  the morning report. The old `/visitor-gallery/` URL 301s to `/hobbies/#art`.
+- Verified: astro check clean, axe 0 violations across empty/error/grid/lightbox/
+  fullscreen states at 390 and 1280; `scripts/gallery-check.mjs` kept as a regression
+  test. Note: this machine's Chromium can't reach supabase.co (local TLS interception),
+  so live-data captures show the error state; grid captures use mocked rows.

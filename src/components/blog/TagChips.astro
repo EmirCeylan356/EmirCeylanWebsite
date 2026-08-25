@@ -1,0 +1,29 @@
+---
+// Tag chips, each linking to its /blog/tag/<slug>/ page.
+import { tagSlug } from './posts';
+interface Props { tags: string[]; label?: string }
+const { tags, label = 'Tags' } = Astro.props;
+---
+{tags.length > 0 && (
+  <ul class="tag-chips" aria-label={label}>
+    {tags.map((t) => (
+      <li><a href={`/blog/tag/${tagSlug(t)}/`}>#{t}</a></li>
+    ))}
+  </ul>
+)}
+
+<style>
+  .tag-chips { list-style: none; display: flex; flex-wrap: wrap; gap: var(--space-2); margin: 0; padding: 0; }
+  .tag-chips a {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem; letter-spacing: 0.08em; text-transform: lowercase;
+    color: var(--text-secondary);
+    border: 1px solid var(--border-color);
+    background: var(--bg-elevated);
+    padding: 0.3rem 0.6rem;
+    text-decoration: none;
+    transition: color var(--dur-fast) var(--ease-out), border-color var(--dur-fast) var(--ease-out);
+  }
+  .tag-chips a:hover { color: var(--accent); border-color: var(--accent); }
+</style>

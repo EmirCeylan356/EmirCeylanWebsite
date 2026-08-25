@@ -1,0 +1,58 @@
+---
+// /blog/tag/<slug>/ — posts carrying one tag. Only generated for tags that
+// exist on visible posts, so there is never an empty tag page.
+import Layout from '../../../layouts/Layout.astro';
+import Header from '../../../components/Header.astro';
+import Footer from '../../../components/Footer.astro';
+import PostCard from '../../../components/blog/PostCard.astro';
+import { getPosts, getTags, tagSlug, type Post } from '../../../components/blog/posts';
+
+export async function getStaticPaths() {
+  const posts = await getPosts();
+  const tags = await getTags();
+  return tags.map((tag) => ({
+    params: { tag: tagSlug(tag) },
+    props: { tag, posts: posts.filter((p) => p.data.tags.includes(tag)) },
+  }));
+}
+
+interface Props { tag: string; posts: Post[] }
+const { tag, posts } = Astro.props;
+---
+
+<Layout title={`#${tag} — Blog`} description={`Posts tagged #${tag} on Emir Ceylan's blog.`} ogImage="/og/blog.png">
+  <Header />
+  <main id="main" class="page">
+    <section class="container section" aria-labelledby="tag-heading">
+      <div class="section-head" data-reveal>
+        <p class="eyebrow"><a href="/blog/">Blog</a> / TAG</p>
+        <h1 id="tag-heading" class="section-title">#{tag}</h1>
+        <div class="section-line" data-reveal="line"></div>
+      </div>
+      <p class="count" data-reveal>{posts.length} {posts.length === 1 ? 'post' : 'posts'}</p>
+      <ul class="post-list" data-reveal-stagger>
+        {posts.map((post, i) => <PostCard post={post} index={i} />)}
+      </ul>
+      <p class="back"><a href="/blog/">← All posts</a></p>
+    </section>
+  </main>
+  <Footer />
+</Layout>
+
+<style>
+  .page { padding-top: 80px; flex: 1; }
+  .container { max-width: 80rem; margin-inline: auto; padding-inline: var(--gutter); }
+  .section { padding-block: var(--section-y); }
+  .section-head { display: flex; align-items: flex-end; gap: var(--space-4); margin-bottom: var(--space-4); }
+  .section-head .eyebrow { align-self: center; margin: 0; }
+  .section-title { font-size: clamp(2.25rem, 6vw, 4rem); font-weight: 900; line-height: 1; overflow-wrap: anywhere; }
+  .section-line { flex: 1; height: 1px; background: var(--border-color); align-self: center; }
+  .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-secondary); }
+  .eyebrow a { color: inherit; text-decoration: none; }
+  .eyebrow a:hover { text-decoration: underline; }
+  .count { font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-tertiary); margin-bottom: var(--space-8); }
+  .post-list { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--space-4); max-width: 52rem; }
+  .back { margin-top: var(--space-8); font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; letter-spacing: 0.08em; }
+  .back a { color: var(--text-secondary); text-decoration: none; }
+  .back a:hover { color: var(--accent); }
+</style>
