@@ -1,0 +1,74 @@
+---
+title: "AUROC is not enough: why I care about calibration in a clinical risk model"
+description: "Discrimination tells you whether a model ranks patients correctly. Calibration tells you whether its probabilities mean anything. For care-planning triage, only the second one is actionable."
+pubDate: 2026-08-25
+tags: ["ml", "healthcare", "calibration", "evaluation"]
+draft: true
+---
+
+{/* DRAFT. PRIVACY: this is a public page. The model is described abstractly on purpose. Do not add the dataset, institution, or clinical score names. */}
+
+Most model write-ups I read lead with one number: AUROC. I understand why. It is one scalar, it is threshold-free, and everyone knows what a good value looks like. But when I spent a summer building a 30-day mortality model for patients over 70, AUROC turned out to be the number I cared about least by the end. This post is about why.
+
+## Two different questions
+
+A binary classifier answers two separate questions, and a single metric cannot cover both.
+
+**Discrimination** asks: if I pick one patient who died and one who survived, how often does the model give the higher score to the one who died? That is exactly what AUROC measures. It is about ranking. It does not care whether the scores are 0.9 and 0.1 or 0.51 and 0.49, as long as the order is right.
+
+**Calibration** asks: when the model says 20%, do about 20 out of 100 such patients actually die? That is about the meaning of the number itself. A model can rank perfectly and still be badly calibrated. Take a well-ranked model and multiply every probability by 0.5. AUROC is unchanged. Every probability is now wrong.
+
+For a lot of ML tasks the gap does not matter. If you only ever act on the top k, ranking is all you need. Clinical risk is not like that.
+
+## Why a care-planning model needs real probabilities
+
+The model I built was meant to support advance-care-planning triage. The question a clinician asks is not "who is riskier than whom." It is "should we open this conversation with this patient now?" That is a decision with a threshold. Setting a threshold means deciding what probability of dying in 30 days is high enough to act on, and that is a clinical and ethical judgement, not a modelling one.
+
+If the model's probabilities are inflated, the team acts on people who are far lower risk than the number suggests. If they are deflated, high-risk people are missed. Either way the threshold the clinicians chose is silently replaced by a different one. The model becomes untrustworthy in a way nobody can see from the AUROC.
+
+So the deliverable was not "a model with AUROC 0.898." It was "a model whose 15% means 15%." The AUROC (0.898 on about 172k admissions, which was +0.146 and +0.066 over the two standard clinical scores) got it into the room. Calibration is what would let it stay there.
+
+## How I look at calibration
+
+The tool I lean on most is the reliability diagram: bin predictions by predicted probability, then plot the observed event rate in each bin against the mean prediction. A calibrated model sits on the diagonal. Overconfident models bow away from it at the extremes. I also report the Brier score, which mixes discrimination and calibration into one proper scoring rule, and the calibration slope and intercept, which tell you whether the model is systematically over- or under-confident.
+
+Gradient-boosted trees are usually decent out of the box on this, but not perfect, and class imbalance pushes them off. If the raw model is off, post-hoc calibration on held-out data fixes a lot. Here is the generic scikit-learn shape of it. This is the pattern, not a claim about my code:
+
+```python
+from sklearn.calibration import CalibratedClassifierCV, calibration_curve
+from sklearn.model_selection import GroupKFold
+
+cv = GroupKFold(n_splits=5)
+clf = CalibratedClassifierCV(base_model, method="isotonic", cv=cv)
+clf.fit(X_train, y_train, groups=patient_id)
+
+prob = clf.predict_proba(X_test)[:, 1]
+frac_pos, mean_pred = calibration_curve(y_test, prob, n_bins=10, strategy="quantile")
+# plot mean_pred vs frac_pos; a calibrated model tracks the diagonal
+```
+
+Isotonic regression needs a fair amount of data to avoid overfitting the calibration map. On a small validation set, Platt scaling (`method="sigmoid"`) is safer.
+
+## The leak that ruins both numbers
+
+None of this matters if the evaluation is leaky, and clinical data is full of leaks. The big one for me was patients with multiple admissions. If admission A from a patient lands in the training fold and admission B from the same patient lands in the test fold, the model has already seen that person's labs, comorbidities and trajectory. AUROC goes up. Calibration looks fine. Neither result transfers to a patient the model has never seen.
+
+`GroupKFold` with the patient identifier as the group is the fix. Every admission from one patient stays on one side of the split. It costs you a little apparent performance and buys you a number you can defend.
+
+There are subtler leaks too. Features computed after the outcome. Aggregates that use the full dataset before the split. Imputation fitted on everything. I now treat "what did the model see before the prediction time" as a checklist item, not an afterthought.
+
+## Explanation and reporting
+
+A calibrated model that a clinician cannot interrogate is still hard to trust. I used SHAP to get per-patient attributions and global feature rankings, and to check that the features doing the work were ones a clinician would recognise. When the top features made clinical sense, that was reassuring. When they did not, it was usually a data problem, and SHAP found it faster than anything else did.
+
+Finally, I followed the TRIPOD+AI reporting guideline. It is a checklist for prediction-model studies: how the cohort was built, how missing data was handled, how the model was validated, how calibration was assessed. Working through it forced me to write down decisions I would otherwise have left implicit. That is most of its value.
+
+## What I would tell past me
+
+- Report discrimination and calibration together. One without the other is half a result.
+- Decide what the probability will be used for before you decide how to evaluate it.
+- Group your cross-validation by patient. Always.
+- A reliability diagram tells you more than a third decimal on the AUROC.
+- Use a reporting guideline. It is a forcing function for honesty.
+
+AUROC is a good number. It is just not the number that decides whether a model gets used.

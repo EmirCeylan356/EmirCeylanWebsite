@@ -1,0 +1,118 @@
+---
+// /now — what I am doing at the moment (nownownow.com convention).
+// Facts come from NOW / NOW_UPDATED in src/data/profile.ts. To update: edit
+// that object and bump NOW_UPDATED. Nothing here is hard-coded on purpose.
+// PRIVACY: public page. Anonymised status only; no employer / project names.
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { NOW, NOW_UPDATED } from '../data/profile';
+import { SITE } from '../lib/site';
+
+const updated = new Date(NOW_UPDATED);
+const updatedLabel = new Intl.DateTimeFormat('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }).format(updated);
+
+// The status list in profile.ts is one flat array; split it into the sections
+// the page shows. Index 0 = where I am, 1..2 = work / search, 3..4 = learning /
+// research. If the list changes shape, adjust these picks.
+const [where, work, learning, ...rest] = NOW.status;
+const research = rest;
+
+const sections: { id: string; title: string; items: string[] }[] = [
+  { id: 'where', title: 'Where', items: [`${NOW.location}, Türkiye.`, where] },
+  { id: 'work', title: 'Work', items: [work] },
+  { id: 'learning', title: 'Learning', items: [learning] },
+  { id: 'research', title: 'Research', items: research },
+  { id: 'off-screen', title: 'Off-screen', items: [NOW.offScreen.join(', ') + '.'] },
+];
+
+const description = `What Emir Ceylan is doing now: senior year at ${SITE.university} in Istanbul, looking for ML / AI work, moving into LLM and RAG systems. Updated ${updatedLabel}.`;
+---
+
+<Layout title="Now" description={description} ogImage="/og/now.png">
+  <Header />
+
+  <main id="main" class="page">
+    <section class="container section" aria-labelledby="now-heading">
+      <div class="section-head" data-reveal>
+        <p class="eyebrow">NOW /</p>
+        <h1 id="now-heading" class="section-title">Now</h1>
+        <div class="section-line" data-reveal="line"></div>
+      </div>
+
+      <p class="updated" data-reveal>
+        <span class="pulse" aria-hidden="true"></span>
+        LAST UPDATED <time datetime={NOW_UPDATED}>{NOW_UPDATED}</time>
+      </p>
+
+      <p class="intro" data-reveal>
+        What I am doing at the moment, in one place. Not a résumé, not a bio. It changes when my situation does.
+      </p>
+
+      <div class="now-grid" data-reveal-stagger>
+        {sections.map((s, i) => (
+          <section class="panel now-panel" aria-labelledby={`now-${s.id}`} style={`--i:${i}`}>
+            <p class="panel-label">{String(i + 1).padStart(2, '0')} /</p>
+            <h2 id={`now-${s.id}`} class="panel-title">{s.title}</h2>
+            <ul class="panel-list">
+              {s.items.map((item) => <li>{item}</li>)}
+            </ul>
+          </section>
+        ))}
+      </div>
+
+      <p class="cta" data-reveal>
+        If the Work line matches something you have,
+        <a href={`mailto:${SITE.email}?subject=${encodeURIComponent('Work — Emir Ceylan')}`}>email me</a>.
+      </p>
+
+      <footer class="footnote" data-reveal>
+        <p>
+          This is a <a href="https://nownownow.com/about" rel="noopener">now page</a>: a short, dated
+          note on what someone is focused on right now, as opposed to an about page that describes them in general.
+        </p>
+      </footer>
+    </section>
+  </main>
+
+  <Footer />
+</Layout>
+
+<style>
+  .page { padding-top: 80px; flex: 1; }
+  .container { max-width: 80rem; margin-inline: auto; padding-inline: var(--gutter); }
+  .section { padding-block: var(--section-y); }
+  .section-head { display: flex; align-items: flex-end; gap: var(--space-4); margin-bottom: var(--space-4); }
+  .section-head .eyebrow { align-self: center; margin: 0; }
+  .section-title { font-size: clamp(2.75rem, 7vw, 4.5rem); font-weight: 900; line-height: 1; }
+  .section-line { flex: 1; height: 1px; background: var(--border-color); align-self: center; }
+  .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-secondary); }
+
+  .updated {
+    display: inline-flex; align-items: center; gap: var(--space-2);
+    font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; letter-spacing: 0.15em;
+    color: var(--text-secondary); border: 1px solid var(--border-color); background: var(--bg-surface);
+    padding: 0.45rem 0.8rem; margin-bottom: var(--space-6);
+  }
+  .updated time { color: var(--text-primary); font-weight: 700; }
+  .pulse { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 8px var(--accent-glow); }
+
+  .intro { color: var(--text-secondary); max-width: 58ch; margin-bottom: clamp(var(--space-8), 5vw, var(--space-12)); }
+
+  .now-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr)); gap: var(--space-4); }
+  .now-panel { padding: clamp(var(--space-6), 3vw, var(--space-8)); }
+  .now-panel:first-child { grid-column: 1 / -1; }
+  .panel-label { font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; letter-spacing: 0.15em; color: var(--text-secondary); margin-bottom: var(--space-2); }
+  .panel-title { font-size: 1.35rem; letter-spacing: -0.01em; margin-bottom: var(--space-4); }
+  .panel-list { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--space-3); }
+  .panel-list li { color: var(--text-secondary); line-height: 1.65; max-width: 62ch; padding-left: 1.1em; position: relative; }
+  .panel-list li::before { content: '▸'; position: absolute; left: 0; color: var(--accent); font-weight: 700; }
+
+  .cta { margin-top: var(--space-8); color: var(--text-secondary); max-width: 58ch; }
+  .cta a { color: var(--accent-text); text-decoration: underline; text-underline-offset: 3px; }
+
+  .footnote { margin-top: var(--space-12); padding-top: var(--space-4); border-top: 1px solid var(--border-color); }
+  .footnote p { font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; line-height: 1.7; color: var(--text-tertiary); max-width: 70ch; }
+  .footnote a { color: var(--text-secondary); text-decoration: underline; text-underline-offset: 3px; }
+  .footnote a:hover { color: var(--accent-text); }
+</style>

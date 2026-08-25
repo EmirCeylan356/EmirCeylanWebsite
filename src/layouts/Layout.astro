@@ -1,237 +1,150 @@
 ---
+import '../styles/fonts.css';
 import '../styles/global.css';
+import { SITE } from '../lib/site';
 
 interface Props {
+  /** Page title. The site name is appended automatically unless `titleRaw`. */
   title: string;
-  // Set on private/unlisted pages (e.g. the recruiter work page) to keep
-  // them out of search engines. Link-based privacy only — not authentication.
+  /** Use the title exactly as given (no " — Emir Ceylan" suffix). */
+  titleRaw?: boolean;
+  /** Meta / OG description. Falls back to the site description. */
+  description?: string;
+  /** Absolute or root-relative OG image (1200×630). Defaults to the site image. */
+  ogImage?: string;
+  /** Set on private/unlisted pages (recruiter hub, gallery admin) to keep
+   *  them out of search engines. Link-based privacy only — not authentication. */
   noindex?: boolean;
+  /** Override the canonical URL (defaults to the current page on the site origin). */
+  canonical?: string;
+  /** Open Graph type. Blog posts pass "article". */
+  type?: 'website' | 'article' | 'profile';
+  /** ISO dates for article OG tags. */
+  publishedTime?: string;
+  modifiedTime?: string;
+  /** Extra JSON-LD objects to emit (Person schema is emitted on public pages). */
+  jsonLd?: Record<string, unknown>[];
+  /** Body class hook for page-specific styling. */
+  bodyClass?: string;
 }
 
-const { title, noindex = false } = Astro.props;
+const {
+  title,
+  titleRaw = false,
+  description = SITE.description,
+  ogImage = '/og/default.png',
+  noindex = false,
+  canonical,
+  type = 'website',
+  publishedTime,
+  modifiedTime,
+  jsonLd = [],
+  bodyClass = '',
+} = Astro.props;
+
+const fullTitle = titleRaw ? title : `${title} — ${SITE.name}`;
+const canonicalUrl = canonical ?? new URL(Astro.url.pathname, SITE.url).href;
+const ogImageUrl = new URL(ogImage, SITE.url).href;
+
+// Person schema on public pages only; unlisted pages carry no structured data.
+const personLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: SITE.name,
+  url: SITE.url,
+  email: `mailto:${SITE.email}`,
+  jobTitle: 'Computer Science student, machine learning for healthcare',
+  alumniOf: { '@type': 'CollegeOrUniversity', name: SITE.university, sameAs: 'https://www.sabanciuniv.edu/' },
+  address: { '@type': 'PostalAddress', addressLocality: 'Istanbul', addressCountry: 'TR' },
+  knowsAbout: ['Machine learning', 'Medical AI', 'Explainable AI', 'Bioinformatics', 'Clinical risk modelling', 'Python', 'XGBoost', 'Full-stack web development', 'Large language models', 'Retrieval-augmented generation'],
+  knowsLanguage: ['en', 'tr'],
+  sameAs: [SITE.github, SITE.linkedin],
+  image: ogImageUrl,
+};
+const ldBlocks = noindex ? jsonLd : [personLd, ...jsonLd];
+
+// Privacy-friendly, cookieless analytics. Vercel Web Analytics is opt-in via
+// PUBLIC_ANALYTICS=vercel (set in the Vercel project env + enable Analytics
+// once in the dashboard). Never loaded on unlisted pages. No Google Analytics.
+const analytics = import.meta.env.PUBLIC_ANALYTICS === 'vercel' && !noindex;
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="en" class="dark">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="color-scheme" content="dark" />
+    <meta name="theme-color" content="#0a0a0a" />
+    <!-- Paint the base background before any stylesheet arrives: no white flash. -->
+    <style>html{background:#0a0a0a;color:#fff;color-scheme:dark}</style>
+    <script is:inline>document.documentElement.classList.add('js');</script>
+
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <meta name="author" content={SITE.name} />
     <meta name="generator" content={Astro.generator} />
-    {noindex && <meta name="robots" content="noindex, nofollow" />}
-    <title>{title}</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Syne:wght@400;700;800&family=Inter:wght@400;500;600;800&family=JetBrains+Mono:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500;700&family=Caveat:wght@400;600&display=swap" rel="stylesheet">
+    {noindex ? <meta name="robots" content="noindex, nofollow" /> : <meta name="robots" content="index, follow, max-image-preview:large" />}
+    <link rel="canonical" href={canonicalUrl} />
+
+    <!-- Icons -->
+    <link rel="icon" href="/favicon.ico" sizes="32x32" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    {!noindex && <link rel="alternate" type="application/rss+xml" title={`${SITE.name} — blog`} href="/rss.xml" />}
+
+    <!-- Fonts: self-hosted, only what the hero needs is preloaded -->
+    <link rel="preload" href="/fonts/space-grotesk-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/space-grotesk-latin-ext-wght-normal.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/jetbrains-mono-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin />
+
+    <!-- Open Graph / Twitter -->
+    <meta property="og:type" content={type} />
+    <meta property="og:site_name" content={SITE.name} />
+    <meta property="og:locale" content={SITE.locale} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={`${SITE.name} — ${SITE.tagline}`} />
+    {publishedTime && <meta property="article:published_time" content={publishedTime} />}
+    {modifiedTime && <meta property="article:modified_time" content={modifiedTime} />}
+    {type === 'article' && <meta property="article:author" content={SITE.name} />}
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageUrl} />
+
+    {ldBlocks.map((block) => <script is:inline type="application/ld+json" set:html={JSON.stringify(block)} />)}
+
+    <slot name="head" />
   </head>
-  <body class="min-h-screen" style="background:var(--bg-base); color:var(--text-primary);">
+  <body class={`min-h-screen ${bodyClass}`.trim()}>
+    <a href="#main-content" class="skip-link">Skip to content</a>
+
+    <!-- Scroll progress: 2px crimson line under the header. CSS scroll-driven
+         animation where supported (no JS); hidden under reduced motion. -->
+    <div class="scroll-progress" aria-hidden="true"></div>
+
     <!-- Static grid fallback: shown on mobile / reduced-motion / no-JS -->
-    <div id="grid-bg-static" class="fixed inset-0 grid-bg pointer-events-none z-0"></div>
+    <div id="grid-bg-static" class="fixed inset-0 grid-bg pointer-events-none z-0" aria-hidden="true"></div>
 
     <!-- Interactive cursor grid — desktop fine-pointer only, replaces the static grid -->
-    <canvas id="grid-canvas" class="fixed inset-0 pointer-events-none z-[1]"></canvas>
+    <canvas id="grid-canvas" class="fixed inset-0 pointer-events-none z-[1]" aria-hidden="true"></canvas>
 
     <!-- Soft vignette: dims edges so content panels read crisp -->
-    <div class="fixed inset-0 pointer-events-none z-[2]" style="background:radial-gradient(ellipse at center, transparent 55%, rgba(0,0,0,0.55) 100%);"></div>
+    <div class="fixed inset-0 pointer-events-none z-[2] vignette" aria-hidden="true"></div>
 
-    <div id="main-content" class="relative z-10 min-h-screen flex flex-col">
+    <div id="main-content" class="relative z-10 min-h-screen flex flex-col" tabindex="-1">
       <slot />
     </div>
 
-    <script is:inline src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-    <script is:inline src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-    <script is:inline>
-      // Initialize GSAP
-      if (typeof gsap !== 'undefined' && gsap.registerPlugin) {
-        gsap.registerPlugin(ScrollTrigger);
-      }
-
-      // ── Interactive cursor grid — replaces the neural particle field ────
-      // Subtle dark grid lines that brighten (red accent) and displace near
-      // the cursor. Desktop fine-pointer only; mobile and reduced-motion get
-      // the static CSS grid instead (zero runtime cost). The rAF loop stops
-      // completely once the cursor settles.
-      (function cursorGrid() {
-        const cv = document.getElementById('grid-canvas');
-        if (!cv) return;
-        const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        const coarse  = window.matchMedia('(max-width: 800px), (pointer: coarse)').matches;
-        if (reduced || coarse) { cv.remove(); return; }
-
-        const staticGrid = document.getElementById('grid-bg-static');
-        if (staticGrid) staticGrid.style.display = 'none';
-
-        const ctx = cv.getContext('2d');
-        const CELL   = 64;    // grid spacing — matches the .grid-bg fallback
-        const STEP   = 24;    // sampling step along each line (for displacement)
-        const RADIUS = 240;   // cursor influence radius
-        const PUSH   = 16;    // max displacement in px
-        const BASE   = 'rgba(138,138,147,0.10)';
-
-        const DPR = Math.max(1, Math.min(window.devicePixelRatio || 1, 2));
-        let W = 0, H = 0;
-
-        const mouse = { x: -9999, y: -9999, tx: -9999, ty: -9999, a: 0, ta: 0 };
-
-        function warp(x, y) {
-          const dx = x - mouse.x, dy = y - mouse.y;
-          const d2 = dx * dx + dy * dy;
-          if (d2 > RADIUS * RADIUS || d2 < 0.01) return [x, y];
-          const d = Math.sqrt(d2);
-          const f = 1 - d / RADIUS;
-          const k = f * f * PUSH * mouse.a / d;
-          return [x + dx * k, y + dy * k];
-        }
-
-        function buildPath() {
-          const path = new Path2D();
-          for (let gx = 0.5; gx <= W + CELL; gx += CELL) {
-            for (let y = 0; y <= H + STEP; y += STEP) {
-              const [px, py] = warp(gx, Math.min(y, H));
-              y === 0 ? path.moveTo(px, py) : path.lineTo(px, py);
-            }
-          }
-          for (let gy = 0.5; gy <= H + CELL; gy += CELL) {
-            for (let x = 0; x <= W + STEP; x += STEP) {
-              const [px, py] = warp(Math.min(x, W), gy);
-              x === 0 ? path.moveTo(px, py) : path.lineTo(px, py);
-            }
-          }
-          return path;
-        }
-
-        function draw() {
-          ctx.clearRect(0, 0, W, H);
-          const path = buildPath();
-          ctx.lineWidth = 1;
-          ctx.strokeStyle = BASE;
-          ctx.stroke(path);
-
-          // Red accent glow around the cursor
-          if (mouse.a > 0.01 && mouse.x > -999) {
-            const g = ctx.createRadialGradient(mouse.x, mouse.y, 0, mouse.x, mouse.y, RADIUS);
-            g.addColorStop(0,    'rgba(196,30,58,' + (0.50 * mouse.a).toFixed(3) + ')');
-            g.addColorStop(0.55, 'rgba(196,30,58,' + (0.16 * mouse.a).toFixed(3) + ')');
-            g.addColorStop(1,    'rgba(196,30,58,0)');
-            ctx.strokeStyle = g;
-            ctx.stroke(path);
-          }
-        }
-
-        function resize() {
-          W = window.innerWidth;
-          H = window.innerHeight;
-          cv.width  = Math.floor(W * DPR);
-          cv.height = Math.floor(H * DPR);
-          cv.style.width  = W + 'px';
-          cv.style.height = H + 'px';
-          ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
-          draw();
-        }
-
-        let running = false;
-        function frame() {
-          mouse.x += (mouse.tx - mouse.x) * 0.18;
-          mouse.y += (mouse.ty - mouse.y) * 0.18;
-          mouse.a += (mouse.ta - mouse.a) * 0.10;
-          draw();
-          const settled =
-            Math.abs(mouse.tx - mouse.x) < 0.4 &&
-            Math.abs(mouse.ty - mouse.y) < 0.4 &&
-            Math.abs(mouse.ta - mouse.a) < 0.005;
-          if (settled) {
-            running = false;
-            if (mouse.ta === 0) { mouse.a = 0; draw(); }
-            return;
-          }
-          requestAnimationFrame(frame);
-        }
-        function wake() {
-          if (!running) { running = true; requestAnimationFrame(frame); }
-        }
-
-        window.addEventListener('pointermove', (e) => {
-          mouse.tx = e.clientX; mouse.ty = e.clientY; mouse.ta = 1;
-          if (mouse.x < -999) { mouse.x = e.clientX; mouse.y = e.clientY; }
-          wake();
-        }, { passive: true });
-        document.documentElement.addEventListener('mouseleave', () => { mouse.ta = 0; wake(); });
-        window.addEventListener('resize', resize);
-        resize();
-      })();
-
-      // ── Count-up section counters (Snippet 05) ─────────────────────────
-      (function counters() {
-        const REDUCED = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        const easeOut = t => 1 - Math.pow(1 - t, 3);
-
-        function init() {
-          const targets = document.querySelectorAll('[data-counter]');
-          if (!targets.length) return;
-
-          const animate = el => {
-            if (el.dataset.done) return;
-            el.dataset.done = '1';
-            const end    = parseInt(el.dataset.counter, 10);
-            const prefix = el.dataset.prefix || '';
-            const suffix = el.dataset.suffix || '';
-            const pad    = parseInt(el.dataset.pad || '0', 10);
-            if (isNaN(end)) return;
-
-            if (REDUCED) {
-              el.textContent = prefix + String(end).padStart(pad, '0') + suffix;
-              return;
-            }
-
-            const dur = 820, start = performance.now();
-            (function step(now) {
-              const t = Math.min(1, (now - start) / dur);
-              const v = Math.round(end * easeOut(t));
-              el.textContent = prefix + String(v).padStart(pad, '0') + suffix;
-              if (t < 1) requestAnimationFrame(step);
-            })(start);
-          };
-
-          const io = new IntersectionObserver(entries => {
-            entries.forEach(e => { if (e.isIntersecting) animate(e.target); });
-          }, { threshold: 0.4 });
-
-          targets.forEach(el => {
-            const pad = parseInt(el.dataset.pad || '0', 10);
-            el.textContent = (el.dataset.prefix || '') +
-                             '0'.padStart(pad, '0') +
-                             (el.dataset.suffix || '');
-            io.observe(el);
-          });
-        }
-
-        if (document.readyState === 'loading') {
-          document.addEventListener('DOMContentLoaded', init);
-        } else {
-          init();
-        }
-      })();
-
-      // Reveal animations
-      document.addEventListener('DOMContentLoaded', () => {
-        if (typeof gsap !== 'undefined') {
-          gsap.utils.toArray('.reveal').forEach((el) => {
-            gsap.fromTo(el,
-              { opacity: 0, y: 50 },
-              {
-                opacity: 1,
-                y: 0,
-                duration: 0.8,
-                ease: 'power3.out',
-                scrollTrigger: {
-                  trigger: el,
-                  start: 'top 80%',
-                }
-              }
-            );
-          });
-        }
-      });
+    <script>
+      import '../scripts/main';
     </script>
+    {analytics && <script is:inline defer src="/_vercel/insights/script.js" />}
   </body>
 </html>

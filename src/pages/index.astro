@@ -2,129 +2,132 @@
 import Layout from '../layouts/Layout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import { SITE } from '../lib/site';
+import { PUBLIC_CAPABILITIES, PUBLIC_DOMAINS, PUBLIC_SKILLS, roleCount, contactMailto } from '../data/profile';
 
-// Full work history lives on the unlisted recruiter page (link-based privacy,
-// not authentication). It is intentionally NOT linked from any public page.
-// Teaser numbers below are derived from that page's role/project list.
-const projectCount = 7;
+// PRIVACY: this page is public. Everything below is anonymised capability
+// language — no employer, dataset, project, course, or professor names. The
+// full history lives on the unlisted recruiter page (link-based privacy, not
+// authentication) and is shared on request. See src/data/profile.ts.
 
-const skillCategories = [
-  { title: 'PROGRAMMING',    items: ['Python', 'C++'] },
-  { title: 'LIBRARIES',      items: ['NumPy', 'pandas', 'matplotlib', 'scikit-learn', 'Biopython'] },
-  { title: 'TOOLS',          items: ['Git/GitHub', 'Jupyter Notebook', 'Ubuntu', 'Claude Code', 'Clawbot'] },
-  { title: 'LANGUAGES',      items: ['English (Fluent, C1)', 'Turkish (Native)'] },
-  { title: 'CREATIVE SKILLS',items: ['Adobe Photoshop', 'Adobe Premiere Pro', 'Digital Illustration', 'Painting', 'Drawing'] },
-  { title: 'INTERESTS',      items: ['Bioinformatics', 'AI in Medicine', 'Chess', 'Archery', 'Jiu-Jitsu', 'Fitness', 'Tattoo Design'] },
+const marquee = [
+  'Clinical risk models',
+  'Explainable AI',
+  'Bioinformatics',
+  'Full-stack web',
+  `Sabancı University '${String(SITE.gradYear).slice(2)}`,
+  'LLM & RAG systems',
+  'Painter',
 ];
 ---
 
-<Layout title="EMIR CEYLAN — Creative Developer">
+<Layout
+  title={`Emir Ceylan — ${SITE.tagline.replace('MEDICAL AI', 'Medical AI').replace('ML', 'ML')}`}
+  titleRaw
+  description={SITE.description}
+  type="profile"
+>
   <Header />
 
-  <main>
+  <main id="main">
     <!-- ═══ HERO — Crimson neural scramble ════════════════════════════════════ -->
-    <section class="hero-section" data-screen-label="01 hero">
+    <section class="hero-section" data-screen-label="01 hero" aria-labelledby="hero-heading">
       <div class="hero-inner">
 
-        <div class="status" id="hero-status-wrap">
-          <span class="pulse" aria-hidden="true"></span>
+        <div class="status" id="hero-status-wrap" aria-hidden="true">
+          <span class="pulse"></span>
           <span id="hero-status">SYS_ID: EC_2027 — ISTANBUL / TR — ONLINE</span>
         </div>
 
         <div class="hero-name-frame" id="name-wrap">
-          <h1 class="hero-name" aria-label="EMIR CEYLAN">
-            <span class="ln ln-1" id="ln1" data-text="EMİR"></span>
-            <span class="ln ln-2" id="ln2" data-text="CEYLAN"></span>
+          <h1 class="hero-name" id="hero-heading">
+            <span class="sr-only">Emir Ceylan</span>
+            <span class="ln ln-1" id="ln1" aria-hidden="true">{[...'EMİR'].map((ch) => <span class="ch" data-ch={ch}>{ch}</span>)}</span>
+            <span class="ln ln-2" id="ln2" aria-hidden="true">{[...'CEYLAN'].map((ch) => <span class="ch" data-ch={ch}>{ch}</span>)}</span>
           </h1>
         </div>
 
-        <div class="hero-subtitle" id="hero-subtitle">
-          <span class="bullet"></span>
-          <span>CS STUDENT — AI FOR HEALTHCARE</span>
-          <span class="bullet"></span>
-        </div>
+        <p class="hero-subtitle" id="hero-subtitle">
+          <span class="bullet" aria-hidden="true"></span>
+          <span>Machine learning — Medical AI — CS '27</span>
+          <span class="bullet" aria-hidden="true"></span>
+        </p>
 
         <div class="hero-ctas" id="hero-ctas">
-          <a href="#work" class="btn btn-primary">MY WORK <span aria-hidden="true">→</span></a>
-          <a href="#contact" class="btn btn-secondary">CONTACT</a>
+          <a href="#work" class="btn btn-primary">What I do <span aria-hidden="true">→</span></a>
+          <a href="#contact" class="btn btn-secondary">Contact</a>
         </div>
 
-        <div class="scroll-cue" id="scroll-cue">SCROLL</div>
+        <div class="scroll-cue" id="scroll-cue" aria-hidden="true">SCROLL</div>
       </div>
     </section>
 
     <!-- ═══ MARQUEE BAR ═══════════════════════════════════════════════════════ -->
-    <section class="py-3 overflow-hidden" style="background:var(--bg-surface); border-top:1px solid var(--border-color); border-bottom:1px solid var(--border-color);">
+    <section class="marquee-bar" aria-label="Areas of work">
       <div class="marquee-container">
-        <div class="marquee-content font-mono">
-          <span class="font-bold text-xs mx-10" style="color:var(--text-secondary); letter-spacing:0.1em;">  ◆ Medical AI Specialist</span>
-          <span class="font-bold text-xs mx-10" style="color:var(--text-secondary); letter-spacing:0.1em;">  ◆ Data Scientist</span>
-          <span class="font-bold text-xs mx-10" style="color:var(--text-secondary); letter-spacing:0.1em;">  ◆ Machine Learning Researcher</span>
-          <span class="font-bold text-xs mx-10" style="color:var(--text-secondary); letter-spacing:0.1em;">  ◆ Sabancı University TA</span>
-          <span class="font-bold text-xs mx-10" style="color:var(--text-secondary); letter-spacing:0.1em;">  ◆ Team Leader</span>
-          <span class="font-bold text-xs mx-10" style="color:var(--text-secondary); letter-spacing:0.1em;">  ◆ XAI Enthusiast</span>
-          <span class="font-bold text-xs mx-10" style="color:var(--accent); letter-spacing:0.1em;">  ◆ Artist</span>
-          <span class="font-bold text-xs mx-10" style="color:var(--text-secondary); letter-spacing:0.1em;">  ◆ Medical AI Specialist</span>
-          <span class="font-bold text-xs mx-10" style="color:var(--text-secondary); letter-spacing:0.1em;">  ◆ Data Scientist</span>
-          <span class="font-bold text-xs mx-10" style="color:var(--text-secondary); letter-spacing:0.1em;">  ◆ Machine Learning Researcher</span>
-          <span class="font-bold text-xs mx-10" style="color:var(--text-secondary); letter-spacing:0.1em;">  ◆ Sabancı University TA</span>
-          <span class="font-bold text-xs mx-10" style="color:var(--text-secondary); letter-spacing:0.1em;">  ◆ Team Leader</span>
-          <span class="font-bold text-xs mx-10" style="color:var(--text-secondary); letter-spacing:0.1em;">  ◆ XAI Enthusiast</span>
-          <span class="font-bold text-xs mx-10" style="color:var(--accent); letter-spacing:0.1em;">  ◆ Artist</span>
-        </div>
+        <ul class="marquee-content font-mono" aria-hidden="true">
+          {[...marquee, ...marquee].map((item) => (
+            <li class={item === 'Painter' ? 'is-accent' : ''}><span aria-hidden="true">◆</span> {item}</li>
+          ))}
+        </ul>
+        <p class="sr-only">{marquee.join(' · ')}</p>
       </div>
     </section>
 
     <!-- ═══ ABOUT ══════════════════════════════════════════════════════════════ -->
-    <section id="about" class="about-section py-20 px-6 md:px-12">
-      <div class="max-w-7xl mx-auto">
-
-        <div class="grid md:grid-cols-3 gap-8 items-start">
+    <section id="about" class="about-section section" aria-labelledby="about-heading">
+      <div class="container">
+        <div class="grid md:grid-cols-3 gap-6 md:gap-8 items-start" data-reveal-stagger>
 
           <!-- Left: Section label panel -->
           <div class="panel about-label-panel">
-            <p class="font-mono text-xs mb-4" style="color:var(--text-secondary); letter-spacing:0.15em;">01 / ABOUT</p>
-            <div class="font-black leading-none" style="font-family:'Syne'; font-size:clamp(56px,8vw,96px); color:var(--text-primary); line-height:0.88;">
-              ABOUT
-            </div>
-            <div class="mt-8" style="border-top:1px solid var(--border-color); padding-top:20px;">
-              <p class="font-mono text-xs mb-1" style="color:var(--text-secondary); letter-spacing:0.12em;">SYSTEM PROFILE</p>
-              <p class="font-mono text-xs mt-2" style="color:var(--text-secondary); opacity:0.6; letter-spacing:0.08em;">CLASS / 2027</p>
-              <p class="font-mono text-xs mt-1" style="color:var(--text-secondary); opacity:0.6; letter-spacing:0.08em;">NODE / ISTANBUL, TR</p>
+            <p class="eyebrow">01 / ABOUT</p>
+            <h2 id="about-heading" class="display-word">ABOUT</h2>
+            <div class="mt-8 pt-5 divider-top">
+              <p class="eyebrow mb-1">SYSTEM PROFILE</p>
+              <p class="meta-line mt-2">CLASS / {SITE.gradYear}</p>
+              <p class="meta-line mt-1">NODE / ISTANBUL, TR</p>
             </div>
 
-            <!-- Stats inside left panel -->
-            <div class="mt-8 flex flex-col gap-4" style="border-top:1px solid var(--border-color); padding-top:20px;">
+            <dl class="mt-8 pt-5 divider-top flex flex-col gap-4 stats">
               <div>
-                <div class="stat-num font-black text-2xl" style="color:var(--accent);"
-                     data-counter="2027">2027</div>
-                <div class="font-mono text-xs mt-1" style="color:var(--text-secondary); letter-spacing:0.1em;">EXPECTED GRAD</div>
+                <dd class="stat-num" data-counter={SITE.gradYear}>{SITE.gradYear}</dd>
+                <dt class="stat-label">EXPECTED GRAD</dt>
               </div>
               <div>
-                <div class="stat-num font-black text-2xl" style="color:var(--accent);"
-                     data-counter="7" data-pad="2" data-suffix="+">07+</div>
-                <div class="font-mono text-xs mt-1" style="color:var(--text-secondary); letter-spacing:0.1em;">PROJECTS</div>
+                <dd class="stat-num" data-counter={roleCount} data-pad="2" data-suffix="+">{String(roleCount).padStart(2, '0')}+</dd>
+                <dt class="stat-label">ROLES &amp; RESEARCH PROJECTS</dt>
               </div>
               <div>
-                <div class="stat-num font-black text-2xl" style="color:var(--accent);">AI</div>
-                <div class="font-mono text-xs mt-1" style="color:var(--text-secondary); letter-spacing:0.1em;">SPECIALIZATION</div>
+                <dd class="stat-num">ML</dd>
+                <dt class="stat-label">FOR HEALTHCARE</dt>
               </div>
-            </div>
+            </dl>
           </div>
 
           <!-- Right: Narrative panel -->
-          <div class="md:col-span-2 panel">
-            <p class="font-mono text-xs mb-6" style="color:var(--text-secondary); letter-spacing:0.12em;">PROFILE_NARRATIVE.txt</p>
-            <p class="text-xl md:text-2xl font-bold mb-6" style="color:var(--text-primary); line-height:1.6;">
-              Computer Science student at
-              <span style="color:var(--accent);">Sabancı University</span>
-              passionate about AI applications in healthcare. Building the future of medical AI.
+          <div class="md:col-span-2 panel narrative">
+            <p class="eyebrow mb-6">PROFILE_NARRATIVE.txt</p>
+            <p class="lede">
+              I'm a Computer Science student at
+              <span class="accent-text">{SITE.university}</span>, class of {SITE.gradYear},
+              and I build machine learning models for medicine.
             </p>
-            <p class="text-base mb-4" style="color:var(--text-secondary); line-height:1.7;">
-              Driven by the potential of AI to bridge gaps in modern medicine, I focus on developing intelligent systems that are as ethical as they are efficient. My work at Sabancı University centers on collaborating with professors and fellow students to build projects that connect deep CS knowledge with complex medical hurdles to find practical, scalable solutions.
+            <p>
+              Most of my work so far is clinical risk prediction: take a large electronic health
+              record dataset, engineer features a clinician would recognise, train a calibrated
+              gradient-boosted model, and prove it beats the scores hospitals already use. I care
+              about calibration and explainability as much as AUROC, because a model nobody trusts
+              doesn't get used.
             </p>
-            <p class="text-base" style="color:var(--text-secondary); line-height:1.7;">
-              Outside of the lab, I balance the logic of neural networks with painting — a creative outlet that allows me to view technical challenges through a more expressive, lateral-thinking lens.
+            <p>
+              Around that: undergraduate research on explainable deep learning for healthcare and
+              on machine learning for biomedical alloys, a teaching assistantship in data science,
+              and a couple of full-stack products built in teams. Right now I'm moving toward LLM
+              and RAG systems, and building one to learn it properly.
+            </p>
+            <p>
+              I also paint. It isn't a metaphor for anything. I just like it.
             </p>
           </div>
 
@@ -133,86 +136,108 @@ const skillCategories = [
     </section>
 
     <!-- ═══ WORK — recruiter teaser (full history is on an unlisted page) ═════ -->
-    <section id="work" class="py-16 px-6 md:px-12" style="border-top:1px solid var(--border-color); border-bottom:1px solid var(--border-color); padding-left:2rem; padding-right:2rem;">
-      <div class="max-w-7xl mx-auto">
-        <div class="flex items-end gap-4 mb-10">
-          <p class="font-mono text-xs" style="color:var(--text-secondary); letter-spacing:0.15em; align-self:center;">02 /</p>
-          <h2 class="text-5xl md:text-7xl font-black kinetic-text work-heading" style="color:var(--text-primary);">WORK</h2>
-          <div class="section-line flex-1 h-px" style="background:var(--border-color);"></div>
-          <span class="text-xl font-black font-mono" style="color:var(--text-secondary);"
-                data-counter={projectCount} data-prefix="/" data-pad="2">/{projectCount.toString().padStart(2, '0')}</span>
+    <section id="work" class="section work-section" aria-labelledby="work-heading">
+      <div class="container">
+        <div class="section-head">
+          <p class="eyebrow">02 /</p>
+          <h2 id="work-heading" class="section-title kinetic-text" data-reveal="left">WORK</h2>
+          <div class="section-line" data-reveal="line"></div>
+          <span class="section-count font-mono" data-counter={roleCount} data-prefix="/" data-pad="2">/{String(roleCount).padStart(2, '0')}</span>
         </div>
 
-        <div class="work-teaser panel">
-          <div class="grid md:grid-cols-3 gap-8 items-center">
+        <!-- What I actually do -->
+        <div class="work-intro" data-reveal>
+          <p class="eyebrow mb-4">WHAT I ACTUALLY DO</p>
+          <p class="lede">
+            Machine learning for healthcare: calibrated risk models on real clinical data,
+            explainability that a physician can read, and the data engineering underneath.
+          </p>
+          <p class="work-intro-body">
+            Concretely: I turn raw hospital and genomic data into features, train and validate
+            models with leakage-safe cross-validation, calibrate them, explain them with SHAP, and
+            report them to clinical standards. I've also shipped full-stack products with a team,
+            and I'm now building retrieval-augmented LLM systems.
+          </p>
+          <ul class="domain-tags" aria-label="Domains">
+            {PUBLIC_DOMAINS.map((d) => <li>{d}</li>)}
+          </ul>
+        </div>
 
-            <!-- Count -->
-            <div class="work-teaser-count">
-              <div class="font-black leading-none" style="color:var(--accent); font-family:'Space Grotesk'; font-size:clamp(72px,11vw,128px); line-height:0.85;"
-                   data-counter={projectCount} data-pad="2" data-suffix="+">00+</div>
-              <p class="font-mono text-xs mt-3" style="color:var(--text-secondary); letter-spacing:0.14em;">ROLES &amp; RESEARCH PROJECTS</p>
-            </div>
+        <!-- Capability tiles: anonymised, real numbers -->
+        <ul class="tile-grid" data-reveal-stagger aria-label="Selected results">
+          {PUBLIC_CAPABILITIES.map((c) => (
+            <li class="tile">
+              <p class="tile-label font-mono">{c.label}</p>
+              <p class="tile-metric"><span class="tile-num">{c.metric}</span><span class="tile-unit">{c.unit}</span></p>
+              <p class="tile-desc">{c.description}</p>
+              <p class="tile-stack font-mono">{c.stack}</p>
+            </li>
+          ))}
+        </ul>
 
-            <!-- Specialization + CTA -->
-            <div class="md:col-span-2">
-              <p class="font-mono text-xs mb-4" style="color:var(--text-secondary); letter-spacing:0.14em;">SPECIALIZATION</p>
-              <p class="text-xl md:text-2xl font-bold mb-6" style="color:var(--text-primary); line-height:1.5;">
-                Machine learning &amp; data science for
-                <span style="color:var(--accent);">healthcare</span> — explainable diagnostic
-                models, clinical ML, and bioinformatics pipelines.
-              </p>
-
-              <p class="text-sm font-mono mb-8" style="color:var(--text-secondary); line-height:1.8; letter-spacing:0.02em;">
-                &gt; Teaching assistantship, undergraduate research, a Teknofest medical-AI
-                team lead, a clinical ML internship, and independent bioinformatics work.
-              </p>
-
-              <div class="work-teaser-cta">
-                <p class="font-mono text-sm mb-4" style="color:var(--text-primary);">
-                  Full work history available to recruiters on request.
-                </p>
-                <div class="flex flex-wrap gap-4 items-center">
-                  <a href="mailto:emir.ceylan@sabanciuniv.edu?subject=Work%20history%20request"
-                     class="teaser-btn primary font-mono text-xs font-bold cut-corner-sm">
-                    REQUEST FULL HISTORY →
-                  </a>
-                  <a href="#contact" class="teaser-btn font-mono text-xs font-bold cut-corner-sm">
-                    CONTACT
-                  </a>
-                </div>
-              </div>
-            </div>
-
+        <!-- CTA -->
+        <div class="work-cta panel" data-reveal>
+          <div>
+            <p class="eyebrow mb-3">FULL HISTORY ON REQUEST</p>
+            <p class="work-cta-text">
+              I keep the detailed list of roles, projects and metrics off the public site on
+              purpose. If you're hiring or supervising, ask and I'll send the full page plus a CV.
+            </p>
+          </div>
+          <div class="work-cta-actions">
+            <a href={contactMailto('Full work history request')} class="btn-cta primary font-mono">
+              Request full history <span aria-hidden="true">→</span>
+            </a>
+            <a href="#contact" class="btn-cta font-mono">Contact</a>
           </div>
         </div>
       </div>
     </section>
 
     <!-- ═══ SKILLS ════════════════════════════════════════════════════════════ -->
-    <section id="skills" class="py-20 md:py-28 px-6 md:px-12" style="padding-left:2rem; padding-right:2rem;">
-      <div class="max-w-7xl mx-auto">
-        <div class="flex items-end gap-4 mb-14 md:mb-16">
-          <p class="font-mono text-xs" style="color:var(--text-secondary); letter-spacing:0.15em; align-self:center;">03 /</p>
-          <h2 class="text-5xl md:text-7xl font-black kinetic-text skills-heading" style="color:var(--text-primary);">SKILLS</h2>
-          <div class="section-line flex-1 h-px" style="background:var(--border-color);"></div>
-          <span class="text-xl font-black font-mono" style="color:var(--text-secondary);"
-                data-counter="6" data-prefix="/" data-pad="2">/06</span>
+    <section id="skills" class="section skills-section" aria-labelledby="skills-heading">
+      <div class="container">
+        <div class="section-head">
+          <p class="eyebrow">03 /</p>
+          <h2 id="skills-heading" class="section-title kinetic-text" data-reveal="left">SKILLS</h2>
+          <div class="section-line" data-reveal="line"></div>
+          <span class="section-count font-mono" data-counter={PUBLIC_SKILLS.primary.length + PUBLIC_SKILLS.secondary.length} data-prefix="/" data-pad="2">/{String(PUBLIC_SKILLS.primary.length + PUBLIC_SKILLS.secondary.length).padStart(2, '0')}</span>
         </div>
 
-        <div class="skills-grid">
-          {skillCategories.map((category) => (
+        <div class="skills-grid" data-reveal-stagger>
+          {PUBLIC_SKILLS.primary.map((category) => (
             <div class="skill-group">
               <div class="skill-group-head">
-                <span class="skill-group-title font-black font-mono">{category.title}</span>
-                <span class="skill-group-count font-mono">{category.items.length.toString().padStart(2, '0')}</span>
+                <h3 class="skill-group-title font-mono">{category.title}</h3>
+                <span class="skill-group-count font-mono" aria-hidden="true">{category.items.length.toString().padStart(2, '0')}</span>
               </div>
-              <div class="skill-chips">
+              {category.note && <p class="skill-group-note">{category.note}</p>}
+              <ul class="skill-chips">
                 {category.items.map((item) => (
-                  <span class="skill-chip font-mono">{item}</span>
+                  <li class="skill-chip font-mono">{item}</li>
                 ))}
-              </div>
+              </ul>
             </div>
           ))}
+        </div>
+
+        <!-- Deliberately smaller second block -->
+        <div class="skills-secondary" data-reveal>
+          <p class="eyebrow mb-5">ALSO</p>
+          <div class="skills-grid compact">
+            {PUBLIC_SKILLS.secondary.map((category) => (
+              <div class="skill-group">
+                <div class="skill-group-head">
+                  <h3 class="skill-group-title font-mono">{category.title}</h3>
+                </div>
+                <ul class="skill-chips">
+                  {category.items.map((item) => (
+                    <li class="skill-chip small font-mono">{item}</li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </section>
@@ -222,12 +247,78 @@ const skillCategories = [
 </Layout>
 
 <style>
+  /* ── Layout primitives (page-local; tokens come from global.css) ─────────── */
+  .container { max-width: 80rem; margin-inline: auto; padding-inline: var(--gutter); }
+  .section { padding-block: var(--section-y); }
+  .section-head {
+    display: flex; align-items: flex-end; gap: var(--space-4);
+    margin-bottom: clamp(var(--space-8), 5vw, var(--space-16));
+  }
+  .section-head .eyebrow { align-self: center; margin: 0; }
+  .section-title {
+    font-size: clamp(2.75rem, 7vw, 4.5rem);
+    font-weight: 900;
+    color: var(--text-primary);
+  }
+  .section-line { flex: 1; height: 1px; background: var(--border-color); align-self: center; }
+  .section-count { font-size: 1.25rem; font-weight: 900; color: var(--text-secondary); }
+
+  .eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--text-secondary);
+    margin-bottom: var(--space-4);
+  }
+  .meta-line { font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; letter-spacing: 0.08em; color: var(--text-tertiary); }
+  .divider-top { border-top: 1px solid var(--border-color); }
+  .display-word {
+    font-size: clamp(3.5rem, 8vw, 6rem);
+    font-weight: 900; line-height: 0.88; letter-spacing: -0.02em;
+    color: var(--text-primary);
+  }
+  .lede {
+    font-size: clamp(1.15rem, 1.1rem + 0.6vw, 1.5rem);
+    font-weight: 700; line-height: 1.5;
+    color: var(--text-primary);
+    margin-bottom: var(--space-6);
+    text-wrap: balance;
+  }
+  .narrative p:not(.lede):not(.eyebrow) {
+    color: var(--text-secondary); line-height: 1.75; font-size: 1rem;
+    margin-bottom: var(--space-4);
+    max-width: 62ch;
+  }
+  .narrative p:last-child { margin-bottom: 0; }
+
+  .stats dd { margin: 0; }
+  .stat-num { font-size: 1.5rem; font-weight: 900; color: var(--accent); line-height: 1.1; }
+  .stat-label { font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; letter-spacing: 0.1em; color: var(--text-secondary); margin-top: 0.25rem; }
+
   /* ── Marquee ─────────────────────────────────────────────────────────────── */
+  .marquee-bar {
+    padding-block: var(--space-3);
+    overflow: hidden;
+    background: var(--bg-surface);
+    border-top: 1px solid var(--border-color);
+    border-bottom: 1px solid var(--border-color);
+  }
   .marquee-container { overflow: hidden; white-space: nowrap; }
-  .marquee-content { display: inline-block; animation: marquee 20s linear infinite; }
-  @keyframes marquee {
-    0%   { transform: translateX(0); }
-    100% { transform: translateX(-50%); }
+  .marquee-content {
+    display: inline-flex; list-style: none; margin: 0; padding: 0;
+    animation: marquee 36s linear infinite;
+  }
+  .marquee-content li {
+    font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1em;
+    color: var(--text-secondary);
+    padding-inline: var(--space-8);
+  }
+  .marquee-content li span { color: var(--border-color); margin-right: 0.35em; }
+  .marquee-content li.is-accent { color: var(--accent-text); }
+  .marquee-content li.is-accent span { color: var(--accent-text); }
+  @keyframes marquee { to { transform: translateX(-50%); } }
+  @media (prefers-reduced-motion: reduce) {
+    .marquee-content { animation: none; flex-wrap: wrap; white-space: normal; justify-content: center; row-gap: 0.25rem; }
+    .marquee-content li:nth-child(n + 8) { display: none; }
   }
 
   /* ─── HERO — Crimson neural variant ────────────────────────────────────── */
@@ -235,11 +326,12 @@ const skillCategories = [
     position: relative;
     z-index: 10;
     min-height: 100vh;
+    min-height: 100dvh;
     width: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 80px 32px 40px;
+    padding: 96px var(--gutter) 72px;
   }
   .hero-inner {
     width: 100%;
@@ -284,7 +376,7 @@ const skillCategories = [
   .hero-name {
     font-family: 'Space Grotesk', sans-serif;
     font-weight: 700;
-    font-size: clamp(5rem, 17vw, 13.5rem);
+    font-size: clamp(4.25rem, 16.5vw, 13.5rem);
     line-height: 0.88;
     letter-spacing: -0.025em;
     text-transform: uppercase;
@@ -296,7 +388,7 @@ const skillCategories = [
     color: var(--accent);
     text-shadow: 0 0 24px rgba(196, 30, 58, 0.35), 0 0 60px rgba(196, 30, 58, 0.15);
   }
-  .hero-name .ch { display: inline-block; position: relative; }
+  .hero-name .ch { display: inline-block; position: relative; vertical-align: top; line-height: inherit; text-align: left; }
   .hero-name .ch.sp { width: 0.28em; }
 
   /* Chromatic aberration on CEYLAN */
@@ -375,13 +467,14 @@ const skillCategories = [
     text-transform: uppercase;
     text-decoration: none;
     padding: 14px 26px;
+    min-height: 44px;
     cursor: pointer;
-    transition: all 300ms ease;
+    transition: background var(--dur-base) var(--ease-out), color var(--dur-base) var(--ease-out), box-shadow var(--dur-base) var(--ease-out);
     display: inline-flex; align-items: center; gap: 10px;
     border: 1px solid transparent;
   }
   .btn-primary {
-    color: var(--accent);
+    color: var(--accent-text);
     border-color: var(--accent);
     background: transparent;
   }
@@ -404,14 +497,14 @@ const skillCategories = [
     height: 1px; background: var(--text-primary);
     transform: scaleX(0);
     transform-origin: left;
-    transition: transform .3s ease;
+    transition: transform var(--dur-base) var(--ease-out);
   }
   .btn-secondary:hover::after { transform: scaleX(1); }
 
   /* Scroll cue */
   .scroll-cue {
     position: absolute;
-    bottom: 32px; left: 50%;
+    bottom: -48px; left: 50%;
     transform: translateX(-50%);
     font-family: 'JetBrains Mono', monospace;
     font-size: 10px;
@@ -439,139 +532,134 @@ const skillCategories = [
     .status, .hero-subtitle, .hero-ctas, .scroll-cue {
       opacity: 1 !important; transform: none !important;
     }
+    .scroll-cue { display: none; }
+  }
+  @media (max-width: 480px) {
+    .hero-subtitle { letter-spacing: 0.12em; font-size: 11px; padding: 10px 14px; }
+    .hero-ctas { flex-direction: column; gap: 6px; }
   }
 
   /* ── About section ───────────────────────────────────────────────────────── */
   .about-section { background: var(--bg-base); }
   .about-label-panel { min-height: 100%; }
 
-  /* ── Work teaser (replaces the detailed work cards) ─────────────────────── */
-  .work-teaser { padding: clamp(1.75rem, 4vw, 3rem); }
-  .work-teaser-count {
+  /* ── Work section ────────────────────────────────────────────────────────── */
+  .work-section { border-top: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color); }
+  .work-intro { max-width: 68ch; margin-bottom: clamp(var(--space-8), 5vw, var(--space-12)); }
+  .work-intro-body { color: var(--text-secondary); line-height: 1.75; margin-bottom: var(--space-6); }
+  .domain-tags { display: flex; flex-wrap: wrap; gap: var(--space-2); list-style: none; padding: 0; margin: 0; }
+  .domain-tags li {
+    font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; font-weight: 700;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--accent-text); border: 1px solid var(--accent-dim);
+    padding: 6px 10px;
+  }
+
+  .tile-grid {
+    display: grid; gap: 1px;
+    background: var(--border-color);
+    border: 1px solid var(--border-color);
+    list-style: none; padding: 0; margin: 0;
+    grid-template-columns: 1fr;
+  }
+  @media (min-width: 640px)  { .tile-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 1024px) { .tile-grid { grid-template-columns: repeat(4, 1fr); } }
+  .tile {
+    background: var(--bg-surface);
+    padding: clamp(1.25rem, 2.5vw, 1.75rem);
+    display: flex; flex-direction: column; gap: var(--space-3);
+    position: relative;
+    transition: background var(--dur-base) var(--ease-out);
+  }
+  .tile::before {
+    content: ''; position: absolute; inset: 0 auto 0 0; width: 2px;
+    background: var(--accent); transform: scaleY(0); transform-origin: top;
+    transition: transform var(--dur-base) var(--ease-out);
+  }
+  .tile:hover { background: var(--bg-elevated); }
+  .tile:hover::before { transform: scaleY(1); }
+  .tile-label { font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-secondary); }
+  .tile-metric { display: flex; align-items: baseline; gap: 0.35rem; line-height: 1; margin: 0; }
+  .tile-num { font-size: clamp(2rem, 3.2vw, 2.75rem); font-weight: 900; color: var(--accent); letter-spacing: -0.02em; }
+  .tile-unit { font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: var(--text-secondary); letter-spacing: 0.06em; }
+  .tile-desc { font-size: 0.9rem; line-height: 1.55; color: var(--text-primary); flex: 1; }
+  .tile-stack { font-size: 0.65rem; letter-spacing: 0.06em; color: var(--text-tertiary); padding-top: var(--space-3); border-top: 1px dashed var(--border-color); }
+
+  .work-cta {
+    margin-top: clamp(var(--space-8), 5vw, var(--space-12));
+    display: grid; gap: var(--space-6); align-items: center;
     border-left: 2px solid var(--accent);
-    padding-left: 24px;
   }
-  .work-teaser-cta {
-    padding-top: 20px;
-    border-top: 1px dashed var(--border-color);
-  }
-  .teaser-btn {
-    display: inline-flex; align-items: center;
-    padding: 13px 22px;
+  @media (min-width: 900px) { .work-cta { grid-template-columns: 1.4fr 1fr; } }
+  .work-cta-text { color: var(--text-secondary); line-height: 1.7; max-width: 56ch; }
+  .work-cta-actions { display: flex; flex-wrap: wrap; gap: var(--space-3); }
+  @media (min-width: 900px) { .work-cta-actions { justify-content: flex-end; } }
+  .btn-cta {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 13px 22px; min-height: 44px;
     border: 1px solid var(--border-color);
     color: var(--text-secondary);
-    letter-spacing: 0.1em;
+    font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
     text-decoration: none;
-    transition: border-color .2s, color .2s, background .2s, box-shadow .2s;
+    transition: border-color var(--dur-base) var(--ease-out), color var(--dur-base) var(--ease-out), background var(--dur-base) var(--ease-out), box-shadow var(--dur-base) var(--ease-out);
   }
-  .teaser-btn:hover {
-    border-color: var(--accent);
-    color: #fff;
-    background: var(--accent);
-    box-shadow: 0 0 14px var(--accent-glow);
-  }
-  .teaser-btn.primary {
-    border-color: var(--accent);
-    color: var(--accent);
-  }
-  .teaser-btn.primary:hover { color: #fff; }
+  .btn-cta:hover { border-color: var(--accent); color: #fff; background: var(--accent); box-shadow: 0 0 14px var(--accent-glow); }
+  .btn-cta.primary { border-color: var(--accent); color: var(--accent-text); }
+  .btn-cta.primary:hover { color: #fff; }
 
-  @media (max-width: 767px) {
-    .work-teaser-count { border-left: none; border-top: 2px solid var(--accent); padding-left: 0; padding-top: 16px; }
-  }
-
-  /* ── Skills — spacious grouped chips ────────────────────────────────────── */
+  /* ── Skills ──────────────────────────────────────────────────────────────── */
   .skills-grid {
     display: grid;
     grid-template-columns: 1fr;
-    gap: clamp(2.5rem, 5vw, 3.5rem);
+    gap: clamp(2rem, 4vw, 3rem);
   }
-  @media (min-width: 768px) {
-    .skills-grid { grid-template-columns: repeat(2, 1fr); gap: 4rem 5rem; }
+  @media (min-width: 768px) { .skills-grid { grid-template-columns: repeat(2, 1fr); gap: 3rem 4rem; } }
+  .skills-grid.compact { gap: 1.5rem 3rem; }
+  .skills-secondary {
+    margin-top: clamp(var(--space-12), 6vw, var(--space-16));
+    padding-top: var(--space-8);
+    border-top: 1px dashed var(--border-color);
   }
 
-  .skill-group-head {
-    display: flex; align-items: baseline; gap: 14px;
-    margin-bottom: 1.25rem;
-  }
-  .skill-group-head::after {
-    content: '';
-    flex: 1;
-    height: 1px;
-    background: var(--border-color);
-    opacity: 0.6;
-    align-self: center;
-  }
-  .skill-group-title {
-    font-size: 13px;
-    letter-spacing: 0.16em;
-    color: var(--text-primary);
-    text-transform: uppercase;
-  }
-  .skill-group-count {
-    font-size: 12px;
-    color: var(--accent);
-    letter-spacing: 0.08em;
-  }
-  .skill-chips {
-    display: flex; flex-wrap: wrap; gap: 10px;
-  }
+  .skill-group-head { display: flex; align-items: baseline; gap: 14px; margin-bottom: 1rem; }
+  .skill-group-head::after { content: ''; flex: 1; height: 1px; background: var(--border-color); opacity: 0.6; align-self: center; }
+  .skill-group-title { font-size: 0.8rem; font-weight: 900; letter-spacing: 0.16em; color: var(--text-primary); text-transform: uppercase; }
+  .skill-group-count { font-size: 0.75rem; color: var(--accent-text); letter-spacing: 0.08em; }
+  .skill-group-note { font-size: 0.8rem; color: var(--text-secondary); margin: -0.25rem 0 0.9rem; line-height: 1.6; }
+  .skill-chips { display: flex; flex-wrap: wrap; gap: 8px; list-style: none; padding: 0; margin: 0; }
   .skill-chip {
     display: inline-flex; align-items: center;
     padding: 8px 14px;
-    font-size: 12px;
-    letter-spacing: 0.04em;
+    font-size: 0.75rem; letter-spacing: 0.04em;
     color: var(--text-secondary);
     background: var(--bg-surface);
     border: 1px solid var(--border-color);
-    transition: border-color .2s ease, color .2s ease, background .2s ease;
+    transition: border-color var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out), background var(--dur-fast) var(--ease-out);
   }
-  .skill-chip:hover {
-    border-color: var(--accent);
-    color: #fff;
-    background: rgba(196,30,58,0.12);
-  }
+  .skill-chip.small { padding: 6px 11px; font-size: 0.7rem; color: var(--text-tertiary); }
+  .skill-chip:hover { border-color: var(--accent); color: #fff; background: rgba(196,30,58,0.12); }
 </style>
 
 <script>
-  // ── Binary float teleport ───────────────────────────────────────────────────
-  document.querySelectorAll('.binary-float').forEach(el => {
-    el.addEventListener('animationiteration', () => {
-      el.style.top    = (Math.random() * 80 + 5) + '%';
-      el.style.left   = (Math.random() * 85 + 5) + '%';
-      el.style.right  = 'auto';
-      el.style.bottom = 'auto';
-    });
-  });
-
-  // ── GSAP Entrance + Scroll Animations ──────────────────────────────────────
   /* Crimson hero name scramble + chromatic aberration */
   (function nameReveal() {
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const SCRAMBLE = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789#@&%*+={}<>/';
 
-    function splitInto(node) {
-      const text = node.dataset.text || '';
-      node.innerHTML = '';
-      const spans = [];
-      for (const ch of text) {
-        const s = document.createElement('span');
-        s.className = 'ch' + (ch === ' ' ? ' sp' : '');
-        s.setAttribute('data-ch', ch);
-        s.textContent = ch === ' ' ? ' ' : ch;
-        node.appendChild(s);
-        spans.push({ el: s, final: ch });
-      }
-      return spans;
+    type Span = { el: HTMLSpanElement; final: string };
+
+    // Glyph spans are server-rendered (see the h1 markup) so the DOM never
+    // restructures on load — that restructuring was a measurable layout shift.
+    function splitInto(node: HTMLElement): Span[] {
+      return Array.from(node.querySelectorAll<HTMLSpanElement>('.ch')).map((el) => ({ el, final: el.dataset.ch || '' }));
     }
 
-    function scramble(spans, baseDelay) {
-      const DUR = 1200, STG = 60, TICK = 45;
+    function scramble(spans: Span[], baseDelay: number) {
+      const DUR = 1000, STG = 55, TICK = 45;
       spans.forEach((s, idx) => {
         if (s.final === ' ') return;
         const start = baseDelay + idx * STG;
         setTimeout(() => {
-          if (reduced) { s.el.textContent = s.final; return; }
           const resolveAtAbs = performance.now() + DUR;
           const interval = setInterval(() => {
             if (performance.now() >= resolveAtAbs) {
@@ -589,26 +677,30 @@ const skillCategories = [
     const ln1 = document.getElementById('ln1');
     const ln2 = document.getElementById('ln2');
     if (!ln1 || !ln2) return;
+    // Under reduced motion the server-rendered text stays as-is: no scramble.
+    if (reduced) {
+      document.getElementById('name-wrap')?.classList.add('framed');
+      return;
+    }
     const ln1Spans = splitInto(ln1);
     const ln2Spans = splitInto(ln2);
-
-    if (reduced) {
-      ln1Spans.forEach(s => s.el.textContent = s.final);
-      ln2Spans.forEach(s => s.el.textContent = s.final);
-      document.getElementById('name-wrap')?.classList.add('framed');
-    } else {
-      scramble(ln1Spans, 0);
-      const e2 = scramble(ln2Spans, 100);
-      const aberrAt = e2 + 40;
-      setTimeout(() => {
-        ln2.classList.add('aberrate');
-        setTimeout(() => ln2.classList.remove('aberrate'), 700);
-        document.getElementById('name-wrap')?.classList.add('framed');
-      }, aberrAt);
+    // Lock every glyph box to its final width (measured once, before any
+    // scrambling) so the random characters cannot cause layout shift.
+    for (const s of [...ln1Spans, ...ln2Spans]) {
+      if (s.final === ' ') continue;
+      s.el.style.width = s.el.getBoundingClientRect().width + 'px';
     }
 
+    scramble(ln1Spans, 0);
+    const e2 = scramble(ln2Spans, 100);
+    setTimeout(() => {
+      ln2.classList.add('aberrate');
+      setTimeout(() => ln2.classList.remove('aberrate'), 700);
+      document.getElementById('name-wrap')?.classList.add('framed');
+    }, e2 + 40);
+
     ln2.addEventListener('mouseenter', () => {
-      if (reduced || ln2.classList.contains('aberrate')) return;
+      if (ln2.classList.contains('aberrate')) return;
       ln2.classList.add('aberrate');
       setTimeout(() => ln2.classList.remove('aberrate'), 650);
     });
@@ -623,88 +715,40 @@ const skillCategories = [
     if (reduced) { el.textContent = TARGET; return; }
 
     const TOTAL = 600;
+    // Reserve the final width (+ caret) so the pill doesn't grow while typing.
+    el.style.display = 'inline-block';
+    el.style.minWidth = Math.ceil(el.getBoundingClientRect().width + 9) + 'px';
+    el.style.textAlign = 'left';
     el.textContent = '';
     let i = 0;
     function tick() {
       i++;
-      el.textContent = TARGET.slice(0, i);
+      el!.textContent = TARGET.slice(0, i);
       if (i < TARGET.length) {
         const dt = TOTAL / TARGET.length + (Math.random() - 0.5) * 18;
         setTimeout(tick, dt);
       } else {
         const caret = document.createElement('span');
         caret.className = 'caret';
-        el.parentElement?.appendChild(caret);
+        el!.parentElement?.appendChild(caret);
       }
     }
     setTimeout(tick, 400);
   })();
 
-  /* Cinematic load sequence */
+  /* Cinematic load sequence (content is never delayed by more than ~400ms
+     after the name resolves; CTAs are in the DOM and focusable throughout) */
   (function loadSequence() {
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const $ = (id) => document.getElementById(id);
-    const els = {
-      status: $('hero-status-wrap'),
-      sub:    $('hero-subtitle'),
-      ctas:   $('hero-ctas'),
-      cue:    $('scroll-cue'),
-    };
+    const $ = (id: string) => document.getElementById(id);
+    const els = { status: $('hero-status-wrap'), sub: $('hero-subtitle'), ctas: $('hero-ctas'), cue: $('scroll-cue') };
     if (reduced) {
-      Object.values(els).forEach(e => e?.classList.add('in'));
+      Object.values(els).forEach((e) => e?.classList.add('in'));
       return;
     }
-    setTimeout(() => els.status?.classList.add('in'),  400);
-    setTimeout(() => els.sub?.classList.add('in'),    1400);
-    setTimeout(() => els.ctas?.classList.add('in'),   1600);
-    setTimeout(() => els.cue?.classList.add('in'),    1900);
-  })();
-
-  /* GSAP scroll-trigger animations */
-  (function() {
-    if (typeof gsap === 'undefined') return;
-
-    // ── Character split utility ───────────────────────────────────────────
-
-    // ── Section line grow ─────────────────────────────────────────────────
-    gsap.utils.toArray('.section-line').forEach(line => {
-      gsap.fromTo(line,
-        { scaleX: 0, transformOrigin: 'left center' },
-        {
-          scaleX: 1,
-          duration: 1,
-          ease: 'power3.inOut',
-          scrollTrigger: { trigger: line, start: 'top 85%' }
-        }
-      );
-    });
-
-    // ── About section reveal ──────────────────────────────────────────────
-    gsap.from('#about .panel', {
-      opacity: 0, y: 45, stagger: 0.15, duration: 0.7, ease: 'power3.out',
-      scrollTrigger: { trigger: '#about', start: 'top 72%' }
-    });
-
-    // ── Work section ──────────────────────────────────────────────────────
-    gsap.from('.work-heading', {
-      opacity: 0, x: -50, duration: 0.7, ease: 'power3.out',
-      scrollTrigger: { trigger: '#work', start: 'top 78%' }
-    });
-
-    gsap.from('.work-teaser', {
-      opacity: 0, y: 45, duration: 0.7, ease: 'power3.out',
-      scrollTrigger: { trigger: '.work-teaser', start: 'top 85%' }
-    });
-
-    // ── Skills section ────────────────────────────────────────────────────
-    gsap.from('.skills-heading', {
-      opacity: 0, x: -50, duration: 0.7, ease: 'power3.out',
-      scrollTrigger: { trigger: '#skills', start: 'top 78%' }
-    });
-
-    gsap.from('.skill-group', {
-      opacity: 0, y: 30, stagger: 0.1, duration: 0.55, ease: 'power3.out',
-      scrollTrigger: { trigger: '.skills-grid', start: 'top 82%' }
-    });
+    setTimeout(() => els.status?.classList.add('in'), 300);
+    setTimeout(() => els.sub?.classList.add('in'), 1200);
+    setTimeout(() => els.ctas?.classList.add('in'), 1350);
+    setTimeout(() => els.cue?.classList.add('in'), 1700);
   })();
 </script>

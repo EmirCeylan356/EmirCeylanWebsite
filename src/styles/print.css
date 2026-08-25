@@ -1,0 +1,140 @@
+/*
+ * print.css — @media print ONLY.
+ *
+ * Imported exclusively from the two unlisted pages
+ * (src/pages/work-4b8b954c2493.astro, src/pages/cv-4b8b954c2493.astro).
+ * Everything in here is wrapped in `@media print` so it can never leak into
+ * screen styles. The CV PDF (scripts/build-cv-pdf.mjs) is rendered from
+ * these rules, so a change here changes the committed PDF too.
+ */
+@media print {
+  @page {
+    size: A4;
+    margin: 12mm 13mm 12mm 13mm;
+  }
+
+  html, body {
+    background: #fff !important;
+    color: #111 !important;
+    font-size: 10pt !important;
+    line-height: 1.3 !important;
+    letter-spacing: 0 !important;
+    -webkit-font-smoothing: auto;
+    min-height: 0 !important;
+  }
+
+  /* Chrome, fixed layers, nav, decoration: gone. */
+  .site-header,
+  .site-footer,
+  .skip-link,
+  #grid-bg-static,
+  #grid-canvas,
+  .vignette,
+  .no-print,
+  .private-note {
+    display: none !important;
+  }
+
+  #main-content { display: block !important; min-height: 0 !important; }
+  main { padding: 0 !important; }
+
+  /* Reveal states must not hide content on paper. */
+  [data-reveal],
+  [data-reveal-stagger] > * {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+
+  * {
+    box-shadow: none !important;
+    text-shadow: none !important;
+    animation: none !important;
+    clip-path: none !important;
+  }
+
+  /* Type */
+  h1, h2, h3, h4, p, li, span, a, div, dt, dd {
+    color: #111 !important;
+    font-weight: 500;
+  }
+  h1, h2, h3, h4, strong, b { font-weight: 700 !important; }
+  a { text-decoration: none !important; }
+  a[href]::after { content: none !important; } /* no URL expansion clutter */
+
+  /* Document skeleton (shared class names on both private pages) */
+  .doc {
+    max-width: none !important;
+    width: auto !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    background: #fff !important;
+  }
+  .doc-header { border-bottom: 2px solid #C41E3A !important; padding-bottom: 2.5mm !important; margin-bottom: 3mm !important; }
+  .doc-name { font-size: 19pt !important; line-height: 1.1 !important; letter-spacing: 0.01em !important; margin: 0 0 1mm !important; }
+  .doc-title { font-size: 10pt !important; margin: 0 0 1mm !important; color: #333 !important; }
+  .doc-contact { font-family: 'JetBrains Mono', ui-monospace, Consolas, monospace !important; font-size: 8pt !important; color: #333 !important; line-height: 1.5 !important; }
+  .doc-contact li { display: inline !important; }
+  .doc-contact li { white-space: nowrap !important; }
+  .doc-contact li:not(:last-child)::after { content: ' · '; color: #999 !important; white-space: normal; }
+  .doc-contact a { color: #111 !important; }
+
+  .doc-section { margin: 0 0 2mm !important; padding: 0 !important; break-inside: auto; }
+  .doc-section-title {
+    font-family: 'JetBrains Mono', ui-monospace, Consolas, monospace !important;
+    font-size: 8.5pt !important;
+    letter-spacing: 0.14em !important;
+    text-transform: uppercase !important;
+    color: #C41E3A !important;
+    border-bottom: 1px solid #C41E3A !important;
+    padding-bottom: 0.8mm !important;
+    margin: 0 0 2mm !important;
+    break-after: avoid;
+  }
+
+  .doc-item {
+    break-inside: avoid;
+    page-break-inside: avoid;
+    margin: 0 0 1.8mm !important;
+    padding: 0 !important;
+    border: 0 !important;
+    background: none !important;
+  }
+  .doc-item-head { display: flex !important; justify-content: space-between !important; gap: 4mm !important; align-items: baseline !important; }
+  .doc-item-title { font-size: 10pt !important; font-weight: 700 !important; margin: 0 !important; }
+  .doc-item-org { font-size: 9.5pt !important; color: #333 !important; margin: 0 !important; }
+  .doc-item-period {
+    font-family: 'JetBrains Mono', ui-monospace, Consolas, monospace !important;
+    font-size: 8.5pt !important;
+    color: #444 !important;
+    white-space: nowrap !important;
+    flex-shrink: 0 !important;
+  }
+  .doc-award { font-size: 9pt !important; white-space: nowrap !important; color: #C41E3A !important; border: 0 !important; padding: 0 !important; background: none !important; font-weight: 700 !important; }
+  .doc-bullets { list-style: none !important; margin: 0.6mm 0 0 !important; padding: 0 !important; }
+  .doc-bullets li { position: relative !important; padding-left: 3.5mm !important; margin: 0 0 0.3mm !important; font-size: 9.25pt !important; line-height: 1.3 !important; color: #222 !important; }
+  .doc-bullets li::before { content: '–'; position: absolute; left: 0; color: #C41E3A !important; }
+  .doc-stack { font-family: 'JetBrains Mono', ui-monospace, Consolas, monospace !important; font-size: 8pt !important; color: #555 !important; margin: 0.5mm 0 0 !important; line-height: 1.3 !important; }
+  .doc-stack .chip { border: 0 !important; padding: 0 !important; background: none !important; margin: 0 !important; display: inline !important; color: #555 !important; font-size: 8.5pt !important; min-height: 0 !important; line-height: 1.3 !important; }
+  .doc-stack .chip:not(:last-child) { margin-right: 0.5em !important; }
+  .doc-stack .chip:not(:last-child)::after { content: ' ·'; color: #999; }
+
+  .doc-skill-row { display: flex !important; gap: 3mm !important; margin: 0 0 0.8mm !important; break-inside: avoid; line-height: 1.3 !important; }
+  .doc-skill-row dt { flex: 0 0 26mm !important; font-family: 'JetBrains Mono', ui-monospace, Consolas, monospace !important; font-size: 8.5pt !important; color: #444 !important; text-transform: uppercase !important; letter-spacing: 0.08em !important; padding-top: 0.4mm; }
+  .doc-skill-row dd { margin: 0 !important; font-size: 9.5pt !important; line-height: 1.3 !important; display: block !important; }
+  .doc-skill-row .chip { border: 0 !important; padding: 0 !important; background: none !important; margin: 0 !important; display: inline !important; color: #222 !important; font-size: 9.5pt !important; min-height: 0 !important; line-height: 1.3 !important; letter-spacing: 0 !important; font-family: inherit !important; }
+  .doc-skill-row .chip:not(:last-child) { margin-right: 0.4em !important; }
+  .doc-skill-row .chip:not(:last-child)::after { content: ','; }
+
+  .doc-two-col { display: grid !important; grid-template-columns: 1fr 1fr !important; gap: 6mm !important; break-inside: avoid; }
+  .doc-plain-list { list-style: none !important; margin: 0 !important; padding: 0 !important; }
+  .doc-plain-list li { position: relative !important; padding-left: 3.5mm !important; margin: 0 0 0.4mm !important; font-size: 9.5pt !important; line-height: 1.32 !important; }
+  .doc-plain-list li::before { content: '–'; position: absolute; left: 0; color: #C41E3A !important; }
+  .doc-summary { font-size: 9.5pt !important; line-height: 1.35 !important; margin: 0 !important; max-width: none !important; }
+
+  /* Work page: the timeline rail becomes plain text on paper. */
+  .timeline::before, .timeline-item::before { display: none !important; }
+  .timeline-item { padding-left: 0 !important; }
+  .cards { display: block !important; }
+}

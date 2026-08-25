@@ -1,81 +1,223 @@
 ---
+import { SITE } from '../lib/site';
+import { contactMailto } from '../data/profile';
+
+// Public contact block. No phone number here or anywhere on the site.
 const socials = [
-  { name: 'GITHUB',   url: 'https://github.com/EmirC356',                    short: '/EmirC356' },
-  { name: 'LINKEDIN', url: 'https://linkedin.com/in/emirceylan',              short: '/in/emirceylan' },
-  { name: 'EMAIL',    url: 'mailto:emir.ceylan@sabanciuniv.edu',              short: 'emir.ceylan@sabanciuniv.edu' },
+  { name: 'GitHub',   url: SITE.github,   short: '/EmirC356',       external: true },
+  { name: 'LinkedIn', url: SITE.linkedin, short: '/in/emirceylan',  external: true },
+  { name: 'Email',    url: `mailto:${SITE.email}`, short: SITE.email, external: false },
+  { name: 'RSS',      url: '/rss.xml',    short: '/rss.xml',        external: false },
 ];
+
+const mailto = contactMailto(
+  'Hello from your website',
+  'Hi Emir,\n\nI found your site and wanted to get in touch about ...\n\n',
+);
+const year = new Date().getFullYear();
+
+// Optional static-friendly contact form (Web3Forms). Enabled only when
+// PUBLIC_WEB3FORMS_KEY is set; the mailto button above it always works.
+// Spam protection: honeypot field (`botcheck`) + a minimum fill time check.
+const formKey = import.meta.env.PUBLIC_WEB3FORMS_KEY as string | undefined;
 ---
 
-<footer id="contact" class="py-16 md:py-20" style="background:var(--bg-surface); border-top:1px solid var(--border-color);">
-  <div class="max-w-7xl mx-auto px-6 md:px-12">
-    <div class="grid lg:grid-cols-2 gap-12 lg:gap-10 items-center">
+<footer id="contact" class="site-footer" aria-labelledby="contact-heading">
+  <div class="footer-inner">
+    <div class="footer-grid">
 
       <div>
-        <p class="text-xs font-mono mb-4" style="color:var(--text-secondary); letter-spacing:0.15em;">04 / CONTACT</p>
-        <h2 class="font-black mb-5 kinetic-text" style="color:var(--text-primary); font-size:clamp(2.25rem, 5.5vw, 4.25rem);">
-          LET'S<span style="color:var(--accent);">_</span>CONNECT
+        <p class="eyebrow">04 / CONTACT</p>
+        <h2 id="contact-heading" class="footer-title kinetic-text">
+          LET'S<span class="accent-text">_</span>TALK
         </h2>
-        <p class="text-sm font-mono" style="color:var(--text-secondary);">
-          Have a project in mind or just want to chat?
+        <p class="footer-copy">
+          I'm looking for ML, AI or software roles I can hold alongside my senior year,
+          in Istanbul or remote. If you're hiring, supervising research, or want the full
+          work history, email me. I reply to everything that isn't spam.
         </p>
       </div>
 
-      <div class="flex flex-col gap-5 lg:max-w-md lg:ml-auto lg:w-full">
-        <a
-          href="mailto:emir.ceylan@sabanciuniv.edu"
-          class="footer-cta inline-flex items-center justify-center px-6 py-4 font-bold text-sm font-mono cut-corner"
-          style="background:var(--accent); color:#fff; border:1px solid var(--accent); letter-spacing:0.08em;"
-        >
-          GET IN TOUCH →
+      <div class="footer-actions">
+        <a href={mailto} class="footer-cta cut-corner font-mono">
+          Email me <span aria-hidden="true">→</span>
         </a>
 
-        <div class="flex flex-col gap-2">
-          {socials.map((social) => (
-            <div class="flex items-center gap-3">
-              <a
-                href={social.url}
-                target="_blank"
-                class="social-link px-4 py-2 font-bold font-mono text-xs whitespace-nowrap cut-corner-sm"
-                style="border:1px solid var(--border-color); color:var(--text-secondary); letter-spacing:0.08em;"
-              >
-                {social.name}
-              </a>
-              <span class="font-mono text-xs truncate" style="color:var(--text-secondary); opacity:0.5;">{social.short}</span>
+        {formKey && (
+          <form class="contact-form" id="contact-form" action="https://api.web3forms.com/submit" method="POST" aria-label="Contact form">
+            <input type="hidden" name="access_key" value={formKey} />
+            <input type="hidden" name="subject" value="New message from emirceylan.com" />
+            <input type="hidden" name="from_name" value="emirceylan.com" />
+            <input type="hidden" name="redirect" value={`${SITE.url}/?sent=1#contact`} />
+            <input type="checkbox" name="botcheck" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true" />
+            <div class="cf-row">
+              <label class="cf-field"><span class="cf-label font-mono">Name</span><input type="text" name="name" required autocomplete="name" maxlength="80" /></label>
+              <label class="cf-field"><span class="cf-label font-mono">Email</span><input type="email" name="email" required autocomplete="email" maxlength="120" /></label>
             </div>
+            <label class="cf-field"><span class="cf-label font-mono">Message</span><textarea name="message" required rows="4" maxlength="4000"></textarea></label>
+            <div class="cf-actions">
+              <button type="submit" class="cf-submit cut-corner-sm font-mono">Send <span aria-hidden="true">→</span></button>
+              <p class="cf-status font-mono" id="contact-status" aria-live="polite"></p>
+            </div>
+          </form>
+        )}
+
+        <ul class="social-list">
+          {socials.map((s) => (
+            <li class="social-row">
+              <a
+                href={s.url}
+                class="social-link cut-corner-sm font-mono"
+                target={s.external ? '_blank' : undefined}
+                rel={s.external ? 'noopener noreferrer me' : s.name === 'RSS' ? 'alternate' : undefined}
+                type={s.name === 'RSS' ? 'application/rss+xml' : undefined}
+              >
+                {s.name}{s.external && <span class="sr-only"> (opens in a new tab)</span>}
+              </a>
+              <span class="social-short font-mono">{s.short}</span>
+            </li>
           ))}
-        </div>
+        </ul>
       </div>
     </div>
 
-    <div class="mt-12" style="height:1px; background:var(--border-color);"></div>
+    <div class="footer-rule" aria-hidden="true"></div>
 
-    <div class="mt-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
-      <p class="font-mono text-xs hidden sm:block" style="color:var(--text-secondary); opacity:0.4;">
+    <div class="footer-meta">
+      <p class="font-mono binary" aria-hidden="true">
         01000011 01010011 00100000 01010011 01010100 01010101 01000100 01000101 01001110 01010100
       </p>
-      <p class="font-mono text-xs" style="color:var(--text-secondary); opacity:0.4;">
-        © {new Date().getFullYear()} EMİR CEYLAN
-      </p>
+      <p class="font-mono">© {year} EMİR CEYLAN · <a href="/uses/">/uses</a> · <a href="/humans.txt">humans.txt</a></p>
     </div>
   </div>
 </footer>
 
 <style>
+  .site-footer {
+    background: var(--bg-surface);
+    border-top: 1px solid var(--border-color);
+    padding-block: clamp(var(--space-12), 7vw, var(--space-20));
+  }
+  .footer-inner { max-width: 80rem; margin-inline: auto; padding-inline: var(--gutter); }
+  .footer-grid { display: grid; gap: var(--space-12); align-items: center; }
+  @media (min-width: 1024px) { .footer-grid { grid-template-columns: 1.3fr 1fr; gap: var(--space-8); } }
+
+  .eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--text-secondary); margin-bottom: var(--space-4);
+  }
+  .footer-title {
+    font-size: clamp(2.25rem, 5.5vw, 4.25rem);
+    font-weight: 900; color: var(--text-primary);
+    margin-bottom: var(--space-5, 1.25rem);
+  }
+  .footer-copy { color: var(--text-secondary); line-height: 1.75; max-width: 56ch; }
+
+  .footer-actions { display: flex; flex-direction: column; gap: var(--space-6); }
+  @media (min-width: 1024px) { .footer-actions { max-width: 28rem; margin-left: auto; width: 100%; } }
+
   .footer-cta {
-    transition: background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+    display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+    padding: 1rem 1.5rem; min-height: 48px;
+    background: var(--accent); color: #fff; border: 1px solid var(--accent);
+    font-size: 0.85rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+    text-decoration: none;
+    transition: background var(--dur-base) var(--ease-out), color var(--dur-base) var(--ease-out), box-shadow var(--dur-base) var(--ease-out);
   }
-  .footer-cta:hover {
-    background: transparent;
-    color: var(--accent);
-    box-shadow: 0 0 16px var(--accent-glow);
-  }
+  .footer-cta:hover { background: transparent; color: var(--accent); box-shadow: 0 0 16px var(--accent-glow); }
+
+  .social-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: var(--space-2); }
+  .social-row { display: flex; align-items: center; gap: var(--space-3); min-width: 0; }
   .social-link {
-    transition: border-color 0.2s ease, color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+    display: inline-flex; align-items: center; justify-content: center;
+    min-width: 6.5rem; min-height: 44px; padding: 0 1rem;
+    border: 1px solid var(--border-color);
+    color: var(--text-secondary);
+    font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+    text-decoration: none; white-space: nowrap;
+    transition: border-color var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out), background var(--dur-fast) var(--ease-out), box-shadow var(--dur-fast) var(--ease-out);
   }
-  .social-link:hover {
-    border-color: var(--accent);
-    color: #fff;
-    background: var(--accent);
-    box-shadow: 0 0 8px var(--accent-glow);
+  .social-link:hover { border-color: var(--accent); color: #fff; background: var(--accent); box-shadow: 0 0 8px var(--accent-glow); }
+  .social-short { font-size: 0.75rem; color: var(--text-tertiary); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+  /* Contact form (only rendered when PUBLIC_WEB3FORMS_KEY is set) */
+  .contact-form { display: flex; flex-direction: column; gap: var(--space-3); padding: var(--space-4); border: 1px solid var(--border-color); background: var(--bg-base); }
+  .contact-form .hp { position: absolute; left: -9999px; opacity: 0; }
+  .cf-row { display: grid; gap: var(--space-3); }
+  @media (min-width: 560px) { .cf-row { grid-template-columns: 1fr 1fr; } }
+  .cf-field { display: flex; flex-direction: column; gap: 6px; }
+  .cf-label { font-size: 0.65rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-secondary); }
+  .contact-form input:not(.hp), .contact-form textarea {
+    font-family: 'JetBrains Mono', monospace; font-size: 0.85rem;
+    background: var(--bg-elevated); border: 1px solid var(--border-color); color: var(--text-primary);
+    padding: 0.7rem 0.85rem; min-height: 44px; outline: none; resize: vertical;
+    transition: border-color var(--dur-fast) var(--ease-out), box-shadow var(--dur-fast) var(--ease-out);
   }
+  .contact-form input:focus, .contact-form textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
+  .cf-actions { display: flex; align-items: center; gap: var(--space-4); flex-wrap: wrap; }
+  .cf-submit {
+    min-height: 44px; padding: 0 1.25rem; cursor: pointer;
+    background: transparent; color: var(--accent); border: 1px solid var(--accent);
+    font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
+    transition: background var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out);
+  }
+  .cf-submit:hover { background: var(--accent); color: #fff; }
+  .cf-submit:disabled { opacity: 0.6; cursor: wait; }
+  .cf-status { font-size: 0.72rem; color: var(--text-secondary); margin: 0; }
+  .cf-status.ok { color: #6fdc8c; }
+  .cf-status.err { color: #FF5C7A; }
+
+  .footer-rule { margin-top: var(--space-12); height: 1px; background: var(--border-color); }
+  .footer-meta {
+    margin-top: var(--space-6);
+    display: flex; flex-direction: column; gap: 0.5rem;
+    font-size: 0.72rem; color: var(--text-tertiary);
+  }
+  @media (min-width: 640px) { .footer-meta { flex-direction: row; align-items: center; justify-content: space-between; } }
+  .footer-meta .binary { display: none; letter-spacing: 0.02em; }
+  @media (min-width: 900px) { .footer-meta .binary { display: block; } }
+  .footer-meta a { color: inherit; text-decoration: underline; text-underline-offset: 3px; display: inline-block; padding: 0.5rem 0.15rem; margin: -0.5rem 0; }
+  .footer-meta a:hover { color: var(--text-primary); }
 </style>
+
+<script>
+  // Progressive enhancement for the contact form: submit via fetch, show
+  // inline status, keep the native POST + redirect as the no-JS path.
+  const form = document.getElementById('contact-form') as HTMLFormElement | null;
+  const status = document.getElementById('contact-status');
+  const openedAt = Date.now();
+  if (form && status) {
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const hp = form.querySelector<HTMLInputElement>('input[name="botcheck"]');
+      if ((hp && hp.checked) || Date.now() - openedAt < 3000) { status.textContent = 'Please try again.'; return; }
+      const btn = form.querySelector<HTMLButtonElement>('button[type="submit"]');
+      if (btn) btn.disabled = true;
+      status.className = 'cf-status font-mono';
+      status.textContent = 'Sending…';
+      try {
+        const data = new FormData(form);
+        data.delete('redirect');
+        const res = await fetch(form.action, { method: 'POST', body: data, headers: { Accept: 'application/json' } });
+        const json = await res.json().catch(() => ({}));
+        if (res.ok && json.success !== false) {
+          status.classList.add('ok');
+          status.textContent = 'Sent. I will reply by email.';
+          form.reset();
+        } else {
+          throw new Error(json.message || 'Request failed');
+        }
+      } catch {
+        status.classList.add('err');
+        status.textContent = 'Could not send. Use the email button instead.';
+      } finally {
+        if (btn) btn.disabled = false;
+      }
+    });
+  }
+  if (new URLSearchParams(location.search).get('sent') === '1' && status) {
+    status.classList.add('ok');
+    status.textContent = 'Sent. I will reply by email.';
+  }
+</script>

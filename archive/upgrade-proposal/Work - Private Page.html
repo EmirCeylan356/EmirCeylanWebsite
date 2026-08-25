@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>EMIR CEYLAN — Work / Private</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="proposal.css">
+<style>
+/* ═══ PRIVATE WORK PAGE ══════════════════════════════════════════════════ */
+.wp-hero { position: relative; z-index: 1; padding: 128px clamp(20px,5vw,88px) 0; }
+.wp-hero .wrap { max-width: 1240px; margin: 0 auto; }
+.wp-access { display: inline-flex; align-items: center; gap: 10px; font-family: var(--mono); font-size: 11px; letter-spacing: 0.18em;
+  color: var(--accent); border: 1px solid var(--accent-dim); padding: 7px 14px; margin-bottom: 30px; }
+.wp-access::before { content: '🔒'; font-size: 11px; }
+.wp-hero h1 { font-family: var(--disp); font-weight: 700; font-size: clamp(52px, 10vw, 128px); line-height: 0.84; letter-spacing: -0.035em; }
+.wp-hero h1 em { color: var(--accent); font-style: normal; }
+.wp-hero .sub { font-family: var(--mono); font-size: 13px; letter-spacing: 0.06em; color: var(--dim); margin-top: 24px; max-width: 62ch; line-height: 1.7; }
+.wp-metrics { display: flex; gap: 40px; margin-top: 46px; flex-wrap: wrap; padding-bottom: 8px; }
+.wp-metrics .m .v { font-family: var(--disp); font-weight: 700; font-size: 40px; letter-spacing: -0.02em; color: var(--text); line-height: 1; }
+.wp-metrics .m .v em { color: var(--accent); font-style: normal; }
+.wp-metrics .m .l { font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; color: var(--faint); text-transform: uppercase; margin-top: 8px; }
+
+.wp-list { position: relative; z-index: 1; max-width: 1240px; margin: 0 auto; padding: 70px clamp(20px,5vw,88px) 40px; }
+.wp-toolbar { display: flex; align-items: center; gap: 14px; margin-bottom: 30px; flex-wrap: wrap; }
+.wp-toolbar .k { font-family: var(--mono); font-size: 10px; letter-spacing: 0.2em; color: var(--faint); text-transform: uppercase; }
+.filter { font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em; color: var(--dim); border: 1px solid var(--border-lit); background: none; padding: 8px 14px; cursor: pointer; transition: all .2s ease; }
+.filter:hover { color: var(--text); border-color: var(--border-lit); }
+.filter.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+
+.role { border: 1px solid var(--border); background: var(--surface); margin-bottom: 16px; transition: border-color .25s ease, box-shadow .25s ease; }
+.role:hover { border-color: var(--accent-dim); box-shadow: 0 20px 50px -34px var(--accent-glow); }
+.role .head { display: grid; grid-template-columns: 116px 1fr auto; gap: 26px; padding: 30px clamp(24px,3vw,40px); cursor: pointer; align-items: start; }
+.role .period { font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em; color: var(--accent); line-height: 1.5; padding-top: 5px; }
+.role .idx { font-family: var(--mono); font-size: 10px; color: var(--faint); margin-top: 8px; }
+.role .title { font-family: var(--disp); font-weight: 700; font-size: clamp(20px, 2.4vw, 27px); letter-spacing: -0.01em; line-height: 1.12; }
+.role .org { font-family: var(--mono); font-size: 12px; letter-spacing: 0.04em; color: var(--dim); margin-top: 7px; }
+.role .oneline { color: var(--dim); font-size: 14.5px; line-height: 1.6; margin-top: 14px; max-width: 66ch; }
+.role .toggle { font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; color: var(--faint); border: 1px solid var(--border-lit); padding: 9px 13px; white-space: nowrap; transition: all .2s ease; align-self: center; }
+.role:hover .toggle { color: var(--accent); border-color: var(--accent-dim); }
+.role.open .toggle { background: var(--accent); color: #fff; border-color: var(--accent); }
+.role .tag-strip { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 16px; }
+.role .tag { font-family: var(--mono); font-size: 10px; letter-spacing: 0.06em; color: var(--dim); border: 1px solid var(--border-lit); padding: 5px 9px; }
+
+.role .body { max-height: 0; overflow: hidden; transition: max-height .5s cubic-bezier(.16,1,.3,1); }
+.role.open .body { max-height: 900px; }
+.role .body-in { padding: 0 clamp(24px,3vw,40px) 34px; border-top: 1px solid var(--border); }
+.role .grid2 { display: grid; grid-template-columns: 1.6fr 1fr; gap: 40px; padding-top: 28px; }
+.role .grid2 .prose p { color: var(--dim); font-size: 14.5px; line-height: 1.75; margin-bottom: 12px; }
+.role .grid2 .prose strong { color: var(--text); font-weight: 600; }
+.role .grid2 .prose a { color: var(--accent); }
+.role .outcomes .k { font-family: var(--mono); font-size: 10px; letter-spacing: 0.16em; color: var(--faint); text-transform: uppercase; margin-bottom: 14px; }
+.role .outcomes ul { list-style: none; }
+.role .outcomes li { font-family: var(--mono); font-size: 12.5px; color: var(--dim); line-height: 1.5; padding: 10px 0 10px 20px; border-bottom: 1px solid var(--border); position: relative; }
+.role .outcomes li::before { content: '▸'; position: absolute; left: 0; color: var(--accent); }
+.role .outcomes li:last-child { border-bottom: none; }
+
+.wp-foot { position: relative; z-index: 1; border-top: 1px solid var(--border); padding: 54px clamp(20px,5vw,88px); }
+.wp-foot .wrap { max-width: 1240px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; gap: 20px; flex-wrap: wrap; }
+.wp-foot a.back { font-family: var(--mono); font-size: 12px; letter-spacing: 0.1em; color: var(--dim); }
+.wp-foot a.back:hover { color: var(--accent); }
+.wp-foot .contact { display: flex; gap: 22px; font-family: var(--mono); font-size: 12px; letter-spacing: 0.06em; }
+
+@media (max-width: 820px) {
+  .role .head { grid-template-columns: 1fr; gap: 12px; }
+  .role .toggle { justify-self: start; }
+  .role .grid2 { grid-template-columns: 1fr; gap: 24px; }
+}
+</style>
+</head>
+<body>
+
+<div class="page-grid"></div>
+
+<div class="proposal-bar">
+  <span class="brand">EC</span>
+  <span class="mono" style="letter-spacing:0.2em;">WORK / PRIVATE ACCESS</span>
+  <nav><a href="Emir Ceylan — Redesign Proposal.html">← BACK TO PROPOSAL</a></nav>
+</div>
+
+<header class="wp-hero" data-screen-label="work private hero">
+  <div class="wrap">
+    <div class="wp-access mono">RECRUITER-ONLY · SHARED VIA REQUEST</div>
+    <h1>SELECTED<br><em>WORK</em></h1>
+    <p class="sub">The full record — roles, dates, stack, and outcomes. Machine-learning research and engineering at the intersection of computer science and healthcare. Click any role to expand.</p>
+    <div class="wp-metrics">
+      <div class="m"><div class="v"><em>07</em></div><div class="l">Roles &amp; Projects</div></div>
+      <div class="m"><div class="v">250<em>+</em></div><div class="l">Publications analysed (PURE)</div></div>
+      <div class="m"><div class="v">2027</div><div class="l">Expected graduation</div></div>
+      <div class="m"><div class="v">XAI</div><div class="l">Core specialisation</div></div>
+    </div>
+  </div>
+</header>
+
+<main class="wp-list" data-screen-label="role list">
+  <div class="wp-toolbar">
+    <span class="k">Filter //</span>
+    <button class="filter active" data-f="all">ALL</button>
+    <button class="filter" data-f="research">RESEARCH</button>
+    <button class="filter" data-f="engineering">ENGINEERING</button>
+    <button class="filter" data-f="leadership">LEADERSHIP</button>
+    <button class="filter" data-f="teaching">TEACHING</button>
+  </div>
+  <div id="roles"></div>
+</main>
+
+<footer class="wp-foot">
+  <div class="wrap">
+    <a class="back" href="Emir Ceylan — Redesign Proposal.html">← BACK TO REDESIGN PROPOSAL</a>
+    <div class="contact">
+      <a href="https://www.linkedin.com/in/emir-ceylan-student-482775332" target="_blank" rel="noopener">LINKEDIN ↗</a>
+      <a href="https://github.com/EmirC356" target="_blank" rel="noopener">GITHUB ↗</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+const roles = [
+  {
+    period: '2026 — PRESENT', cats: ['teaching'],
+    title: 'TEACHING ASSISTANT', org: 'DSA 210 — Data Science · Sabancı University',
+    oneline: 'Assisting Prof. Öznur Taştan & Özgün Yargı; mentoring students through applied ML.',
+    tags: ['scikit-learn', 'pandas', 'matplotlib', 'Python', 'EDA'],
+    prose: `<p>Teaching Assistant for DSA 210, supporting students across the foundations of data science — computational thinking, machine learning, and statistical inference.</p><p>I lead weekly office hours with hands-on guidance on real data tools, debugging Python notebooks live and walking through <strong>EDA</strong>, data privacy (<strong>K-anonymity</strong>), and predictive modelling.</p>`,
+    outcomes: ['Weekly office hours + live notebook debugging', 'EDA · K-anonymity · predictive pipelines', 'Bridged coursework theory to applied practice'],
+  },
+  {
+    period: '2025 — 2026', cats: ['research'],
+    title: 'UNDERGRADUATE RESEARCHER', org: 'PURE — Sabancı University',
+    oneline: 'Scientometric study of Explainable AI in healthcare with Prof. Polat Göktaş.',
+    tags: ['NLP', 'Python', 'Bibliometrics', 'Network Analysis'],
+    prose: `<p>Conducted a comprehensive scientometric study analysing <strong>250+ global publications</strong> to map the evolving landscape of AI in healthcare.</p><p>Focused on the intersection of <strong>explainable AI (XAI)</strong>, clinician trust, and regulatory governance — using literature mining and network analysis to surface knowledge gaps for trustworthy, clinically deployable systems.</p><p><a href="https://www.linkedin.com/posts/emir-ceylan-student-482775332_pure-undergraduateresearch-ai-ugcPost-7433604110798544896-2cDY" target="_blank" rel="noopener">Read the LinkedIn write-up ↗</a></p>`,
+    outcomes: ['250+ publications analysed via literature mining', 'Network analysis: XAI · trust · governance', 'Identified gaps for deployable clinical AI'],
+  },
+  {
+    period: '2026 — PRESENT', cats: ['leadership', 'engineering', 'research'],
+    title: 'PROJECT LEAD — DeepMyelinAI', org: 'Teknofest Medical AI',
+    oneline: 'Leading a multidisciplinary team building an explainable CDS system for Multiple Sclerosis.',
+    tags: ['Temporal Transformers', 'SHAP / LIME', 'Multimodal Fusion', 'McDonald 2024'],
+    prose: `<p>Project Lead for <strong>DeepMyelinAI</strong>, an explainable AI clinical decision-support system for <strong>Multiple Sclerosis</strong>.</p><p>I oversee integration of multimodal data — CSF biomarkers, genetic risk profiles, and longitudinal disability scores — into a unified ML framework for early diagnosis and progression prediction, engineering <strong>Temporal Transformer</strong> architectures with <strong>SHAP/LIME</strong> XAI layers.</p><p>Aligned to the <strong>2024 McDonald Criteria</strong> so outputs meet clinical standards.</p>`,
+    outcomes: ['Multimodal fusion: CSF + genetic + clinical', 'Temporal Transformers for longitudinal tracking', 'XAI layers for clinician transparency', 'Full lifecycle ownership + team lead'],
+  },
+  {
+    period: 'SUMMER 2026', cats: ['engineering', 'research'], wip: true,
+    title: 'MACHINE LEARNING INTERN', org: 'Amsterdam UMC',
+    oneline: 'Building AI models to reduce unnecessary sepsis testing in emergency-room workflows.',
+    tags: ['Clinical ML', 'Triage Modeling'],
+    prose: `<p>Developing AI models to reduce unnecessary sepsis testing in Emergency Room settings.</p><p>Optimising diagnostic triggers to cut physician workload and healthcare cost. <em>Work in progress.</em></p>`,
+    outcomes: ['Optimise ER diagnostic triggers', 'Target: lower workload + cost', 'In progress — Summer 2026'],
+  },
+  {
+    period: '2024 — 2025', cats: ['engineering', 'research'],
+    title: 'ML DEVELOPER — OI Pathogenicity', org: 'ENS 210 — Bioinformatics Project',
+    oneline: 'High-precision classifier for COL1A1 / COL1A2 variants that outperformed SIFT.',
+    tags: ['ClinVar', 'Feature Engineering', 'Cross-validation', 'scikit-learn'],
+    prose: `<p>Built a high-precision ML model predicting pathogenicity of <strong>COL1A1</strong> and <strong>COL1A2</strong> variants — primary causes of Osteogenesis Imperfecta.</p><p>Using a curated <strong>ClinVar</strong> dataset, I engineered biologically meaningful features and trained classifiers that <strong>surpassed SIFT</strong> and general-purpose predictors. Pipeline: variant filtering → feature selection → cross-validation → interpretability.</p><p><a href="https://github.com/EmirC356/ENS210_Project" target="_blank" rel="noopener">View on GitHub ↗</a></p>`,
+    outcomes: ['Outperformed SIFT + general predictors', 'Reproducible, clinically relevant workflow', 'Interpretability analysis included'],
+  },
+  {
+    period: '2024 — 2025', cats: ['research'],
+    title: 'RESEARCH CONTRIBUTOR — PETase', org: 'AI-Engineered Enzymes / Molecular Biology',
+    oneline: 'Computationally optimising PETase enzymes for sustainable plastic degradation.',
+    tags: ['Protein Structure', 'Mutation Screening', 'Synthetic Biology'],
+    prose: `<p>Under İleyna Sevde Üvak, contributed to optimising <strong>PETase enzymes</strong> for efficient PET-plastic degradation.</p><p>Applied protein structure analysis and computational mutation screening to identify variants with improved <strong>thermostability</strong> and catalytic efficiency — at the intersection of synthetic biology and environmental sustainability.</p>`,
+    outcomes: ['Computational mutation screening', 'Targeted thermostability + efficiency', 'AI-driven enzyme engineering'],
+  },
+  {
+    period: '2025 — PRESENT', cats: ['leadership'],
+    title: 'BOARD MEMBER & HEAD OF BIOTECH', org: 'Sabancı Deep Technologies Club',
+    oneline: 'Leading the BioTech division; building a deep-tech community through hands-on events.',
+    tags: ['CRISPR', 'Synthetic Biology', 'Community', 'Mentorship'],
+    prose: `<p>Board Member and Head of the <strong>BioTech Division</strong>, leading initiatives that bridge biology with emerging tech.</p><p>I organise workshops and hands-on projects across CRISPR, synthetic biology, computational genomics, and AI drug discovery — coordinating interdisciplinary collaboration between CS, biology, and engineering students.</p>`,
+    outcomes: ['Workshops: CRISPR · synbio · AI drug discovery', 'Cross-disciplinary project coordination', 'Community + research mentorship'],
+  },
+];
+
+const catLabel = { research: 'RESEARCH', engineering: 'ENGINEERING', leadership: 'LEADERSHIP', teaching: 'TEACHING' };
+const el = document.getElementById('roles');
+
+function render(filter) {
+  const list = roles.filter(r => filter === 'all' || r.cats.includes(filter));
+  el.innerHTML = list.map((r, i) => `
+    <article class="role" data-cats="${r.cats.join(' ')}">
+      <div class="head">
+        <div>
+          <div class="period">${r.period}${r.wip ? '<br><span style="color:var(--faint)">◦ WIP</span>' : ''}</div>
+          <div class="idx">${String(i + 1).padStart(2, '0')} / ${String(list.length).padStart(2, '0')}</div>
+        </div>
+        <div>
+          <div class="title">${r.title}</div>
+          <div class="org">${r.org}</div>
+          <div class="oneline">${r.oneline}</div>
+          <div class="tag-strip">${r.tags.map(t => `<span class="tag">${t}</span>`).join('')}</div>
+        </div>
+        <div class="toggle">DETAILS +</div>
+      </div>
+      <div class="body"><div class="body-in"><div class="grid2">
+        <div class="prose">${r.prose}</div>
+        <div class="outcomes"><div class="k">Outcomes</div><ul>${r.outcomes.map(o => `<li>${o}</li>`).join('')}</ul></div>
+      </div></div></div>
+    </article>`).join('');
+
+  el.querySelectorAll('.role').forEach(role => {
+    const head = role.querySelector('.head');
+    const tog = role.querySelector('.toggle');
+    head.addEventListener('click', () => {
+      const open = role.classList.toggle('open');
+      tog.textContent = open ? 'CLOSE −' : 'DETAILS +';
+    });
+  });
+}
+render('all');
+
+document.querySelectorAll('.filter').forEach(f => {
+  f.addEventListener('click', () => {
+    document.querySelectorAll('.filter').forEach(x => x.classList.remove('active'));
+    f.classList.add('active');
+    render(f.dataset.f);
+  });
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,165 @@
+---
+// Post layout: kicker, title, dates, reading time, tags, prose, prev/next.
+// Used by src/pages/blog/[...slug].astro. Styles are scoped here; the MDX
+// body is styled through the `.prose :global(...)` rules below.
+import Layout from './Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import TagChips from '../components/blog/TagChips.astro';
+import { SITE } from '../lib/site';
+import { formatDate, isoDate, readingTime, type Post } from '../components/blog/posts';
+
+interface Props { post: Post; prev?: Post; next?: Post }
+const { post, prev, next } = Astro.props;
+const { title, description, pubDate, updatedDate, tags, draft } = post.data;
+const rt = readingTime(post.body);
+const url = new URL(`/blog/${post.id}/`, SITE.url).href;
+
+const articleLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: title,
+  description,
+  datePublished: pubDate.toISOString(),
+  dateModified: (updatedDate ?? pubDate).toISOString(),
+  author: { '@type': 'Person', name: SITE.name, url: SITE.url },
+  publisher: { '@type': 'Person', name: SITE.name, url: SITE.url },
+  mainEntityOfPage: url,
+  url,
+  image: new URL(`/og/blog/${post.id}.png`, SITE.url).href,
+  keywords: tags.join(', '),
+  wordCount: rt.words,
+  inLanguage: 'en',
+};
+---
+
+<Layout
+  title={title}
+  description={description}
+  ogImage={`/og/blog/${post.id}.png`}
+  type="article"
+  publishedTime={pubDate.toISOString()}
+  modifiedTime={updatedDate?.toISOString()}
+  jsonLd={[articleLd]}
+  noindex={draft}
+>
+  <Header />
+
+  <main id="main" class="page">
+    <article class="container post" aria-labelledby="post-title">
+      <header class="post-head" data-reveal>
+        <p class="eyebrow"><a href="/blog/">Blog</a> /{draft && <span class="draft-badge">DRAFT</span>}</p>
+        <h1 id="post-title" class="post-title">{title}</h1>
+        <p class="post-lede">{description}</p>
+        <p class="post-meta">
+          <time datetime={isoDate(pubDate)}>{formatDate(pubDate)}</time>
+          {updatedDate && (
+            <>
+              <span aria-hidden="true">·</span>
+              <span>updated <time datetime={isoDate(updatedDate)}>{formatDate(updatedDate)}</time></span>
+            </>
+          )}
+          <span aria-hidden="true">·</span>
+          <span>{rt.minutes} min read</span>
+        </p>
+        <TagChips tags={tags} />
+      </header>
+
+      <div class="prose" data-reveal>
+        <slot />
+      </div>
+
+      <nav class="post-nav" aria-label="Neighbouring posts">
+        {prev ? (
+          <a class="post-nav-link prev panel" href={`/blog/${prev.id}/`}>
+            <span class="post-nav-label">← Older</span>
+            <span class="post-nav-title">{prev.data.title}</span>
+          </a>
+        ) : <span class="post-nav-spacer" aria-hidden="true"></span>}
+        {next ? (
+          <a class="post-nav-link next panel" href={`/blog/${next.id}/`}>
+            <span class="post-nav-label">Newer →</span>
+            <span class="post-nav-title">{next.data.title}</span>
+          </a>
+        ) : <span class="post-nav-spacer" aria-hidden="true"></span>}
+      </nav>
+
+      <p class="back"><a href="/blog/">← Back to blog</a></p>
+    </article>
+  </main>
+
+  <Footer />
+</Layout>
+
+<style>
+  .page { padding-top: 80px; flex: 1; }
+  .container { max-width: 80rem; margin-inline: auto; padding-inline: var(--gutter); }
+  .post { padding-block: var(--section-y); max-width: 46rem; }
+
+  .eyebrow {
+    font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--text-secondary); margin-bottom: var(--space-4);
+    display: flex; align-items: center; gap: var(--space-2);
+  }
+  .eyebrow a { color: inherit; text-decoration: none; }
+  .eyebrow a:hover { text-decoration: underline; }
+  .draft-badge { color: #fff; background: var(--accent); padding: 0.1rem 0.45rem; font-weight: 700; margin-left: var(--space-2); }
+
+  .post-title {
+    font-size: clamp(2rem, 1.4rem + 3vw, 3.5rem);
+    line-height: 1.08; letter-spacing: -0.02em; text-wrap: balance;
+    margin-bottom: var(--space-4);
+  }
+  .post-lede { color: var(--text-secondary); font-size: 1.1rem; max-width: 60ch; margin-bottom: var(--space-4); }
+  .post-meta {
+    display: flex; flex-wrap: wrap; gap: var(--space-2);
+    font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--text-tertiary); margin-bottom: var(--space-4);
+  }
+  .post-head { padding-bottom: var(--space-8); border-bottom: 1px solid var(--border-color); margin-bottom: var(--space-8); }
+
+  /* ── Prose ─────────────────────────────────────────────────────────────── */
+  .prose { max-width: 68ch; font-size: 1.05rem; line-height: 1.75; color: var(--text-primary); }
+  .prose :global(p) { margin-bottom: var(--space-4); color: var(--text-primary); }
+  .prose :global(h2) { font-size: 1.6rem; line-height: 1.2; letter-spacing: -0.01em; margin: var(--space-12) 0 var(--space-4); padding-top: var(--space-4); border-top: 1px solid var(--border-color); }
+  .prose :global(h3) { font-size: 1.2rem; margin: var(--space-8) 0 var(--space-3); }
+  .prose :global(h2 a), .prose :global(h3 a) { color: inherit; text-decoration: none; }
+  .prose :global(a) { color: var(--accent-text); text-decoration: underline; text-underline-offset: 3px; }
+  .prose :global(a:hover) { color: var(--accent-bri); }
+  .prose :global(strong) { font-weight: 700; }
+  .prose :global(ul), .prose :global(ol) { padding-left: 1.4em; margin-bottom: var(--space-4); }
+  .prose :global(li) { margin-bottom: var(--space-2); }
+  .prose :global(li::marker) { color: var(--accent); }
+  .prose :global(blockquote) {
+    border-left: 2px solid var(--accent); padding: var(--space-2) var(--space-4);
+    margin: var(--space-6) 0; color: var(--text-secondary); background: var(--bg-surface);
+  }
+  .prose :global(blockquote p:last-child) { margin-bottom: 0; }
+  .prose :global(hr) { border: 0; border-top: 1px solid var(--border-color); margin: var(--space-8) 0; }
+  .prose :global(code) { font-family: 'JetBrains Mono', monospace; font-size: 0.85em; background: var(--bg-elevated); border: 1px solid var(--border-color); padding: 0.1em 0.35em; }
+  /* Shiki output (default theme github-dark; astro.config is out of scope, so the wrapper is restyled here). */
+  .prose :global(pre.astro-code) {
+    background: var(--bg-surface) !important; border: 1px solid var(--border-color);
+    padding: var(--space-4) var(--space-6); margin: var(--space-6) 0;
+    font-size: 0.85rem; line-height: 1.6; overflow-x: auto;
+  }
+  .prose :global(pre.astro-code code) { background: transparent; border: 0; padding: 0; font-size: inherit; }
+  .prose :global(table) { width: 100%; border-collapse: collapse; margin: var(--space-6) 0; font-size: 0.95rem; display: block; overflow-x: auto; }
+  .prose :global(th), .prose :global(td) { border: 1px solid var(--border-color); padding: var(--space-2) var(--space-3); text-align: left; vertical-align: top; }
+  .prose :global(th) { font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; background: var(--bg-surface); color: var(--text-secondary); }
+  .prose :global(img) { max-width: 100%; height: auto; border: 1px solid var(--border-color); }
+  .prose :global(figcaption) { font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; color: var(--text-tertiary); margin-top: var(--space-2); }
+
+  /* ── Prev / next ───────────────────────────────────────────────────────── */
+  .post-nav { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-4); margin-top: var(--space-16); }
+  .post-nav-link { display: flex; flex-direction: column; gap: var(--space-2); padding: var(--space-4) var(--space-6); text-decoration: none; transition: border-color var(--dur-base) var(--ease-out); }
+  .post-nav-link:hover { border-color: var(--accent); }
+  .post-nav-link.next { text-align: right; }
+  .post-nav-label { font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-tertiary); }
+  .post-nav-title { color: var(--text-primary); font-weight: 700; line-height: 1.3; }
+  @media (max-width: 640px) { .post-nav { grid-template-columns: 1fr; } .post-nav-spacer { display: none; } .post-nav-link.next { text-align: left; } }
+
+  .back { margin-top: var(--space-8); font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; letter-spacing: 0.08em; }
+  .back a { color: var(--text-secondary); text-decoration: none; }
+  .back a:hover { color: var(--accent-text); }
+</style>

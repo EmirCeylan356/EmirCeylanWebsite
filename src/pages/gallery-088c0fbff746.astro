@@ -11,135 +11,136 @@
 import Layout from '../layouts/Layout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
-import seedData from '../data/gallery-submissions.json';
 
-const supabaseUrl = import.meta.env.PUBLIC_SUPABASE_URL || '';
-const supabaseKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY || '';
-const seedJson = JSON.stringify(seedData || []);
+// Swatches: hex + human name (the name feeds aria-labels and the live status line).
+const COLORS: [string, string][] = [
+  ['#222222', 'Ink black'], ['#FFFFFF', 'White'], ['#C41E3A', 'Crimson'], ['#00E5FF', 'Cyan'],
+  ['#FF0055', 'Hot pink'], ['#FF6B2C', 'Orange'], ['#FFD700', 'Gold'], ['#00C853', 'Green'],
+  ['#2196F3', 'Blue'], ['#9C27B0', 'Purple'], ['#8B4513', 'Brown'], ['#FFCD94', 'Peach'], ['#FF69B4', 'Pink'],
+];
 ---
 
-<Layout title="VISITOR GALLERY — Emir Ceylan" noindex={true}>
+<Layout
+  title="VISITOR GALLERY"
+  description="An unlisted drawing wall: sketch something on the canvas and transmit it to the neural archive."
+  noindex={true}
+>
   <Header />
 
-  <main style="padding-top: 80px;">
+  <main class="vg" style="padding-top: 80px;">
 
     <!-- ═══ PAGE HEADER ══════════════════════════════════════════════════════ -->
-    <section style="padding:3rem 2rem 2rem; border-bottom:1px solid var(--border-color);">
+    <section class="vg-section vg-head">
       <div class="max-w-7xl mx-auto">
-        <p class="font-mono text-xs mb-3" style="color:var(--text-secondary); letter-spacing:0.15em;">NEURAL_ARCHIVE /</p>
+        <p class="font-mono text-xs mb-3 vg-eyebrow">NEURAL_ARCHIVE /</p>
         <div class="flex items-end gap-4">
-          <h1 class="font-black kinetic-text" style="font-family:'Syne'; font-size:clamp(3rem,9vw,7rem); color:var(--text-primary); line-height:0.9;">
+          <h1 class="font-black kinetic-text vg-h1">
             VISITOR<br/><span style="color:var(--accent);">GALLERY</span>
           </h1>
           <div class="flex-1 h-px" style="background:var(--border-color); margin-bottom:0.5rem;"></div>
-          <span id="artwork-count" class="font-black font-mono text-xl" style="color:var(--text-secondary); margin-bottom:0.4rem;">/--</span>
+          <span id="artwork-count" class="font-black font-mono text-xl" style="color:var(--text-secondary); margin-bottom:0.4rem;" aria-label="Number of works">/--</span>
         </div>
-        <p class="font-mono text-xs mt-4" style="color:var(--text-secondary); opacity:0.6; letter-spacing:0.1em;">
+        <p class="font-mono text-xs mt-4 vg-dim">
           &gt; DRAW_TOOL_ACTIVE — SUBMIT YOUR CREATION TO THE NEURAL ARCHIVE
         </p>
       </div>
     </section>
 
     <!-- ═══ DRAW + SUBMIT ════════════════════════════════════════════════════ -->
-    <section style="padding:3rem 2rem;">
+    <section class="vg-section">
       <div class="max-w-7xl mx-auto">
         <div class="vg-grid">
 
           <!-- LEFT: Canvas -->
-          <div class="panel">
-            <p class="font-mono text-xs mb-5" style="color:var(--text-secondary); letter-spacing:0.12em;">01 / DRAW_YOUR_ART.exe</p>
+          <div class="panel vg-panel" id="canvas-panel">
+            <p class="font-mono text-xs mb-4 vg-eyebrow">01 / DRAW_YOUR_ART.exe</p>
 
-            <!-- Toolbar -->
-            <div class="toolbar-row">
-              <div class="toolbar-group">
-                <button id="brush-btn" class="tool-active font-mono text-xs font-bold px-4 py-2 cut-corner-sm tool-btn"
-                  style="letter-spacing:0.08em;">BRUSH</button>
-                <button id="eraser-btn" class="font-mono text-xs font-bold px-4 py-2 cut-corner-sm tool-btn"
-                  style="letter-spacing:0.08em;">ERASER</button>
-                <button id="fill-btn" class="font-mono text-xs font-bold px-4 py-2 cut-corner-sm tool-btn"
-                  style="letter-spacing:0.08em;" title="Bucket fill">FILL</button>
-              </div>
-
-              <div class="toolbar-group" style="flex-wrap:wrap;">
-                <button class="color-btn active" data-color="#222222" style="background:#222;"></button>
-                <button class="color-btn" data-color="#FFFFFF" style="background:#FFF; box-shadow:0 0 0 1px var(--border-color);"></button>
-                <button class="color-btn" data-color="#C41E3A" style="background:#C41E3A;"></button>
-                <button class="color-btn" data-color="#00E5FF" style="background:#00E5FF;"></button>
-                <button class="color-btn" data-color="#FF0055" style="background:#FF0055;"></button>
-                <button class="color-btn" data-color="#FF6B2C" style="background:#FF6B2C;"></button>
-                <button class="color-btn" data-color="#FFD700" style="background:#FFD700;"></button>
-                <button class="color-btn" data-color="#00C853" style="background:#00C853;"></button>
-                <button class="color-btn" data-color="#2196F3" style="background:#2196F3;"></button>
-                <button class="color-btn" data-color="#9C27B0" style="background:#9C27B0;"></button>
-                <button class="color-btn" data-color="#8B4513" style="background:#8B4513;"></button>
-                <button class="color-btn" data-color="#FFCD94" style="background:#FFCD94; box-shadow:0 0 0 1px var(--border-color);"></button>
-                <button class="color-btn" data-color="#FF69B4" style="background:#FF69B4;"></button>
-              </div>
-
-              <div class="toolbar-group">
-                <button id="size-s" class="size-btn font-mono text-xs font-bold px-3 py-2">S</button>
-                <button id="size-m" class="size-btn size-active font-mono text-xs font-bold px-3 py-2">M</button>
-                <button id="size-l" class="size-btn font-mono text-xs font-bold px-3 py-2">L</button>
-              </div>
-
-              <button id="clear-btn" class="clear-btn font-mono text-xs font-bold px-4 py-2 cut-corner-sm"
-                style="letter-spacing:0.08em;">CLEAR</button>
-              <button id="fullscreen-btn" class="fs-btn font-mono text-xs font-bold px-4 py-2 cut-corner-sm"
-                style="letter-spacing:0.08em;" title="Fullscreen">⛶</button>
-            </div>
-
-            <div id="canvas-wrap" style="position:relative;">
-              <canvas id="drawing-canvas" width="600" height="390"
-                style="width:100%; display:block; cursor:crosshair; border:1px solid var(--border-color); box-shadow:inset 0 0 30px rgba(0,0,0,0.5);"></canvas>
-            </div>
-
-            <p class="font-mono text-xs mt-3" style="color:var(--text-secondary); opacity:0.35; letter-spacing:0.08em;">
-              600 x 390 — touch supported
+            <p class="vg-hint font-mono" id="tool-hint">
+              BRUSH paints · ERASER wipes · FILL floods a region · S / M / L set stroke width · UNDO steps back (20) · ⛶ goes fullscreen
             </p>
+
+            <!-- Toolbar (moves into the fullscreen overlay together with the canvas) -->
+            <div id="canvas-toolbar" class="toolbar-row" role="toolbar" aria-label="Drawing tools" aria-describedby="tool-hint">
+              <div class="toolbar-group" role="group" aria-label="Tool">
+                <button type="button" class="tool-btn font-mono" data-tool="brush" aria-pressed="true">BRUSH</button>
+                <button type="button" class="tool-btn font-mono" data-tool="eraser" aria-pressed="false">ERASER</button>
+                <button type="button" class="tool-btn font-mono" data-tool="fill" aria-pressed="false" title="Bucket fill">FILL</button>
+              </div>
+
+              <div class="toolbar-group toolbar-colors" role="group" aria-label="Colour">
+                {COLORS.map(([hex, name], i) => (
+                  <button type="button" class="color-btn" data-color={hex} data-name={name}
+                    style={`--c:${hex}`} aria-label={`Colour: ${name}`} aria-pressed={i === 0 ? 'true' : 'false'}></button>
+                ))}
+              </div>
+
+              <div class="toolbar-group" role="group" aria-label="Stroke size">
+                <button type="button" class="size-btn font-mono" data-size="s" aria-label="Size: small" aria-pressed="false">S</button>
+                <button type="button" class="size-btn font-mono" data-size="m" aria-label="Size: medium" aria-pressed="true">M</button>
+                <button type="button" class="size-btn font-mono" data-size="l" aria-label="Size: large" aria-pressed="false">L</button>
+              </div>
+
+              <div class="toolbar-group" role="group" aria-label="Canvas actions">
+                <button type="button" id="undo-btn" class="tool-btn font-mono" disabled aria-label="Undo last stroke">UNDO</button>
+                <button type="button" id="clear-btn" class="clear-btn font-mono" aria-label="Clear the canvas">CLEAR</button>
+                <button type="button" id="fullscreen-btn" class="fs-btn font-mono" aria-label="Fullscreen canvas" aria-pressed="false">⛶</button>
+              </div>
+            </div>
+
+            <div id="canvas-wrap" class="canvas-wrap">
+              <canvas id="drawing-canvas" width="600" height="390" role="img"
+                aria-label="Drawing canvas, 600 by 390 pixels. Draw with a mouse, finger or pen; use the toolbar buttons to change tool, colour and size."
+                aria-describedby="canvas-status"></canvas>
+            </div>
+
+            <p id="canvas-status" class="font-mono text-xs mt-3 vg-dim" aria-live="polite">BRUSH · 8px · Ink black</p>
           </div>
 
           <!-- RIGHT: Submit Form -->
-          <div class="panel">
-            <p class="font-mono text-xs mb-5" style="color:var(--text-secondary); letter-spacing:0.12em;">02 / TRANSMIT_TO_ARCHIVE.exe</p>
+          <div class="panel vg-panel">
+            <p class="font-mono text-xs mb-5 vg-eyebrow">02 / TRANSMIT_TO_ARCHIVE.exe</p>
 
             <!-- Success state -->
-            <div id="success-box" class="success-hidden" style="text-align:center; padding:4rem 0;">
+            <div id="success-box" hidden style="text-align:center; padding:4rem 0;" role="status">
               <div class="transmitted-anim font-black font-mono" style="font-size:2rem; color:var(--accent); letter-spacing:0.08em;">TRANSMITTED</div>
               <p class="font-mono text-sm mt-3" style="color:var(--text-secondary);">Your artwork is now in the archive.</p>
-              <button id="draw-another-btn" class="mt-8 font-mono text-xs font-bold px-6 py-3 cut-corner another-btn"
-                style="letter-spacing:0.1em;">DRAW ANOTHER</button>
+              <button type="button" id="draw-another-btn" class="mt-8 font-mono text-xs font-bold px-6 py-3 cut-corner another-btn" style="letter-spacing:0.1em;">DRAW ANOTHER</button>
             </div>
 
             <!-- Form -->
-            <form id="submit-form">
-              <div id="setup-warning" style="display:none; padding:0.75rem 1rem; margin-bottom:1.5rem; background:var(--bg-elevated); border:1px solid var(--border-color); font-family:'JetBrains Mono',monospace; font-size:0.7rem; color:var(--text-secondary); line-height:1.8;">
+            <form id="submit-form" novalidate>
+              <div id="setup-warning" hidden class="vg-notice" role="status">
                 <span style="color:var(--accent);">SUPABASE NOT CONFIGURED</span><br/>
-                Add your credentials to <code style="color:var(--text-primary);">.env</code> to enable submissions.
+                Add <code>PUBLIC_SUPABASE_URL</code> and <code>PUBLIC_SUPABASE_ANON_KEY</code> to <code>.env</code> to enable submissions.
               </div>
 
-              <div style="margin-bottom:1.5rem;">
-                <label class="font-mono text-xs" style="display:block; margin-bottom:0.5rem; color:var(--text-secondary); letter-spacing:0.12em;">YOUR NAME</label>
-                <input id="inp-name" type="text" maxlength="60" required placeholder="e.g. Anonymous"
-                  class="gallery-input" />
+              <div class="vg-field">
+                <label for="inp-name" class="font-mono text-xs vg-label">YOUR NAME <span class="vg-dim">(max 60)</span></label>
+                <input id="inp-name" name="name" type="text" maxlength="60" required autocomplete="nickname" placeholder="e.g. Anonymous" class="gallery-input" />
               </div>
 
-              <div style="margin-bottom:1.5rem;">
-                <label class="font-mono text-xs" style="display:block; margin-bottom:0.5rem; color:var(--text-secondary); letter-spacing:0.12em;">ARTWORK TITLE</label>
-                <input id="inp-title" type="text" maxlength="80" required placeholder="e.g. Untitled #01"
-                  class="gallery-input" />
+              <div class="vg-field">
+                <label for="inp-title" class="font-mono text-xs vg-label">ARTWORK TITLE <span class="vg-dim">(max 80)</span></label>
+                <input id="inp-title" name="title" type="text" maxlength="80" required autocomplete="off" placeholder="e.g. Untitled #01" class="gallery-input" />
+              </div>
+
+              <!-- Honeypot: invisible to people, tempting to bots. Never submitted to the DB. -->
+              <div class="vg-hp" aria-hidden="true">
+                <label for="inp-website">Website</label>
+                <input id="inp-website" name="website" type="text" tabindex="-1" autocomplete="off" />
               </div>
 
               <!-- Preview -->
-              <div style="margin-bottom:1.5rem;">
-                <label class="font-mono text-xs" style="display:block; margin-bottom:0.5rem; color:var(--text-secondary); letter-spacing:0.12em;">PREVIEW</label>
-                <div class="preview-box">
-                  <img id="preview-img" alt="Canvas preview" style="width:100%; height:120px; object-fit:cover; opacity:0.85; display:none;" />
-                  <span id="preview-empty" class="font-mono text-xs" style="color:var(--text-secondary); opacity:0.4;">DRAW SOMETHING FIRST</span>
+              <div class="vg-field">
+                <p class="font-mono text-xs vg-label" id="preview-label">PREVIEW</p>
+                <div class="preview-box" aria-labelledby="preview-label">
+                  <img id="preview-img" alt="Preview of your drawing" hidden />
+                  <span id="preview-empty" class="font-mono text-xs vg-dim">DRAW SOMETHING FIRST</span>
                 </div>
               </div>
 
-              <!-- Error (graceful retry UI) -->
-              <div class="err-box" id="err-box">
+              <!-- Error (announced politely; graceful retry UI) -->
+              <div class="err-box" id="err-box" hidden role="alert" aria-live="polite">
                 <span class="err-title">TRANSMISSION FAILED</span>
                 <div class="err-body" id="err-body">Could not reach the archive server. Check your connection and try again.</div>
                 <div class="err-actions">
@@ -150,11 +151,11 @@ const seedJson = JSON.stringify(seedData || []);
 
               <button id="submit-btn" type="submit" class="submit-btn font-mono text-sm font-bold py-4 cut-corner" style="width:100%; letter-spacing:0.1em;">
                 <span id="submit-text">SUBMIT TO GALLERY</span>
-                <span id="submit-spin" style="display:none;">TRANSMITTING...</span>
+                <span id="submit-spin" hidden>TRANSMITTING...</span>
               </button>
 
-              <p class="font-mono text-xs mt-4" style="color:var(--text-secondary); opacity:0.4; letter-spacing:0.06em;">
-                All submissions are public and visible to everyone.
+              <p class="font-mono text-xs mt-4 vg-dim" style="letter-spacing:0.06em;">
+                All submissions are public and visible to everyone. One transmission per 30 s.
               </p>
             </form>
           </div>
@@ -162,833 +163,240 @@ const seedJson = JSON.stringify(seedData || []);
       </div>
     </section>
 
-    <!-- ═══ GALLERY ══════════════════════════════════════════════════════════ -->
-    <section id="gallery-section" style="padding:3rem 2rem; border-top:1px solid var(--border-color);">
+    <!-- ═══ GALLERY (single mosaic) ══════════════════════════════════════════ -->
+    <section id="gallery-section" class="vg-section" style="border-top:1px solid var(--border-color);" aria-labelledby="archive-title">
       <div class="max-w-7xl mx-auto">
-        <div class="flex items-end gap-4 mb-10">
-          <p class="font-mono text-xs" style="color:var(--text-secondary); letter-spacing:0.15em; align-self:center;">ARCHIVE /</p>
-          <h2 class="font-black kinetic-text" style="font-family:'Syne'; font-size:clamp(2rem,6vw,4.5rem); color:var(--text-primary);">ALL WORKS</h2>
-          <div class="flex-1 h-px" style="background:var(--border-color);"></div>
+        <div class="archive-head">
+          <p class="file font-mono">ARCHIVE /</p>
+          <h2 id="archive-title" class="font-black kinetic-text">ALL WORKS</h2>
+          <div class="line"></div>
+          <p class="count font-mono"><span id="archive-count">00</span> ENTRIES</p>
         </div>
 
-        <!-- Loading -->
-        <div id="gallery-loading" class="gallery-grid">
-          <div class="skeleton-card"></div>
-          <div class="skeleton-card"></div>
-          <div class="skeleton-card"></div>
+        <!-- Loading skeleton -->
+        <div id="gallery-loading" class="archive-grid" aria-busy="true" aria-label="Loading submissions">
+          <div class="skeleton-tile"></div><div class="skeleton-tile"></div><div class="skeleton-tile"></div>
+          <div class="skeleton-tile"></div><div class="skeleton-tile"></div><div class="skeleton-tile"></div>
         </div>
 
-        <!-- Gallery -->
-        <div id="gallery-grid" class="gallery-grid" style="display:none;"></div>
+        <!-- Error -->
+        <div id="gallery-error" class="vg-state vg-state-error" hidden role="alert">
+          <p class="vg-state-code font-mono">ERR_ARCHIVE_UNREACHABLE</p>
+          <p class="vg-state-title">The archive server did not answer.</p>
+          <p class="vg-state-body font-mono">Your connection may be offline, or the archive is briefly down. Nothing you drew is lost — the canvas stays as it is.</p>
+          <button type="button" id="gallery-retry" class="vg-state-btn font-mono cut-corner-sm">RETRY ↻</button>
+        </div>
 
         <!-- Empty -->
-        <div id="gallery-empty" style="display:none; text-align:center; padding:5rem 0;">
-          <p class="font-mono font-bold" style="font-size:1.5rem; color:var(--text-secondary);">
-            BE THE FIRST TO SUBMIT<span class="blink-cursor">_</span>
-          </p>
-          <p class="font-mono text-xs mt-2" style="color:var(--text-secondary); opacity:0.4; letter-spacing:0.1em;">THE ARCHIVE AWAITS ITS FIRST ENTRY</p>
+        <div id="gallery-empty" class="vg-state" hidden role="status">
+          <p class="vg-state-code font-mono">0 ENTRIES · ARCHIVE_EMPTY</p>
+          <p class="vg-state-title">BE THE FIRST TO SUBMIT<span class="blink-cursor" aria-hidden="true">_</span></p>
+          <p class="vg-state-body font-mono">Nothing has been transmitted yet. Draw something above and your piece becomes entry 01.</p>
+          <a href="#canvas-panel" class="vg-state-btn font-mono cut-corner-sm">GO TO CANVAS ↑</a>
         </div>
 
-        <!-- Archive mosaic (Snippet 06) -->
-        <div class="archive-head">
-          <div class="file">ARCHIVE /</div>
-          <h3 class="font-black kinetic-text" style="font-family:'Space Grotesk'; text-transform:uppercase;">PAST SUBMISSIONS</h3>
-          <div class="line"></div>
-          <div class="count"><span id="archive-count" data-counter="0" data-pad="2">00</span> ENTRIES</div>
-        </div>
-        <div class="archive-grid" id="archive-grid"></div>
+        <!-- Mosaic -->
+        <div id="archive-grid" class="archive-grid" hidden></div>
       </div>
     </section>
+
+    <!-- Lightbox -->
+    <dialog id="lightbox" class="lightbox" aria-labelledby="lb-title">
+      <div class="lb-inner">
+        <button type="button" id="lb-close" class="lb-close font-mono" aria-label="Close">✕ CLOSE</button>
+        <img id="lb-img" alt="" width="600" height="390" />
+        <div class="lb-meta">
+          <p id="lb-title" class="lb-title"></p>
+          <p class="font-mono text-xs"><span id="lb-author" style="color:var(--text-secondary);"></span> <span id="lb-date" class="vg-dim" style="margin-left:0.75rem;"></span></p>
+        </div>
+      </div>
+    </dialog>
+
+    <!-- Fullscreen overlay: toolbar + canvas are moved in here (same nodes, same state) -->
+    <div id="fs-overlay" class="fs-overlay" hidden role="dialog" aria-modal="true" aria-label="Fullscreen drawing canvas">
+      <p class="font-mono text-xs vg-eyebrow" style="margin:0 0 0.5rem;">FULLSCREEN — press EXIT or Esc to return</p>
+      <div id="fs-slot" class="fs-slot"></div>
+    </div>
 
   </main>
   <Footer />
 </Layout>
 
-<!-- Inject env values for the client script -->
-<script is:inline define:vars={{ supabaseUrl, supabaseKey, seedJson }}>
-window.__SB_URL__  = supabaseUrl;
-window.__SB_KEY__  = supabaseKey;
-window.__SEEDS__   = seedJson;
+<script>
+  import '../scripts/gallery-page';
 </script>
 
-<style>
+<!-- Global on purpose: tiles / lightbox contents are built in JS and would not carry Astro's scope attribute. -->
+<style is:global>
+  .vg [hidden] { display: none !important; }
+  .vg-section { padding: var(--space-12) var(--gutter); }
+  .vg-head { padding-top: var(--space-12); padding-bottom: var(--space-8); border-bottom: 1px solid var(--border-color); }
+  .vg-h1 { font-family: 'Space Grotesk', sans-serif; font-size: clamp(3rem, 9vw, 7rem); color: var(--text-primary); line-height: 0.9; }
+  .vg-eyebrow { color: var(--text-secondary); letter-spacing: 0.15em; }
+  .vg-dim { color: var(--text-tertiary); letter-spacing: 0.08em; }
+  .vg-panel { padding: clamp(1rem, 4vw, 2rem); min-width: 0; }
+  .vg-hint { font-size: 0.65rem; line-height: 1.7; color: var(--text-tertiary); letter-spacing: 0.06em; margin-bottom: var(--space-3); }
+  .vg-notice {
+    padding: 0.75rem 1rem; margin-bottom: 1.5rem; background: var(--bg-elevated); border: 1px solid var(--border-color);
+    font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; color: var(--text-secondary); line-height: 1.8;
+  }
+  .vg-notice code { color: var(--text-primary); }
+
   /* ── Layout ──────────────────────────────────────────────────────────────── */
-  .vg-grid { display: grid; gap: 2rem; }
+  .vg-grid { display: grid; gap: 2rem; min-width: 0; }
   @media (min-width: 1024px) { .vg-grid { grid-template-columns: 1fr 1fr; align-items: start; } }
 
   /* ── Toolbar ─────────────────────────────────────────────────────────────── */
-  .toolbar-row { display:flex; flex-wrap:wrap; gap:0.75rem; margin-bottom:1.25rem; align-items:center; }
-  .toolbar-group { display:flex; gap:0.5rem; align-items:center; }
+  .toolbar-row { display: flex; flex-wrap: wrap; gap: 0.6rem 0.75rem; margin-bottom: 1rem; align-items: center; min-width: 0; }
+  .toolbar-group { display: flex; flex-wrap: wrap; gap: 0.4rem; align-items: center; }
+  .toolbar-colors { gap: 0.45rem; }
 
-  .tool-btn {
+  .tool-btn, .size-btn, .clear-btn, .fs-btn {
+    font-size: 0.7rem; font-weight: 700; letter-spacing: 0.08em; padding: 0.45rem 0.8rem; min-height: 32px;
     background: transparent; color: var(--text-primary); border: 1px solid var(--border-color);
-    cursor: pointer; transition: background 0.15s, color 0.15s, border-color 0.15s;
+    cursor: pointer; transition: background var(--dur-fast), color var(--dur-fast), border-color var(--dur-fast);
+    clip-path: polygon(6px 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%, 0 6px);
   }
-  .tool-btn:hover { border-color: var(--text-secondary); }
-  .tool-active, .tool-btn.tool-active {
-    background: var(--accent) !important; color: #fff !important; border-color: var(--accent) !important;
-  }
+  .size-btn { min-width: 32px; padding-inline: 0.5rem; text-align: center; }
+  .tool-btn:hover, .size-btn:hover { border-color: var(--text-secondary); }
+  .tool-btn.is-active, .size-btn.is-active { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .tool-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+  .clear-btn { color: #FF0055; border-color: #FF0055; }
+  .clear-btn:hover { background: #FF0055; color: #0a0a0a; }
+  .fs-btn { color: var(--text-secondary); font-size: 0.9rem; padding-inline: 0.6rem; }
+  .fs-btn:hover, .fs-btn.is-active { border-color: var(--accent); color: var(--accent); }
+  /* clip-path clips the outline; use an inset ring for focus instead */
+  .toolbar-row button:focus-visible { outline: none; box-shadow: inset 0 0 0 2px var(--accent-bri), 0 0 0 2px var(--accent-bri); }
 
   .color-btn {
-    width: 22px; height: 22px; border-radius: 50%; border: 2px solid transparent;
-    cursor: pointer; transition: transform 0.15s, box-shadow 0.15s;
+    width: 24px; height: 24px; border-radius: 50%; border: 2px solid transparent; padding: 0;
+    background: var(--c); cursor: pointer; transition: transform var(--dur-fast), box-shadow var(--dur-fast);
+    box-shadow: 0 0 0 1px var(--border-color);
   }
   .color-btn:hover { transform: scale(1.2); }
-  .color-btn.active { transform: scale(1.3); box-shadow: 0 0 0 2px var(--accent), 0 0 8px rgba(196,30,58,0.55); }
+  .color-btn.is-active { transform: scale(1.3); box-shadow: 0 0 0 2px var(--accent), 0 0 8px rgba(196,30,58,0.55); }
+  .color-btn:focus-visible { outline: 2px solid var(--accent-bri); outline-offset: 3px; box-shadow: 0 0 0 1px var(--border-color); }
 
-  .size-btn {
-    background: transparent; color: var(--text-primary); border: 1px solid var(--border-color);
-    cursor: pointer; transition: background 0.15s, color 0.15s, border-color 0.15s;
+  .canvas-wrap { position: relative; min-width: 0; }
+  #drawing-canvas {
+    width: 100%; height: auto; display: block; cursor: crosshair; touch-action: none;
+    border: 1px solid var(--border-color); box-shadow: inset 0 0 30px rgba(0,0,0,0.5); background: #fff;
   }
-  .size-btn:hover { border-color: var(--text-secondary); }
-  .size-active, .size-btn.size-active {
-    background: var(--accent) !important; color: #fff !important; border-color: var(--accent) !important;
-  }
+  #drawing-canvas.cursor-fill { cursor: cell; }
 
-  .clear-btn {
-    background: transparent; color: #FF0055; border: 1px solid #FF0055;
-    cursor: pointer; transition: background 0.15s, color 0.15s;
-  }
-  .clear-btn:hover { background: #FF0055; color: #fff; }
-
-  .fs-btn {
-    background: transparent; color: var(--text-secondary); border: 1px solid var(--border-color);
-    cursor: pointer; transition: border-color 0.15s, color 0.15s; font-size: 1rem;
-  }
-  .fs-btn:hover { border-color: var(--accent); color: var(--accent); }
-
-  /* Fullscreen canvas overlay */
-  .canvas-fullscreen-overlay {
-    position: fixed; inset: 0; z-index: 9999;
-    background: var(--bg-base);
-    display: flex; flex-direction: column;
-    padding: 1rem;
-  }
-  .canvas-fullscreen-overlay .fs-canvas-wrap {
-    flex: 1; display: flex; align-items: center; justify-content: center;
-    min-height: 0;
-  }
-  .canvas-fullscreen-overlay canvas {
-    max-width: 100%; max-height: 100%;
-    border: 1px solid var(--border-color);
-    box-shadow: inset 0 0 30px rgba(0,0,0,0.5);
-    cursor: crosshair; touch-action: none;
-  }
-  .canvas-fullscreen-bar {
-    display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem; flex-wrap: wrap;
-    flex-shrink: 0;
-  }
-  .fs-close-btn {
-    margin-left: auto; background: transparent; color: #FF0055; border: 1px solid #FF0055;
-    font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; font-weight: 700;
-    padding: 0.4rem 0.75rem; cursor: pointer; letter-spacing: 0.08em;
-  }
-  .fs-close-btn:hover { background: #FF0055; color: #fff; }
-
-  canvas { touch-action: none; }
+  /* ── Fullscreen overlay ──────────────────────────────────────────────────── */
+  .fs-overlay { position: fixed; inset: 0; z-index: 9999; background: var(--bg-base); display: flex; flex-direction: column; padding: 0.75rem; }
+  .fs-slot { flex: 1; display: flex; flex-direction: column; min-height: 0; }
+  .fs-slot .toolbar-row { flex-shrink: 0; }
+  .fs-slot .canvas-wrap { flex: 1; display: flex; align-items: center; justify-content: center; min-height: 0; }
+  .fs-slot #drawing-canvas { width: min(100%, calc((100dvh - 150px) * 1.538)); max-height: 100%; }
+  body.vg-fs-lock { overflow: hidden; }
 
   /* ── Form ─────────────────────────────────────────────────────────────────── */
+  .vg-field { margin-bottom: 1.5rem; }
+  .vg-label { display: block; margin-bottom: 0.5rem; color: var(--text-secondary); letter-spacing: 0.12em; }
   .gallery-input {
     width: 100%; font-family: 'JetBrains Mono', monospace; font-size: 0.85rem;
     background: var(--bg-elevated); border: 1px solid var(--border-color); color: var(--text-primary);
-    padding: 0.75rem 1rem; outline: none; letter-spacing: 0.04em;
-    transition: border-color 0.2s, box-shadow 0.2s;
+    padding: 0.75rem 1rem; outline: none; letter-spacing: 0.04em; transition: border-color var(--dur-base), box-shadow var(--dur-base);
   }
   .gallery-input:focus { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
-  .gallery-input::placeholder { color: var(--text-secondary); opacity: 0.35; }
+  .gallery-input::placeholder { color: var(--text-tertiary); }
+  .vg-hp { position: absolute; left: -10000px; top: auto; width: 1px; height: 1px; overflow: hidden; }
 
-  .preview-box {
-    border: 1px solid var(--border-color); background: var(--bg-elevated);
-    height: 120px; overflow: hidden; display: flex; align-items: center; justify-content: center;
-  }
+  .preview-box { border: 1px solid var(--border-color); background: var(--bg-elevated); height: 120px; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+  .preview-box img { width: 100%; height: 120px; object-fit: cover; }
 
   .err-box {
-    display: none;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
-    padding: 12px 14px;
-    margin-bottom: 14px;
-    background: rgba(255,0,85,0.07);
-    border: 1px solid #FF0055;
-    color: #FF0055;
-    line-height: 1.6;
-    position: relative;
+    font-family: 'JetBrains Mono', monospace; font-size: 11px; padding: 12px 14px; margin-bottom: 14px;
+    background: rgba(255,0,85,0.07); border: 1px solid #FF0055; color: #FF0055; line-height: 1.6; position: relative;
   }
-  .err-box.show { display: block; animation: errShake .35s ease; }
-  .err-box::before {
-    content: '!';
-    display: inline-block;
-    width: 18px; height: 18px;
-    margin-right: 10px;
-    border: 1px solid #FF0055;
-    text-align: center; font-weight: 800;
-    vertical-align: middle;
-  }
+  .err-box.show { animation: errShake .35s ease; }
+  .err-box::before { content: '!'; display: inline-block; width: 18px; height: 18px; margin-right: 10px; border: 1px solid #FF0055; text-align: center; font-weight: 800; vertical-align: middle; }
   .err-box .err-title { font-weight: 700; letter-spacing: 0.12em; }
-  .err-box .err-body  { margin: 8px 0 12px 28px; opacity: 0.85; }
+  .err-box .err-body { margin: 8px 0 12px 28px; }
   .err-box .err-actions { margin-left: 28px; display: flex; gap: 8px; }
-  .err-box .err-btn {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 10px; font-weight: 700;
-    letter-spacing: 0.12em;
-    padding: 6px 12px;
-    background: #FF0055; color: #fff;
-    border: 1px solid #FF0055;
-    cursor: pointer;
-  }
+  .err-box .err-btn { font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 0.12em; padding: 6px 12px; background: #FF0055; color: #0a0a0a; border: 1px solid #FF0055; cursor: pointer; }
   .err-box .err-btn.ghost { background: transparent; color: #FF0055; }
-  .err-box .err-btn:hover { background: #fff; color: #FF0055; }
+  .err-box .err-btn:hover { background: #0a0a0a; color: #FF0055; }
+  @keyframes errShake { 0%,100% { transform: translateX(0); } 20% { transform: translateX(-4px); } 40% { transform: translateX(4px); } 60% { transform: translateX(-2px); } 80% { transform: translateX(2px); } }
 
-  @keyframes errShake {
-    0%,100% { transform: translateX(0); }
-    20% { transform: translateX(-4px); }
-    40% { transform: translateX( 4px); }
-    60% { transform: translateX(-2px); }
-    80% { transform: translateX( 2px); }
-  }
-
-  /* ── Archive mosaic ──────────────────────────────────────────────────────── */
-  .archive-head {
-    margin-top: 56px;
-    display: flex; align-items: end; gap: 16px;
-  }
-  .archive-head .file {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11px; color: var(--text-secondary);
-    letter-spacing: 0.15em;
-  }
-  .archive-head h3   { font-size: clamp(28px, 4vw, 44px); letter-spacing: -0.01em; }
-  .archive-head .line { flex: 1; height: 1px; background: var(--border-color); }
-  .archive-head .count {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 13px; color: var(--accent);
-    letter-spacing: 0.1em;
-  }
-
-  .archive-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-    gap: 12px;
-    margin-top: 24px;
-  }
-  .archive-tile {
-    position: relative;
-    aspect-ratio: 600/390;
-    border: 1px solid var(--border-color);
-    background: #fff;
-    overflow: hidden;
-    transition: transform .25s ease, border-color .25s, box-shadow .25s, z-index 0s .25s;
-    cursor: pointer;
-  }
-  .archive-tile:hover {
-    transform: scale(1.06);
-    border-color: var(--accent);
-    box-shadow: 0 0 24px var(--accent-glow);
-    z-index: 5;
-    transition-delay: 0s;
-  }
-  .archive-tile img { width: 100%; height: 100%; object-fit: cover; display: block; }
-  .archive-tile .ovl {
-    position: absolute; inset: 0;
-    background: linear-gradient(180deg, transparent 50%, rgba(0,0,0,0.92));
-    opacity: 0; transition: opacity .2s ease;
-    display: flex; flex-direction: column; justify-content: end;
-    padding: 10px;
-  }
-  .archive-tile:hover .ovl { opacity: 1; }
-  .archive-tile .ovl .t {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11px; font-weight: 800;
-    color: var(--accent);
-    letter-spacing: 0.06em;
-    line-height: 1.2;
-  }
-  .archive-tile .ovl .a {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 10px; color: var(--text-secondary);
-    margin-top: 2px;
-  }
-  .archive-tile .date {
-    position: absolute; top: 4px; right: 6px;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 8px; color: rgba(255,255,255,0.6);
-    background: rgba(0,0,0,0.6);
-    padding: 1px 5px;
-  }
-
-  .submit-btn {
-    background: var(--accent); color: #fff; border: 1px solid var(--accent);
-    cursor: pointer; transition: background 0.2s, color 0.2s, box-shadow 0.2s;
-  }
-  .submit-btn:hover:not(:disabled) {
-    background: transparent; color: var(--accent); box-shadow: 0 0 16px var(--accent-glow);
-  }
+  .submit-btn { background: var(--accent); color: #fff; border: 1px solid var(--accent); cursor: pointer; transition: background var(--dur-base), color var(--dur-base), box-shadow var(--dur-base); }
+  .submit-btn:hover:not(:disabled) { background: transparent; color: var(--accent); box-shadow: 0 0 16px var(--accent-glow); }
   .submit-btn:disabled { opacity: 0.5; cursor: not-allowed; }
-
-  .another-btn {
-    background: transparent; color: var(--accent); border: 1px solid var(--accent);
-    cursor: pointer; transition: background 0.2s, color 0.2s;
-  }
+  .another-btn { background: transparent; color: var(--accent); border: 1px solid var(--accent); cursor: pointer; transition: background var(--dur-base), color var(--dur-base); }
   .another-btn:hover { background: var(--accent); color: #fff; }
 
-  .success-hidden { display: none; }
-
   @keyframes transmitted-in {
-    0%   { opacity:0; transform:skewX(-5deg) scale(0.9); text-shadow: -3px 0 #00E5FF, 3px 0 #FF0055; }
-    50%  { opacity:1; transform:skewX(2deg) scale(1.03); text-shadow: 2px 0 #00E5FF, -2px 0 #FF0055; }
-    100% { opacity:1; transform:none; text-shadow: 0 0 20px rgba(196,30,58,0.35); }
+    0%   { opacity: 0; transform: skewX(-5deg) scale(0.9); text-shadow: -3px 0 #00E5FF, 3px 0 #FF0055; }
+    50%  { opacity: 1; transform: skewX(2deg) scale(1.03); text-shadow: 2px 0 #00E5FF, -2px 0 #FF0055; }
+    100% { opacity: 1; transform: none; text-shadow: 0 0 20px rgba(196,30,58,0.35); }
   }
-  .transmitted-anim { animation: transmitted-in 0.6s cubic-bezier(0.16,1,0.3,1) forwards; }
+  .transmitted-anim { animation: transmitted-in 0.6s var(--ease-out) forwards; }
 
-  /* ── Gallery ─────────────────────────────────────────────────────────────── */
-  .gallery-grid {
-    display: grid; gap: 1.5rem;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  }
+  /* ── Archive mosaic ──────────────────────────────────────────────────────── */
+  .archive-head { display: flex; align-items: end; gap: 16px; margin-bottom: 24px; flex-wrap: wrap; }
+  .archive-head .file { font-size: 11px; color: var(--text-secondary); letter-spacing: 0.15em; align-self: center; }
+  .archive-head h2 { font-family: 'Space Grotesk', sans-serif; font-size: clamp(28px, 4vw, 44px); letter-spacing: -0.01em; color: var(--text-primary); }
+  .archive-head .line { flex: 1; height: 1px; background: var(--border-color); min-width: 40px; }
+  .archive-head .count { font-size: 13px; color: var(--text-secondary); letter-spacing: 0.1em; align-self: center; }
+  .archive-head .count span { color: var(--text-primary); font-weight: 700; }
 
-  .gallery-card {
-    background: var(--bg-surface); border: 1px solid var(--border-color); padding: 1rem;
-    transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
-    opacity: 0; transform: translateY(20px);
+  .archive-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; }
+  .archive-tile {
+    position: relative; aspect-ratio: 600 / 390; border: 1px solid var(--border-color); background: #fff; overflow: hidden; padding: 0;
+    cursor: zoom-in; display: block; width: 100%; text-align: left;
+    transition: transform var(--dur-base) var(--ease-out), border-color var(--dur-base), box-shadow var(--dur-base);
   }
-  .gallery-card.vis {
-    opacity: 1; transform: translateY(0);
-    transition: opacity 0.5s ease, transform 0.5s ease, border-color 0.2s, box-shadow 0.2s;
+  .archive-tile:hover, .archive-tile:focus-visible { transform: scale(1.05); border-color: var(--accent); box-shadow: 0 0 24px var(--accent-glow); z-index: 5; }
+  .archive-tile:focus-visible { outline: 2px solid var(--accent-bri); outline-offset: 2px; }
+  .archive-tile img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .archive-tile .ovl {
+    position: absolute; inset: 0; background: linear-gradient(180deg, transparent 45%, rgba(0,0,0,0.92));
+    opacity: 0; transition: opacity var(--dur-fast); display: flex; flex-direction: column; justify-content: end; padding: 10px;
   }
-  .gallery-card:hover {
-    border-color: var(--accent); box-shadow: 0 0 16px var(--accent-glow); transform: translateY(-2px);
-  }
-  .gallery-card img { width: 100%; aspect-ratio: 600/390; object-fit: cover; display: block; border: 1px solid var(--border-color); }
+  .archive-tile:hover .ovl, .archive-tile:focus-visible .ovl { opacity: 1; }
+  .archive-tile .ovl .t { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 800; color: var(--accent-bri); letter-spacing: 0.06em; line-height: 1.2; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .archive-tile .ovl .a { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: #ddd; margin-top: 2px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .archive-tile .date { position: absolute; top: 4px; right: 6px; font-family: 'JetBrains Mono', monospace; font-size: 8px; color: #fff; background: rgba(0,0,0,0.7); padding: 1px 5px; }
 
-  @keyframes skpulse { 0%,100%{opacity:0.3;} 50%{opacity:0.6;} }
-  .skeleton-card { height: 260px; background: var(--bg-surface); border: 1px solid var(--border-color); animation: skpulse 1.5s ease-in-out infinite; }
+  @keyframes skpulse { 0%,100% { opacity: 0.35; } 50% { opacity: 0.7; } }
+  .skeleton-tile { aspect-ratio: 600 / 390; background: var(--bg-surface); border: 1px solid var(--border-color); animation: skpulse 1.5s ease-in-out infinite; }
 
-  @keyframes blink { 0%,100%{opacity:1;} 50%{opacity:0;} }
+  /* ── Empty / error states ────────────────────────────────────────────────── */
+  .vg-state {
+    position: relative; border: 1px solid var(--border-color); background: var(--bg-surface); padding: clamp(2rem, 6vw, 4rem) clamp(1.25rem, 5vw, 3rem);
+    text-align: center; max-width: 720px; margin: 0 auto;
+    background-image: linear-gradient(var(--border-color) 1px, transparent 1px), linear-gradient(90deg, var(--border-color) 1px, transparent 1px);
+    background-size: 32px 32px; background-position: center;
+  }
+  .vg-state::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at center, var(--bg-surface) 30%, transparent 100%); pointer-events: none; }
+  .vg-state > * { position: relative; }
+  .vg-state-code { font-size: 11px; letter-spacing: 0.18em; color: var(--text-secondary); margin-bottom: 1rem; }
+  .vg-state-title { font-family: 'Space Grotesk', sans-serif; font-weight: 800; font-size: clamp(1.4rem, 4vw, 2rem); color: var(--text-primary); line-height: 1.1; }
+  .vg-state-body { font-size: 12px; color: var(--text-secondary); line-height: 1.7; margin: 1rem auto 1.5rem; max-width: 46ch; }
+  .vg-state-btn { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: 0.12em; padding: 0.7rem 1.4rem; background: var(--accent); color: #fff; border: 1px solid var(--accent); cursor: pointer; text-decoration: none; transition: background var(--dur-base), color var(--dur-base); }
+  .vg-state-btn:hover { background: transparent; color: var(--accent); }
+  .vg-state-error { border-color: #FF0055; }
+  .vg-state-error .vg-state-code { color: #FF0055; }
+  .vg-state-error .vg-state-btn { background: #FF0055; border-color: #FF0055; color: #0a0a0a; }
+  .vg-state-error .vg-state-btn:hover { background: transparent; color: #FF0055; }
+
+  @keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: 0; } }
   .blink-cursor { animation: blink 1s step-end infinite; }
+
+  /* ── Lightbox ────────────────────────────────────────────────────────────── */
+  .lightbox { border: 1px solid var(--border-color); background: var(--bg-surface); color: var(--text-primary); padding: 0; max-width: min(92vw, 900px); width: 100%; margin: auto; }
+  .lightbox::backdrop { background: rgba(0,0,0,0.85); }
+  .lb-inner { position: relative; padding: 0.75rem; }
+  .lightbox img { width: 100%; height: auto; display: block; background: #fff; border: 1px solid var(--border-color); }
+  .lb-meta { padding: 1rem 0.25rem 0.5rem; }
+  .lb-title { font-family: 'Space Grotesk', sans-serif; font-weight: 800; font-size: 1.25rem; color: var(--accent-bri); margin-bottom: 0.35rem; overflow-wrap: anywhere; }
+  .lb-close { position: absolute; top: 0.75rem; right: 0.75rem; z-index: 2; font-size: 11px; font-weight: 700; letter-spacing: 0.1em; padding: 0.4rem 0.7rem; background: var(--bg-base); color: var(--text-primary); border: 1px solid var(--border-color); cursor: pointer; }
+  .lb-close:hover { border-color: var(--accent); color: var(--accent); }
+
+  @media (prefers-reduced-motion: reduce) {
+    .archive-tile, .archive-tile:hover { transform: none; }
+    .skeleton-tile, .blink-cursor, .transmitted-anim, .err-box.show { animation: none; }
+  }
 </style>
-
-<script is:inline>
-(function(){
-  /* ── Supabase CDN import ──────────────────────────────────────────────── */
-  var sbClient = null;
-  var SB_URL = window.__SB_URL__ || '';
-  var SB_KEY = window.__SB_KEY__ || '';
-  var SEEDS  = [];
-  try { SEEDS = JSON.parse(window.__SEEDS__ || '[]'); } catch(e){}
-
-  async function getSB() {
-    if (sbClient) return sbClient;
-    if (!SB_URL || !SB_KEY || SB_URL.includes('your-project')) {
-      document.getElementById('setup-warning').style.display = 'block';
-      return null;
-    }
-    try {
-      var mod = await import('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm');
-      sbClient = mod.createClient(SB_URL, SB_KEY);
-      return sbClient;
-    } catch(e) { console.warn('Supabase load failed', e); return null; }
-  }
-
-  /* ── DOM ──────────────────────────────────────────────────────────────── */
-  var cv  = document.getElementById('drawing-canvas');
-  var ctx = cv.getContext('2d');
-
-  var brushBtn  = document.getElementById('brush-btn');
-  var eraserBtn = document.getElementById('eraser-btn');
-  var fillBtn   = document.getElementById('fill-btn');
-  var clearBtn  = document.getElementById('clear-btn');
-  var fsBtn     = document.getElementById('fullscreen-btn');
-  var sizeS = document.getElementById('size-s');
-  var sizeM = document.getElementById('size-m');
-  var sizeL = document.getElementById('size-l');
-
-  var form       = document.getElementById('submit-form');
-  var successBox = document.getElementById('success-box');
-  var submitBtn  = document.getElementById('submit-btn');
-  var submitText = document.getElementById('submit-text');
-  var submitSpin = document.getElementById('submit-spin');
-  var prevImg    = document.getElementById('preview-img');
-  var prevEmpty  = document.getElementById('preview-empty');
-
-  var galleryGrid    = document.getElementById('gallery-grid');
-  var galleryLoading = document.getElementById('gallery-loading');
-  var galleryEmpty   = document.getElementById('gallery-empty');
-  var artworkCount   = document.getElementById('artwork-count');
-
-  /* ── Canvas state ────────────────────────────────────────────────────── */
-  var drawing = false, tool = 'brush', color = '#222222', size = 8, drawn = false;
-
-  ctx.fillStyle = '#FFFFFF';
-  ctx.fillRect(0, 0, cv.width, cv.height);
-  ctx.lineCap = 'round'; ctx.lineJoin = 'round';
-
-  /* ── Tool buttons ────────────────────────────────────────────────────── */
-  function setTool(t) {
-    tool = t;
-    brushBtn.classList.toggle('tool-active', t === 'brush');
-    eraserBtn.classList.toggle('tool-active', t === 'eraser');
-    fillBtn.classList.toggle('tool-active', t === 'fill');
-    cv.style.cursor = t === 'fill' ? 'cell' : 'crosshair';
-  }
-  brushBtn.onclick  = function(){ setTool('brush'); };
-  eraserBtn.onclick = function(){ setTool('eraser'); };
-  fillBtn.onclick   = function(){ setTool('fill'); };
-
-  /* ── Flood fill ──────────────────────────────────────────────────────── */
-  function hexToRgb(hex) {
-    var r = parseInt(hex.slice(1,3),16), g = parseInt(hex.slice(3,5),16), b = parseInt(hex.slice(5,7),16);
-    return [r, g, b];
-  }
-  function floodFill(cx, cy) {
-    var imgData = ctx.getImageData(0, 0, cv.width, cv.height);
-    var data = imgData.data;
-    var W = cv.width;
-    var idx = (cy * W + cx) * 4;
-    var tr = data[idx], tg = data[idx+1], tb = data[idx+2], ta = data[idx+3];
-    var fc = hexToRgb(color);
-    if (tr === fc[0] && tg === fc[1] && tb === fc[2] && ta === 255) return;
-    var stack = [cx + cy * W];
-    var visited = new Uint8Array(W * cv.height);
-    while (stack.length) {
-      var pos = stack.pop();
-      var x = pos % W, y = (pos / W) | 0;
-      if (x < 0 || x >= W || y < 0 || y >= cv.height) continue;
-      if (visited[pos]) continue;
-      var i = pos * 4;
-      if (data[i] !== tr || data[i+1] !== tg || data[i+2] !== tb || data[i+3] !== ta) continue;
-      visited[pos] = 1;
-      data[i] = fc[0]; data[i+1] = fc[1]; data[i+2] = fc[2]; data[i+3] = 255;
-      stack.push(pos+1, pos-1, pos+W, pos-W);
-    }
-    ctx.putImageData(imgData, 0, 0);
-  }
-
-  /* ── Colors ──────────────────────────────────────────────────────────── */
-  document.querySelectorAll('.color-btn').forEach(function(b){
-    b.onclick = function(){
-      color = b.dataset.color;
-      setTool('brush');
-      document.querySelectorAll('.color-btn').forEach(function(x){ x.classList.remove('active'); });
-      b.classList.add('active');
-    };
-  });
-
-  /* ── Sizes ───────────────────────────────────────────────────────────── */
-  function setSize(btn, s) {
-    [sizeS, sizeM, sizeL].forEach(function(b){ b.classList.remove('size-active'); });
-    btn.classList.add('size-active');
-    size = s;
-  }
-  sizeS.onclick = function(){ setSize(sizeS, 3); };
-  sizeM.onclick = function(){ setSize(sizeM, 8); };
-  sizeL.onclick = function(){ setSize(sizeL, 16); };
-
-  /* ── Clear ───────────────────────────────────────────────────────────── */
-  clearBtn.onclick = function(){
-    ctx.fillStyle = '#FFFFFF';
-    ctx.fillRect(0, 0, cv.width, cv.height);
-    drawn = false;
-    prevImg.style.display = 'none';
-    prevEmpty.style.display = '';
-  };
-
-  /* ── Drawing ─────────────────────────────────────────────────────────── */
-  function pos(e, canvasEl) {
-    var target = canvasEl || cv;
-    var r = target.getBoundingClientRect();
-    var sx = target.width / r.width, sy = target.height / r.height;
-    var src = e.touches ? e.touches[0] : e;
-    return { x: (src.clientX - r.left) * sx, y: (src.clientY - r.top) * sy };
-  }
-  function startD(e) {
-    if (tool === 'fill') {
-      var p = pos(e, cv);
-      floodFill(Math.round(p.x), Math.round(p.y));
-      drawn = true;
-      prevImg.src = cv.toDataURL('image/jpeg', 0.5);
-      prevImg.style.display = 'block';
-      prevEmpty.style.display = 'none';
-      e.preventDefault(); return;
-    }
-    drawing = true; var p2 = pos(e, cv); ctx.beginPath(); ctx.moveTo(p2.x, p2.y); e.preventDefault();
-  }
-  function doD(e) {
-    if (!drawing || tool === 'fill') return;
-    var p = pos(e, cv);
-    ctx.lineWidth = size;
-    ctx.strokeStyle = tool === 'eraser' ? '#FFFFFF' : color;
-    ctx.lineTo(p.x, p.y); ctx.stroke(); ctx.beginPath(); ctx.moveTo(p.x, p.y);
-    drawn = true; e.preventDefault();
-  }
-  function stopD() {
-    if (!drawing) return;
-    drawing = false; ctx.beginPath();
-    if (drawn) {
-      prevImg.src = cv.toDataURL('image/jpeg', 0.5);
-      prevImg.style.display = 'block';
-      prevEmpty.style.display = 'none';
-    }
-  }
-
-  function attachDrawEvents(target, canvasEl) {
-    target.addEventListener('mousedown', startD);
-    target.addEventListener('mousemove', doD);
-    target.addEventListener('mouseup', stopD);
-    target.addEventListener('mouseleave', stopD);
-    target.addEventListener('touchstart', startD, { passive: false });
-    target.addEventListener('touchmove', doD, { passive: false });
-    target.addEventListener('touchend', stopD);
-  }
-  attachDrawEvents(cv, cv);
-
-  /* ── Fullscreen ──────────────────────────────────────────────────────── */
-  var COLORS = ['#222222','#FFFFFF','#C41E3A','#00E5FF','#FF0055','#FF6B2C','#FFD700','#00C853','#2196F3','#9C27B0','#8B4513','#FFCD94','#FF69B4'];
-  var SIZES_MAP = {S:3, M:8, L:16};
-
-  function makeBtn(text, css, onclick) {
-    var b = document.createElement('button');
-    b.textContent = text;
-    b.style.cssText = "font-family:'JetBrains Mono',monospace;font-size:0.65rem;font-weight:700;padding:0.35rem 0.6rem;cursor:pointer;letter-spacing:0.06em;border:1px solid var(--border-color);background:transparent;color:var(--text-primary);" + (css || '');
-    if (onclick) b.onclick = onclick;
-    return b;
-  }
-
-  function makeColorDot(c, isActive, onclick) {
-    var b = document.createElement('button');
-    b.style.cssText = 'width:20px;height:20px;border-radius:50%;border:2px solid transparent;cursor:pointer;background:' + c + ';flex-shrink:0;';
-    if (c === '#FFFFFF' || c === '#FFCD94') b.style.boxShadow = '0 0 0 1px #333338';
-    if (isActive) b.style.cssText += 'transform:scale(1.3);box-shadow:0 0 0 2px #C41E3A,0 0 8px rgba(196,30,58,0.55);';
-    b.onclick = onclick;
-    return b;
-  }
-
-  fsBtn.onclick = function() {
-    // Overlay
-    var overlay = document.createElement('div');
-    overlay.style.cssText = 'position:fixed;inset:0;z-index:9999;background:var(--bg-base);display:flex;flex-direction:column;padding:0.5rem;';
-
-    // Top bar: tools + exit
-    var topBar = document.createElement('div');
-    topBar.style.cssText = 'display:flex;align-items:center;gap:0.4rem;flex-shrink:0;padding:0.25rem 0;overflow-x:auto;';
-
-    // Tool buttons
-    var fsTool = tool;
-    var fsColor = color;
-    var fsSize = size;
-    var toolBtns = {};
-    ['BRUSH','ERASER','FILL'].forEach(function(t) {
-      var tl = t.toLowerCase();
-      var b = makeBtn(t, '', function(){ fsTool = tl; updateFsToolbar(); });
-      toolBtns[tl] = b;
-      topBar.appendChild(b);
-    });
-
-    // Separator
-    var sep1 = document.createElement('span');
-    sep1.style.cssText = 'width:1px;height:16px;background:var(--border-color);flex-shrink:0;';
-    topBar.appendChild(sep1);
-
-    // Size buttons
-    var sizeBtns = {};
-    ['S','M','L'].forEach(function(s) {
-      var b = makeBtn(s, 'min-width:28px;text-align:center;', function(){ fsSize = SIZES_MAP[s]; updateFsToolbar(); });
-      sizeBtns[s] = b;
-      topBar.appendChild(b);
-    });
-
-    // Separator
-    var sep2 = document.createElement('span');
-    sep2.style.cssText = 'width:1px;height:16px;background:var(--border-color);flex-shrink:0;';
-    topBar.appendChild(sep2);
-
-    // Clear
-    var clearFsBtn = makeBtn('CLEAR', 'color:#FF0055;border-color:#FF0055;', function() {
-      fsCtx.fillStyle = '#FFFFFF';
-      fsCtx.fillRect(0, 0, fsCanvas.width, fsCanvas.height);
-    });
-    topBar.appendChild(clearFsBtn);
-
-    // Exit (fixed top-right so always visible)
-    var exitBtn = makeBtn('EXIT', 'position:fixed;top:0.5rem;right:0.5rem;z-index:10000;color:#FF0055;border-color:#FF0055;background:var(--bg-base);');
-
-    // Color bar
-    var colorBar = document.createElement('div');
-    colorBar.style.cssText = 'display:flex;align-items:center;gap:4px;flex-shrink:0;padding:0.25rem 0;overflow-x:auto;';
-    var colorDots = {};
-    COLORS.forEach(function(c) {
-      var dot = makeColorDot(c, c === fsColor, function() {
-        fsColor = c; fsTool = 'brush'; updateFsToolbar();
-      });
-      colorDots[c] = dot;
-      colorBar.appendChild(dot);
-    });
-
-    // Canvas wrap
-    var wrap = document.createElement('div');
-    wrap.style.cssText = 'flex:1;display:flex;align-items:center;justify-content:center;min-height:0;overflow:hidden;';
-
-    var fsCanvas = document.createElement('canvas');
-    fsCanvas.width = cv.width; fsCanvas.height = cv.height;
-    fsCanvas.style.cssText = 'max-width:100%;max-height:100%;border:1px solid var(--border-color);box-shadow:inset 0 0 30px rgba(0,0,0,0.5);cursor:crosshair;touch-action:none;';
-    var fsCtx = fsCanvas.getContext('2d');
-    fsCtx.drawImage(cv, 0, 0);
-    fsCtx.lineCap = 'round'; fsCtx.lineJoin = 'round';
-
-    wrap.appendChild(fsCanvas);
-    overlay.appendChild(topBar);
-    overlay.appendChild(colorBar);
-    overlay.appendChild(wrap);
-    overlay.appendChild(exitBtn);
-    document.body.appendChild(overlay);
-    document.body.style.overflow = 'hidden';
-
-    // Request landscape on mobile
-    try {
-      if (screen.orientation && screen.orientation.unlock) screen.orientation.unlock();
-    } catch(e){}
-
-    function updateFsToolbar() {
-      Object.keys(toolBtns).forEach(function(k) {
-        toolBtns[k].style.background = (fsTool === k) ? '#C41E3A' : 'transparent';
-        toolBtns[k].style.color = (fsTool === k) ? '#000' : 'var(--text-primary)';
-        toolBtns[k].style.borderColor = (fsTool === k) ? '#C41E3A' : 'var(--border-color)';
-      });
-      Object.keys(sizeBtns).forEach(function(k) {
-        var active = fsSize === SIZES_MAP[k];
-        sizeBtns[k].style.background = active ? '#C41E3A' : 'transparent';
-        sizeBtns[k].style.color = active ? '#000' : 'var(--text-primary)';
-        sizeBtns[k].style.borderColor = active ? '#C41E3A' : 'var(--border-color)';
-      });
-      Object.keys(colorDots).forEach(function(c) {
-        colorDots[c].style.transform = (c === fsColor && fsTool !== 'eraser') ? 'scale(1.3)' : 'scale(1)';
-        colorDots[c].style.boxShadow = (c === fsColor && fsTool !== 'eraser') ? '0 0 0 2px #C41E3A,0 0 8px rgba(196,30,58,0.55)' : (c === '#FFFFFF' || c === '#FFCD94' ? '0 0 0 1px #333338' : 'none');
-      });
-      fsCanvas.style.cursor = fsTool === 'fill' ? 'cell' : 'crosshair';
-    }
-    updateFsToolbar();
-
-    // FS drawing events (use local tool/color/size state)
-    var fsDrawing = false;
-    function fsPos(e) {
-      var r = fsCanvas.getBoundingClientRect();
-      var sx = fsCanvas.width / r.width, sy = fsCanvas.height / r.height;
-      var src = e.touches ? e.touches[0] : e;
-      return { x: (src.clientX - r.left) * sx, y: (src.clientY - r.top) * sy };
-    }
-    function fsFill(cx, cy) {
-      var imgData = fsCtx.getImageData(0, 0, fsCanvas.width, fsCanvas.height);
-      var data = imgData.data;
-      var W = fsCanvas.width;
-      var idx = (cy * W + cx) * 4;
-      var tr = data[idx], tg = data[idx+1], tb = data[idx+2], ta = data[idx+3];
-      var fc = hexToRgb(fsColor);
-      if (tr === fc[0] && tg === fc[1] && tb === fc[2] && ta === 255) return;
-      var stack = [cx + cy * W];
-      var visited = new Uint8Array(W * fsCanvas.height);
-      while (stack.length) {
-        var p = stack.pop();
-        var x = p % W, y = (p / W) | 0;
-        if (x < 0 || x >= W || y < 0 || y >= fsCanvas.height) continue;
-        if (visited[p]) continue;
-        var i = p * 4;
-        if (data[i] !== tr || data[i+1] !== tg || data[i+2] !== tb || data[i+3] !== ta) continue;
-        visited[p] = 1;
-        data[i] = fc[0]; data[i+1] = fc[1]; data[i+2] = fc[2]; data[i+3] = 255;
-        stack.push(p+1, p-1, p+W, p-W);
-      }
-      fsCtx.putImageData(imgData, 0, 0);
-    }
-    function fsStartD(e) {
-      if (fsTool === 'fill') {
-        var p = fsPos(e); fsFill(Math.round(p.x), Math.round(p.y));
-        drawn = true; e.preventDefault(); return;
-      }
-      fsDrawing = true; var p2 = fsPos(e); fsCtx.beginPath(); fsCtx.moveTo(p2.x, p2.y); e.preventDefault();
-    }
-    function fsDoD(e) {
-      if (!fsDrawing || fsTool === 'fill') return;
-      var p = fsPos(e);
-      fsCtx.lineWidth = fsSize;
-      fsCtx.strokeStyle = fsTool === 'eraser' ? '#FFFFFF' : fsColor;
-      fsCtx.lineTo(p.x, p.y); fsCtx.stroke(); fsCtx.beginPath(); fsCtx.moveTo(p.x, p.y);
-      drawn = true; e.preventDefault();
-    }
-    function fsStopD() { if (fsDrawing) { fsDrawing = false; fsCtx.beginPath(); } }
-
-    fsCanvas.addEventListener('mousedown', fsStartD);
-    fsCanvas.addEventListener('mousemove', fsDoD);
-    fsCanvas.addEventListener('mouseup', fsStopD);
-    fsCanvas.addEventListener('mouseleave', fsStopD);
-    fsCanvas.addEventListener('touchstart', fsStartD, { passive: false });
-    fsCanvas.addEventListener('touchmove', fsDoD, { passive: false });
-    fsCanvas.addEventListener('touchend', fsStopD);
-
-    // Close
-    function closeFs() {
-      ctx.drawImage(fsCanvas, 0, 0);
-      if (drawn) {
-        prevImg.src = cv.toDataURL('image/jpeg', 0.5);
-        prevImg.style.display = 'block'; prevEmpty.style.display = 'none';
-      }
-      document.removeEventListener('keydown', escHandler);
-      document.body.removeChild(overlay);
-      document.body.style.overflow = '';
-    }
-    function escHandler(e) { if (e.key === 'Escape') closeFs(); }
-    document.addEventListener('keydown', escHandler);
-    exitBtn.onclick = closeFs;
-  };
-
-  /* ── Gallery load ────────────────────────────────────────────────────── */
-  function esc(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
-
-  function renderGallery(items) {
-    galleryLoading.style.display = 'none';
-    artworkCount.textContent = '/' + String(items.length).padStart(2, '0');
-    if (items.length === 0) {
-      galleryEmpty.style.display = '';
-      renderArchive([]);
-      return;
-    }
-    galleryEmpty.style.display = 'none';
-    galleryGrid.innerHTML = '';
-    items.forEach(function(it, i){
-      var d = document.createElement('div');
-      d.className = 'gallery-card';
-      d.innerHTML =
-        '<img src="' + esc(it.image_data || it.image || '') + '" alt="' + esc(it.title) + '" loading="lazy" />' +
-        '<div style="padding-top:0.75rem;">' +
-          '<p class="font-black text-sm" style="color:var(--text-primary);font-family:Space Grotesk;">' + esc(it.title) + '</p>' +
-          '<p class="font-mono text-xs" style="color:var(--text-secondary);margin-top:0.25rem;">by ' + esc(it.name) + '</p>' +
-          (it.created_at || it.date ? '<p class="font-mono text-xs" style="color:var(--text-secondary);opacity:0.4;margin-top:0.25rem;">' + new Date(it.created_at || it.date).toLocaleDateString() + '</p>' : '') +
-        '</div>';
-      galleryGrid.appendChild(d);
-      setTimeout(function(){ d.classList.add('vis'); }, 50 * i);
-    });
-    galleryGrid.style.display = '';
-    renderArchive(items);
-  }
-
-  /* Archive mosaic — same items, denser view (Snippet 06b) */
-  function renderArchive(items) {
-    var grid  = document.getElementById('archive-grid');
-    var count = document.getElementById('archive-count');
-    if (!grid || !count) return;
-    grid.innerHTML = '';
-    items.forEach(function(it) {
-      var t = document.createElement('div');
-      t.className = 'archive-tile';
-      var date = it.created_at || it.date
-        ? new Date(it.created_at || it.date).toLocaleDateString(undefined, { month: 'short', day: '2-digit' }).toUpperCase()
-        : '';
-      t.innerHTML =
-        '<img src="' + esc(it.image_data || it.image || '') + '" alt="' + esc(it.title) + '" loading="lazy">' +
-        '<div class="date">' + date + '</div>' +
-        '<div class="ovl">' +
-          '<div class="t">' + esc(it.title) + '</div>' +
-          '<div class="a">— ' + esc(it.name) + '</div>' +
-        '</div>';
-      grid.appendChild(t);
-    });
-    count.textContent = String(items.length).padStart(2, '0');
-  }
-
-  async function loadGallery(prepend) {
-    var sb = await getSB();
-    var items = [];
-    if (sb) {
-      var res = await sb.from('gallery_submissions').select('id, name, title, image_data, created_at').order('created_at', { ascending: false });
-      if (!res.error && res.data) items = res.data;
-    }
-    SEEDS.forEach(function(s){
-      items.push({ id: 'seed', name: s.name, title: s.title, image_data: s.image, created_at: s.date });
-    });
-    if (prepend) items.unshift(prepend);
-    renderGallery(items);
-  }
-
-  /* ── Submit (graceful errors + retry — Snippet 06a) ──────────────────── */
-  var errBox     = document.getElementById('err-box');
-  var errBody    = document.getElementById('err-body');
-  var errDismiss = document.getElementById('err-dismiss');
-  var errRetry   = document.getElementById('err-retry');
-
-  function showError(msg) {
-    if (!errBox || !errBody) return;
-    errBody.textContent = msg;
-    errBox.classList.add('show');
-  }
-  function hideError() {
-    if (errBox) errBox.classList.remove('show');
-  }
-  if (errDismiss) errDismiss.addEventListener('click', hideError);
-  if (errRetry)   errRetry.addEventListener('click', function(){ trySubmit(); });
-
-  async function trySubmit() {
-    hideError();
-    var name  = document.getElementById('inp-name').value.trim();
-    var title = document.getElementById('inp-title').value.trim();
-    if (!name)  return showError('Add your name first — even "Anonymous" works.');
-    if (!title) return showError('Give your piece a title before transmitting.');
-    if (!drawn) return showError('Draw something on the canvas first.');
-
-    submitBtn.disabled = true;
-    submitText.style.display = 'none';
-    submitSpin.style.display = '';
-
-    try {
-      var imageData = cv.toDataURL('image/jpeg', 0.45);
-      var sb = await getSB();
-      if (!sb) throw new Error('Supabase not configured — add credentials to .env');
-      var res = await sb.from('gallery_submissions')
-        .insert([{ name: name, title: title, image_data: imageData }])
-        .select().single();
-      if (res.error) throw new Error(res.error.message);
-
-      form.style.display = 'none';
-      successBox.style.display = '';
-      loadGallery({
-        id: res.data?.id, name: name, title: title,
-        image_data: imageData, created_at: new Date().toISOString()
-      });
-      document.getElementById('gallery-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
-    } catch (err) {
-      var msg;
-      if (err instanceof TypeError) {
-        msg = 'Failed to reach the archive server. Check your network connection and try again.';
-      } else if (err && err.message && err.message.startsWith('HTTP')) {
-        msg = 'Server rejected the submission (' + err.message + '). Try again in a moment.';
-      } else {
-        msg = 'Submission failed: ' + (err && err.message ? err.message : 'Unknown error') + '.';
-      }
-      showError(msg);
-    } finally {
-      submitBtn.disabled = false;
-      submitText.style.display = '';
-      submitSpin.style.display = 'none';
-    }
-  }
-
-  form.addEventListener('submit', function(e){
-    e.preventDefault();
-    trySubmit();
-  });
-
-  document.getElementById('draw-another-btn').onclick = function(){
-    ctx.fillStyle = '#FFFFFF';
-    ctx.fillRect(0, 0, cv.width, cv.height);
-    drawn = false;
-    prevImg.style.display = 'none';
-    prevEmpty.style.display = '';
-    document.getElementById('inp-name').value = '';
-    document.getElementById('inp-title').value = '';
-    successBox.style.display = 'none';
-    form.style.display = '';
-    hideError();
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-
-  /* ── Init ─────────────────────────────────────────────────────────────── */
-  loadGallery(null);
-})();
-</script>

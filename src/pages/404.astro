@@ -1,0 +1,110 @@
+---
+// /404 — Vercel serves this for unknown routes automatically. Terminal
+// aesthetic: an error block, a fake `ls` of the real routes, and an "H"
+// shortcut home. Not noindex: Astro/Vercel handle the status code.
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+
+const routes = [
+  { href: '/', name: 'index', note: 'home' },
+  { href: '/blog/', name: 'blog/', note: 'notes on ML and medicine' },
+  { href: '/now/', name: 'now/', note: 'what I am doing at the moment' },
+  { href: '/uses/', name: 'uses/', note: 'tools and stack' },
+  { href: '/hobbies/', name: 'hobbies/', note: 'painting, archery, travel' },
+];
+---
+
+<Layout title="404" description="That route does not exist on emirceylan.com. Here is what does." ogImage="/og/404.png">
+  <Header />
+
+  <main id="main" class="page">
+    <section class="container section" aria-labelledby="nf-heading">
+      <div class="term panel" data-reveal>
+        <div class="term-bar" aria-hidden="true">
+          <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+          <span class="term-title">emirceylan.com — sh</span>
+        </div>
+
+        <pre class="term-body"><span class="prompt" aria-hidden="true">$ </span><span class="cmd">open <span class="path" id="nf-path">{Astro.url.pathname}</span></span>
+<span class="err">&gt; route not found</span>
+<span class="muted">&gt; exit 404</span>
+
+<span class="prompt" aria-hidden="true">$ </span><span class="cmd">ls -1 /</span></pre>
+
+        <h1 id="nf-heading" class="sr-only">404: page not found</h1>
+
+        <ul class="ls" aria-label="Pages on this site">
+          {routes.map((r) => (
+            <li>
+              <a href={r.href}><span class="ls-name">{r.name}</span><span class="ls-note">{r.note}</span></a>
+            </li>
+          ))}
+        </ul>
+
+        <p class="hint">
+          <span class="prompt" aria-hidden="true">$ </span>
+          press <kbd>H</kbd> to go home<span class="caret" aria-hidden="true"></span>
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</Layout>
+
+<script>
+  // Show the actual requested path in the prompt line (the static build only
+  // knows "/404"), and wire the H shortcut. Ignored when typing in a field.
+  const pathEl = document.getElementById('nf-path');
+  if (pathEl && location.pathname && location.pathname !== '/404' && location.pathname !== '/404/') {
+    pathEl.textContent = location.pathname;
+  }
+  window.addEventListener('keydown', (e) => {
+    if (e.key.toLowerCase() !== 'h' || e.metaKey || e.ctrlKey || e.altKey) return;
+    const t = e.target as HTMLElement | null;
+    if (t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.isContentEditable)) return;
+    location.assign('/');
+  });
+</script>
+
+<style>
+  .page { padding-top: 80px; flex: 1; display: flex; }
+  .container { max-width: 80rem; margin-inline: auto; padding-inline: var(--gutter); width: 100%; }
+  .section { padding-block: var(--section-y); display: flex; align-items: center; }
+  .term { max-width: 44rem; width: 100%; padding: 0; font-family: 'JetBrains Mono', monospace; }
+  .term-bar { display: flex; align-items: center; gap: 6px; padding: 0.6rem var(--space-4); border-bottom: 1px solid var(--border-color); background: var(--bg-elevated); }
+  .dot { width: 9px; height: 9px; border-radius: 50%; background: var(--border-color); }
+  .dot:first-child { background: var(--accent); }
+  .term-title { margin-left: auto; font-size: 0.7rem; letter-spacing: 0.1em; color: var(--text-tertiary); }
+
+  .term-body {
+    margin: 0; padding: var(--space-6) var(--space-6) var(--space-2);
+    font-family: inherit; font-size: 0.9rem; line-height: 1.8;
+    white-space: pre-wrap; overflow-wrap: anywhere; color: var(--text-secondary);
+  }
+  .prompt { color: var(--accent-text); font-weight: 700; }
+  .cmd { color: var(--text-primary); }
+  .path { color: var(--text-primary); text-decoration: underline; text-decoration-color: var(--accent); text-underline-offset: 3px; }
+  .err { color: var(--accent-bri); font-weight: 700; font-size: clamp(1.1rem, 1rem + 1vw, 1.6rem); }
+  .muted { color: var(--text-tertiary); }
+
+  .ls { list-style: none; margin: 0; padding: 0 var(--space-6) var(--space-4); }
+  .ls a {
+    display: flex; flex-wrap: wrap; gap: 0 var(--space-4); align-items: baseline;
+    padding: 0.4rem 0; text-decoration: none; min-height: 44px;
+    border-bottom: 1px dashed var(--border-color);
+    transition: color var(--dur-fast) var(--ease-out);
+  }
+  .ls li:last-child a { border-bottom: 0; }
+  .ls-name { color: var(--text-primary); font-weight: 700; font-size: 0.95rem; min-width: 7ch; }
+  .ls-name::before { content: '▸ '; color: var(--accent); }
+  .ls-note { color: var(--text-tertiary); font-size: 0.8rem; }
+  .ls a:hover .ls-name, .ls a:focus-visible .ls-name { color: var(--accent-text); }
+
+  .hint { padding: var(--space-4) var(--space-6) var(--space-6); font-size: 0.8rem; letter-spacing: 0.06em; color: var(--text-secondary); border-top: 1px solid var(--border-color); }
+  kbd { font-family: inherit; font-size: 0.75rem; color: var(--text-primary); border: 1px solid var(--border-color); border-bottom-width: 2px; padding: 0.1rem 0.45rem; background: var(--bg-elevated); }
+  .caret { display: inline-block; width: 0.55em; height: 1em; vertical-align: -0.15em; margin-left: 0.3em; background: var(--accent); animation: caret 1s steps(2) infinite; }
+  @keyframes caret { 50% { opacity: 0; } }
+  @media (prefers-reduced-motion: reduce) { .caret { animation: none; } }
+</style>

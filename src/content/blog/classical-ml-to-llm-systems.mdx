@@ -1,0 +1,53 @@
+---
+title: "From classical ML to LLM systems: what I'm actually learning"
+description: "I spent the last two years on tabular models for medicine. Now I am building a RAG project to learn LLM engineering. What transfers, what does not, and what I do not know yet."
+pubDate: 2026-08-25
+tags: ["llm", "rag", "learning", "ml"]
+draft: true
+---
+
+{/* DRAFT. No completed results are claimed in this post on purpose; the RAG project is in progress. */}
+
+Most of my ML work so far has been tabular. Clinical risk models, a genetic variant classifier, a lot of scikit-learn and XGBoost. Cross-validation, feature engineering, calibration curves. That is the world I know how to operate in.
+
+This year I decided to move, on purpose, into LLM engineering: retrieval-augmented generation, agents, systems built around a model I did not train. I am learning it by building a RAG project. It is not finished, and this post is not a results post. It is a note on what the move actually feels like from the inside, written while I am still in it.
+
+## What transfers
+
+More than I expected. The parts of classical ML that I thought were specific to tabular data turned out to be the parts that matter most.
+
+**Evaluation discipline.** In tabular ML you learn quickly that the model you like and the model that works are different things, and only a held-out evaluation can tell them apart. LLM systems have the same problem in a worse form. The output looks plausible by construction, so it is easy to eyeball three answers and declare victory. The fix is the same one: build an evaluation set before you build the system, decide what "correct" means, and measure. In LLM land people call these evals. They are test sets with a new name.
+
+**Leakage.** I spent a lot of effort keeping patients from leaking across folds. The RAG equivalent is keeping your eval questions from leaking into your retrieval corpus, or your prompt examples from being the same as your test cases. Same failure, same inflated numbers, same disappointment later.
+
+**The calibration mindset.** I care about whether a model's confidence means anything. An LLM system that always sounds confident is the uncalibrated model taken to its limit. So I find myself asking the same questions: when it says it found the answer, how often did it? When it cites a source, does the source support the claim? Those are calibration questions, and the tools for answering them are the ones I already have: hold-out sets, confusion matrices, reliability checks on "I don't know" behaviour.
+
+**Data work is most of the work.** Engineering 77 clinical features from a raw EHR release taught me that the model is the easy part. In RAG, the corpus is the dataset. Cleaning it, chunking it, deciding what metadata to keep: that is the feature engineering. It is unglamorous and it decides the outcome.
+
+## What is new
+
+Here is the honest list of things I did not have a mental model for.
+
+**Retrieval quality is its own problem.** In tabular ML the features are in the row. In RAG, the "features" the model gets are whatever the retriever returned, and if the retriever misses the relevant passage, the generator cannot recover. So there is a whole evaluation layer before the LLM is even involved: is the right chunk in the top k? I had never measured recall@k on my own system before. Now it is the first number I look at.
+
+**Chunking is a modelling decision.** How you split documents changes what can be retrieved. Too small and the context is lost. Too big and the relevant sentence is buried in noise. Overlap, boundaries at headings, keeping tables intact. None of this has a closed-form answer. I am treating it like a hyperparameter and measuring it like one.
+
+**Prompt and tool design.** In classical ML the interface to the model is a feature matrix. Here the interface is text, plus a set of tools the model can call. Writing a clear tool description is closer to writing a good function signature and docstring than to anything in scikit-learn. Small wording changes move behaviour in ways that are hard to predict, which is why evals matter even more.
+
+**Failure modes are different.** A tabular model fails quietly with a bad probability. An LLM system fails fluently with a confident wrong answer, a made-up citation, or a tool call with the wrong arguments. Catching these needs checks I did not have before: does the cited passage exist, does it say what the answer claims, did the tool get valid input.
+
+**Cost and latency are first-class.** I never had to think about the price of a prediction on a gradient-boosted model. With an API-backed LLM every retrieval and every token has a cost, and the user is waiting. That pushes design decisions in ways that are new to me.
+
+## What I am actually doing about it
+
+The project is a RAG system over a document set, with a retrieval layer I can evaluate on its own, a generation layer with citations, and an eval set I wrote before I wrote the pipeline. I am measuring retrieval recall separately from answer quality so that when something is wrong I know which layer to blame.
+
+I am not going to report numbers here, because I do not have numbers I trust yet. When I do, they will come with the same things I would want from a clinical model: a held-out set, a description of how it was built, and the failure cases, not just the wins.
+
+## What I do not know yet
+
+- How much of "agent" design is real engineering and how much is prompt folklore. I suspect more of the former than the current discourse suggests, but I have not built enough to say.
+- Whether the evaluation habits I have from medicine are strict enough or too strict for this domain. Clinical ML has a low tolerance for confident errors. Maybe that is exactly the right instinct here. Maybe it is a handicap.
+- How much of the tabular toolkit I will actually keep using. My guess: all of the evaluation thinking, little of the specific tooling.
+
+I will write a follow-up when the project has results. Until then this is the honest state: the discipline transfers, the mechanics are new, and the way to learn is to build the thing and measure it.

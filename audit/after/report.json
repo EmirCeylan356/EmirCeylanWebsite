@@ -1,0 +1,187 @@
+{
+  "name": "after",
+  "base": "http://localhost:4321",
+  "date": "2026-08-25T04:43:00.864Z",
+  "axe": {
+    "/@390": [],
+    "/@1280": [],
+    "/hobbies@390": [],
+    "/hobbies@1280": [],
+    "/blog@390": [],
+    "/blog@1280": [],
+    "/now@390": [
+      {
+        "id": "color-contrast",
+        "impact": "serious",
+        "help": "Elements must meet minimum color contrast ratio thresholds",
+        "nodes": 1,
+        "targets": [
+          ".cta > a"
+        ]
+      }
+    ],
+    "/now@1280": [
+      {
+        "id": "color-contrast",
+        "impact": "serious",
+        "help": "Elements must meet minimum color contrast ratio thresholds",
+        "nodes": 1,
+        "targets": [
+          ".cta > a"
+        ]
+      }
+    ]
+  },
+  "lighthouse": {
+    "/@mobile": {
+      "performance": 99,
+      "accessibility": 100,
+      "bestPractices": 100,
+      "seo": 100,
+      "lcpMs": 1807,
+      "cls": 0.009,
+      "tbtMs": 0,
+      "fcpMs": 1360,
+      "totalBytes": 124175
+    },
+    "/@desktop": {
+      "performance": 100,
+      "accessibility": 100,
+      "bestPractices": 100,
+      "seo": 100,
+      "lcpMs": 407,
+      "cls": 0.002,
+      "tbtMs": 0,
+      "fcpMs": 331,
+      "totalBytes": 124175
+    },
+    "/hobbies@mobile": {
+      "performance": 99,
+      "accessibility": 100,
+      "bestPractices": 100,
+      "seo": 100,
+      "lcpMs": 1958,
+      "cls": 0,
+      "tbtMs": 0,
+      "fcpMs": 1511,
+      "totalBytes": 143646
+    },
+    "/hobbies@desktop": {
+      "performance": 100,
+      "accessibility": 100,
+      "bestPractices": 100,
+      "seo": 100,
+      "lcpMs": 446,
+      "cls": 0,
+      "tbtMs": 0,
+      "fcpMs": 369,
+      "totalBytes": 143646
+    }
+  },
+  "weights": {
+    "/": {
+      "requests": 11,
+      "totalBytes": 185357,
+      "byType": {
+        "document": 28990,
+        "font": 96828,
+        "stylesheet": 52534,
+        "script": 7005
+      },
+      "largest": [
+        {
+          "url": "/fonts/jetbrains-mono-latin-wght-normal.woff2",
+          "bytes": 40404
+        },
+        {
+          "url": "/",
+          "bytes": 28990
+        },
+        {
+          "url": "/_astro/_slug_.sprXYl9c.css",
+          "bytes": 28965
+        },
+        {
+          "url": "/fonts/space-grotesk-latin-wght-normal.woff2",
+          "bytes": 22288
+        },
+        {
+          "url": "/fonts/space-grotesk-latin-ext-wght-normal.woff2",
+          "bytes": 18940
+        },
+        {
+          "url": "/_astro/index.Bjm3Lx44.css",
+          "bytes": 15303
+        }
+      ]
+    },
+    "/hobbies": {
+      "requests": 11,
+      "totalBytes": 320507,
+      "byType": {
+        "document": 159375,
+        "font": 96828,
+        "stylesheet": 53160,
+        "script": 11144
+      },
+      "largest": [
+        {
+          "url": "/hobbies",
+          "bytes": 159375
+        },
+        {
+          "url": "/fonts/jetbrains-mono-latin-wght-normal.woff2",
+          "bytes": 40404
+        },
+        {
+          "url": "/_astro/_slug_.sprXYl9c.css",
+          "bytes": 28965
+        },
+        {
+          "url": "/fonts/space-grotesk-latin-wght-normal.woff2",
+          "bytes": 22288
+        },
+        {
+          "url": "/fonts/space-grotesk-latin-ext-wght-normal.woff2",
+          "bytes": 18940
+        },
+        {
+          "url": "/_astro/hobbies.DT4AMuFT.css",
+          "bytes": 15929
+        }
+      ]
+    }
+  },
+  "overflow": {},
+  "distBytes": 95435179,
+  "axeReducedMotionPass": {
+    "/@390": [],
+    "/@1280": [],
+    "/hobbies@390": [],
+    "/hobbies@1280": [],
+    "/blog@390": [],
+    "/blog@1280": [],
+    "/now@390": [
+      {
+        "id": "color-contrast",
+        "impact": "serious",
+        "help": "Elements must meet minimum color contrast ratio thresholds",
+        "nodes": 1,
+        "targets": [
+          ".cta > a"
+        ]
+      }
+    ],
+    "/now@1280": [
+      {
+        "id": "color-contrast",
+        "impact": "serious",
+        "help": "Elements must meet minimum color contrast ratio thresholds",
+        "nodes": 1,
+        "targets": [
+          ".cta > a"
+        ]
+      }
+    ]
+  }
+}

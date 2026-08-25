@@ -1,0 +1,22 @@
+---
+// One page per post. Drafts are only generated in dev / SHOW_DRAFTS builds
+// (see getPosts()). prev/next follow the newest-first order of the index.
+import { render } from 'astro:content';
+import BlogPost from '../../layouts/BlogPost.astro';
+import { getPosts, type Post } from '../../components/blog/posts';
+
+export async function getStaticPaths() {
+  const posts = await getPosts();
+  return posts.map((post, i) => ({
+    params: { slug: post.id },
+    props: { post, next: posts[i - 1], prev: posts[i + 1] },
+  }));
+}
+
+interface Props { post: Post; prev?: Post; next?: Post }
+const { post, prev, next } = Astro.props;
+const { Content } = await render(post);
+---
+<BlogPost post={post} prev={prev} next={next}>
+  <Content />
+</BlogPost>

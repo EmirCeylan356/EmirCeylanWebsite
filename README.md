@@ -1,43 +1,94 @@
-# Astro Starter Kit: Minimal
+# emirceylan.com
+
+Personal site of Emir Ceylan: CS student at Sabancı University working on machine learning for healthcare, and a painter. Live at **https://www.emirceylan.com**.
+
+Dark / crimson (`#C41E3A`) / mono-terminal identity. Static Astro site, no UI framework, hosted on Vercel, deployed automatically from `main`.
+
+## Stack
+
+| Layer | Choice |
+| --- | --- |
+| Framework | [Astro 5](https://astro.build) (static output, content collections + MDX for the blog) |
+| Styling | Tailwind CSS 4 via `@tailwindcss/vite` + hand-written CSS with design tokens in `src/styles/global.css` |
+| Fonts | Space Grotesk + JetBrains Mono, variable, self-hosted (`public/fonts/`, latin + latin-ext) |
+| Images | `astro:assets` (sharp) → AVIF/WebP with responsive `srcset` |
+| Social cards | Generated at build time with satori + resvg (`src/lib/og.ts`) |
+| Visitor gallery | Supabase (`gallery_submissions` table) via `@supabase/supabase-js` |
+| Hosting | Vercel — `vercel.json` carries redirects, security headers and cache headers |
+| Analytics | Vercel Web Analytics, cookieless, enabled only when `PUBLIC_ANALYTICS=vercel` is set |
+
+## Run it
 
 ```sh
-npm create astro@latest -- --template minimal
+npm install
+npm run dev          # http://localhost:4321 (drafts visible)
+npm run build        # static build → dist/
+npm run preview      # serve dist/
+npm run check        # typecheck + build + link check + privacy check (what CI runs)
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+Copy `.env.example` to `.env` for the gallery (`PUBLIC_SUPABASE_URL`, `PUBLIC_SUPABASE_ANON_KEY`). The site builds and runs without them; the gallery just shows a "not configured" state.
 
-## 🚀 Project Structure
+## Layout of the repo
 
-Inside of your Astro project, you'll see the following folders and files:
-
-```text
-/
-├── public/
-├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
+```
+src/
+  pages/            routes (see "Routes" below)
+  layouts/          Layout.astro (head, SEO, JSON-LD, skip link, background), BlogPost.astro
+  components/       Header, Footer, blog/*
+  content/blog/     MDX posts (+ _TEMPLATE.mdx)
+  data/profile.ts   ← single source of truth for facts (PUBLIC_* / PRIVATE_* tiers)
+  lib/              site.ts (constants, unlisted routes), og.ts (social cards), supabase.ts
+  scripts/          client TS bundled by Astro: reveal, counters, cursor grid
+  styles/           global.css (tokens, utilities), fonts.css, print.css
+  assets/paintings/ source images for /hobbies (processed by astro:assets)
+public/             static files: fonts, icons, robots.txt, manifest, CV PDF
+scripts/            node tooling: audit, screenshots, icons, CV PDF, link + privacy checks
+audit/              baseline/ and after/ Lighthouse + screenshots from the overnight upgrade
+archive/            old design explorations (handoff/, upgrade-proposal/) — reference only
+docs/               SUPABASE.md (RLS policies the gallery needs)
 ```
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+## Routes
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+Public: `/`, `/hobbies/`, `/blog/`, `/blog/<slug>/`, `/now/`, `/uses/`, `/404`, `/rss.xml`, `/sitemap-index.xml`, `/og/*.png`.
 
-Any static assets, like images, can be placed in the `public/` directory.
+**Unlisted** (link-based privacy, *not* authentication — anyone with the URL can view):
 
-## 🧞 Commands
+| Route | Purpose |
+| --- | --- |
+| `/work-4b8b954c2493/` | Full work history for recruiters — the one link Emir sends on request |
+| `/cv-4b8b954c2493/` | CV as HTML + printable; PDF at `/cv-4b8b954c2493/Emir_Ceylan_CV.pdf` |
+| `/gallery-088c0fbff746/` | Visitor drawing gallery (linked only from `/hobbies/`) |
+| `/visitor-gallery-admin/` | Moderation UI (Supabase Auth sign-in) |
 
-All commands are run from the root of the project, from a terminal:
+Every unlisted route is `noindex`, excluded from the sitemap (`astro.config.mjs`), `Disallow`ed in `public/robots.txt`, and never linked from a public page or the nav. `scripts/privacy-check.mjs` fails the build if a public page mentions an employer, dataset, project, course code or professor name (list: `PRIVATE_TERMS` in `src/data/profile.ts`), links an unlisted slug, or contains a phone number.
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+**Why the split:** the public site should read as credible and specific about capability without being a searchable index of everything Emir has done.
 
-## 👀 Want to learn more?
+## Editing content
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+- **Facts** (roles, projects, skills, /now): `src/data/profile.ts`. Public pages may only import `PUBLIC_*`.
+- **Blog posts**: copy `src/content/blog/_TEMPLATE.mdx`. See [CONTENT.md](CONTENT.md).
+- **CV**: edit `src/data/profile.ts`, then `npm run cv:pdf` and commit the regenerated PDF.
+- **Paintings**: drop the image in `src/assets/paintings/` and add an entry (with real alt text) to the array in `src/pages/hobbies.astro`.
+- **Icons**: edit `public/favicon.svg`, run `npm run icons`.
+
+## Deploying
+
+Push to `main` = production deploy on Vercel. Before merging:
+
+```sh
+npm run check                 # must be green
+node scripts/audit.mjs after  # optional: Lighthouse + axe + screenshots into audit/after/
+```
+
+CI (`.github/workflows/ci.yml`) runs the same `check` plus Lighthouse CI on pull requests. Rollback: `git revert <merge-sha> && git push`.
+
+## Conventions
+
+- Keep the visual identity. Tokens live in `global.css`; use `--dur-*` / `--ease-out` for motion, `--space-*` for spacing, `--text-tertiary` as the lowest-contrast text colour (never `opacity` on text).
+- Every animation must be off under `prefers-reduced-motion` (global kill switch + gate JS loops).
+- Scroll reveals: `data-reveal` / `data-reveal-stagger`; content must be visible without JS.
+- No facts on the site that aren't in `profile.ts`. Unknowns get a `TODO(emir):` comment, not a guess.
+- Formatting: `npm run format` (Prettier + Astro plugin). `.editorconfig` is set.

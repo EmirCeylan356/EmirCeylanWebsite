@@ -1,0 +1,168 @@
+---
+// /uses — tools and stack. Only items verifiable from the repo or the
+// approved skills list are included. Unknowns are TODO(emir) comments, not
+// guesses. PRIVACY: public page; no project or employer names.
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+
+interface Item { name: string; note?: string }
+interface Group { id: string; title: string; blurb: string; items: Item[] }
+
+const groups: Group[] = [
+  {
+    id: 'editor',
+    title: 'Editor & terminal',
+    blurb: 'Where the typing happens.',
+    items: [
+      { name: 'VS Code', note: 'with the Astro extension for this site' },
+      { name: 'Claude Code', note: 'agentic coding in the terminal' },
+      { name: 'Git / GitHub' },
+      { name: 'Ubuntu / Linux' },
+      { name: 'Jupyter', note: 'for exploration, not for anything that ships' },
+      // TODO(emir): terminal emulator, shell, editor theme, font size.
+    ],
+  },
+  {
+    id: 'languages',
+    title: 'Languages',
+    blurb: 'Python first. The rest as the job needs.',
+    items: [
+      { name: 'Python', note: 'almost all ML and data work' },
+      { name: 'C++' },
+      { name: 'JavaScript / TypeScript' },
+      { name: 'SQL' },
+    ],
+  },
+  {
+    id: 'ml',
+    title: 'ML & data',
+    blurb: 'The tabular stack I trust, plus what I reach for on raw data.',
+    items: [
+      { name: 'XGBoost', note: 'gradient-boosted trees for clinical risk models' },
+      { name: 'scikit-learn', note: 'cross-validation, calibration, baselines' },
+      { name: 'SHAP', note: 'per-patient and global explanations' },
+      { name: 'pandas' },
+      { name: 'polars', note: 'when pandas is too slow' },
+      { name: 'DuckDB', note: 'SQL over large raw releases on a laptop' },
+      { name: 'NumPy' },
+      { name: 'Matplotlib', note: 'reliability diagrams, SHAP plots' },
+      { name: 'Biopython', note: 'sequence work' },
+    ],
+  },
+  {
+    id: 'web',
+    title: 'Web & infra',
+    blurb: 'Enough full-stack to ship the thing around the model.',
+    items: [
+      { name: 'React', note: 'with Vite' },
+      { name: 'Django REST Framework' },
+      { name: 'PostgreSQL' },
+      { name: 'Docker' },
+      { name: 'Firebase / Supabase' },
+      { name: 'Jira', note: 'when working in a team' },
+    ],
+  },
+  {
+    id: 'site',
+    title: 'This site',
+    blurb: 'Static, self-hosted fonts, no tracking scripts.',
+    items: [
+      { name: 'Astro 5', note: 'static output, MDX for the blog' },
+      { name: 'Tailwind CSS 4', note: 'tokens live in one global.css' },
+      { name: 'TypeScript' },
+      { name: 'Supabase', note: 'backs the visitor drawing gallery' },
+      { name: 'Vercel', note: 'deploys on every push to main' },
+      { name: 'Playwright, Lighthouse, axe', note: 'screenshots and audits before a release' },
+      { name: 'satori + resvg', note: 'renders the social cards at build time' },
+    ],
+  },
+  {
+    id: 'off-screen',
+    title: 'Off-screen',
+    blurb: 'The other thread.',
+    items: [
+      { name: 'Oil paints' },
+      { name: 'Watercolour' },
+      // TODO(emir): brushes, paper, sketchbook, camera if any.
+    ],
+  },
+];
+// TODO(emir): hardware — laptop, monitor, keyboard, mouse, phone, headphones. Omitted rather than guessed.
+
+const description = 'The tools Emir Ceylan works with: editor and terminal, Python and the tabular ML stack, web and infra, and what this site is built with.';
+---
+
+<Layout title="Uses" description={description} ogImage="/og/uses.png">
+  <Header />
+
+  <main id="main" class="page">
+    <section class="container section" aria-labelledby="uses-heading">
+      <div class="section-head" data-reveal>
+        <p class="eyebrow">USES /</p>
+        <h1 id="uses-heading" class="section-title">Uses</h1>
+        <div class="section-line" data-reveal="line"></div>
+      </div>
+
+      <p class="intro" data-reveal>
+        What I actually work with. Only things I use, nothing aspirational.
+        Hardware is missing because I have not written it up yet.
+      </p>
+
+      <div class="uses-grid" data-reveal-stagger>
+        {groups.map((g, i) => (
+          <section class="panel uses-panel" aria-labelledby={`uses-${g.id}`} style={`--i:${i}`}>
+            <p class="panel-label">{String(i + 1).padStart(2, '0')} /</p>
+            <h2 id={`uses-${g.id}`} class="panel-title">{g.title}</h2>
+            <p class="panel-blurb">{g.blurb}</p>
+            <ul class="item-list">
+              {g.items.map((it) => (
+                <li>
+                  <span class="item-name">{it.name}</span>
+                  {it.note && <span class="item-note">{it.note}</span>}
+                </li>
+              ))}
+            </ul>
+          </section>
+        ))}
+      </div>
+
+      <footer class="footnote" data-reveal>
+        <p>
+          Pages like this follow the <a href="https://uses.tech" rel="noopener">/uses</a> convention.
+          Last checked against the repo and my skills list on <time datetime="2026-08-25">2026-08-25</time>.
+        </p>
+      </footer>
+    </section>
+  </main>
+
+  <Footer />
+</Layout>
+
+<style>
+  .page { padding-top: 80px; flex: 1; }
+  .container { max-width: 80rem; margin-inline: auto; padding-inline: var(--gutter); }
+  .section { padding-block: var(--section-y); }
+  .section-head { display: flex; align-items: flex-end; gap: var(--space-4); margin-bottom: var(--space-6); }
+  .section-head .eyebrow { align-self: center; margin: 0; }
+  .section-title { font-size: clamp(2.75rem, 7vw, 4.5rem); font-weight: 900; line-height: 1; }
+  .section-line { flex: 1; height: 1px; background: var(--border-color); align-self: center; }
+  .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-secondary); }
+
+  .intro { color: var(--text-secondary); max-width: 58ch; margin-bottom: clamp(var(--space-8), 5vw, var(--space-12)); }
+
+  .uses-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr)); gap: var(--space-4); }
+  .uses-panel { padding: clamp(var(--space-6), 3vw, var(--space-8)); }
+  .panel-label { font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; letter-spacing: 0.15em; color: var(--text-secondary); margin-bottom: var(--space-2); }
+  .panel-title { font-size: 1.35rem; letter-spacing: -0.01em; margin-bottom: var(--space-1); }
+  .panel-blurb { color: var(--text-tertiary); font-size: 0.9rem; margin-bottom: var(--space-4); padding-bottom: var(--space-4); border-bottom: 1px solid var(--border-color); }
+  .item-list { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--space-2); }
+  .item-list li { display: flex; flex-wrap: wrap; gap: 0 var(--space-3); align-items: baseline; line-height: 1.5; }
+  .item-name { font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; color: var(--text-primary); font-weight: 700; }
+  .item-note { color: var(--text-secondary); font-size: 0.9rem; }
+
+  .footnote { margin-top: var(--space-12); padding-top: var(--space-4); border-top: 1px solid var(--border-color); }
+  .footnote p { font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; line-height: 1.7; color: var(--text-tertiary); max-width: 70ch; }
+  .footnote a { color: var(--text-secondary); text-decoration: underline; text-underline-offset: 3px; }
+  .footnote a:hover { color: var(--accent-text); }
+</style>

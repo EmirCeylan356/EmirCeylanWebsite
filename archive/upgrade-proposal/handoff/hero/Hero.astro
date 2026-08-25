@@ -1,0 +1,65 @@
+---
+// src/components/Hero.astro
+// Crimson + neural-network hero — Direction B.
+// All styles and scripts scoped to this component; nothing leaks.
+---
+
+<canvas id="particles" data-screen-label="neural particle field"></canvas>
+<div class="grid" id="grid"></div>
+<div class="vignette"></div>
+
+<section class="hero" data-screen-label="01 hero">
+  <div class="hero-inner">
+
+    <div class="status" id="status">
+      <span class="pulse" aria-hidden="true"></span>
+      <span id="status-text">SYS_ID: EC_2027 — ISTANBUL / — ONLINE</span>
+    </div>
+
+    <div class="name-wrap" id="name-wrap">
+      <h1 class="name" aria-label="EMIR CEYLAN">
+        <span class="ln ln-1" id="ln1" data-text="EMIR"></span>
+        <span class="ln ln-2" id="ln2" data-text="CEYLAN"></span>
+      </h1>
+    </div>
+
+    <div class="subtitle" id="subtitle">
+      <span class="bullet"></span>
+      <span>CS STUDENT — AI FOR HEALTHCARE</span>
+      <span class="bullet"></span>
+    </div>
+
+    <div class="ctas" id="ctas">
+      <a href="#work" class="btn btn-primary">MY WORK <span aria-hidden="true">→</span></a>
+      <a href="#contact" class="btn btn-secondary">CONTACT</a>
+    </div>
+
+  </div>
+  <div class="scroll-cue" id="scroll-cue">SCROLL</div>
+</section>
+
+<style is:global>
+  /* ─── Hero tokens (scoped via :where(.hero, .status, ...) so they don't leak) ───
+     If your global.css already defines --accent, --bg, etc., rename below. */
+  :root {
+    --crimson:     #C41E3A;
+    --crimson-bri: #E03050;
+    --teal-deep:   #0D4F5C;
+  }
+
+  /* …Copy the full `<style>` block from hero.html here.
+
+     It's verbatim — no Astro-specific changes needed because all selectors are
+     class- or id-based and don't conflict with the rest of the site (assuming
+     you've removed the existing `.hero` block from index.astro). */
+</style>
+
+<script is:inline>
+  /* …Copy the THREE IIFEs from hero.html here:
+        1. neuralField()
+        2. nameReveal()
+        3. statusTypewriter()
+        4. loadSequence()
+     They're already self-contained and use `document.getElementById` so they
+     run fine inside an Astro component. */
+</script>

@@ -1,0 +1,129 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   EMIR CEYLAN — REDESIGN PROPOSAL
+   Crimson Terminal design system (kept from live site, made intentional)
+═══════════════════════════════════════════════════════════════════════════ */
+:root {
+  --bg:            #0a0a0a;
+  --surface:       #121216;
+  --elevated:      #1a1a1f;
+  --text:          #F5F5F5;
+  --dim:           #9a9aa2;
+  --faint:         #63636b;
+  --accent:        #C41E3A;
+  --accent-bri:    #E8324F;
+  --accent-dim:    rgba(196,30,58,0.7);
+  --accent-glow:   rgba(196,30,58,0.30);
+  --border:        #26262c;
+  --border-lit:    #34343c;
+  --grid:          rgba(255,255,255,0.022);
+  --mono: 'JetBrains Mono', ui-monospace, monospace;
+  --disp: 'Space Grotesk', sans-serif;
+}
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; scroll-padding-top: 72px; -webkit-text-size-adjust: 100%; }
+
+body {
+  font-family: var(--disp);
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  letter-spacing: 0.005em;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+a { color: var(--accent); text-decoration: none; transition: color .2s ease; }
+a:hover { color: var(--accent-bri); }
+
+::selection { background: var(--accent); color: #fff; }
+
+.mono { font-family: var(--mono); }
+
+/* ─── Page background: faint chart grid + vignette ────────────────────────── */
+.page-grid {
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background-image:
+    linear-gradient(var(--grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 68px 68px;
+}
+
+/* ─── Cut corner utility ──────────────────────────────────────────────────── */
+.cut { clip-path: polygon(0 0, 100% 0, 100% calc(100% - 14px), calc(100% - 14px) 100%, 0 100%); }
+.cut-tl { clip-path: polygon(14px 0, 100% 0, 100% 100%, 0 100%, 0 14px); }
+
+/* ═══ PROPOSAL CHROME ══════════════════════════════════════════════════════ */
+.proposal-bar {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 26px;
+  background: rgba(10,10,10,0.72);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--border);
+  font-family: var(--mono); font-size: 11px; letter-spacing: 0.16em;
+  color: var(--dim); text-transform: uppercase;
+}
+.proposal-bar .brand { color: var(--text); font-weight: 700; display: inline-flex; align-items: center; }
+.proposal-bar .brand::after { content: '_'; color: var(--accent); animation: blink 1.2s steps(2) infinite; }
+.proposal-bar nav { display: flex; gap: 22px; }
+.proposal-bar nav a { color: var(--dim); position: relative; }
+.proposal-bar nav a:hover { color: var(--accent); }
+@keyframes blink { 50% { opacity: 0; } }
+
+@media (max-width: 720px) {
+  .proposal-bar { padding: 11px 16px; font-size: 10px; letter-spacing: 0.1em; }
+  .proposal-bar nav { display: none; }
+}
+
+/* ═══ SECTION SCAFFOLD ═════════════════════════════════════════════════════ */
+.sec { position: relative; z-index: 1; padding: clamp(64px, 9vw, 140px) clamp(20px, 5vw, 88px); }
+.sec-wrap { max-width: 1240px; margin: 0 auto; }
+
+/* proposal annotation label above each redesign section */
+.anno {
+  display: inline-flex; align-items: center; gap: 12px;
+  font-family: var(--mono); font-size: 11px; letter-spacing: 0.22em;
+  text-transform: uppercase; color: var(--accent);
+  padding: 7px 14px; border: 1px solid var(--accent-dim);
+  margin-bottom: 34px;
+}
+.anno::before { content: ''; width: 6px; height: 6px; background: var(--accent); }
+
+.sec-head { display: flex; align-items: flex-end; gap: 20px; margin-bottom: 52px; }
+.sec-head .ix { font-family: var(--mono); font-size: 12px; letter-spacing: 0.18em; color: var(--faint); padding-bottom: 10px; }
+.sec-head h2 {
+  font-family: var(--disp); font-weight: 700; letter-spacing: -0.02em;
+  font-size: clamp(44px, 6.5vw, 88px); line-height: 0.9; color: var(--text);
+}
+.sec-head .line { flex: 1; height: 1px; background: var(--border-lit); margin-bottom: 18px; }
+.sec-head .count { font-family: var(--mono); font-size: 15px; color: var(--faint); padding-bottom: 12px; }
+
+.lead {
+  font-family: var(--disp); font-weight: 500;
+  font-size: clamp(19px, 2.1vw, 26px); line-height: 1.5;
+  color: var(--text); max-width: 62ch; text-wrap: pretty;
+}
+.lead em { color: var(--accent); font-style: normal; }
+.body-txt { color: var(--dim); font-size: 16px; line-height: 1.75; max-width: 58ch; text-wrap: pretty; }
+.body-txt + .body-txt { margin-top: 16px; }
+
+/* recommendation / note callout */
+.note {
+  border-left: 2px solid var(--accent); padding: 4px 0 4px 18px;
+  font-family: var(--mono); font-size: 12.5px; line-height: 1.7; color: var(--dim);
+  letter-spacing: 0.02em;
+}
+.note b { color: var(--text); font-weight: 700; }
+
+.badge-rec {
+  display: inline-flex; align-items: center; gap: 7px;
+  font-family: var(--mono); font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--bg); background: var(--accent); padding: 5px 10px; font-weight: 700;
+}
+.badge-rec::before { content: '★'; font-size: 10px; }
+.badge-alt {
+  font-family: var(--mono); font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--dim); border: 1px solid var(--border-lit); padding: 5px 10px;
+}

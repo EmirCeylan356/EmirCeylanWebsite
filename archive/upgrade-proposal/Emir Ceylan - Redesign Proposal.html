@@ -1,0 +1,539 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>EMIR CEYLAN — Visual Redesign Proposal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="proposal.css">
+<style>
+/* ═══ HERO (proposed, live recommended background) ═══════════════════════ */
+.hero { position: relative; min-height: 100vh; display: flex; align-items: center; justify-content: center; overflow: hidden; z-index: 1; }
+#hero-canvas { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 0; }
+.hero-vig { position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  background: radial-gradient(ellipse 50% 46% at center, rgba(10,10,10,0.72) 0%, rgba(10,10,10,0.30) 55%, transparent 82%),
+              linear-gradient(180deg, rgba(10,10,10,0.7), transparent 20%, transparent 80%, rgba(10,10,10,0.85)); }
+.hero-inner { position: relative; z-index: 2; text-align: center; padding: 0 24px; pointer-events: none; }
+.hero-inner > * { pointer-events: auto; }
+.hero-status { display: inline-flex; align-items: center; gap: 11px; padding: 8px 15px; border: 1px solid var(--border-lit);
+  background: rgba(10,10,10,0.5); backdrop-filter: blur(8px); font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em; color: var(--dim); margin-bottom: 32px; }
+.hero-status .pulse { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 0 var(--accent-glow); animation: hb 1.6s ease-in-out infinite; }
+@keyframes hb { 0%,70%,100% { box-shadow: 0 0 0 0 rgba(196,30,58,0); transform: scale(1); } 14% { transform: scale(1.45); box-shadow: 0 0 8px 2px var(--accent-glow); } 28% { transform: scale(1); } 42% { transform: scale(1.28); } 56% { transform: scale(1); } }
+.hero-name { font-family: var(--disp); font-weight: 700; font-size: clamp(4.4rem, 15vw, 12.5rem); line-height: 0.86; letter-spacing: -0.03em; text-transform: uppercase; }
+.hero-name .l1 { display: block; color: var(--text); }
+.hero-name .l2 { display: block; color: var(--accent); text-shadow: 0 0 30px rgba(196,30,58,0.4), 0 0 70px rgba(196,30,58,0.18); }
+.hero-sub { margin-top: 30px; display: inline-flex; align-items: center; gap: 10px; padding: 10px 20px; border: 1px solid var(--border-lit);
+  background: rgba(10,10,10,0.42); backdrop-filter: blur(6px); font-family: var(--mono); font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--text); }
+.hero-sub .b { width: 5px; height: 5px; border-radius: 50%; background: var(--accent); }
+.hero-ctas { margin-top: 26px; display: inline-flex; gap: 16px; }
+.btn { font-family: var(--mono); font-size: 12px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; padding: 14px 26px; border: 1px solid transparent; display: inline-flex; align-items: center; gap: 9px; cursor: pointer; transition: all .28s ease; }
+.btn-primary { color: var(--accent); border-color: var(--accent); }
+.btn-primary:hover { background: var(--accent); color: #fff; box-shadow: 0 0 26px var(--accent-glow); }
+.btn-ghost { color: var(--text); position: relative; }
+.btn-ghost::after { content: ''; position: absolute; left: 12px; right: 12px; bottom: 9px; height: 1px; background: var(--text); transform: scaleX(0); transform-origin: left; transition: transform .3s; }
+.btn-ghost:hover::after { transform: scaleX(1); }
+.hero-tag { position: absolute; bottom: 26px; left: 50%; transform: translateX(-50%); z-index: 2; font-family: var(--mono); font-size: 10px; letter-spacing: 0.2em; color: var(--faint); }
+
+/* ═══ DIRECTION SUMMARY ══════════════════════════════════════════════════ */
+.dir-grid { display: grid; grid-template-columns: 1.15fr 1fr; gap: 56px; align-items: start; }
+.spec { border: 1px solid var(--border); background: var(--surface); }
+.spec-row { padding: 22px 26px; border-bottom: 1px solid var(--border); }
+.spec-row:last-child { border-bottom: none; }
+.spec-row .k { font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.2em; color: var(--faint); text-transform: uppercase; margin-bottom: 12px; }
+.swatches { display: flex; gap: 0; }
+.sw { flex: 1; height: 46px; display: flex; align-items: flex-end; padding: 6px; font-family: var(--mono); font-size: 9px; color: rgba(255,255,255,0.6); }
+.type-a { font-family: var(--disp); font-weight: 700; font-size: 30px; letter-spacing: -0.02em; color: var(--text); }
+.type-b { font-family: var(--mono); font-size: 14px; letter-spacing: 0.1em; color: var(--dim); margin-top: 6px; }
+.keeps { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 28px; margin-top: 30px; }
+.keeps .item { font-family: var(--mono); font-size: 12.5px; line-height: 1.6; color: var(--dim); display: flex; gap: 10px; }
+.keeps .item span.mk { color: var(--accent); }
+.keeps .item.kept span.mk::before { content: 'KEEP'; }
+.keeps .item.changed span.mk::before { content: 'FIX'; }
+
+/* ═══ HERO OPTION CARDS ══════════════════════════════════════════════════ */
+.opts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+.opt { border: 1px solid var(--border); background: var(--surface); display: flex; flex-direction: column; }
+.opt.rec { border-color: var(--accent-dim); box-shadow: 0 0 0 1px var(--accent-dim), 0 22px 60px -30px var(--accent-glow); }
+.opt .screen { position: relative; aspect-ratio: 16 / 10; background: #060608; overflow: hidden; border-bottom: 1px solid var(--border); }
+.opt .screen canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+.opt .screen .mini-name { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; pointer-events: none; font-family: var(--disp); font-weight: 700; letter-spacing: -0.02em; font-size: clamp(20px, 3vw, 34px); color: rgba(245,245,245,0.9); text-shadow: 0 2px 20px rgba(0,0,0,0.6); }
+.opt .screen .mini-name b { color: var(--accent); text-shadow: 0 0 20px rgba(196,30,58,0.5); }
+.opt .screen .hint { position: absolute; bottom: 10px; left: 12px; font-family: var(--mono); font-size: 9px; letter-spacing: 0.14em; color: rgba(255,255,255,0.4); pointer-events: none; }
+.opt .meta { padding: 20px 22px 24px; display: flex; flex-direction: column; gap: 12px; flex: 1; }
+.opt .meta .top { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.opt .meta h3 { font-family: var(--disp); font-weight: 700; font-size: 20px; letter-spacing: -0.01em; }
+.opt .meta .lbl { font-family: var(--mono); font-size: 10px; letter-spacing: 0.16em; color: var(--faint); }
+.opt .meta p { font-size: 13.5px; color: var(--dim); line-height: 1.65; }
+.opt .meta .verdict { font-family: var(--mono); font-size: 11px; line-height: 1.6; color: var(--dim); border-top: 1px solid var(--border); padding-top: 12px; margin-top: auto; }
+.opt .meta .verdict b { color: var(--text); }
+
+/* ═══ SKILLS ═════════════════════════════════════════════════════════════ */
+.skills-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; background: var(--border); border: 1px solid var(--border); }
+.skill-cat { background: var(--bg); padding: 30px 28px 34px; }
+.skill-cat .h { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 20px; }
+.skill-cat .h .name { font-family: var(--mono); font-size: 12px; font-weight: 700; letter-spacing: 0.16em; color: var(--text); }
+.skill-cat .h .n { font-family: var(--mono); font-size: 10px; color: var(--faint); }
+.chips { display: flex; flex-wrap: wrap; gap: 9px; }
+.chip { font-family: var(--mono); font-size: 12px; letter-spacing: 0.02em; color: var(--dim); border: 1px solid var(--border-lit); padding: 7px 12px; transition: all .2s ease; cursor: default; }
+.chip:hover { color: var(--text); border-color: var(--accent); box-shadow: inset 0 0 0 1px var(--accent-dim); }
+.chip.pri { color: var(--text); border-color: var(--accent-dim); }
+.chip.pri::before { content: '●'; color: var(--accent); font-size: 7px; vertical-align: middle; margin-right: 7px; }
+
+/* ═══ TRAVELS — passport stamps ══════════════════════════════════════════ */
+.travel-stat { display: flex; gap: 42px; align-items: flex-end; margin-bottom: 46px; flex-wrap: wrap; }
+.travel-stat .big { font-family: var(--disp); font-weight: 700; font-size: clamp(60px, 9vw, 128px); line-height: 0.82; letter-spacing: -0.03em; color: var(--text); }
+.travel-stat .big em { color: var(--accent); font-style: normal; }
+.travel-stat .col { font-family: var(--mono); font-size: 12px; letter-spacing: 0.1em; color: var(--dim); line-height: 2; }
+.travel-stat .col b { color: var(--text); }
+.stamps { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 14px; }
+.stamp { position: relative; aspect-ratio: 1 / 0.72; border: 1.5px solid var(--border-lit); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px;
+  background: repeating-linear-gradient(45deg, transparent, transparent 9px, rgba(255,255,255,0.012) 9px, rgba(255,255,255,0.012) 10px);
+  transition: transform .25s ease, border-color .25s ease; text-align: center; padding: 12px; }
+.stamp:nth-child(3n) { transform: rotate(-1.6deg); }
+.stamp:nth-child(3n+1) { transform: rotate(1.2deg); }
+.stamp:nth-child(4n) { transform: rotate(0.6deg); }
+.stamp:hover { border-color: var(--accent); transform: rotate(0) scale(1.04); z-index: 2; }
+.stamp .iso { font-family: var(--mono); font-size: 10px; letter-spacing: 0.24em; color: var(--faint); }
+.stamp .cn { font-family: var(--disp); font-weight: 600; font-size: 15px; letter-spacing: 0.01em; color: var(--text); line-height: 1.15; }
+.stamp .rg { font-family: var(--mono); font-size: 8.5px; letter-spacing: 0.16em; color: var(--faint); text-transform: uppercase; }
+.stamp.home { border-color: var(--accent); border-style: double; border-width: 3px; }
+.stamp.home .cn { color: var(--accent); }
+.stamp.home::after { content: 'HOME'; position: absolute; top: 8px; right: 9px; font-family: var(--mono); font-size: 7.5px; letter-spacing: 0.16em; color: var(--accent); }
+
+/* ═══ WORK teaser ════════════════════════════════════════════════════════ */
+.work-teaser { border: 1px solid var(--border); background: var(--surface); display: grid; grid-template-columns: 1.1fr 1fr; }
+.work-teaser .lhs { padding: clamp(34px, 5vw, 64px); border-right: 1px solid var(--border); }
+.work-teaser .num { font-family: var(--disp); font-weight: 700; font-size: clamp(72px, 12vw, 168px); line-height: 0.8; letter-spacing: -0.04em; color: var(--text); }
+.work-teaser .num em { color: var(--accent); font-style: normal; }
+.work-teaser .lhs p { color: var(--dim); font-size: 16px; line-height: 1.7; max-width: 40ch; margin-top: 22px; }
+.work-teaser .rhs { padding: clamp(34px, 5vw, 64px); display: flex; flex-direction: column; justify-content: center; gap: 22px; }
+.work-teaser .rhs .cta-lbl { font-family: var(--mono); font-size: 11px; letter-spacing: 0.2em; color: var(--faint); text-transform: uppercase; }
+.contact-row { display: flex; flex-direction: column; gap: 2px; }
+.contact-row a { display: flex; align-items: center; justify-content: space-between; padding: 16px 0; border-bottom: 1px solid var(--border); font-family: var(--mono); font-size: 13px; letter-spacing: 0.06em; color: var(--text); transition: padding .2s ease, color .2s ease; }
+.contact-row a:hover { padding-left: 10px; color: var(--accent); }
+.contact-row a .arr { color: var(--faint); }
+.contact-row a:hover .arr { color: var(--accent); }
+
+/* ═══ HOBBIES ════════════════════════════════════════════════════════════ */
+.tabs { display: flex; gap: 0; position: relative; border: 1px solid var(--border); width: fit-content; margin-bottom: 44px; }
+.tab-btn { font-family: var(--mono); font-size: 12px; font-weight: 700; letter-spacing: 0.16em; color: var(--dim); background: none; border: none; padding: 14px 30px; cursor: pointer; transition: color .25s ease; position: relative; z-index: 1; }
+.tab-btn.active { color: var(--bg); }
+.tab-ind { position: absolute; top: 0; bottom: 0; left: 0; background: var(--accent); transition: transform .35s cubic-bezier(.16,1,.3,1), width .35s cubic-bezier(.16,1,.3,1); z-index: 0; }
+.tab-panel { display: none; }
+.tab-panel.active { display: block; animation: fade .4s ease; }
+@keyframes fade { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+.hob-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; align-items: start; }
+.hob-lead h3 { font-family: var(--disp); font-weight: 700; font-size: clamp(34px, 4.5vw, 56px); line-height: 0.98; letter-spacing: -0.02em; margin-bottom: 22px; }
+.hob-lead .kick { font-family: var(--mono); font-size: 11px; letter-spacing: 0.18em; color: var(--accent); text-transform: uppercase; margin-bottom: 16px; }
+.hob-lead p { color: var(--dim); font-size: 15px; line-height: 1.75; max-width: 46ch; }
+.hob-lead p + p { margin-top: 14px; }
+.editable { font-family: var(--mono); font-size: 11px; color: var(--faint); border: 1px dashed var(--border-lit); padding: 12px 14px; margin-top: 18px; letter-spacing: 0.04em; }
+.disc-list { display: flex; flex-direction: column; gap: 12px; }
+.disc { border: 1px solid var(--border); background: var(--surface); padding: 20px 22px; transition: border-color .2s ease; }
+.disc:hover { border-color: var(--border-lit); }
+.disc .top { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 8px; }
+.disc .top .nm { font-family: var(--disp); font-weight: 700; font-size: 18px; letter-spacing: 0.01em; }
+.pill { font-family: var(--mono); font-size: 9px; font-weight: 700; letter-spacing: 0.14em; padding: 4px 9px; text-transform: uppercase; border: 1px solid var(--border-lit); color: var(--dim); }
+.pill.active { background: var(--accent); color: var(--bg); border-color: var(--accent); }
+.pill.past { color: var(--faint); }
+.disc .bd { font-size: 13.5px; color: var(--dim); line-height: 1.65; }
+.pr-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; background: var(--border); border: 1px solid var(--border); margin-top: 4px; }
+.pr { background: var(--bg); padding: 18px 16px; text-align: center; }
+.pr .v { font-family: var(--disp); font-weight: 700; font-size: 30px; letter-spacing: -0.02em; color: var(--accent); line-height: 1; }
+.pr .v small { font-size: 14px; color: var(--dim); }
+.pr .l { font-family: var(--mono); font-size: 9px; letter-spacing: 0.14em; color: var(--faint); text-transform: uppercase; margin-top: 8px; }
+.stat-stack { display: flex; flex-direction: column; gap: 20px; }
+.stat-stack .item { border-left: 2px solid var(--border-lit); padding-left: 18px; }
+.stat-stack .item.hi { border-color: var(--accent); }
+.stat-stack .item .v { font-family: var(--disp); font-weight: 700; font-size: 46px; line-height: 0.9; letter-spacing: -0.02em; }
+.stat-stack .item.hi .v { color: var(--accent); }
+.stat-stack .item .l { font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; color: var(--faint); text-transform: uppercase; margin-top: 8px; }
+.art-strip { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 22px; }
+.art-strip img { width: 100%; aspect-ratio: 1; object-fit: cover; border: 1px solid var(--border); filter: grayscale(0.15); transition: filter .3s ease, border-color .3s ease; }
+.art-strip img:hover { filter: none; border-color: var(--accent); }
+
+/* ═══ FOOTER ═════════════════════════════════════════════════════════════ */
+.foot { border-top: 1px solid var(--border); padding: 60px clamp(20px,5vw,88px) 50px; position: relative; z-index: 1; }
+.foot-wrap { max-width: 1240px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap; }
+.foot .private-link { border: 1px solid var(--accent-dim); background: var(--surface); padding: 20px 26px; display: flex; align-items: center; gap: 18px; transition: all .25s ease; }
+.foot .private-link:hover { border-color: var(--accent); box-shadow: 0 0 24px -6px var(--accent-glow); }
+.foot .private-link .lock { font-family: var(--mono); font-size: 10px; letter-spacing: 0.16em; color: var(--accent); }
+.foot .private-link .t { font-family: var(--disp); font-weight: 700; font-size: 18px; color: var(--text); }
+.foot .private-link .s { font-family: var(--mono); font-size: 11px; color: var(--dim); margin-top: 3px; }
+.foot .colo { font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; color: var(--faint); line-height: 1.9; }
+
+@media (max-width: 940px) {
+  .dir-grid, .hob-grid, .work-teaser { grid-template-columns: 1fr; }
+  .opts { grid-template-columns: 1fr; }
+  .skills-grid { grid-template-columns: 1fr 1fr; }
+  .work-teaser .lhs { border-right: none; border-bottom: 1px solid var(--border); }
+}
+@media (max-width: 620px) {
+  .skills-grid { grid-template-columns: 1fr; }
+  .pr-row { grid-template-columns: 1fr; }
+  .travel-stat { gap: 24px; }
+}
+</style>
+</head>
+<body>
+
+<div class="page-grid"></div>
+
+<div class="proposal-bar">
+  <span class="brand">EC</span>
+  <span class="mono" style="letter-spacing:0.2em;">VISUAL REDESIGN PROPOSAL · v3</span>
+  <nav>
+    <a href="#direction">DIRECTION</a>
+    <a href="#hero">HERO</a>
+    <a href="#skills">SKILLS</a>
+    <a href="#travels">TRAVELS</a>
+    <a href="#work">WORK</a>
+    <a href="#hobbies">HOBBIES</a>
+  </nav>
+</div>
+
+<!-- ═══ HERO (proposed, recommended background live) ═══════════════════════ -->
+<section class="hero" id="top" data-screen-label="proposed hero">
+  <canvas id="hero-canvas"></canvas>
+  <div class="hero-vig"></div>
+  <div class="hero-inner">
+    <div class="hero-status"><span class="pulse"></span><span class="mono">SYS_ID: EC_2027 — ISTANBUL / TR — ONLINE</span></div>
+    <h1 class="hero-name"><span class="l1">EMİR</span><span class="l2">CEYLAN</span></h1>
+    <div class="hero-sub"><span class="b"></span><span>CS STUDENT — AI FOR HEALTHCARE</span><span class="b"></span></div>
+    <div class="hero-ctas">
+      <a class="btn btn-primary" href="#work">MY WORK <span>→</span></a>
+      <a class="btn btn-ghost" href="#work">CONTACT</a>
+    </div>
+  </div>
+  <div class="hero-tag">↓ PROPOSED HERO — RECOMMENDED BACKGROUND: REACTIVE DOT MATRIX · MOVE CURSOR</div>
+</section>
+
+<!-- ═══ 00 · DIRECTION ════════════════════════════════════════════════════ -->
+<section class="sec" id="direction" data-screen-label="00 direction">
+  <div class="sec-wrap">
+    <div class="anno">Direction / 00 — The System</div>
+    <div class="dir-grid">
+      <div>
+        <p class="lead">The identity is right — <em>dark, crimson, terminal.</em> What's missing is intent. The redesign keeps every signature and removes the template tells: the generic neural mesh, the squished skills, the flight-tracker map.</p>
+        <div class="keeps">
+          <div class="item kept"><span class="mk"></span> Crimson &amp; near-black palette, one accent used sparingly</div>
+          <div class="item kept"><span class="mk"></span> <b style="color:var(--text);font-weight:500">EC_</b> mark + blinking caret</div>
+          <div class="item kept"><span class="mk"></span> Monospace labels &amp; SYS_ID chrome</div>
+          <div class="item kept"><span class="mk"></span> Brutalist cut-corner panels</div>
+          <div class="item changed"><span class="mk"></span> Neural particle mesh → intentional interactive field</div>
+          <div class="item changed"><span class="mk"></span> Accordion skills → breathing chip grid</div>
+          <div class="item changed"><span class="mk"></span> Dotted world map → passport stamps</div>
+          <div class="item changed"><span class="mk"></span> Public work cards → teaser + private page</div>
+        </div>
+      </div>
+      <div class="spec">
+        <div class="spec-row">
+          <div class="k">Typeface — Display</div>
+          <div class="type-a">Space Grotesk 700</div>
+          <div class="type-b">JetBrains Mono — labels, chrome, data</div>
+        </div>
+        <div class="spec-row">
+          <div class="k">Palette</div>
+          <div class="swatches">
+            <div class="sw" style="background:#0a0a0a;border:1px solid var(--border)">0a0a0a</div>
+            <div class="sw" style="background:#121216">121216</div>
+            <div class="sw" style="background:#1a1a1f">1a1a1f</div>
+            <div class="sw" style="background:#C41E3A;color:#fff">C41E3A</div>
+            <div class="sw" style="background:#E8324F;color:#fff">E8324F</div>
+          </div>
+        </div>
+        <div class="spec-row">
+          <div class="k">Principles</div>
+          <div class="note" style="border:none;padding-left:0;">
+            <b>01</b> Restraint — one accent, earned.<br>
+            <b>02</b> Breathing room over density.<br>
+            <b>03</b> Motion only where it means something.<br>
+            <b>04</b> Every number and dot must be real.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 01 · HERO BACKGROUND ══════════════════════════════════════════════ -->
+<section class="sec" id="hero" style="padding-top:0" data-screen-label="01 hero backgrounds">
+  <div class="sec-wrap">
+    <div class="anno">Redesign / 01 — Hero Background</div>
+    <div class="sec-head">
+      <div class="ix">01 /</div>
+      <h2>HERO</h2>
+      <div class="line"></div>
+      <div class="count">3 OPTIONS</div>
+    </div>
+    <p class="body-txt" style="margin-bottom:40px;max-width:70ch;">The particle mesh reads as a bought template. All three replacements are cursor-reactive and tie to a <em style="color:var(--accent);font-style:normal;">signal / data / medical</em> idea rather than generic "AI dots." Hover each screen to feel the interaction.</p>
+    <div class="opts">
+      <div class="opt rec">
+        <div class="screen"><canvas data-fx="dot"></canvas><div class="mini-name">EMİR <b>CEYLAN</b></div><div class="hint mono">◦ CURSOR-REACTIVE</div></div>
+        <div class="meta">
+          <div class="top"><h3>Reactive Dot Matrix</h3><span class="badge-rec">Recommended</span></div>
+          <p>An even signal grid. The cursor lights and lifts nearby dots; a slow crimson scan keeps it alive when idle.</p>
+          <div class="verdict"><b>Why this one:</b> clearly interactive, never tiring, reads as structured data — not a starfield. Safe as a permanent background.</div>
+        </div>
+      </div>
+      <div class="opt">
+        <div class="screen"><canvas data-fx="ekg"></canvas><div class="mini-name">EMİR <b>CEYLAN</b></div><div class="hint mono">◦ CURSOR RAISES TRACE</div></div>
+        <div class="meta">
+          <div class="top"><h3>EKG / Vitals</h3><span class="badge-alt">On-theme</span></div>
+          <p>A heartbeat trace on a monitor grid. The cursor raises the waveform's amplitude as it passes.</p>
+          <div class="verdict"><b>Trade-off:</b> the strongest tie to <b>AI-for-healthcare</b>, but the most literal — pick if you want the medical angle unmistakable.</div>
+        </div>
+      </div>
+      <div class="opt">
+        <div class="screen"><canvas data-fx="contour"></canvas><div class="mini-name">EMİR <b>CEYLAN</b></div><div class="hint mono">◦ RING TRACKS CURSOR</div></div>
+        <div class="meta">
+          <div class="top"><h3>Topographic Contours</h3><span class="badge-alt">Quiet</span></div>
+          <p>Drifting contour rings, like a chart. The ring nearest the cursor highlights crimson.</p>
+          <div class="verdict"><b>Trade-off:</b> the most understated and elegant — the "designed" choice if you want the background to nearly disappear.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 02 · SKILLS ═══════════════════════════════════════════════════════ -->
+<section class="sec" id="skills" data-screen-label="02 skills">
+  <div class="sec-wrap">
+    <div class="anno">Redesign / 02 — Skills</div>
+    <div class="sec-head">
+      <div class="ix">02 /</div>
+      <h2>SKILLS</h2>
+      <div class="line"></div>
+      <div class="count">/06</div>
+    </div>
+    <p class="body-txt" style="margin-bottom:44px;max-width:66ch;">Six collapsed accordions hid everything behind a click. As a full-width grid of tagged chips, all six categories read at a glance — open, scannable, and impossible to mistake for "unfinished." Primary tools carry a crimson dot.</p>
+    <div class="skills-grid" id="skills-grid"></div>
+  </div>
+</section>
+
+<!-- ═══ 03 · TRAVELS ══════════════════════════════════════════════════════ -->
+<section class="sec" id="travels" data-screen-label="03 travels">
+  <div class="sec-wrap">
+    <div class="anno">Redesign / 03 — Travels</div>
+    <div class="sec-head">
+      <div class="ix">03 /</div>
+      <h2>TRAVELS</h2>
+      <div class="line"></div>
+      <div class="count" id="travel-count">/31</div>
+    </div>
+    <div class="travel-stat">
+      <div class="big"><em>31</em></div>
+      <div class="col">COUNTRIES<br><b>Europe · Asia · Middle East</b></div>
+      <div class="col">FROM<br><b>Istanbul, TR</b></div>
+    </div>
+    <p class="body-txt" style="margin-bottom:34px;max-width:60ch;">No projection to get wrong, no cluttered dots. A wall of passport stamps — collected, tactile, personal. Hover to straighten one out.</p>
+    <div class="stamps" id="stamps"></div>
+  </div>
+</section>
+
+<!-- ═══ 04 · WORK ═════════════════════════════════════════════════════════ -->
+<section class="sec" id="work" data-screen-label="04 work teaser">
+  <div class="sec-wrap">
+    <div class="anno">Redesign / 04 — Work (Public)</div>
+    <div class="sec-head">
+      <div class="ix">04 /</div>
+      <h2>WORK</h2>
+      <div class="line"></div>
+      <div class="count">PUBLIC</div>
+    </div>
+    <p class="body-txt" style="margin-bottom:40px;max-width:66ch;">Detailed roles move to a private recruiter page. The homepage keeps a confident teaser and pushes hard toward contact — curiosity plus a clear next step.</p>
+    <div class="work-teaser">
+      <div class="lhs">
+        <div class="num"><em>07</em>+</div>
+        <div class="mono" style="font-size:12px;letter-spacing:0.18em;color:var(--faint);margin-top:8px;">PROJECTS &amp; ROLES</div>
+        <p>Teaching assistant, undergraduate researcher, medical-AI project lead, ML intern. Full case studies — roles, dates, stack, outcomes — available on request.</p>
+      </div>
+      <div class="rhs">
+        <div class="cta-lbl">// Get in touch</div>
+        <div class="contact-row">
+          <a href="mailto:emir@example.com"><span>REQUEST FULL PORTFOLIO</span><span class="arr">→</span></a>
+          <a href="https://www.linkedin.com/in/emir-ceylan-student-482775332" target="_blank" rel="noopener"><span>LINKEDIN / EMIR-CEYLAN</span><span class="arr">↗</span></a>
+          <a href="https://github.com/EmirC356" target="_blank" rel="noopener"><span>GITHUB / EMIRC356</span><span class="arr">↗</span></a>
+        </div>
+        <div class="mono" style="font-size:10.5px;color:var(--faint);letter-spacing:0.06em;line-height:1.6;">Swap the email + handles for your real ones — placeholders shown.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 05 · HOBBIES ══════════════════════════════════════════════════════ -->
+<section class="sec" id="hobbies" data-screen-label="05 hobbies">
+  <div class="sec-wrap">
+    <div class="anno">Redesign / 05 — Hobbies</div>
+    <div class="sec-head">
+      <div class="ix">05 /</div>
+      <h2>ACTIVITIES</h2>
+      <div class="line"></div>
+      <div class="count">/03</div>
+    </div>
+
+    <div class="tabs" id="tabs">
+      <span class="tab-ind" id="tab-ind"></span>
+      <button class="tab-btn active" data-tab="sport">[ SPORT ]</button>
+      <button class="tab-btn" data-tab="art">[ ART ]</button>
+      <button class="tab-btn" data-tab="think">[ THINK ]</button>
+    </div>
+
+    <!-- SPORT -->
+    <div class="tab-panel active" data-panel="sport">
+      <div class="hob-grid">
+        <div class="hob-lead">
+          <div class="kick">Physical Practice</div>
+          <h3>STRENGTH<br>IS THE BASE</h3>
+          <p>Three years of consistent strength training — the one discipline that's stuck. Everything else sits on top of it.</p>
+          <p>Brazilian jiu-jitsu started as a two-month course; now it's casual rounds with friends. Archery came earlier — certified in middle school — a foundation I've since set down.</p>
+          <div class="editable">// PLACEHOLDER — add a line on <b style="color:var(--dim)">why you lift</b> / what a session feels like</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:16px;">
+          <div class="pr-row">
+            <div class="pr"><div class="v">220<small>kg</small></div><div class="l">Deadlift PR</div></div>
+            <div class="pr"><div class="v">120<small>×8</small></div><div class="l">Squat</div></div>
+            <div class="pr"><div class="v">100<small>×3</small></div><div class="l">Bench</div></div>
+          </div>
+          <div class="disc-list">
+            <div class="disc"><div class="top"><span class="nm">STRENGTH TRAINING</span><span class="pill active">3 YRS · ACTIVE</span></div><div class="bd">Mostly barbell work. Consistency over intensity — the goal is showing up tomorrow.</div></div>
+            <div class="disc"><div class="top"><span class="nm">JIU-JITSU</span><span class="pill">CASUAL</span></div><div class="bd">Two-month intro course, now training casually with friends. On the mat, overthinking gets you tapped.</div></div>
+            <div class="disc"><div class="top"><span class="nm">ARCHERY</span><span class="pill past">PAST · CERTIFIED</span></div><div class="bd">Trained and certified in middle school. Stillness and breath control — a foundation I keep even after setting the bow down.</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ART -->
+    <div class="tab-panel" data-panel="art">
+      <div class="hob-grid">
+        <div class="hob-lead">
+          <div class="kick">The Studio</div>
+          <h3>NINETEEN<br>YEARS IN</h3>
+          <p>I've been drawing and painting for as long as I can remember — the archive goes back to scribbles from when I was two or three years old.</p>
+          <p>I paint less than I used to, and I want to change that. Oil is home base, but the collection runs through acrylic, watercolor, charcoal, and marker.</p>
+          <div class="editable">// PLACEHOLDER — one honest line on what painting gives you that CS doesn't</div>
+          <div class="art-strip">
+            <img src="images/art-01.jpg" alt="painting">
+            <img src="images/art-05.jpg" alt="painting">
+            <img src="images/art-09.jpg" alt="painting">
+            <img src="images/art-11.jpg" alt="painting">
+          </div>
+        </div>
+        <div class="stat-stack">
+          <div class="item hi"><div class="v">19</div><div class="l">Years painting &amp; drawing</div></div>
+          <div class="item"><div class="v">OIL</div><div class="l">Primary medium</div></div>
+          <div class="item"><div class="v">2–3</div><div class="l">Age of earliest archived work</div></div>
+          <div class="item"><div class="v" style="font-size:34px;">WANT<br>MORE</div><div class="l">Current relationship to the practice</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- THINK -->
+    <div class="tab-panel" data-panel="think">
+      <div class="hob-grid">
+        <div class="hob-lead">
+          <div class="kick">Curiosity &amp; Strategy</div>
+          <h3>CHESS<br>&amp; BOOKS</h3>
+          <p>Around 1800 rapid. The gap now isn't calculation — it's judgment about when to trade and when to hold tension. I study endgames more than openings; openings are memorized, endgames are understood.</p>
+          <div class="editable">// PLACEHOLDER — swap in what you're currently reading / your real rating if it's moved</div>
+        </div>
+        <div class="disc-list">
+          <div class="disc"><div class="top"><span class="nm">CHESS</span><span class="pill active">~1800 RAPID</span></div><div class="bd">Comfortable with most tactical patterns; working on long-term positional judgment and endgame technique.</div></div>
+          <div class="disc"><div class="top"><span class="nm">CRIME AND PUNISHMENT</span><span class="pill">DOSTOEVSKY</span></div><div class="bd">A man who convinces himself his own logic is airtight, then watches it collapse under what he can't reason away.</div></div>
+          <div class="disc"><div class="top"><span class="nm">SAPIENS</span><span class="pill">HARARI</span></div><div class="bd">Useful for context — the agricultural revolution as history's greatest con is a framing I return to often.</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FOOTER ════════════════════════════════════════════════════════════ -->
+<footer class="foot">
+  <div class="foot-wrap">
+    <a class="private-link" href="Work — Private Page.html">
+      <span class="lock mono">🔒 PRIVATE</span>
+      <span><span class="t">/work — Recruiter Page →</span><span class="s mono">Full role cards · dates · outcomes · stack</span></span>
+    </a>
+    <div class="colo">© 2026 EMIR CEYLAN / SABANCI UNIVERSITY<br>REDESIGN PROPOSAL · BUILT IN ISTANBUL</div>
+  </div>
+</footer>
+
+<script src="hero-fx.js"></script>
+<script>
+/* ─── Instantiate backgrounds ─────────────────────────────────────────────── */
+(function () {
+  const FX = window.HeroFX;
+  new FX.DotMatrix(document.getElementById('hero-canvas'));
+  document.querySelectorAll('canvas[data-fx]').forEach(cv => {
+    const k = cv.getAttribute('data-fx');
+    if (k === 'dot') new FX.DotMatrix(cv);
+    else if (k === 'ekg') new FX.EKG(cv);
+    else if (k === 'contour') new FX.Contours(cv);
+  });
+})();
+
+/* ─── Skills ──────────────────────────────────────────────────────────────── */
+(function () {
+  const cats = [
+    { title: 'PROGRAMMING', items: ['Python*', 'C++'] },
+    { title: 'LIBRARIES', items: ['NumPy*', 'pandas*', 'scikit-learn*', 'matplotlib', 'Biopython'] },
+    { title: 'TOOLS', items: ['Git / GitHub*', 'Jupyter', 'Ubuntu', 'Claude Code', 'Clawbot'] },
+    { title: 'LANGUAGES', items: ['English (C1)', 'Turkish (Native)'] },
+    { title: 'CREATIVE', items: ['Photoshop', 'Premiere Pro', 'Digital Illustration', 'Painting', 'Drawing'] },
+    { title: 'INTERESTS', items: ['Bioinformatics', 'AI in Medicine', 'Chess', 'Archery', 'Jiu-Jitsu', 'Fitness', 'Tattoo Design'] },
+  ];
+  const grid = document.getElementById('skills-grid');
+  grid.innerHTML = cats.map(c => `
+    <div class="skill-cat">
+      <div class="h"><span class="name">${c.title}</span><span class="n">${String(c.items.length).padStart(2,'0')}</span></div>
+      <div class="chips">${c.items.map(i => {
+        const pri = i.endsWith('*'); const label = i.replace('*','');
+        return `<span class="chip${pri ? ' pri' : ''}">${label}</span>`;
+      }).join('')}</div>
+    </div>`).join('');
+})();
+
+/* ─── Travels / passport stamps ─────────────────────────────────────────────── */
+(function () {
+  const countries = [
+    ['Turkey','TR','Home',1],['Albania','AL','Balkans'],['Andorra','AD','W. Europe'],['Belgium','BE','W. Europe'],
+    ['Bosnia & H.','BA','Balkans'],['Bulgaria','BG','Balkans'],['Croatia','HR','Balkans'],['Czechia','CZ','C. Europe'],
+    ['France','FR','W. Europe'],['Germany','DE','C. Europe'],['Greece','GR','Balkans'],['Hungary','HU','C. Europe'],
+    ['Italy','IT','S. Europe'],['Japan','JP','E. Asia'],['Jordan','JO','Mid. East'],['Kosovo','XK','Balkans'],
+    ['Lithuania','LT','Baltics'],['Malaysia','MY','SE Asia'],['N. Macedonia','MK','Balkans'],['Netherlands','NL','W. Europe'],
+    ['Poland','PL','C. Europe'],['Portugal','PT','S. Europe'],['Romania','RO','Balkans'],['Russia','RU','Eurasia'],
+    ['Serbia','RS','Balkans'],['Slovakia','SK','C. Europe'],['Slovenia','SI','C. Europe'],['Spain','ES','S. Europe'],
+    ['Switzerland','CH','C. Europe'],['Thailand','TH','SE Asia'],['Vietnam','VN','SE Asia'],
+  ];
+  const el = document.getElementById('stamps');
+  el.innerHTML = countries.map(([name, iso, rg, home]) => `
+    <div class="stamp${home ? ' home' : ''}">
+      <div class="iso">${iso}</div>
+      <div class="cn">${name}</div>
+      <div class="rg">${rg}</div>
+    </div>`).join('');
+  document.getElementById('travel-count').textContent = '/' + countries.length;
+})();
+
+/* ─── Hobby tabs ────────────────────────────────────────────────────────────── */
+(function () {
+  const btns = [...document.querySelectorAll('.tab-btn')];
+  const ind = document.getElementById('tab-ind');
+  const panels = [...document.querySelectorAll('.tab-panel')];
+  function move(btn) { ind.style.width = btn.offsetWidth + 'px'; ind.style.transform = `translateX(${btn.offsetLeft}px)`; }
+  function activate(tab) {
+    btns.forEach(b => b.classList.toggle('active', b.dataset.tab === tab));
+    panels.forEach(p => p.classList.toggle('active', p.dataset.panel === tab));
+    move(btns.find(b => b.dataset.tab === tab));
+  }
+  btns.forEach(b => b.addEventListener('click', () => activate(b.dataset.tab)));
+  requestAnimationFrame(() => move(btns[0]));
+  window.addEventListener('resize', () => move(document.querySelector('.tab-btn.active')));
+})();
+</script>
+
+</body>
+</html>
