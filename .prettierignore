@@ -1,0 +1,7 @@
+dist/
+.astro/
+node_modules/
+archive/
+audit/
+public/
+*.md

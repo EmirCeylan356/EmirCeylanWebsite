@@ -1,0 +1,375 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>EMIR CEYLAN — v2 / Creative Developer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <div class="grid-bg"></div>
+  <canvas id="dna-canvas"></canvas>
+
+  <!-- ═══ HEADER ════════════════════════════════════════════════════════════ -->
+  <header class="site-header" data-screen-label="header">
+    <div class="logo">EC</div>
+    <div class="center">CREATIVE DEVELOPER — TURKEY</div>
+    <nav>
+      <a href="#about" class="active">MAIN</a>
+      <a href="#activities">HOBBIES</a>
+      <a href="#visitor">VISITOR GALLERY</a>
+    </nav>
+  </header>
+
+  <main>
+
+    <!-- ═══ HERO ════════════════════════════════════════════════════════════ -->
+    <section class="hero" data-screen-label="01 hero">
+      <div class="hero-inner">
+
+        <div class="hero-tag">
+          <span class="dot"></span>
+          <span id="hero-status">SYS_ID: EC_2027 — ISTANBUL / TR — ONLINE</span>
+          <span class="caret"></span>
+        </div>
+
+        <div class="hero-name-frame">
+          <h1>
+            <span class="ln-1">EMİR</span>
+            <span class="ln-2">CEYLAN</span>
+          </h1>
+        </div>
+
+        <div>
+          <div class="hero-sub">CS STUDENT — AI FOR HEALTHCARE</div>
+        </div>
+
+        <div class="hero-ctas">
+          <a href="#work" class="btn btn-primary cut-corner">MY WORK →</a>
+          <a href="#visitor" class="btn btn-outline cut-corner">CONTACT</a>
+        </div>
+
+        <div class="hero-scroll">↓</div>
+      </div>
+    </section>
+
+    <!-- ═══ MARQUEE ═════════════════════════════════════════════════════════ -->
+    <div class="marquee">
+      <div class="marquee-track" id="marquee-track">
+        <!-- duplicated in JS -->
+      </div>
+    </div>
+
+    <!-- ═══ ABOUT ═══════════════════════════════════════════════════════════ -->
+    <section id="about" data-screen-label="02 about">
+      <div class="section-wrap">
+        <div class="about-grid">
+
+          <aside class="panel about-label">
+            <div class="ix">01 / ABOUT</div>
+            <div class="big">ABOUT</div>
+            <div class="meta">
+              SYSTEM PROFILE
+              <div class="row">CLASS / 2027</div>
+              <div class="row">NODE / ISTANBUL, TR</div>
+            </div>
+            <div class="about-stats">
+              <div class="stat"><div class="num" data-counter="2027">2027</div><div class="lab">EXPECTED GRAD</div></div>
+              <div class="stat"><div class="num" data-counter="07" data-suffix="+">07+</div><div class="lab">PROJECTS</div></div>
+              <div class="stat"><div class="num">AI</div><div class="lab">SPECIALIZATION</div></div>
+            </div>
+          </aside>
+
+          <div class="panel about-narrative">
+            <div class="file">PROFILE_NARRATIVE.txt</div>
+            <p class="lede">Computer Science student at <em>Sabancı University</em> passionate about AI applications in healthcare. Building the future of medical AI.</p>
+            <p>Driven by the potential of AI to bridge gaps in modern medicine, I focus on developing intelligent systems that are as ethical as they are efficient. My work at Sabancı University centers on collaborating with professors and fellow students to build projects that connect deep CS knowledge with complex medical hurdles to find practical, scalable solutions.</p>
+            <p>Outside of the lab, I balance the logic of neural networks with painting — a creative outlet that allows me to view technical challenges through a more expressive, lateral-thinking lens.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ WORK ════════════════════════════════════════════════════════════ -->
+    <section id="work" class="section-pad" data-screen-label="03 work">
+      <div class="section-wrap">
+        <div class="section-head">
+          <div class="ix">02 /</div>
+          <h2>WORK</h2>
+          <div class="line"></div>
+          <div class="count" data-counter="07" data-prefix="/" data-pad="2">/07</div>
+        </div>
+
+        <div class="work-grid" id="work-grid">
+          <!-- cards injected by JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ ACTIVITIES ══════════════════════════════════════════════════════ -->
+    <section id="activities" class="section-pad" data-screen-label="04 activities">
+      <div class="section-wrap">
+        <div class="section-head">
+          <div class="ix">03 /</div>
+          <h2>ACTIVITIES</h2>
+          <div class="line"></div>
+          <div class="count" data-counter="03" data-prefix="/" data-pad="2">/03</div>
+        </div>
+
+        <div class="tab-nav" role="tablist">
+          <button class="tab-btn active" data-tab="sport" role="tab">[ SPORT ]</button>
+          <button class="tab-btn" data-tab="art" role="tab">[ ART ]</button>
+          <button class="tab-btn" data-tab="think" role="tab">[ THINK ]</button>
+          <div class="tab-indicator" id="tab-indicator"></div>
+        </div>
+
+        <div class="tab-content" id="tab-content">
+
+          <div class="tab-panel active" data-panel="sport">
+            <div class="tab-grid">
+              <div class="panel">
+                <div class="mono" style="color:var(--text-secondary); font-size:11px; letter-spacing:0.15em; margin-bottom:14px;">PHYSICAL REALITY</div>
+                <h3 style="font-size:clamp(36px,4.5vw,56px); line-height:1; margin-bottom:24px;" class="glow-text">THE BODY<br>AS PRACTICE</h3>
+                <p style="color:var(--text-secondary); line-height:1.75; margin-bottom:14px;">I train Brazilian Jiu-Jitsu as a blue belt. The mat is one of the few places where thinking too much will get you tapped out — you have to react, adapt, and accept when you lose.</p>
+                <p style="color:var(--text-secondary); line-height:1.75; margin-bottom:14px;">Archery came later. It's the opposite of BJJ in almost every way — no opponent, no urgency, just you and the stillness between breaths.</p>
+                <p style="color:var(--text-secondary); line-height:1.75;">Daily conditioning keeps everything running. Not for aesthetics — for the simple fact that having energy changes how you move through the rest of life.</p>
+              </div>
+              <div style="display:flex; flex-direction:column; gap:14px;">
+                <div class="discipline-card">
+                  <div class="head"><span class="name">BJJ</span><span class="pill">BLUE BELT</span></div>
+                  <div class="body">Brazilian Jiu-Jitsu. Ground grappling, positional control, submissions. The sport where the smaller person can win if they're smarter.</div>
+                </div>
+                <div class="discipline-card">
+                  <div class="head"><span class="name">ARCHERY</span><span class="pill">RECURVE</span></div>
+                  <div class="body">Focus, breath control, stillness under pressure. The discipline of archery is mostly about learning to do nothing while everything tries to make you flinch.</div>
+                </div>
+                <div class="discipline-card">
+                  <div class="head"><span class="name">CONDITIONING</span><span class="pill">DAILY</span></div>
+                  <div class="body">Strength and endurance work that supports everything else. Consistency over intensity. The goal is showing up tomorrow.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-panel" data-panel="art">
+            <div class="tab-grid">
+              <div class="panel">
+                <div class="mono" style="color:var(--text-secondary); font-size:11px; letter-spacing:0.15em; margin-bottom:14px;">THE STUDIO</div>
+                <h3 style="font-size:clamp(36px,4.5vw,56px); line-height:1; margin-bottom:24px;" class="glow-text">OIL<br>PAINTING</h3>
+                <p style="color:var(--text-secondary); line-height:1.75; margin-bottom:14px;">Painting with oils since I was a teenager. A medium that dries slowly and demands commitment — you can't undo a stroke, you can only paint over it.</p>
+                <p style="color:var(--text-secondary); line-height:1.75;">Most of my work starts without a clear plan. I mix a color that feels right, make a mark, and respond to it. The discipline is in resisting the urge to over-explain.</p>
+              </div>
+              <div style="display:flex; flex-direction:column; gap:24px;">
+                <div style="border-left:2px solid var(--accent); padding-left:18px;">
+                  <div style="font-family:'Syne'; font-size:48px; font-weight:800; color:var(--accent); line-height:1; text-shadow:0 0 12px rgba(214,255,0,0.4);" data-counter="13">13</div>
+                  <div class="mono" style="font-size:11px; color:var(--text-secondary); letter-spacing:0.12em; margin-top:6px;">SELECTED WORKS</div>
+                </div>
+                <div style="border-left:2px solid var(--border-color); padding-left:18px;">
+                  <div style="font-family:'Syne'; font-size:48px; font-weight:800; color:var(--accent-dim); line-height:1;">OIL</div>
+                  <div class="mono" style="font-size:11px; color:var(--text-secondary); letter-spacing:0.12em; margin-top:6px;">PRIMARY MEDIUM</div>
+                </div>
+                <div style="border-left:2px solid var(--border-color); padding-left:18px;">
+                  <div style="font-family:'Syne'; font-size:48px; font-weight:800; color:var(--text-secondary); line-height:1;">2023–</div>
+                  <div class="mono" style="font-size:11px; color:var(--text-secondary); letter-spacing:0.12em; margin-top:6px;">ACTIVE PERIOD</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-panel" data-panel="think">
+            <div class="tab-grid">
+              <div class="panel">
+                <div class="mono" style="color:var(--text-secondary); font-size:11px; letter-spacing:0.15em; margin-bottom:14px;">CURIOSITY &amp; STRATEGY</div>
+                <h3 style="font-size:clamp(36px,4.5vw,56px); line-height:1; margin-bottom:24px;" class="glow-text">CHESS<br>&amp; BOOKS</h3>
+                <p style="color:var(--text-secondary); line-height:1.75; margin-bottom:14px;">I've been playing chess seriously for a few years. At 1800 rapid, the gap now is not calculation — it's judgment about when to exchange pieces and when to keep the tension.</p>
+                <p style="color:var(--text-secondary); line-height:1.75;">I study endgames more than openings. Openings are memorized. Endgames are understood. That distinction matters.</p>
+              </div>
+              <div style="display:flex; flex-direction:column; gap:14px;">
+                <div class="discipline-card">
+                  <div class="head"><span class="name">CHESS</span><span class="pill">1800 RAPID</span></div>
+                  <div class="body">Comfortable with most tactical patterns. Currently working on long-term positional understanding and endgame technique.</div>
+                </div>
+                <div class="discipline-card">
+                  <div class="head" style="flex-direction:column; align-items:flex-start; gap:4px;">
+                    <span class="name" style="font-size:14px;">CRIME AND PUNISHMENT</span>
+                    <span class="pill">DOSTOEVSKY</span>
+                  </div>
+                  <div class="body">A man who convinces himself his own logic is airtight, then watches it collapse under the weight of what he can't reason away.</div>
+                </div>
+                <div class="discipline-card">
+                  <div class="head" style="flex-direction:column; align-items:flex-start; gap:4px;">
+                    <span class="name" style="font-size:14px;">SAPIENS</span>
+                    <span class="pill">HARARI</span>
+                  </div>
+                  <div class="body">Useful for context. The agricultural revolution as the greatest con in human history is a framing I think about more than expected.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ TRAVELS ═════════════════════════════════════════════════════════ -->
+    <section id="travels" data-screen-label="05 travels">
+      <div class="travels-head section-wrap">
+        <div class="section-head" style="margin-bottom:0;">
+          <h2>TRAVELS</h2>
+          <div class="line"></div>
+          <div class="count" data-counter="26" data-prefix="/" data-pad="2">/26</div>
+        </div>
+        <div class="coords" id="map-coords">MOVE CURSOR OVER MAP — LAT: —  LON: —</div>
+      </div>
+
+      <div class="map-wrap">
+        <img src="images/travel-map.jpg" alt="">
+        <svg id="travel-map" class="map-svg" viewBox="0 0 1000 500" preserveAspectRatio="xMidYMid meet">
+          <g class="travel-nodes" id="travel-nodes"></g>
+        </svg>
+      </div>
+    </section>
+
+    <!-- ═══ ART GALLERY ═════════════════════════════════════════════════════ -->
+    <section id="art" class="section-pad" data-screen-label="06 art">
+      <div class="section-wrap">
+        <div class="section-head">
+          <div class="ix">04 /</div>
+          <h2>ART GALLERY</h2>
+          <div class="line"></div>
+          <div class="count" data-counter="12" data-prefix="/" data-pad="2">/12</div>
+        </div>
+
+        <div class="art-intro">
+          <div class="lhs">
+            <div class="mono" style="color:var(--text-secondary); font-size:11px; letter-spacing:0.15em; margin-bottom:14px;">THE STUDIO</div>
+            <h3>OIL<br>PAINTING</h3>
+            <p>Painting with oils since I was a teenager. A medium that dries slowly and demands commitment — you carry every previous decision forward.</p>
+            <p>The gallery below is the work that made it past my own editing. Selected pieces from 2023 onward, across oil, acrylic, charcoal, and mixed media.</p>
+          </div>
+          <div class="stat-stack">
+            <div class="item hi"><div class="big" data-counter="12">12</div><div class="lab">SELECTED WORKS</div></div>
+            <div class="item"><div class="big">OIL</div><div class="lab">PRIMARY MEDIUM</div></div>
+            <div class="item"><div class="big">2023—</div><div class="lab">ACTIVE PERIOD</div></div>
+          </div>
+        </div>
+
+        <div class="art-hint">← SCROLL TO EXPLORE · MOVE CURSOR LEFT / RIGHT · CARDS TILT IN 3D →</div>
+
+        <div id="art-viewport" data-screen-label="art viewport">
+          <div id="art-track"><!-- cards injected by JS --></div>
+        </div>
+
+        <div class="art-progress"><div class="bar" id="art-progress-bar"></div></div>
+      </div>
+    </section>
+
+    <!-- Custom directional cursor -->
+    <div class="art-cursor" id="art-cursor">
+      <span class="arr">→</span>
+      <span class="lbl">SCROLL</span>
+    </div>
+
+    <!-- ═══ VISITOR GALLERY ═════════════════════════════════════════════════ -->
+    <section id="visitor" data-screen-label="07 visitor gallery">
+      <div class="section-wrap">
+        <div class="vg-head">
+          <div class="file">NEURAL_ARCHIVE /</div>
+          <h2>VISITOR<span class="hi">GALLERY</span></h2>
+          <div class="hint">&gt; DRAW_TOOL_ACTIVE — SUBMIT YOUR CREATION TO THE NEURAL ARCHIVE</div>
+        </div>
+
+        <div class="vg-grid">
+          <div class="vg-panel">
+            <div class="file">01 / DRAW_YOUR_ART.exe</div>
+            <div class="toolbar">
+              <button class="tool-btn active" data-tool="brush">BRUSH</button>
+              <button class="tool-btn" data-tool="eraser">ERASER</button>
+              <button class="tool-btn" data-tool="fill">FILL</button>
+            </div>
+            <div class="color-row" id="color-row">
+              <button class="color-btn active" data-color="#222222" style="background:#222;"></button>
+              <button class="color-btn light" data-color="#FFFFFF" style="background:#FFF;"></button>
+              <button class="color-btn" data-color="#D6FF00" style="background:#D6FF00;"></button>
+              <button class="color-btn" data-color="#00E5FF" style="background:#00E5FF;"></button>
+              <button class="color-btn" data-color="#FF0055" style="background:#FF0055;"></button>
+              <button class="color-btn" data-color="#FF6B2C" style="background:#FF6B2C;"></button>
+              <button class="color-btn" data-color="#FFD700" style="background:#FFD700;"></button>
+              <button class="color-btn" data-color="#00C853" style="background:#00C853;"></button>
+              <button class="color-btn" data-color="#2196F3" style="background:#2196F3;"></button>
+              <button class="color-btn" data-color="#9C27B0" style="background:#9C27B0;"></button>
+              <button class="color-btn" data-color="#8B4513" style="background:#8B4513;"></button>
+            </div>
+            <div class="toolbar" style="margin-top:12px;">
+              <button class="tool-btn" data-size="3">S</button>
+              <button class="tool-btn active" data-size="8">M</button>
+              <button class="tool-btn" data-size="16">L</button>
+              <button class="tool-btn danger" id="btn-clear">CLEAR</button>
+            </div>
+
+            <canvas id="draw" width="600" height="390"></canvas>
+            <div class="mono" style="font-size:10px; color:var(--text-secondary); opacity:0.45; margin-top:8px; letter-spacing:0.08em;">600 × 390 — TOUCH SUPPORTED</div>
+          </div>
+
+          <div class="vg-panel">
+            <div class="file">02 / TRANSMIT_TO_ARCHIVE.exe</div>
+
+            <label class="vg-label">YOUR NAME</label>
+            <input id="inp-name" class="vg-input" type="text" maxlength="60" placeholder="e.g. Anonymous" />
+
+            <label class="vg-label">ARTWORK TITLE</label>
+            <input id="inp-title" class="vg-input" type="text" maxlength="80" placeholder="e.g. Untitled #01" />
+
+            <label class="vg-label">PREVIEW</label>
+            <div class="vg-preview" id="preview-box">
+              <span class="empty" id="preview-empty">DRAW SOMETHING FIRST</span>
+              <img id="preview-img" alt="">
+            </div>
+
+            <!-- Improvement #6a — graceful error w/ retry -->
+            <div class="err-box" id="err-box">
+              <span class="err-title">TRANSMISSION FAILED</span>
+              <div class="err-body" id="err-body">Could not reach the archive server. Check your connection and try again.</div>
+              <div class="err-actions">
+                <button class="err-btn" id="err-retry">RETRY ↻</button>
+                <button class="err-btn ghost" id="err-dismiss">DISMISS</button>
+              </div>
+            </div>
+
+            <button class="submit-btn cut-corner" id="submit-btn">SUBMIT TO GALLERY</button>
+            <div class="submit-note">All submissions are public and visible to everyone.</div>
+          </div>
+        </div>
+
+        <!-- Improvement #6b — archive mosaic grid -->
+        <div class="archive-head">
+          <div class="file">ARCHIVE /</div>
+          <h3>PAST SUBMISSIONS</h3>
+          <div class="line"></div>
+          <div class="count"><span id="archive-count">0</span> ENTRIES</div>
+        </div>
+        <div class="archive-grid" id="archive-grid">
+          <!-- tiles injected by JS -->
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <div class="row">
+      <div>© 2026 EMIR CEYLAN / SABANCI UNIVERSITY</div>
+      <div>BUILT IN ISTANBUL · v2.0</div>
+      <div><a href="#">↑ BACK TO TOP</a></div>
+    </div>
+  </footer>
+
+  <!-- App scripts -->
+  <script src="dna.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

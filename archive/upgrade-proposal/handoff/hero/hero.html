@@ -1,0 +1,788 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>EMIR CEYLAN — Creative Developer</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* ═══ TOKENS ═════════════════════════════════════════════════════════════ */
+    :root {
+      --bg:           #0a0a0a;
+      --crimson:      #C41E3A;
+      --crimson-bri:  #E03050;
+      --teal-deep:    #0D4F5C;
+      --teal-edge:    rgba(13, 79, 92, 0.4);
+      --text:         #FFFFFF;
+      --text-dim:     #AAAAAA;
+      --particle:     #1a1a2e;
+      --grid-line:    rgba(13, 79, 92, 0.08);
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { height: 100%; overflow: hidden; }
+    body {
+      font-family: 'Space Grotesk', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      overflow: hidden;
+      -webkit-font-smoothing: antialiased;
+      letter-spacing: 0.005em;
+    }
+    a, button { font-family: inherit; }
+
+    /* ─── Background medical-chart grid (static) ──────────────────────────── */
+    .grid {
+      position: fixed; inset: 0;
+      z-index: 1;
+      background-image:
+        linear-gradient(var(--grid-line) 1px, transparent 1px),
+        linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+      background-size: 64px 64px;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity .4s ease;
+    }
+    .grid.in { opacity: 1; }
+
+    /* Soft vignette behind hero text — dark at top/bottom edges, transparent
+       in the working area so the network reads clearly across the viewport. */
+    .vignette {
+      position: fixed; inset: 0; z-index: 2; pointer-events: none;
+      background:
+        radial-gradient(ellipse 45% 35% at center, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0.30) 55%, transparent 85%),
+        radial-gradient(ellipse at center, transparent 60%, rgba(0,0,0,0.60) 100%),
+        linear-gradient(180deg, rgba(0,0,0,0.50), transparent 14%, transparent 82%, rgba(0,0,0,0.55));
+    }
+
+    /* Particle canvas ─ z below content, above bg color */
+    #particles {
+      position: fixed; inset: 0; z-index: 0;
+      width: 100%; height: 100%;
+      opacity: 0;
+      transition: opacity .8s ease;
+    }
+    #particles.in { opacity: 1; }
+
+    /* ─── HEADER / NAV ────────────────────────────────────────────────────── */
+    header {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 30;
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      padding: 20px 32px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      color: var(--text-dim);
+      pointer-events: none;
+    }
+    header > * { pointer-events: auto; }
+    header .logo {
+      justify-self: start;
+      font-weight: 700;
+      color: var(--text);
+      display: inline-flex; align-items: center; gap: 6px;
+      text-decoration: none;
+    }
+    header .logo::after {
+      content: '_';
+      color: var(--crimson);
+      animation: blink 1.2s steps(2) infinite;
+    }
+    @keyframes blink { 50% { opacity: 0; } }
+
+    header .center {
+      justify-self: center;
+      color: var(--text-dim);
+      text-transform: uppercase;
+    }
+    header nav {
+      justify-self: end;
+      display: flex; gap: 28px;
+    }
+    header nav a {
+      color: var(--text-dim);
+      text-decoration: none;
+      position: relative;
+      transition: color .25s ease;
+    }
+    header nav a::after {
+      content: '';
+      position: absolute;
+      left: 0; right: 0; bottom: -4px;
+      height: 1px; background: var(--crimson);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform .25s ease;
+    }
+    header nav a:hover { color: var(--crimson); }
+    header nav a:hover::after { transform: scaleX(1); }
+
+    @media (max-width: 800px) {
+      header { grid-template-columns: 1fr 1fr; padding: 14px 18px; gap: 10px; font-size: 10px; }
+      header .center { display: none; }
+      header nav { gap: 16px; }
+    }
+
+    /* ─── HERO ────────────────────────────────────────────────────────────── */
+    .hero {
+      position: relative; z-index: 10;
+      min-height: 100vh; width: 100%;
+      display: flex; align-items: center; justify-content: center;
+      padding: 80px 32px 40px;
+    }
+    .hero-inner {
+      width: 100%; max-width: 1200px;
+      display: flex; flex-direction: column; align-items: center;
+      text-align: center;
+    }
+
+    /* Status bar */
+    .status {
+      display: inline-flex; align-items: center; gap: 12px;
+      padding: 9px 16px 9px 14px;
+      border: 1px solid rgba(170, 170, 170, 0.18);
+      background: rgba(10, 10, 10, 0.55);
+      backdrop-filter: blur(8px);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--text-dim);
+      letter-spacing: 0.14em;
+      margin-bottom: 36px;
+      opacity: 0;
+      transition: opacity .35s ease;
+    }
+    .status.in { opacity: 1; }
+    .status .pulse {
+      position: relative;
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--crimson);
+      box-shadow: 0 0 0 0 rgba(196, 30, 58, 0.7);
+      animation: heartbeat 1.5s ease-in-out infinite;
+    }
+    @keyframes heartbeat {
+      0%   { box-shadow: 0 0 0 0    rgba(196, 30, 58, 0.65), 0 0 6px rgba(196,30,58,0.8); transform: scale(1); }
+      14%  { transform: scale(1.4); }
+      28%  { transform: scale(1); }
+      42%  { transform: scale(1.25); }
+      56%  { transform: scale(1); }
+      70%  { box-shadow: 0 0 0 14px rgba(196, 30, 58, 0); transform: scale(1); }
+      100% { box-shadow: 0 0 0 0    rgba(196, 30, 58, 0); transform: scale(1); }
+    }
+    .status .caret {
+      display: inline-block; width: 7px; height: 12px;
+      background: var(--crimson); margin-left: -2px;
+      animation: blink 0.85s steps(2) infinite;
+    }
+
+    /* Name */
+    .name-wrap {
+      position: relative;
+      display: inline-block;
+    }
+    .name-wrap::before,
+    .name-wrap::after {
+      content: '';
+      position: absolute;
+      width: 28px; height: 28px;
+      border: 2px solid var(--crimson);
+      opacity: 0; transition: opacity .8s ease 1.4s;
+    }
+    .name-wrap::before { top: -10px; left: -16px; border-right: 0; border-bottom: 0; }
+    .name-wrap::after  { bottom: -10px; right: -16px; border-left: 0; border-top: 0; }
+    .name-wrap.framed::before, .name-wrap.framed::after { opacity: 0.6; }
+
+    .name {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: clamp(5rem, 17vw, 13.5rem);
+      line-height: 0.88;
+      letter-spacing: -0.025em;
+      text-transform: uppercase;
+      margin: 0;
+    }
+    .name .ln {
+      display: block;
+      position: relative;
+    }
+    .name .ln-1 { color: var(--text); }
+    .name .ln-2 { color: var(--crimson); }
+
+    /* Per-character spans rendered by JS */
+    .ch {
+      display: inline-block;
+      position: relative;
+    }
+    /* Space character: preserve width but ignore scramble */
+    .ch.sp { width: 0.28em; }
+
+    /* Chromatic aberration on CEYLAN — toggled by JS */
+    .ln-2.aberrate {
+      animation: aberrate 600ms cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+    }
+    .ln-2 .ch::before, .ln-2 .ch::after {
+      content: attr(data-ch);
+      position: absolute; left: 0; top: 0;
+      opacity: 0;
+      pointer-events: none;
+    }
+    .ln-2 .ch::before { color: var(--crimson-bri); transform: translateX(0); }
+    .ln-2 .ch::after  { color: #0FB3D1;           transform: translateX(0); mix-blend-mode: screen; }
+    .ln-2.aberrate .ch::before { animation: aber-r 600ms cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards; }
+    .ln-2.aberrate .ch::after  { animation: aber-b 600ms cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards; }
+    @keyframes aberrate {
+      0%   { filter: blur(0.5px); }
+      40%  { filter: blur(0.3px); }
+      100% { filter: blur(0); }
+    }
+    @keyframes aber-r {
+      0%   { opacity: 0; transform: translateX(0); }
+      30%  { opacity: 0.85; transform: translateX(-4px); }
+      70%  { opacity: 0.7;  transform: translateX(-4px); }
+      100% { opacity: 0;    transform: translateX(0); }
+    }
+    @keyframes aber-b {
+      0%   { opacity: 0; transform: translateX(0); }
+      30%  { opacity: 0.85; transform: translateX(4px); }
+      70%  { opacity: 0.7;  transform: translateX(4px); }
+      100% { opacity: 0;    transform: translateX(0); }
+    }
+    .ln-2 {
+      /* faint default crimson aura */
+      text-shadow: 0 0 24px rgba(196, 30, 58, 0.35), 0 0 60px rgba(196, 30, 58, 0.15);
+    }
+    .ln-2:hover, .ln-2.aberrate { cursor: default; }
+
+    /* Subtitle */
+    .subtitle {
+      margin-top: 36px;
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 11px 20px;
+      border: 1px solid rgba(170, 170, 170, 0.16);
+      background: rgba(10, 10, 10, 0.45);
+      backdrop-filter: blur(6px);
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 500;
+      font-size: 12px;
+      letter-spacing: 0.18em;
+      color: var(--text);
+      text-transform: uppercase;
+      opacity: 0;
+      transform: translateY(12px);
+      transition: opacity .5s ease, transform .5s ease;
+    }
+    .subtitle.in { opacity: 1; transform: translateY(0); }
+    .subtitle .bullet {
+      width: 5px; height: 5px; border-radius: 50%;
+      background: var(--crimson);
+      flex-shrink: 0;
+    }
+
+    /* CTAs */
+    .ctas {
+      margin-top: 28px;
+      display: inline-flex; gap: 18px;
+      align-items: center;
+      opacity: 0;
+      transform: translateY(12px);
+      transition: opacity .5s ease, transform .5s ease;
+    }
+    .ctas.in { opacity: 1; transform: translateY(0); }
+
+    .btn {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      text-decoration: none;
+      padding: 14px 26px;
+      cursor: pointer;
+      transition: all 300ms ease;
+      display: inline-flex; align-items: center; gap: 10px;
+      border: 1px solid transparent;
+    }
+    .btn-primary {
+      color: var(--crimson);
+      border-color: var(--crimson);
+      background: transparent;
+    }
+    .btn-primary:hover {
+      background: var(--crimson);
+      color: var(--text);
+      box-shadow: 0 0 24px rgba(196, 30, 58, 0.35);
+    }
+    .btn-secondary {
+      color: var(--text);
+      padding: 14px 4px;
+      border: none;
+      background: transparent;
+      position: relative;
+    }
+    .btn-secondary::after {
+      content: '';
+      position: absolute;
+      left: 4px; right: 4px; bottom: 10px;
+      height: 1px; background: var(--text);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform .3s ease;
+    }
+    .btn-secondary:hover::after { transform: scaleX(1); }
+
+    /* Scroll cue */
+    .scroll-cue {
+      position: absolute;
+      bottom: 32px; left: 50%;
+      transform: translateX(-50%);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      color: var(--text-dim);
+      opacity: 0;
+      transition: opacity .5s ease;
+      pointer-events: none;
+    }
+    .scroll-cue.in { opacity: 0.6; }
+    .scroll-cue::after {
+      content: '';
+      display: block;
+      width: 1px; height: 24px;
+      background: linear-gradient(180deg, var(--text-dim), transparent);
+      margin: 8px auto 0;
+      animation: drift 2.2s ease-in-out infinite;
+    }
+    @keyframes drift {
+      0%, 100% { transform: translateY(0); opacity: 0.6; }
+      50%      { transform: translateY(6px); opacity: 0.15; }
+    }
+
+    /* Reduced motion: collapse everything to "on" immediately */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+      .status, .subtitle, .ctas, .grid, #particles, .scroll-cue { opacity: 1 !important; transform: none !important; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <canvas id="particles" data-screen-label="neural particle field"></canvas>
+  <div class="grid" id="grid"></div>
+  <div class="vignette"></div>
+
+  <header data-screen-label="header">
+    <a href="#" class="logo">EC</a>
+    <div class="center">CREATIVE DEVELOPER — TURKEY</div>
+    <nav>
+      <a href="#main">MAIN</a>
+      <a href="#hobbies">HOBBIES</a>
+      <a href="#visitor">VISITOR GALLERY</a>
+    </nav>
+  </header>
+
+  <section class="hero" data-screen-label="01 hero">
+    <div class="hero-inner">
+
+      <div class="status" id="status">
+        <span class="pulse" aria-hidden="true"></span>
+        <span id="status-text">SYS_ID: EC_2027 — ISTANBUL / — ONLINE</span>
+      </div>
+
+      <div class="name-wrap" id="name-wrap">
+        <h1 class="name" aria-label="EMIR CEYLAN">
+          <span class="ln ln-1" id="ln1" data-text="EMIR"></span>
+          <span class="ln ln-2" id="ln2" data-text="CEYLAN"></span>
+        </h1>
+      </div>
+
+      <div class="subtitle" id="subtitle">
+        <span class="bullet"></span>
+        <span>CS STUDENT — AI FOR HEALTHCARE</span>
+        <span class="bullet"></span>
+      </div>
+
+      <div class="ctas" id="ctas">
+        <a href="#work" class="btn btn-primary">MY WORK <span aria-hidden="true">→</span></a>
+        <a href="#contact" class="btn btn-secondary">CONTACT</a>
+      </div>
+
+    </div>
+
+    <div class="scroll-cue" id="scroll-cue">SCROLL</div>
+  </section>
+
+
+  <script>
+  /* ═══ NEURAL PARTICLE FIELD ═════════════════════════════════════════════════
+     800 particles (300 on mobile), 12 hub nodes, neighbor-line connections
+     within 120px, mouse repulsion within 150px with spring return,
+     pulse on hubs, slight center clustering.
+  ═══════════════════════════════════════════════════════════════════════════ */
+  (function neuralField() {
+    const cv = document.getElementById('particles');
+    const ctx = cv.getContext('2d');
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const isMobile = window.matchMedia('(max-width: 800px), (pointer: coarse)').matches;
+
+    const N_PARTICLES = isMobile ? 300 : 800;
+    const N_HUBS      = isMobile ? 8 : 22;
+    const LINK_DIST   = 110;
+    const HUB_LINK_DIST = 220;          // hubs reach further — like axons
+    const SYNAPSE_DIST  = 480;          // hub↔hub long-range connections
+    const MOUSE_RADIUS = 150;
+    const MOUSE_FORCE  = 1.6;
+    const SPRING       = 0.014;     // pull back to home
+    const FRICTION     = 0.92;
+    const DRIFT        = 0.18;
+
+    let W = 0, H = 0, DPR = Math.max(1, Math.min(window.devicePixelRatio || 1, 2));
+    function resize() {
+      W = cv.clientWidth  = window.innerWidth;
+      H = cv.clientHeight = window.innerHeight;
+      cv.width  = Math.floor(W * DPR);
+      cv.height = Math.floor(H * DPR);
+      ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+    }
+    resize();
+    window.addEventListener('resize', resize);
+
+    const mouse = { x: -9999, y: -9999, active: false };
+    if (!isMobile) {
+      window.addEventListener('pointermove', (e) => {
+        mouse.x = e.clientX; mouse.y = e.clientY; mouse.active = true;
+      }, { passive: true });
+      window.addEventListener('pointerleave', () => { mouse.active = false; mouse.x = -9999; mouse.y = -9999; });
+    }
+
+    /* ── Build particles, uniformly spread across the viewport ──────────── */
+    const particles = [];
+    for (let i = 0; i < N_PARTICLES; i++) {
+      // Pad past the edge so the field bleeds off-screen
+      const x = -40 + Math.random() * (W + 80);
+      const y = -40 + Math.random() * (H + 80);
+      particles.push({
+        hx: x, hy: y,                                  // "home" anchor
+        x, y,
+        vx: (Math.random() - 0.5) * DRIFT,
+        vy: (Math.random() - 0.5) * DRIFT,
+        r: 1.1 + Math.random() * 0.9,
+        hub: false,
+        phase: Math.random() * Math.PI * 2,
+      });
+    }
+    // Promote N_HUBS particles to hub nodes — picked from a spatial grid so they
+    // distribute evenly. This makes the field read as real network topology,
+    // not a starfield.
+    const hubsList = [];
+    {
+      const cols = Math.max(3, Math.round(Math.sqrt(N_HUBS * (W / Math.max(1, H)))));
+      const rows = Math.max(2, Math.ceil(N_HUBS / cols));
+      const cellW = W / cols, cellH = H / rows;
+      let placed = 0;
+      outer: for (let r = 0; r < rows; r++) {
+        for (let c = 0; c < cols; c++) {
+          if (placed >= N_HUBS) break outer;
+          const cx = (c + 0.5) * cellW + (Math.random() - 0.5) * cellW * 0.55;
+          const cy = (r + 0.5) * cellH + (Math.random() - 0.5) * cellH * 0.55;
+          let best = -1, bestD = Infinity;
+          for (let i = 0; i < particles.length; i++) {
+            const p = particles[i]; if (p.hub) continue;
+            const dx = p.hx - cx, dy = p.hy - cy;
+            const d2 = dx*dx + dy*dy;
+            if (d2 < bestD) { bestD = d2; best = i; }
+          }
+          if (best >= 0) {
+            const p = particles[best];
+            p.hub = true;
+            p.r = 2.4 + Math.random() * 1.6;
+            hubsList.push(p);
+            placed++;
+          }
+        }
+      }
+    }
+
+    /* ── Spatial bins so neighbor lookup is O(N), not O(N²) ─────────────── */
+    const BIN = Math.max(LINK_DIST, HUB_LINK_DIST);
+    let bins = new Map();
+    function binKey(x, y) {
+      return ((x / BIN) | 0) + ',' + ((y / BIN) | 0);
+    }
+    function rebuildBins() {
+      bins = new Map();
+      for (let i = 0; i < particles.length; i++) {
+        const p = particles[i];
+        const k = binKey(p.x, p.y);
+        let b = bins.get(k);
+        if (!b) { b = []; bins.set(k, b); }
+        b.push(i);
+      }
+    }
+
+    /* ── Main loop ──────────────────────────────────────────────────────── */
+    let t = 0;
+    function frame() {
+      requestAnimationFrame(frame);
+      t += 1;
+
+      ctx.clearRect(0, 0, W, H);
+
+      // Update positions
+      for (let i = 0; i < particles.length; i++) {
+        const p = particles[i];
+
+        // Drift random walk
+        p.vx += (Math.random() - 0.5) * 0.02;
+        p.vy += (Math.random() - 0.5) * 0.02;
+
+        // Spring back toward home
+        p.vx += (p.hx - p.x) * SPRING;
+        p.vy += (p.hy - p.y) * SPRING;
+
+        // Mouse repulsion (desktop only)
+        if (mouse.active) {
+          const dx = p.x - mouse.x;
+          const dy = p.y - mouse.y;
+          const d2 = dx * dx + dy * dy;
+          if (d2 < MOUSE_RADIUS * MOUSE_RADIUS && d2 > 0.01) {
+            const d = Math.sqrt(d2);
+            const f = (1 - d / MOUSE_RADIUS) * MOUSE_FORCE;
+            p.vx += (dx / d) * f;
+            p.vy += (dy / d) * f;
+          }
+        }
+
+        p.vx *= FRICTION;
+        p.vy *= FRICTION;
+        p.x  += p.vx;
+        p.y  += p.vy;
+
+        // Soft wrap so the field stays full-bleed
+        if (p.x < -40)  p.x = W + 40;
+        if (p.x > W+40) p.x = -40;
+        if (p.y < -40)  p.y = H + 40;
+        if (p.y > H+40) p.y = -40;
+      }
+
+      rebuildBins();
+
+      /* ── Edges ────────────────────────────────────────────────────────── */
+      // Hub↔hub long-range "axon" lines first — dim & thin, so they read
+      // as the underlying network topology rather than the focal layer.
+      ctx.lineWidth = 0.7;
+      for (let i = 0; i < hubsList.length; i++) {
+        for (let j = i + 1; j < hubsList.length; j++) {
+          const a = hubsList[i], b = hubsList[j];
+          const dx = b.x - a.x, dy = b.y - a.y;
+          const d2 = dx*dx + dy*dy;
+          if (d2 > SYNAPSE_DIST * SYNAPSE_DIST) continue;
+          const d = Math.sqrt(d2);
+          const fade = 1 - d / SYNAPSE_DIST;
+          ctx.strokeStyle = `rgba(40, 170, 195, ${(0.11 * fade).toFixed(3)})`;
+          ctx.beginPath();
+          ctx.moveTo(a.x, a.y);
+          ctx.lineTo(b.x, b.y);
+          ctx.stroke();
+        }
+      }
+
+      ctx.lineWidth = 1;
+      const dim    = 1 / LINK_DIST;
+      const dimHub = 1 / HUB_LINK_DIST;
+      const checked = new Set(); // pair-key dedupe
+      // For each bin, link inside + 8 neighbors
+      const neighborOffs = [[0,0],[1,0],[-1,0],[0,1],[0,-1],[1,1],[1,-1],[-1,1],[-1,-1]];
+      bins.forEach((arr, key) => {
+        const [bx, by] = key.split(',').map(Number);
+        for (const [ox, oy] of neighborOffs) {
+          const other = bins.get((bx + ox) + ',' + (by + oy));
+          if (!other) continue;
+          for (let a = 0; a < arr.length; a++) {
+            const i = arr[a];
+            for (let b = 0; b < other.length; b++) {
+              const j = other[b];
+              if (i >= j) continue;
+              const pk = i * 100000 + j;
+              if (checked.has(pk)) continue;
+              checked.add(pk);
+              const p1 = particles[i], p2 = particles[j];
+              const dx = p2.x - p1.x, dy = p2.y - p1.y;
+              const d2 = dx * dx + dy * dy;
+              if (d2 > (p1.hub || p2.hub ? HUB_LINK_DIST : LINK_DIST) * (p1.hub || p2.hub ? HUB_LINK_DIST : LINK_DIST)) continue;
+              const d = Math.sqrt(d2);
+              const eitherHub = p1.hub || p2.hub;
+              const fade = 1 - d * (eitherHub ? dimHub : dim);
+              const baseA = eitherHub ? 0.28 : 0.20;
+              ctx.strokeStyle = `rgba(40, 130, 150, ${(baseA * fade).toFixed(3)})`;
+              ctx.beginPath();
+              ctx.moveTo(p1.x, p1.y);
+              ctx.lineTo(p2.x, p2.y);
+              ctx.stroke();
+            }
+          }
+        }
+      });
+
+      /* ── Particles ────────────────────────────────────────────────────── */
+      for (let i = 0; i < particles.length; i++) {
+        const p = particles[i];
+        if (p.hub) {
+          const pulse = 0.22 + 0.32 * (0.5 + 0.5 * Math.sin((t / 60) * (2 * Math.PI / 3) + p.phase));
+          ctx.fillStyle = `rgba(15, 179, 209, ${pulse.toFixed(3)})`;
+          ctx.shadowColor = '#0FB3D1';
+          ctx.shadowBlur  = 5;
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.shadowBlur = 0;
+        } else {
+          ctx.fillStyle = '#1a1d35';
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      }
+    }
+    requestAnimationFrame(frame);
+  })();
+
+  /* ═══ CHARACTER SCRAMBLE + CHROMATIC ABERRATION ═════════════════════════ */
+  (function nameReveal() {
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const SCRAMBLE = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789#@&%*+={}<>/';
+
+    function splitInto(node) {
+      const text = node.dataset.text || '';
+      node.innerHTML = '';
+      const spans = [];
+      for (const ch of text) {
+        const s = document.createElement('span');
+        s.className = 'ch' + (ch === ' ' ? ' sp' : '');
+        s.setAttribute('data-ch', ch);
+        s.textContent = ch === ' ' ? '\u00A0' : ch;
+        node.appendChild(s);
+        spans.push({ el: s, final: ch });
+      }
+      return spans;
+    }
+
+    function scramble(spans, baseDelay) {
+      const DUR  = 1200;          // per-letter total scramble time
+      const STG  = 60;            // stagger between letters
+      const TICK = 45;            // ms between random-char swaps
+      spans.forEach((s, idx) => {
+        if (s.final === ' ') return;
+        const start = baseDelay + idx * STG;
+        const resolveAt = start + DUR;
+        setTimeout(() => {
+          if (reduced) { s.el.textContent = s.final; return; }
+          const interval = setInterval(() => {
+            if (performance.now() >= resolveAtAbs) {
+              clearInterval(interval);
+              s.el.textContent = s.final;
+              return;
+            }
+            s.el.textContent = SCRAMBLE[Math.floor(Math.random() * SCRAMBLE.length)];
+          }, TICK);
+          // Compute absolute resolve time inside the loop closure
+          var resolveAtAbs = performance.now() + DUR;
+        }, start);
+      });
+      // Return total time including last letter's resolution
+      return baseDelay + (spans.length - 1) * STG + DUR;
+    }
+
+    const ln1 = document.getElementById('ln1');
+    const ln2 = document.getElementById('ln2');
+    const ln1Spans = splitInto(ln1);
+    const ln2Spans = splitInto(ln2);
+
+    if (reduced) {
+      ln1Spans.forEach(s => s.el.textContent = s.final);
+      ln2Spans.forEach(s => s.el.textContent = s.final);
+    } else {
+      const e1 = scramble(ln1Spans, 0);          // starts at 600ms after page load (we schedule below)
+      const e2 = scramble(ln2Spans, 100);        // CEYLAN starts 100ms after EMIR
+      // Fire chromatic aberration once CEYLAN resolves
+      const aberrAt = e2 + 40;
+      setTimeout(() => {
+        ln2.classList.add('aberrate');
+        setTimeout(() => ln2.classList.remove('aberrate'), 700);
+        document.getElementById('name-wrap').classList.add('framed');
+      }, aberrAt);
+    }
+
+    // Re-trigger aberration on hover
+    ln2.addEventListener('mouseenter', () => {
+      if (reduced) return;
+      if (ln2.classList.contains('aberrate')) return;
+      ln2.classList.add('aberrate');
+      setTimeout(() => ln2.classList.remove('aberrate'), 650);
+    });
+  })();
+
+  /* ═══ STATUS TYPEWRITER ═════════════════════════════════════════════════ */
+  (function statusTypewriter() {
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const el = document.getElementById('status-text');
+    const TARGET = 'SYS_ID: EC_2027 — ISTANBUL / — ONLINE';
+    if (reduced) { el.textContent = TARGET; return; }
+
+    const TOTAL = 600;
+    el.textContent = '';
+    let i = 0;
+    function tick() {
+      i++;
+      el.textContent = TARGET.slice(0, i);
+      if (i < TARGET.length) {
+        const dt = TOTAL / TARGET.length + (Math.random() - 0.5) * 18;
+        setTimeout(tick, dt);
+      } else {
+        // After typed, append blinking caret element
+        const caret = document.createElement('span');
+        caret.className = 'caret';
+        el.parentElement.appendChild(caret);
+      }
+    }
+    setTimeout(tick, 0);
+  })();
+
+  /* ═══ CINEMATIC LOAD SEQUENCE ═══════════════════════════════════════════ */
+  (function loadSequence() {
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const $ = id => document.getElementById(id);
+
+    if (reduced) {
+      // Reveal everything instantly
+      ['particles','grid','status','subtitle','ctas','scroll-cue'].forEach(id => $(id).classList.add('in'));
+      return;
+    }
+
+    // 0ms — particles fade in
+    requestAnimationFrame(() => $('particles').classList.add('in'));
+    // 200ms — grid
+    setTimeout(() => $('grid').classList.add('in'), 200);
+    // 400ms — status bar starts typing (we make it visible here; typewriter
+    //         logic already started immediately but the container was hidden)
+    setTimeout(() => $('status').classList.add('in'), 400);
+    // 1400ms — subtitle
+    setTimeout(() => $('subtitle').classList.add('in'), 1400);
+    // 1600ms — CTAs
+    setTimeout(() => $('ctas').classList.add('in'), 1600);
+    // 1900ms — scroll cue
+    setTimeout(() => $('scroll-cue').classList.add('in'), 1900);
+  })();
+  </script>
+
+</body>
+</html>

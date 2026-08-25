@@ -62,6 +62,11 @@ const personLd = {
   image: ogImageUrl,
 };
 const ldBlocks = noindex ? jsonLd : [personLd, ...jsonLd];
+
+// Privacy-friendly, cookieless analytics. Vercel Web Analytics is opt-in via
+// PUBLIC_ANALYTICS=vercel (set in the Vercel project env + enable Analytics
+// once in the dashboard). Never loaded on unlisted pages. No Google Analytics.
+const analytics = import.meta.env.PUBLIC_ANALYTICS === 'vercel' && !noindex;
 ---
 
 <!doctype html>
@@ -136,5 +141,6 @@ const ldBlocks = noindex ? jsonLd : [personLd, ...jsonLd];
     <script>
       import '../scripts/main';
     </script>
+    {analytics && <script is:inline defer src="/_vercel/insights/script.js" />}
   </body>
 </html>
