@@ -37,7 +37,10 @@ for (const file of walk(dist)) {
   if (PHONE.test(text)) { console.error(`✖ phone-number pattern in ${rel}`); hits++; }
   if (unlisted) continue;
   for (const t of terms) {
-    const i = lower.indexOf(t);
+    // Whole-word match so "lace" never trips on "replace" / "placeholder".
+    const escaped = t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const re = new RegExp(`(?<![\\p{L}\\p{N}_])${escaped}(?![\\p{L}\\p{N}_])`, 'iu');
+    const i = lower.search(re);
     if (i > -1) {
       console.error(`✖ "${t}" in ${rel}: …${text.slice(Math.max(0, i - 40), i + 60).replace(/\s+/g, ' ')}…`);
       hits++;

@@ -17,8 +17,8 @@ function walk(d, acc = []) {
 const resolves = (url) => {
   const clean = url.split('#')[0].split('?')[0];
   if (!clean) return true;
-  const p = join(dist, clean);
-  return existsSync(p) || existsSync(join(p, 'index.html')) || existsSync(p + '.html') || existsSync(p.replace(/\/$/, '') + '.html');
+  const p = join(dist, clean).replace(/[\\/]+$/, '');
+  return existsSync(p) || existsSync(join(p, 'index.html')) || existsSync(p + '.html');
 };
 
 const broken = [], external = new Set();
