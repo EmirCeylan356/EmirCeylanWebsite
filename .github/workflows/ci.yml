@@ -22,7 +22,8 @@ jobs:
       - run: npm run check:privacy
       - name: No secrets in tracked files
         run: |
-          ! git grep -nE "supabase\.co|eyJ[A-Za-z0-9_-]{20,}" -- ':!package-lock.json' ':!docs/SUPABASE.md' || (echo "Possible secret committed" && exit 1)
+          # Real project hosts / keys only — the CSP wildcard *.supabase.co is fine.
+          ! git grep -nE "https://[a-z0-9]{15,}\.supabase\.co|sb_(publishable|secret)_[A-Za-z0-9_-]{10,}|eyJ[A-Za-z0-9_-]{30,}\.eyJ" -- ':!package-lock.json' || (echo "Possible secret committed" && exit 1)
 
   lighthouse:
     name: Lighthouse CI
