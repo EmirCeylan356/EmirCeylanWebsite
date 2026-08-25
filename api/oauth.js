@@ -5,7 +5,7 @@
 // Needs two Vercel env vars (Project → Settings → Environment Variables):
 //   OAUTH_GITHUB_CLIENT_ID, OAUTH_GITHUB_CLIENT_SECRET
 // from a GitHub OAuth App whose callback URL is
-//   https://www.emirceylan.com/api/oauth/callback
+//   https://www.emirceylan.com/api/oauth/callback/
 import crypto from 'node:crypto';
 
 export default function handler(req, res) {

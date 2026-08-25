@@ -15,7 +15,7 @@ The site has a git-backed CMS ([Decap CMS](https://decapcms.org)) at
 1. GitHub → **Settings → Developer settings → OAuth Apps → New OAuth App**
    - Application name: `emirceylan.com admin`
    - Homepage URL: `https://www.emirceylan.com`
-   - Authorization callback URL: `https://www.emirceylan.com/api/oauth/callback`
+   - Authorization callback URL: `https://www.emirceylan.com/api/oauth/callback/` (note the trailing slash)
    - Register, then **Generate a new client secret**.
 2. Vercel → project → **Settings → Environment Variables** (Production + Preview):
    - `OAUTH_GITHUB_CLIENT_ID` = the Client ID
