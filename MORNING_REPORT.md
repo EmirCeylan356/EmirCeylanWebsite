@@ -1,15 +1,28 @@
-# Overnight run — 2026-08-25, 06:49 → __END__
+# Overnight run — 2026-08-25, 06:49 → 08:05 (TST, UTC+3)
 
 ## TL;DR
 The site now says one thing everywhere ("ML / Medical AI"), the public Work section earns
 trust with four anonymised real results instead of a placeholder, and there are five new
 routes (/blog, /now, /uses, /404, and an HTML+PDF CV on the unlisted recruiter hub).
-Every page is Lighthouse __LH_SUMMARY__, axe-clean, privacy-grepped and behind a tested
-CSP; it is __LIVE_STATUS__. Two things need you before the gallery is genuinely secure
+Every page is Lighthouse 99–100 on all four categories locally and 100/100/100/100 on production, axe-clean, privacy-grepped and behind a tested
+CSP; it is live at https://www.emirceylan.com. Two things need you before the gallery is genuinely secure
 (Supabase RLS SQL) and before the painting titles stop contradicting the pictures.
 
 ## Live status
-__LIVE_BLOCK__
+**Deployed: yes.** Merge commit `825287b` on `main`, pushed 07:50, Vercel reported
+"Deployment has completed" at ~07:58. Verified live at **07:59** with
+[scripts/verify-live.mjs](scripts/verify-live.mjs): all 47 checks pass (every public route
+200, custom 404, `/visitor-gallery/` → 308 → `/hobbies/#art`, the four unlisted routes
+reachable + `noindex` + absent from the sitemap, no phone number on the CV page, new title/
+description/OG/canonical/JSON-LD, no CDN scripts or Google Fonts, CSP + security headers
+present, fonts immutable-cached, robots.txt correct, RSS valid with no draft items).
+Lighthouse **against the live URL** at 08:02: `/` and `/hobbies` both **100 / 100 / 100 /
+100** on mobile and desktop (LCP 1.5 s mobile / 0.4 s desktop, CLS ≤ 0.009). Nothing reverted.
+
+One follow-up push (`321449f`, docs + a CI fix) is on `main` after this report: the first CI
+run on `main` failed only on my own over-broad secrets grep (it matched the `*.supabase.co`
+CSP wildcard); typecheck, build, link and privacy checks all passed. Rollback if ever
+needed: `git revert -m 1 825287b && git push`.
 
 ## Before / after
 
@@ -19,24 +32,24 @@ preview of the production build. Raw JSON + every screenshot: `audit/baseline/` 
 
 | Metric | Before | After |
 | --- | --- | --- |
-| `/` Lighthouse mobile — perf / a11y / best-practices / SEO | 74 / 95 / 100 / 90 | __H_M__ |
-| `/` Lighthouse desktop | 76 / 95 / 100 / 90 | __H_D__ |
-| `/hobbies` Lighthouse mobile | 89 / 96 / 100 / 91 | __HB_M__ |
-| `/hobbies` Lighthouse desktop | 79 / 96 / 100 / 91 | __HB_D__ |
-| `/` LCP mobile / CLS mobile / CLS desktop | 2.98 s / 0.29 / 0.70 | __H_LCP__ |
-| `/hobbies` LCP mobile / CLS desktop | 3.19 s / 0.38 | __HB_LCP__ |
-| `/` page weight (all requests, full scroll) | 339 KB · 11 requests | __H_W__ |
-| `/hobbies` page weight (full scroll) | 1,485 KB · 19 requests | __HB_W__ |
-| `/` font bytes | 119 KB (Google Fonts, 6 families) | __FONT__ |
+| `/` Lighthouse mobile — perf / a11y / best-practices / SEO | 74 / 95 / 100 / 90 | **99 / 100 / 100 / 100** (live: 100 / 100 / 100 / 100) |
+| `/` Lighthouse desktop | 76 / 95 / 100 / 90 | **100 / 100 / 100 / 100** |
+| `/hobbies` Lighthouse mobile | 89 / 96 / 100 / 91 | **99 / 100 / 100 / 100** (live: 100 / 100 / 100 / 100) |
+| `/hobbies` Lighthouse desktop | 79 / 96 / 100 / 91 | **100 / 100 / 100 / 100** |
+| `/` LCP mobile / CLS mobile / CLS desktop | 2.98 s / 0.29 / 0.70 | 1.81 s / 0.009 / 0.002 |
+| `/hobbies` LCP mobile / CLS desktop | 3.19 s / 0.38 | 1.96 s / 0.000 |
+| `/` page weight (all requests, full scroll) | 339 KB · 11 requests | 185 KB · 11 requests |
+| `/hobbies` page weight (full scroll) | 1,485 KB · 19 requests | 321 KB · 11 requests (ART tab closed; 120 KB of images when opened) |
+| `/` font bytes | 119 KB (Google Fonts, 6 families) | 97 KB (2 self-hosted variable families, latin + latin-ext) |
 | `/` third-party JS | 116 KB (GSAP + ScrollTrigger from cdnjs) | 0 |
 | `/hobbies` image bytes (ART tab open, full scroll) | 1,103 KB | 120 KB |
-| axe violations (all pages, 390 + 1280) | 96 across 5 pages (contrast ×102, button-name ×26, h1 ×4, region ×5) | __AXE__ |
+| axe violations (all pages, 390 + 1280) | 96 across 5 pages (contrast ×102, button-name ×26, h1 ×4, region ×5) | 0 on all 10 routes |
 | Horizontal overflow at 360 px | gallery page (+21 px) | none |
 | `<title>` / description / OG / canonical / JSON-LD | none of them | all pages |
 | robots.txt / sitemap / RSS / 404 / manifest / icons | none | all present |
 | Security headers | HSTS only (Vercel default) | CSP, nosniff, Referrer-Policy, Permissions-Policy, HSTS preload, X-Frame-Options, COOP |
 | `astro check` | not set up (67 errors when first run) | 0 errors, 0 warnings |
-| Build output | 64 MB (raw phone photos duplicated) | __DIST__ |
+| Build output | 64 MB (raw phone photos duplicated) | 38 MB (455 AVIF/WebP variants generated; the 16.8 MB source photo is the outlier) |
 
 ## What I changed, by phase
 
@@ -78,7 +91,7 @@ Commits are on `overnight-polish` (merged to `main` — see Live status). Full l
   ([scripts/csp-check.mjs](scripts/csp-check.mjs)).
 - **Phase 6/7/8/11 — hobbies** · `011a719` astro:assets images, `<dialog>` lightbox, real
   tablist, alt text for 48 paintings, gallery link panel.
-- **Phase 14 — verification & deploy** · __DEPLOY_COMMITS__
+- **Phase 14 — verification & deploy** · `825287b` merge, `321449f` CI grep fix + live-verify script. Live checks and Lighthouse above.
 
 ## Decisions I made for you (and why)
 
@@ -116,7 +129,7 @@ Commits are on `overnight-polish` (merged to `main` — see Live status). Full l
    than kept with a TODO — they contradicted the approved facts on a page recruiters read.
 10. **Strict CSP** with `script-src 'self'` + one hash. `style-src` allows inline because
     Astro inlines small stylesheets and the site has inline `style=""` attributes. Tested
-    clean on all routes locally __CSP_LIVE__.
+    clean on all routes locally and confirmed present on production.
 11. **`dist/Emir_Ceylan_CV_2page.docx`**: it lived only in the gitignored build folder,
     and my `rm -rf dist` before the final build deleted it. I restored a byte-identical-
     looking copy from the desktop app's upload cache (same size class, same content

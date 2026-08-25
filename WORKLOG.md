@@ -217,3 +217,8 @@ Running log, one entry per phase. Times are local (TST, UTC+3).
 - Screenshots of every page at 360/390/414/768/1280/1920 in `audit/after/`, reviewed.
 - CSP tested clean on all routes with `scripts/csp-check.mjs`.
 - Merged `overnight-polish` → `main` (825287b), pushed 07:50. Branch also pushed.
+
+## Phase 14 — Live verification (07:58–08:05)
+- Vercel "Deployment has completed" ~07:58. `scripts/verify-live.mjs`: 47/47 checks pass at 07:59.
+- Lighthouse against https://www.emirceylan.com: `/` and `/hobbies` 100/100/100/100 mobile and desktop (`audit/live/`).
+- First CI run on main failed only on the over-broad secrets grep (matched the CSP `*.supabase.co` wildcard); fixed in 321449f. Typecheck/build/links/privacy passed.

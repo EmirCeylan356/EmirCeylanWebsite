@@ -1,0 +1,80 @@
+{
+  "name": "live",
+  "base": "https://www.emirceylan.com",
+  "date": "2026-08-25T05:00:03.040Z",
+  "axe": {},
+  "lighthouse": {
+    "/@mobile": {
+      "performance": 100,
+      "accessibility": 100,
+      "bestPractices": 100,
+      "seo": 100,
+      "lcpMs": 1518,
+      "cls": 0.009,
+      "tbtMs": 0,
+      "fcpMs": 1215,
+      "totalBytes": 125565,
+      "failing": [
+        "label-content-name-mismatch (0)",
+        "network-dependency-tree-insight (0)",
+        "render-blocking-insight (0)"
+      ]
+    },
+    "/@desktop": {
+      "performance": 100,
+      "accessibility": 100,
+      "bestPractices": 100,
+      "seo": 100,
+      "lcpMs": 400,
+      "cls": 0.005,
+      "tbtMs": 0,
+      "fcpMs": 360,
+      "totalBytes": 125516,
+      "failing": [
+        "label-content-name-mismatch (0)",
+        "forced-reflow-insight (0)",
+        "network-dependency-tree-insight (0)",
+        "render-blocking-insight (0.5)"
+      ]
+    },
+    "/hobbies@mobile": {
+      "performance": 100,
+      "accessibility": 100,
+      "bestPractices": 100,
+      "seo": 100,
+      "lcpMs": 1544,
+      "cls": 0,
+      "tbtMs": 0,
+      "fcpMs": 1244,
+      "totalBytes": 141831,
+      "failing": [
+        "redirects (0)",
+        "label-content-name-mismatch (0)",
+        "document-latency-insight (0)",
+        "network-dependency-tree-insight (0)",
+        "render-blocking-insight (0)"
+      ]
+    },
+    "/hobbies@desktop": {
+      "performance": 100,
+      "accessibility": 100,
+      "bestPractices": 100,
+      "seo": 100,
+      "lcpMs": 406,
+      "cls": 0,
+      "tbtMs": 0,
+      "fcpMs": 326,
+      "totalBytes": 141810,
+      "failing": [
+        "redirects (0)",
+        "label-content-name-mismatch (0)",
+        "document-latency-insight (0)",
+        "network-dependency-tree-insight (0)",
+        "render-blocking-insight (0.5)"
+      ]
+    }
+  },
+  "weights": {},
+  "overflow": {},
+  "distBytes": 37965206
+}
