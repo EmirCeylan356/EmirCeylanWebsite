@@ -2,6 +2,8 @@
 // Exchanges the `code` for a token and hands it to the CMS window via the
 // postMessage handshake Decap expects ("authorizing:github" → token message).
 //
+// The handshake script is /admin/oauth-callback.js (an external file, because
+// the site's CSP forbids inline scripts).
 // Robustness: if the popup lost its link to the editor window (window.opener
 // is null — happens when a browser opens the auth flow in a tab, or when a
 // Cross-Origin-Opener-Policy severs it), the token is also stored the way
@@ -26,29 +28,7 @@ export default async function handler(req, res) {
 <p><b>EC_</b> ${ok ? 'Signed in with GitHub.' : 'Sign-in failed: ' + String(payload.error || '')}</p>
 <p id="hint">${ok ? 'Handing the session to the editor…' : ''}</p>
 ${ok ? '<a class="btn" id="go" href="/admin/">Continue to editor →</a>' : '<a class="btn" href="/admin/">Back to editor</a>'}
-<script>
-(function () {
-  var message = ${JSON.stringify(message)};
-  var ok = ${ok ? 'true' : 'false'};
-  var payload = ${JSON.stringify(payload)};
-  var hint = document.getElementById('hint');
-  // Fallback session store (same key/shape as Decap's LocalStorageAuthStore).
-  if (ok) { try { localStorage.setItem('decap-cms-user', JSON.stringify({ token: payload.token, backendName: 'github' })); } catch (e) {} }
-  if (window.opener && !window.opener.closed) {
-    function receiveMessage(e) {
-      window.opener.postMessage(message, e.origin);
-      window.removeEventListener('message', receiveMessage, false);
-      if (hint) hint.textContent = ok ? 'Done. This window will close.' : '';
-      setTimeout(function () { window.close(); }, 400);
-    }
-    window.addEventListener('message', receiveMessage, false);
-    window.opener.postMessage('authorizing:github', '*');
-    setTimeout(function () { if (hint && ok) hint.textContent = 'If the editor did not update, click Continue.'; }, 2500);
-  } else if (hint && ok) {
-    hint.textContent = 'This window has no link to the editor tab. Click Continue — you are signed in.';
-  }
-})();
-</script></main></body></html>`;
+<script src="/admin/oauth-callback.js" data-ok="${ok ? 1 : 0}" data-message="${String(message).replace(/&/g, '&amp;').replace(/"/g, '&quot;')}" data-token="${ok ? payload.token : ''}"></script></main></body></html>`;
   };
 
   const send = (status, payload) => res.status(200).send(page(status, payload));
