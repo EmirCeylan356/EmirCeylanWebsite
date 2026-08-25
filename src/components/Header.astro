@@ -17,8 +17,9 @@ const isActive = (href: string) => (href === '/' ? path === '/' : path.startsWit
 
 <header class="site-header fixed top-0 left-0 right-0 z-50">
   <nav class="site-nav" aria-label="Primary">
-    <a href="/" class="logo-mark" aria-label="Emir Ceylan — home">
-      EC<span class="logo-cursor" aria-hidden="true">_</span>
+    <a href="/" class="logo-mark">
+      <span aria-hidden="true">EC<span class="logo-cursor">_</span></span>
+      <span class="sr-only">EC — Emir Ceylan, home</span>
     </a>
 
     <p class="brand-line font-mono" aria-hidden="true">{SITE.tagline} — ISTANBUL</p>
