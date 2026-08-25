@@ -26,5 +26,8 @@ export default defineConfig({
   image: { service: { entrypoint: 'astro/assets/services/sharp' } },
   vite: {
     plugins: [tailwindcss()],
+    // Never inline bundled scripts into the HTML: the CSP in vercel.json allows
+    // only same-origin script files plus one hashed bootstrap line in Layout.
+    build: { assetsInlineLimit: 0 },
   },
 });
